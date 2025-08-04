@@ -1,4 +1,4 @@
-import React from "react";
+import React, { JSX } from "react";
 import { SidebarTrigger } from "./ui/sidebar";
 
 /**
@@ -6,7 +6,7 @@ import { SidebarTrigger } from "./ui/sidebar";
  * It includes the sidebar trigger button.
  * @returns {JSX.Element}
  */
-const AppTopBar = () => {
+const AppTopBar = (): JSX.Element => {
   return (
     <div className="w-full bg-base-black h-12">
       <SidebarTrigger />
