@@ -6,13 +6,13 @@ import AppSideBar from "~/components/app-sidebar";
 import AppTopBar from "~/components/app-top-bar";
 import { SidebarProvider } from "~/components/ui/sidebar";
 
-//initialize query client
-const queryClient = new QueryClient();
-
 /**
  * This component contains all the providers for the app
  */
 const AppLayoutProviders = ({ children }: { children: React.ReactNode }) => {
+  //initialize query client
+  const [queryClient] = React.useState(() => new QueryClient());
+  
   return (
     <QueryClientProvider client={queryClient}>
       <SidebarProvider>

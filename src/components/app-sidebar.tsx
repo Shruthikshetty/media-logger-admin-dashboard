@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import {
   Sidebar,
   SidebarContent,
@@ -29,10 +30,10 @@ function AppSideBar() {
               {NAVIGATION_ICONS.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.href}>
+                    <Link href={item.href}>
                       <item.icon />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
