@@ -1,11 +1,4 @@
-import {
-  Film,
-  Gamepad2,
-  LayoutDashboard,
-  Settings,
-  Tv,
-  Users,
-} from "lucide-react";
+"use client";
 
 import {
   Sidebar,
@@ -17,16 +10,8 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "~/components/ui/sidebar";
+import { NAVIGATION_ICONS } from "~/constants/screen.constants";
 
-// Menu items.
-const items = [
-  { title: "Dashboard", href: "/", icon: LayoutDashboard },
-  { title: "Movies", href: "/movies", icon: Film },
-  { title: "TV Shows", href: "/tv-shows", icon: Tv },
-  { title: "Games", href: "/games", icon: Gamepad2 },
-  { title: "Users", href: "/users", icon: Users },
-  { title: "Settings", href: "/settings", icon: Settings },
-];
 /**
  * this component is the sidebar for the app
  * @returns {JSX.Element}
@@ -41,7 +26,7 @@ function AppSideBar() {
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) => (
+              {NAVIGATION_ICONS.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <a href={item.href}>
