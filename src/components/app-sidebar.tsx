@@ -22,7 +22,7 @@ function AppSideBar() {
   return (
     <Sidebar className="border-r-2 border-gray-500">
       <SidebarContent className="bg-base-black text-base-white">
-        {/* lOGO  */}
+        {/* logo  */}
         <SidebarGroup className="border-b-1 border-base-white pb-4">
           <div className="flex flex-row items-center gap-3">
             <div>

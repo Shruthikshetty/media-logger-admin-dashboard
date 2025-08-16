@@ -271,7 +271,8 @@ function SidebarTrigger({
       data-slot="sidebar-trigger"
       variant="ghost"
       size="icon"
-      className={cn("size-7", className)}
+      // Button box size + force inner SVG size
+      className={cn("size-8 [&>svg]:!h-6 [&>svg]:!w-6", className)}
       onClick={(event) => {
         onClick?.(event);
         toggleSidebar();
@@ -283,6 +284,7 @@ function SidebarTrigger({
     </Button>
   );
 }
+
 
 function SidebarRail({ className, ...props }: React.ComponentProps<"button">) {
   const { toggleSidebar } = useSidebar();

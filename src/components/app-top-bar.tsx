@@ -14,7 +14,7 @@ const AppTopBar = (): JSX.Element => {
       <div className="flex flex-row items-center justify-between h-full">
         <div className="flex flex-row items-center">
           {/* trigger */}
-          <SidebarTrigger className="hover:bg-ui-700 " />
+          <SidebarTrigger className="hover:bg-ui-700" />
           {/* separator */}
           <div className="h-6 border-r-1 border-base-white mr-2 ml-4 lg:h-10" />
           {/* online status  */}
