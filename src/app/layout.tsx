@@ -26,7 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-base-black`}
       >
         <div className="w-screen h-screen">
           <AppLayoutProviders>{children}</AppLayoutProviders>
