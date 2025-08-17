@@ -3,7 +3,13 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '~/components/ui/button';
-import { Form, FormControl, FormField, FormItem } from '~/components/ui/form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from '~/components/ui/form';
 import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
 import {
@@ -19,6 +25,7 @@ import {
 const Login = () => {
   //create a form using the login schema
   const loginForm = useForm<LoginSchema>({
+    mode: 'onChange',
     resolver: zodResolver(loginSchema),
     defaultValues: loginDefaultValues,
   });
@@ -60,9 +67,11 @@ const Login = () => {
                         {...field}
                         type="text"
                         id="email"
+                        placeholder="example@gmail.com"
                         className="border-ui-600 w-full"
                       />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -79,16 +88,19 @@ const Login = () => {
                         {...field}
                         type="text"
                         id="password"
+                        placeholder="**********"
                         className="border-ui-600 w-full"
                       />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
             <Button
               type="submit"
-              className="bg-brand-500 hover:bg-brand-500 mt-6 mb-5 w-full text-lg hover:opacity-80"
+              disabled={!loginForm.formState.isValid}
+              className="bg-brand-500 hover:bg-brand-500 mt-6 mb-5 h-10 w-full text-lg hover:opacity-80"
             >
               Login
             </Button>
