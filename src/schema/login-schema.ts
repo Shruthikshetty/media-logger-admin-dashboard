@@ -17,5 +17,11 @@ export const loginSchema = z.object({
     .min(1, 'Password is required'),
 });
 
+//default values for the login form
+export const loginDefaultValues = {
+  email: '',
+  password: '',
+};
+
 //this is the type for the login form
 export type LoginSchema = z.infer<typeof loginSchema>;
