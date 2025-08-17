@@ -9,7 +9,7 @@ import { SidebarProvider } from '~/components/ui/sidebar';
 // This component is used to protect routes that require authentication
 // in case the user is not logged in all navigation will be redirected to the login page
 const AuthGuard = ({ children }: { children: React.ReactNode }) => {
-  const isLoggedIn = true;
+  const isLoggedIn = false;
   const router = useRouter();
   const pathname = usePathname();
 
@@ -23,7 +23,7 @@ const AuthGuard = ({ children }: { children: React.ReactNode }) => {
   }, [isLoggedIn, router, pathname]);
 
   // if the user is not logged in return the login page
-  if (isLoggedIn) {
+  if (!isLoggedIn) {
     return children;
   }
 
