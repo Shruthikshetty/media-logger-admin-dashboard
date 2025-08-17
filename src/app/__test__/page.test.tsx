@@ -6,5 +6,5 @@ import Home from '../page';
 it('should pass', () => {
   expect(1).toBe(1);
   render(<Home />);
-  expect(screen.getByRole('paragraph')).toHaveTextContent('Dashboard');
+  expect(screen.getByText('Dashboard')).toBeInTheDocument();
 });
