@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { Film } from "lucide-react";
-import Link from "next/link";
+import { Film } from 'lucide-react';
+import Link from 'next/link';
 import {
   Sidebar,
   SidebarContent,
@@ -11,8 +11,8 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "~/components/ui/sidebar";
-import { NAVIGATION_ICONS } from "~/constants/screen.constants";
+} from '~/components/ui/sidebar';
+import { NAVIGATION_ICONS } from '~/constants/screen.constants';
 
 /**
  * this component is the sidebar for the app
@@ -23,14 +23,14 @@ function AppSideBar() {
     <Sidebar className="border-r-2 border-gray-500">
       <SidebarContent className="bg-base-black text-base-white">
         {/* logo  */}
-        <SidebarGroup className="border-b border-base-white pb-4">
+        <SidebarGroup className="border-base-white border-b pb-4">
           <div className="flex flex-row items-center gap-3">
             <div>
-              <Film className="h-7 w-7 p-1 bg-gradient-to-r from-accent-indigo to-accent-purple rounded-sm" />
+              <Film className="from-accent-indigo to-accent-purple h-7 w-7 rounded-sm bg-gradient-to-r p-1" />
             </div>
             <div>
               <h1 className="text-xl font-bold">Media Logger</h1>
-              <h2 className="text-sm font-light text-ui-600">
+              <h2 className="text-ui-600 text-sm font-light">
                 Admin Dashboard
               </h2>
             </div>
