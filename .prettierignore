@@ -1,0 +1,7 @@
+node_modules
+.next
+.vscode
+dist
+build
+coverage
+package-lock.json

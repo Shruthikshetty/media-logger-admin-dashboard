@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -67,7 +67,7 @@
 
 :root {
   --radius: 0.625rem;
-  --background: #ffffff;    /* fallback */
+  --background: #ffffff; /* fallback */
   --background: oklch(1 0 0);
   --foreground: #262626; /* fallback */
   --foreground: oklch(0.145 0 0);

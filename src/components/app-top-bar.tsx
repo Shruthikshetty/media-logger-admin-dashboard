@@ -1,7 +1,7 @@
-import React, { JSX } from "react";
-import { SidebarTrigger } from "./ui/sidebar";
-import { Bell, User } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
+import React, { JSX } from 'react';
+import { SidebarTrigger } from './ui/sidebar';
+import { Bell, User } from 'lucide-react';
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 
 /**
  * A component that renders the top bar for the app.
@@ -10,19 +10,19 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
  */
 const AppTopBar = (): JSX.Element => {
   return (
-    <div className="w-full bg-base-black h-16 border-b border-base-white pl-1 pr-1 lg:pl-3 lg:pr-3 overflow-hidden lg:h-[4.6rem]">
-      <div className="flex flex-row items-center justify-between h-full">
+    <div className="bg-base-black border-base-white h-16 w-full overflow-hidden border-b pr-1 pl-1 lg:h-[4.6rem] lg:pr-3 lg:pl-3">
+      <div className="flex h-full flex-row items-center justify-between">
         <div className="flex flex-row items-center">
           {/* trigger */}
           <SidebarTrigger className="hover:bg-ui-700" />
           {/* separator */}
-          <div className="h-6 border-r border-base-white mr-2 ml-4 lg:h-10" />
+          <div className="border-base-white mr-2 ml-4 h-6 border-r lg:h-10" />
           {/* online status  */}
           <h1 className="text-ui-600 text-sm">System Online</h1>
         </div>
         <div className="flex flex-row items-center gap-2.5">
           {/* notification icon */}
-          <Bell className="h-5 w-5 text-base-white lg:h-7 lg:w-7" />
+          <Bell className="text-base-white h-5 w-5 lg:h-7 lg:w-7" />
           {/* profile image */}
           <Avatar>
             {/* @TODO : add profile image from API */}
@@ -31,8 +31,8 @@ const AppTopBar = (): JSX.Element => {
               className="h-7 w-7 rounded-full lg:h-10 lg:w-10"
               alt="profile"
             />
-            <AvatarFallback className="text-white text-sm">
-              <User className="h-6 w-6 rounded-full bg-brand-200 p-1 lg:h-10 lg:w-10" />
+            <AvatarFallback className="text-sm text-white">
+              <User className="bg-brand-200 h-6 w-6 rounded-full p-1 lg:h-10 lg:w-10" />
             </AvatarFallback>
           </Avatar>
         </div>
