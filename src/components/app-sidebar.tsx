@@ -23,7 +23,7 @@ function AppSideBar() {
     <Sidebar className="border-r-2 border-gray-500">
       <SidebarContent className="bg-base-black text-base-white">
         {/* logo  */}
-        <SidebarGroup className="border-b-1 border-base-white pb-4">
+        <SidebarGroup className="border-b border-base-white pb-4">
           <div className="flex flex-row items-center gap-3">
             <div>
               <Film className="h-7 w-7 p-1 bg-gradient-to-r from-accent-indigo to-accent-purple rounded-sm" />

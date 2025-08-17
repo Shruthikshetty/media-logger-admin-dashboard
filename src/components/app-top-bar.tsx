@@ -1,7 +1,7 @@
 import React, { JSX } from "react";
 import { SidebarTrigger } from "./ui/sidebar";
 import { Bell, User } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 
 /**
  * A component that renders the top bar for the app.
@@ -10,13 +10,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
  */
 const AppTopBar = (): JSX.Element => {
   return (
-    <div className="w-full bg-base-black h-15 border-b-1 border-base-white pl-1 pr-1 lg:pl-3 lg:pr-3 overflow-hidden lg:h-18">
+    <div className="w-full bg-base-black h-16 border-b border-base-white pl-1 pr-1 lg:pl-3 lg:pr-3 overflow-hidden lg:h-[4.6rem]">
       <div className="flex flex-row items-center justify-between h-full">
         <div className="flex flex-row items-center">
           {/* trigger */}
           <SidebarTrigger className="hover:bg-ui-700" />
           {/* separator */}
-          <div className="h-6 border-r-1 border-base-white mr-2 ml-4 lg:h-10" />
+          <div className="h-6 border-r border-base-white mr-2 ml-4 lg:h-10" />
           {/* online status  */}
           <h1 className="text-ui-600 text-sm">System Online</h1>
         </div>
