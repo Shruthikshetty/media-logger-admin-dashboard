@@ -1,5 +1,6 @@
 "use client";
 
+import { Film } from "lucide-react";
 import Link from "next/link";
 import {
   Sidebar,
@@ -21,18 +22,39 @@ function AppSideBar() {
   return (
     <Sidebar className="border-r-2 border-gray-500">
       <SidebarContent className="bg-base-black text-base-white">
-        <SidebarGroup>
+        {/* logo  */}
+        <SidebarGroup className="border-b border-base-white pb-4">
+          <div className="flex flex-row items-center gap-3">
+            <div>
+              <Film className="h-7 w-7 p-1 bg-gradient-to-r from-accent-indigo to-accent-purple rounded-sm" />
+            </div>
+            <div>
+              <h1 className="text-xl font-bold">Media Logger</h1>
+              <h2 className="text-sm font-light text-ui-600">
+                Admin Dashboard
+              </h2>
+            </div>
+          </div>
+        </SidebarGroup>
+        {/* navigation's */}
+        <SidebarGroup className="pt-0">
           <SidebarGroupLabel className="text-base-white">
             Main Navigation
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {NAVIGATION_ICONS.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
+                <SidebarMenuItem
+                  key={item.title}
+                  className="text-base-white p-0.5"
+                >
+                  <SidebarMenuButton
+                    asChild
+                    className="hover:bg-ui-700 hover:text-base-white"
+                  >
                     <Link href={item.href}>
                       <item.icon />
-                      <span>{item.title}</span>
+                      <span className="ml-1 text-lg">{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>

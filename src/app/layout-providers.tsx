@@ -17,9 +17,9 @@ const AppLayoutProviders = ({ children }: { children: React.ReactNode }) => {
     <QueryClientProvider client={queryClient}>
       <SidebarProvider>
         <AppSideBar />
-        <div className="grow flex-col ">
+        <div className="grow flex-col h-full w-full">
           <AppTopBar />
-          <main className="bg-base-black h-full">{children}</main>
+          <main className="bg-base-black h-full w-full overflow-y-auto">{children}</main>
         </div>
       </SidebarProvider>
     </QueryClientProvider>

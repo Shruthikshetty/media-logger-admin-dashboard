@@ -24,7 +24,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "~/components/ui/tooltip";
-import { AppColors } from "~/constants/colors.constants";
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state";
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
@@ -272,7 +271,8 @@ function SidebarTrigger({
       data-slot="sidebar-trigger"
       variant="ghost"
       size="icon"
-      className={cn("size-7", className)}
+      // Button box size + force inner SVG size
+      className={cn("size-8 [&>svg]:!h-6 [&>svg]:!w-6", className)}
       onClick={(event) => {
         onClick?.(event);
         toggleSidebar();
@@ -284,6 +284,7 @@ function SidebarTrigger({
     </Button>
   );
 }
+
 
 function SidebarRail({ className, ...props }: React.ComponentProps<"button">) {
   const { toggleSidebar } = useSidebar();
