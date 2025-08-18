@@ -20,6 +20,8 @@ import {
 import { useLoginUser } from '~/services/auth-service';
 import { useAuthStore } from '~/state-management/auth-store';
 import { toast } from 'sonner';
+import Cookies from 'js-cookie';
+import { CookieNames, TokenExpiry } from '~/constants/config.constants';
 
 /**
  * This component renders the login page.
@@ -50,7 +52,17 @@ const Login = () => {
       onSuccess: (data) => {
         // set the token
         setToken(data.data.token);
-        // set token in cookie @TODO
+        console.log(data.data.token);
+        // set token in cookie
+        Cookies.set(CookieNames.token, data.data.token, {
+          expires: TokenExpiry, // days
+          path: '/', // accessible across the app
+        });
+        toast.info('Login successful', {
+          classNames: {
+            toast: '!bg-feedback-success',
+          },
+        });
       },
       onError: (error) => {
         // show message a pop up
