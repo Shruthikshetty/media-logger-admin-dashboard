@@ -17,6 +17,9 @@ import {
   loginSchema,
   LoginSchema,
 } from '~/schema/login-schema';
+import { useLoginUser } from '~/services/auth-service';
+import { useAuthStore } from '~/state-management/auth-store';
+import { toast } from 'sonner';
 
 /**
  * This component renders the login page.
@@ -30,14 +33,34 @@ const Login = () => {
     defaultValues: loginDefaultValues,
   });
 
+  //get store data
+  const { setToken } = useAuthStore();
+
+  //import the mutation for auth login
+  const { mutate, error } = useLoginUser();
+
   //submit the form
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     //prevent default behavior
     e.preventDefault();
     //get the data from the from
     const data = loginForm.getValues();
-    //log the data
-    console.log(data);
+    //call the login api
+    mutate(data, {
+      onSuccess: (data) => {
+        // set the token
+        setToken(data.data.token);
+        // set token in cookie @TODO
+      },
+      onError: (error) => {
+        // show message a pop up
+        toast.error(error?.response?.data.message ?? 'Something went wrong', {
+          classNames: {
+            toast: '!bg-feedback-error',
+          },
+        });
+      },
+    });
   };
 
   return (
@@ -97,6 +120,9 @@ const Login = () => {
                 )}
               />
             </div>
+            {error?.response?.data?.message && (
+              <p className="text-feedback-error text-center mt-3">{error?.response?.data?.message}</p>
+            )}
             <Button
               type="submit"
               disabled={!loginForm.formState.isValid}
