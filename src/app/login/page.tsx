@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '~/components/ui/button';
@@ -22,6 +22,7 @@ import { useAuthStore } from '~/state-management/auth-store';
 import { toast } from 'sonner';
 import Cookies from 'js-cookie';
 import { CookieNames, TokenExpiry } from '~/constants/config.constants';
+import { useRouter } from 'next/navigation';
 
 /**
  * This component renders the login page.
@@ -35,11 +36,21 @@ const Login = () => {
     defaultValues: loginDefaultValues,
   });
 
+  const route = useRouter();
+
   //get store data
   const { setToken } = useAuthStore();
 
   //import the mutation for auth login
   const { mutate, error } = useLoginUser();
+
+  //check for token to auto login
+  useEffect(() => {
+    const token = Cookies.get(CookieNames.token);
+    if (token) {
+      setToken(token);
+    }
+  }, [setToken]);
 
   //submit the form
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {

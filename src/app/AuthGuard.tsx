@@ -5,25 +5,27 @@ import React, { useEffect } from 'react';
 import AppSideBar from '~/components/app-sidebar';
 import AppTopBar from '~/components/app-top-bar';
 import { SidebarProvider } from '~/components/ui/sidebar';
+import { useAuthStore } from '~/state-management/auth-store';
 
 // This component is used to protect routes that require authentication
 // in case the user is not logged in all navigation will be redirected to the login page
 const AuthGuard = ({ children }: { children: React.ReactNode }) => {
-  const isLoggedIn = false;
   const router = useRouter();
   const pathname = usePathname();
+  //get check if the user is logged in
+  const token = useAuthStore((state) => state.token);
 
   // if the user is not logged in redirect to the login page
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (!token) {
       router.replace('/login');
     } else if (pathname === '/login') {
       router.replace('/');
     }
-  }, [isLoggedIn, router, pathname]);
+  }, [token, router, pathname]);
 
   // if the user is not logged in return the login page
-  if (!isLoggedIn) {
+  if (!token) {
     return children;
   }
 
