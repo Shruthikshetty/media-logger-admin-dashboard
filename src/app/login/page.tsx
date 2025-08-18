@@ -109,8 +109,9 @@ const Login = () => {
                     <FormControl>
                       <Input
                         {...field}
-                        type="text"
+                        type="password"
                         id="password"
+                        autoComplete="current-password"
                         placeholder="**********"
                         className="border-ui-600 w-full"
                       />
@@ -121,7 +122,9 @@ const Login = () => {
               />
             </div>
             {error?.response?.data?.message && (
-              <p className="text-feedback-error text-center mt-3">{error?.response?.data?.message}</p>
+              <p className="text-feedback-error mt-3 text-center">
+                {error?.response?.data?.message}
+              </p>
             )}
             <Button
               type="submit"
