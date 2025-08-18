@@ -22,7 +22,6 @@ import { useAuthStore } from '~/state-management/auth-store';
 import { toast } from 'sonner';
 import Cookies from 'js-cookie';
 import { CookieNames, TokenExpiry } from '~/constants/config.constants';
-import { useRouter } from 'next/navigation';
 
 /**
  * This component renders the login page.
@@ -35,8 +34,6 @@ const Login = () => {
     resolver: zodResolver(loginSchema),
     defaultValues: loginDefaultValues,
   });
-
-  const route = useRouter();
 
   //get store data
   const { setToken } = useAuthStore();
