@@ -53,8 +53,8 @@ export const useSpinnerStore = create<spinnerStore>((set) => ({
   }) =>
     set((prev) => ({
       ...prev,
-      showSpinner: showSpinner,
-      spinnerOptions: { ...prev.spinnerOptions, ...options },
+      showSpinner: showSpinner ?? prev.showSpinner,
+      spinnerOptions: { ...prev.spinnerOptions, ...(options ?? {}) },
     })),
 
   /**

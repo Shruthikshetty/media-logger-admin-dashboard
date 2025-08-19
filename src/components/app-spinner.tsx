@@ -55,12 +55,12 @@ export function DotRingSpinner({
       aria-live="polite"
       aria-busy="true"
       aria-label={label}
-      className={`relative ${className}`}
+      className={cn('relative', 'animate-spin', className)}
       style={{
         width: containerSize,
         height: containerSize,
-        // rotate the whole ring
-        animation: `dot-ring-spin ${durationMs}ms linear infinite`,
+        // rotate the whole ring using tailwind's spin keyframes; control speed here
+        animationDuration: `${durationMs}ms`,
       }}
     >
       {items.map((_, i) => {
@@ -84,14 +84,6 @@ export function DotRingSpinner({
       })}
       {/* screen reader only  */}
       <span className="sr-only">{label}…</span>
-      {/* keyframe for ring animation */}
-      <style jsx>{`
-        @keyframes dot-ring-spin {
-          to {
-            transform: rotate(360deg);
-          }
-        }
-      `}</style>
     </div>
   );
 }
@@ -103,11 +95,11 @@ export function SpinnerOverlay() {
   return (
     <div
       className={cn(
-        'bg-ui-700 absolute inset-0 z-50 flex h-screen w-screen items-center justify-center',
+        'bg-ui-700 fixed inset-0 z-50 flex h-screen w-screen items-center justify-center',
         ` opacity-${spinnerOptions.opacity}`,
       )}
     >
-      {spinnerOptions.type === 'normal' ? <DotRingSpinner /> : <Spinner />}
+      {spinnerOptions.type === 'dot' ? <DotRingSpinner /> : <Spinner />}
     </div>
   );
 }

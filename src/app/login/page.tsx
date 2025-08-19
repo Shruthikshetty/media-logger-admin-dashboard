@@ -10,6 +10,7 @@ import {
   FormItem,
   FormMessage,
 } from '~/components/ui/form';
+import { useRouter } from 'next/navigation';
 import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
 import {
@@ -35,6 +36,8 @@ const Login = () => {
     defaultValues: loginDefaultValues,
   });
 
+  const route = useRouter();
+
   //get store data
   const { setToken } = useAuthStore();
 
@@ -42,17 +45,12 @@ const Login = () => {
   const { mutate, error } = useLoginUser();
 
   //submit the form
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    //prevent default behavior
-    e.preventDefault();
-    //get the data from the from
-    const data = loginForm.getValues();
+  const onSubmit = (data: LoginSchema) => {
     //call the login api
     mutate(data, {
       onSuccess: (data) => {
         // set the token
         setToken(data.data.token);
-        console.log(data.data.token);
         // set token in cookie
         Cookies.set(CookieNames.token, data.data.token, {
           expires: TokenExpiry, // days
@@ -63,6 +61,7 @@ const Login = () => {
             toast: '!bg-feedback-success',
           },
         });
+        route.replace('/');
       },
       onError: (error) => {
         // show message a pop up
@@ -87,7 +86,7 @@ const Login = () => {
           </div>
         </div>
         <Form {...loginForm}>
-          <form className="w-full" onSubmit={onSubmit}>
+          <form className="w-full" onSubmit={loginForm.handleSubmit(onSubmit)}>
             <div className="flex flex-col gap-2">
               <FormField<LoginSchema>
                 name="email"
