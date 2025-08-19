@@ -1,4 +1,6 @@
+'use client';
 import { Film, Gamepad2, Tv, Users } from 'lucide-react';
+import DashboardCharts from '~/components/dashboard-charts';
 import ManageCard from '~/components/manage-card';
 import StatCard from '~/components/stat-card';
 import TitleSubtitle from '~/components/title-subtitle';
@@ -54,6 +56,7 @@ export default function Home() {
         })}
       </div>
       {/* charts  */}
+      <DashboardCharts />
       {/* navigation cards */}
       <div className="grid grid-cols-1 gap-2 sm:grid-cols-3 sm:gap-4">
         {MANAGE_CARDS_DASHBOARD.map((card, index) => (
