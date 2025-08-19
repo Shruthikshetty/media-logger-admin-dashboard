@@ -39,7 +39,8 @@ const AuthGuard = ({ children }: { children: React.ReactNode }) => {
 
   // if the user is not logged in return the login page
   if (!token) {
-    return children;
+    if (pathname === '/login') return children;
+    return null;
   }
 
   // if the user is logged in return the sidebar with the tabs

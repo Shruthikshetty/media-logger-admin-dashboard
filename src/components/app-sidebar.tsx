@@ -38,7 +38,7 @@ function AppSideBar() {
         </SidebarGroup>
         {/* navigation's */}
         <SidebarGroup className="pt-1">
-          <SidebarGroupLabel className="text-base-white text-md ml-1 opacity-80">
+          <SidebarGroupLabel className="text-base-white text-base ml-1 opacity-80">
             Main Navigation
           </SidebarGroupLabel>
           <SidebarGroupContent className="p-2">
