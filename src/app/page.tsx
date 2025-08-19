@@ -1,3 +1,5 @@
+import { Film } from 'lucide-react';
+import StatCard from '~/components/stat-card';
 import TitleSubtitle from '~/components/title-subtitle';
 
 /**
@@ -6,11 +8,12 @@ import TitleSubtitle from '~/components/title-subtitle';
  */
 export default function Home() {
   return (
-    <div className='p-5'>
+    <div className="p-5">
       <TitleSubtitle
         title="Media Management Dashboard"
         subtitle="manage your media library efficiently"
       />
+      <StatCard title={'Total movies'} value={100} change={8} Icon={Film} />
     </div>
   );
 }

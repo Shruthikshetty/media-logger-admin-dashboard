@@ -5,9 +5,9 @@ type TitleSubtitleProps = {
   title?: string;
   subtitle?: string;
   customStyles?: {
-    root?: React.CSSProperties;
-    title?: React.CSSProperties;
-    subtitle?: React.CSSProperties;
+    root?: string;
+    title?: string;
+    subtitle?:string;
   };
 };
 
