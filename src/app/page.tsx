@@ -1,6 +1,8 @@
-import { Film, Gamepad2, Icon, Tv, Users } from 'lucide-react';
+import { Film, Gamepad2, Tv, Users } from 'lucide-react';
+import ManageCard from '~/components/manage-card';
 import StatCard from '~/components/stat-card';
 import TitleSubtitle from '~/components/title-subtitle';
+import { MANAGE_CARDS_DASHBOARD } from '~/constants/screen.constants';
 
 /**
  * This is the default tab that opens up when the app is opened
@@ -45,11 +47,25 @@ export default function Home() {
         title="Media Management Dashboard"
         subtitle="Manage your media library efficiently"
       />
-
+      {/* total media count cards */}
       <div className="grid grid-cols-1 gap-2 sm:grid-cols-4 sm:gap-4">
         {totalMediaStat.map((stat, index) => {
           return <StatCard key={index} {...stat} />;
         })}
+      </div>
+      {/* charts  */}
+      {/* navigation cards */}
+      <div className="grid grid-cols-1 gap-2 sm:grid-cols-3 sm:gap-4">
+        {MANAGE_CARDS_DASHBOARD.map((card, index) => (
+          <ManageCard
+            key={index}
+            title={card.title}
+            description={card.description}
+            Icon={card.Icon}
+            iconClassName={card.style}
+            href={card.href}
+          />
+        ))}
       </div>
     </div>
   );
