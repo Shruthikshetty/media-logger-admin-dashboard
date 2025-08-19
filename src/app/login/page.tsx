@@ -76,7 +76,7 @@ const Login = () => {
 
   return (
     <div className="flex h-screen items-center justify-center">
-      <div className="border-ui-600 flex max-w-[550px] flex-col items-center justify-center rounded-lg border p-5 sm:w-[90%] md:w-[50%]">
+      <div className="border-ui-600 flex max-w-[550px] flex-col items-center justify-center rounded-lg border p-5 md:w-[60%]">
         <div className="mb-5 flex flex-col items-center">
           <div className="text-base-white pt-3 pb-1 text-center text-3xl font-bold">
             Media Logger Admin
