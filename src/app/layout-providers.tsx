@@ -2,9 +2,9 @@
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
-import AppSideBar from '~/components/app-sidebar';
-import AppTopBar from '~/components/app-top-bar';
-import { SidebarProvider } from '~/components/ui/sidebar';
+import AuthGuard from './AuthGuard';
+import { Toaster } from 'sonner';
+import { SpinnerOverlay } from '~/components/app-spinner';
 
 /**
  * This component contains all the providers for the app
@@ -15,15 +15,17 @@ const AppLayoutProviders = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <SidebarProvider>
-        <AppSideBar />
-        <div className="h-full w-full grow flex-col">
-          <AppTopBar />
-          <main className="bg-base-black h-full w-full overflow-y-auto">
-            {children}
-          </main>
-        </div>
-      </SidebarProvider>
+      <AuthGuard>{children}</AuthGuard>
+      <Toaster
+        theme="dark"
+        toastOptions={{
+          classNames: {
+            toast: '!h-15',
+            title: '!text-sm',
+          },
+        }}
+      />
+      <SpinnerOverlay />
     </QueryClientProvider>
   );
 };
