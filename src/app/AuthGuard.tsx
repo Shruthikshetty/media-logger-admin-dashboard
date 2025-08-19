@@ -1,7 +1,7 @@
 'use client';
 
 import { usePathname, useRouter } from 'next/navigation';
-import React, { use, useEffect, useLayoutEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
 import Cookies from 'js-cookie';
 import AppSideBar from '~/components/app-sidebar';
 import AppTopBar from '~/components/app-top-bar';
@@ -25,7 +25,7 @@ const AuthGuard = ({ children }: { children: React.ReactNode }) => {
     const cookieToken = Cookies.get(CookieNames.token);
     // check for token in cookies
     if (!cookieToken) {
-      router.replace('/login')
+      router.replace('/login');
     } else if (pathname === '/login') {
       setToken(cookieToken);
       router.replace('/');

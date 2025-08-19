@@ -23,7 +23,7 @@ function AppSideBar() {
     <Sidebar className="border-r-2 border-gray-500">
       <SidebarContent className="bg-base-black text-base-white">
         {/* logo  */}
-        <SidebarGroup className="border-base-white border-b pb-4 pl-5 pt-3">
+        <SidebarGroup className="border-base-white border-b pt-3 pb-4 pl-5">
           <div className="flex flex-row items-center gap-3">
             <div>
               <Film className="from-accent-indigo to-accent-purple h-7 w-7 rounded-sm bg-gradient-to-r p-1" />
@@ -38,7 +38,7 @@ function AppSideBar() {
         </SidebarGroup>
         {/* navigation's */}
         <SidebarGroup className="pt-1">
-          <SidebarGroupLabel className="text-base-white opacity-80 text-md ml-1">
+          <SidebarGroupLabel className="text-base-white text-md ml-1 opacity-80">
             Main Navigation
           </SidebarGroupLabel>
           <SidebarGroupContent className="p-2">

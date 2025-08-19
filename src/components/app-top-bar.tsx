@@ -16,7 +16,7 @@ const AppTopBar = (): JSX.Element => {
           {/* trigger */}
           <SidebarTrigger className="hover:bg-ui-700" />
           {/* separator */}
-          <div className="border-base-white mr-4 ml-5 h-6 border-r lg:h-8 opacity-50" />
+          <div className="border-base-white mr-4 ml-5 h-6 border-r opacity-50 lg:h-8" />
           {/* online status  */}
           <div className="flex flex-row items-center gap-2">
             <div className="bg-feedback-success-light h-3 w-3 animate-pulse rounded-full" />
