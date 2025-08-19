@@ -3,6 +3,7 @@ import React, { JSX } from 'react';
 import { AppColors } from '~/constants/colors.constants';
 import { cn } from '~/lib/utils';
 import { useSpinnerStore } from '~/state-management/spinner-store';
+import ClientOnly from './client-only-provider';
 
 /**
  * A loading spinner component.
@@ -93,11 +94,15 @@ export function SpinnerOverlay() {
   const { showSpinner, spinnerOptions } = useSpinnerStore();
   if (!showSpinner) return null;
   return (
-    <div
-      className="bg-ui-700 fixed inset-0 z-50 flex h-screen w-screen items-center justify-center"
-      style={{ opacity: (spinnerOptions.opacity ?? 50) / 100 }}
-    >
-      {spinnerOptions.type === 'dot' ? <DotRingSpinner /> : <Spinner />}
-    </div>
+    <ClientOnly>
+      <div
+        className={cn(
+          'bg-ui-700 fixed inset-0 z-50 flex h-screen w-screen items-center justify-center',
+          `opacity-${spinnerOptions.opacity}`,
+        )}
+      >
+        {spinnerOptions.type === 'dot' ? <DotRingSpinner /> : <Spinner />}
+      </div>
+    </ClientOnly>
   );
 }
