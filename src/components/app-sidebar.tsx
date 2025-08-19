@@ -2,6 +2,8 @@
 
 import { Film } from 'lucide-react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useMemo } from 'react';
 import {
   Sidebar,
   SidebarContent,
@@ -13,12 +15,24 @@ import {
   SidebarMenuItem,
 } from '~/components/ui/sidebar';
 import { NAVIGATION_ICONS } from '~/constants/screen.constants';
+import { cn } from '~/lib/utils';
 
 /**
  * this component is the sidebar for the app
  * @returns {JSX.Element}
  */
 function AppSideBar() {
+  const pathName = usePathname();
+
+  // get the current selected tab
+  const currentTab = useMemo(() => {
+    return (
+      NAVIGATION_ICONS.find(
+        (item) => item.href.replace('/', '') == pathName.split('/')[1],
+      )?.title ?? NAVIGATION_ICONS[0].title
+    );
+  }, [pathName]);
+
   return (
     <Sidebar className="border-r-2 border-gray-500">
       <SidebarContent className="bg-base-black text-base-white">
@@ -26,7 +40,7 @@ function AppSideBar() {
         <SidebarGroup className="border-base-white border-b pt-3 pb-4 pl-5">
           <div className="flex flex-row items-center gap-3">
             <div>
-              <Film className="from-accent-indigo to-accent-purple h-7 w-7 rounded-sm bg-gradient-to-r p-1" />
+              <Film className="to-accent-purple h-8 w-9 rounded-md bg-gradient-to-r from-blue-600 p-1" />
             </div>
             <div>
               <h1 className="text-xl font-bold">Media Logger</h1>
@@ -46,11 +60,19 @@ function AppSideBar() {
               {NAVIGATION_ICONS.map((item) => (
                 <SidebarMenuItem
                   key={item.title}
-                  className="text-base-white p-0.5"
+                  className={cn(
+                    'text-base-white p-0.5',
+                    currentTab === item.title
+                      ? 'bg-brand-500 text-base-black rounded-md'
+                      : '',
+                  )}
                 >
                   <SidebarMenuButton
                     asChild
-                    className="hover:bg-ui-700 hover:text-base-white"
+                    className={cn(
+                      'hover:bg-ui-700 hover:text-base-white active:bg-brand-200',
+                      currentTab === item.title ? 'hover:bg-brand-200' : '',
+                    )}
                   >
                     <Link href={item.href}>
                       <item.icon />
