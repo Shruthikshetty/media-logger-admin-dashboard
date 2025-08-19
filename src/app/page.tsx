@@ -13,7 +13,13 @@ export default function Home() {
         title="Media Management Dashboard"
         subtitle="manage your media library efficiently"
       />
-      <StatCard title={'Total movies'} value={100} change={8} Icon={Film} />
+      <StatCard
+        title={'Total movies'}
+        value={100}
+        change={8}
+        Icon={Film}
+        iconClassName="text-blue-500"
+      />
     </div>
   );
 }

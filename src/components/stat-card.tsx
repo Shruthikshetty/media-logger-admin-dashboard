@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { LucideIcon } from 'lucide-react';
+import { LucideIcon, TrendingUp } from 'lucide-react';
 import { cn } from '~/lib/utils';
 
 type StatCardProps = {
@@ -57,7 +57,11 @@ const StatCard = ({
       {/* stats */}
       <CardContent>
         <p className="text-2xl font-bold">{value}</p>
-        <p className="text-ui-400 text-sm">{change} from last month</p>
+        <div className='flex flex-row items-center gap-2'>
+          {/* @TODO implement logic to show increase or decrease */}
+          <TrendingUp className='h-4 w-4 text-feedback-success'/>
+          <p className="text-ui-400 text-sm">+{change} from last month</p>
+        </div>
       </CardContent>
     </Card>
   );
