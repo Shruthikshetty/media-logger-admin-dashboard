@@ -41,14 +41,6 @@ const Login = () => {
   //import the mutation for auth login
   const { mutate, error } = useLoginUser();
 
-  //check for token to auto login
-  useEffect(() => {
-    const token = Cookies.get(CookieNames.token);
-    if (token) {
-      setToken(token);
-    }
-  }, [setToken]);
-
   //submit the form
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     //prevent default behavior

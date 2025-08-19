@@ -1,13 +1,15 @@
 'use client';
 import React, { JSX } from 'react';
 import { AppColors } from '~/constants/colors.constants';
+import { cn } from '~/lib/utils';
+import { useSpinnerStore } from '~/state-management/spinner-store';
 
 /**
  * A loading spinner component.
  *
  * @return {JSX.Element} A spinner element with specified size, color, and animation.
  */
-const Spinner = () => {
+export const Spinner = () => {
   return (
     <div className="h-15 w-15 animate-spin rounded-full border-6 border-white/30 border-t-white md:h-18 md:w-18" />
   );
@@ -94,4 +96,18 @@ export function DotRingSpinner({
   );
 }
 
-export default Spinner;
+export function SpinnerOverlay() {
+  //get the spinner state from the store
+  const { showSpinner, spinnerOptions } = useSpinnerStore();
+  if (!showSpinner) return null;
+  return (
+    <div
+      className={cn(
+        'bg-ui-700 absolute inset-0 z-50 flex h-screen w-screen items-center justify-center',
+        ` opacity-${spinnerOptions.opacity}`,
+      )}
+    >
+      {spinnerOptions.type === 'normal' ? <DotRingSpinner /> : <Spinner />}
+    </div>
+  );
+}
