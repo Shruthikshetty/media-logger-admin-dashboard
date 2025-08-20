@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from './ui/card';
-import { Film, LucideIcon } from 'lucide-react';
+import { LucideIcon } from 'lucide-react';
 import { cn } from '~/lib/utils';
 import Link from 'next/link';
 
@@ -28,7 +28,7 @@ function ManageCard({
   href,
 }: ManageCardProps) {
   return (
-    <Link href={href ?? "/"} className='active:opacity-50'>
+    <Link href={href ?? '/'} className="active:opacity-50">
       <Card
         className={cn(
           'bg-ui-600 from-base-black to-ui-900 border-ui-600 text-base-white gap-0.5 border bg-gradient-to-r',
