@@ -20,6 +20,8 @@ export const AppColors = {
     100: '#f3f4f6', // Light gray for subtle backgrounds/hovers
     200: '#e5e7eb', // Light theme borders and dark theme secondary text
     300: '#d1d5db', // Muted text in dark mode
+    400: '#9ca3af', // Missing color
+    500: '#6c7ea3', // Missing color
     600: '#4b5563', // Muted text in light mode and dark theme borders
     700: '#374151', // Dark theme secondary background
     800: '#1f2937', // Dark theme card backgrounds

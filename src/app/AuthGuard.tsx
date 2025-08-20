@@ -32,7 +32,6 @@ const AuthGuard = ({ children }: { children: React.ReactNode }) => {
     } else {
       setToken(cookieToken);
     }
-    setTimeout(() => {}, 5000);
     // set loading false
     resetSpinner();
   }, [router, pathname, resetSpinner, setToken]);
