@@ -57,9 +57,9 @@ const StatCard = ({
       {/* stats */}
       <CardContent>
         <p className="text-2xl font-bold">{value}</p>
-        <div className='flex flex-row items-center gap-2'>
+        <div className="flex flex-row items-center gap-2">
           {/* @TODO implement logic to show increase or decrease */}
-          <TrendingUp className='h-4 w-4 text-feedback-success'/>
+          <TrendingUp className="text-feedback-success h-4 w-4" />
           <p className="text-ui-400 text-sm">+{change} from last month</p>
         </div>
       </CardContent>

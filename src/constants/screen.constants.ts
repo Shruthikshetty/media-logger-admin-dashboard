@@ -39,5 +39,5 @@ export const MANAGE_CARDS_DASHBOARD = [
     Icon: Gamepad2,
     style: 'text-green-500',
     href: '/games',
-  }
+  },
 ];
