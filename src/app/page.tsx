@@ -15,8 +15,8 @@ export default function Home() {
   //fetch dashboard analytics data
   const { data } = useDashboardAnalyticsData();
   const analyticsData = data?.data;
-
-  //@TODO implement logic to fetch media stats from api
+  
+  //data to display stats cards
   const totalMediaStat = [
     {
       title: 'Total movies',

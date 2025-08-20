@@ -37,11 +37,24 @@ const DashboardCharts = ({
     { day: 'Sat', movies: 35, tvShows: 22, games: 30 },
     { day: 'Sun', movies: 25, tvShows: 16, games: 22 },
   ];
-  //todo get the data from api
+  
+  //data to display pie chart
   const mediaDistribution = [
-    { name: 'Movies', value: 1247, color: AppColors.brand[500] },
-    { name: 'TV Shows', value: 583, color: AppColors.accent.purple },
-    { name: 'Games', value: 892, color: AppColors.feedback.successLight },
+    {
+      name: 'Movies',
+      value: analyticsData?.totalMovies || 0,
+      color: AppColors.brand[500],
+    },
+    {
+      name: 'TV Shows',
+      value: analyticsData?.totalTvShows || 0,
+      color: AppColors.accent.purple,
+    },
+    {
+      name: 'Games',
+      value: analyticsData?.totalGames || 0,
+      color: AppColors.feedback.successLight,
+    },
   ];
   console.log(analyticsData);
   return (
