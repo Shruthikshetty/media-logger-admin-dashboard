@@ -5,39 +5,56 @@ import ManageCard from '~/components/manage-card';
 import StatCard from '~/components/stat-card';
 import TitleSubtitle from '~/components/title-subtitle';
 import { MANAGE_CARDS_DASHBOARD } from '~/constants/screen.constants';
+import { useDashboardAnalyticsData } from '~/services/analytics-service';
 
 /**
  * This is the default tab that opens up when the app is opened
  * This is the dashboard containing all media concise information
  */
 export default function Home() {
+  //fetch dashboard analytics data
+  const { data } = useDashboardAnalyticsData();
+  const analyticsData = data?.data;
+
   //@TODO implement logic to fetch media stats from api
   const totalMediaStat = [
     {
       title: 'Total movies',
-      value: 1247,
-      change: 8,
+      value: analyticsData?.totalMovies,
+      changePercent:
+        analyticsData?.percentageChangeFromLastMonth?.movies.percentage,
+      changeDirection:
+        analyticsData?.percentageChangeFromLastMonth?.movies.change,
       Icon: Film,
       iconClassName: 'text-blue-500',
     },
     {
       title: 'Total TV Shows',
-      value: 583,
-      change: 5,
+      value: analyticsData?.totalTvShows,
+      changePercent:
+        analyticsData?.percentageChangeFromLastMonth?.tvShows.percentage,
+      changeDirection:
+        analyticsData?.percentageChangeFromLastMonth?.tvShows.change,
       Icon: Tv,
       iconClassName: 'text-purple-500',
     },
     {
       title: 'Total Games',
-      value: 892,
-      change: 3,
+      value: analyticsData?.totalGames,
+      changePercent:
+        analyticsData?.percentageChangeFromLastMonth?.games.percentage,
+      changeDirection:
+        analyticsData?.percentageChangeFromLastMonth?.games.change,
       Icon: Gamepad2,
       iconClassName: 'text-green-500',
     },
     {
       title: 'Total Users',
-      value: 2847,
-      change: 3,
+      value: analyticsData?.totalUsers,
+      changePercent:
+        analyticsData?.percentageChangeFromLastMonth?.users.percentage,
+      changeDirection:
+        analyticsData?.percentageChangeFromLastMonth?.users.change,
       Icon: Users,
       iconClassName: 'text-orange-500',
     },

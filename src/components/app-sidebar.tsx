@@ -34,10 +34,10 @@ function AppSideBar() {
   }, [pathName]);
 
   return (
-    <Sidebar className="border-r-2 border-gray-500">
+    <Sidebar className="border-r-2 border-ui-600">
       <SidebarContent className="bg-base-black text-base-white">
         {/* logo  */}
-        <SidebarGroup className="border-base-white border-b pt-3 pb-4 pl-5">
+        <SidebarGroup className="border-ui-600 border-b pt-3 pb-4 pl-5">
           <div className="flex flex-row items-center gap-3">
             <div>
               <Film className="to-accent-purple h-8 w-9 rounded-md bg-gradient-to-r from-blue-600 p-1" />
