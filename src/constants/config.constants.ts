@@ -2,8 +2,8 @@
  * This file contains configurations constants
  */
 
-import { ChartConfig } from "~/components/ui/chart";
-import { AppColors } from "./colors.constants";
+import type { ChartConfig } from '~/components/ui/chart';
+import { AppColors } from './colors.constants';
 
 export const CookieNames = {
   token: 'token',

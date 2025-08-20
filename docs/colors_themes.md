@@ -24,8 +24,8 @@
 | UI 100 | `#f3f4f6` | <span style="background-color:#f3f4f6; padding:0.5em 1em; border:1px solid #ccc;"> </span> |
 | UI 200 | `#e5e7eb` | <span style="background-color:#e5e7eb; padding:0.5em 1em; border:1px solid #ccc;"> </span> |
 | UI 300 | `#d1d5db` | <span style="background-color:#d1d5db; padding:0.5em 1em; border:1px solid #ccc;"> </span> |
-| UI 400 | `#9ca3af` | <span style="background-color:#64748b; padding:0.5em 1em; border:1px solid #ccc;"> </span> |
-| UI 500 | `#6c7ea3` | <span style="background-color:#64748b; padding:0.5em 1em; border:1px solid #ccc;"> </span> |
+| UI 400 | `#9ca3af` | <span style="background-color:#9ca3af; padding:0.5em 1em; border:1px solid #ccc;"> </span> |
+| UI 500 | `#6c7ea3` | <span style="background-color:#6c7ea3; padding:0.5em 1em; border:1px solid #ccc;"> </span> |
 | UI 600 | `#4b5563` | <span style="background-color:#4b5563; padding:0.5em 1em; border:1px solid #ccc;"> </span> |
 | UI 700 | `#374151` | <span style="background-color:#374151; padding:0.5em 1em; border:1px solid #ccc;"> </span> |
 | UI 800 | `#1f2937` | <span style="background-color:#1f2937; padding:0.5em 1em; border:1px solid #ccc;"> </span> |

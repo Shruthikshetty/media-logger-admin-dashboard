@@ -68,13 +68,13 @@ const DashboardCharts = () => {
               tickMargin={10}
               tick={true}
             />
-            <Bar dataKey={'movies'} fill="var(--color-movies" radius={4}></Bar>
+            <Bar dataKey={'movies'} fill="var(--color-movies)" radius={4} />
             <Bar
               dataKey={'tvShows'}
               fill="var(--color-tvShows)"
               radius={4}
             ></Bar>
-            <Bar dataKey={'games'} fill="var(--color-games)" radius={4}></Bar>
+            <Bar dataKey={'games'} fill="var(--color-games)" radius={4} />
             <ChartLegend />
           </BarChart>
         </ChartContainer>
