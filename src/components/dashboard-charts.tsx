@@ -17,7 +17,10 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '~/components/ui/chart';
-import { weeklyAdditionsConfig } from '~/constants/config.constants';
+import {
+  PieChartMediaDistributionConfig,
+  WeeklyAdditionsConfig,
+} from '~/constants/config.constants';
 import { Card } from './ui/card';
 import { AppColors } from '~/constants/colors.constants';
 import { AnalyticsData } from '~/services/analytics-service';
@@ -37,26 +40,26 @@ const DashboardCharts = ({
     { day: 'Sat', movies: 35, tvShows: 22, games: 30 },
     { day: 'Sun', movies: 25, tvShows: 16, games: 22 },
   ];
-  
+
   //data to display pie chart
   const mediaDistribution = [
     {
       name: 'Movies',
       value: analyticsData?.totalMovies || 0,
-      color: AppColors.brand[500],
+      fill: 'var(--color-movies)',
     },
     {
       name: 'TV Shows',
       value: analyticsData?.totalTvShows || 0,
-      color: AppColors.accent.purple,
+      fill: 'var(--color-tvShows)',
     },
     {
       name: 'Games',
       value: analyticsData?.totalGames || 0,
-      color: AppColors.feedback.successLight,
+      fill: 'var(--color-games)',
     },
   ];
-  console.log(analyticsData);
+
   return (
     <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-4">
       {!analyticsData ? (
@@ -69,7 +72,7 @@ const DashboardCharts = ({
           {/* Bar chart */}
           <Card className="bg-ui-600 from-base-black to-ui-900 border-ui-600 text-base-white gap-0.5 border bg-gradient-to-r">
             <ChartContainer
-              config={weeklyAdditionsConfig}
+              config={WeeklyAdditionsConfig}
               className="min-h-[200px] w-full"
             >
               <BarChart data={weeklyAdditions}>
@@ -111,25 +114,23 @@ const DashboardCharts = ({
 
           {/* Pie chart */}
           <Card className="bg-ui-600 from-base-black to-ui-900 border-ui-600 text-base-white gap-0.5 border bg-gradient-to-r">
-            <ChartContainer config={{}} className="min-h-[200px] w-full">
+            <ChartContainer
+              config={PieChartMediaDistributionConfig}
+              className="min-h-[200px] w-full"
+            >
               <PieChart>
-                {/* @TODO get a way to dynamically change the size of pi chart */}
                 <Pie
                   data={mediaDistribution}
-                  cx="50%"
-                  cy="50%"
                   innerRadius={60}
-                  outerRadius={120}
                   paddingAngle={5}
                   dataKey="value"
-                >
-                  {mediaDistribution.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
+                ></Pie>
                 <ChartTooltip
                   content={
-                    <ChartTooltipContent className="bg-ui-800 text-base-white gap-2 p-2" />
+                    <ChartTooltipContent
+                      className="bg-ui-800 text-base-white gap-2 p-2"
+                      hideLabel
+                    />
                   }
                 />
                 <ChartLegend />
