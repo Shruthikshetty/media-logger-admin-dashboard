@@ -9,7 +9,7 @@ import { ApiError } from '~/types/global.types';
 
 type ChangeData = {
   percentage: number;
-  change: string;
+  change: 'up' | 'down';
 };
 
 type SingleDayData = {
@@ -27,7 +27,7 @@ type PercentageChangeFromLastMonth = {
   games: ChangeData;
 };
 
-type AnalyticsData = {
+export type AnalyticsData = {
   totalUsers: number;
   totalGames: number;
   totalMovies: number;

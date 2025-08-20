@@ -73,7 +73,7 @@ export default function Home() {
         })}
       </div>
       {/* charts  */}
-      <DashboardCharts />
+      <DashboardCharts analyticsData={analyticsData} />
       {/* navigation cards */}
       <div className="grid grid-cols-1 gap-2 sm:grid-cols-3 sm:gap-4">
         {MANAGE_CARDS_DASHBOARD.map((card, index) => (

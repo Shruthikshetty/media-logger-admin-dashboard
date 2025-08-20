@@ -20,7 +20,13 @@ import {
 import { weeklyAdditionsConfig } from '~/constants/config.constants';
 import { Card } from './ui/card';
 import { AppColors } from '~/constants/colors.constants';
-const DashboardCharts = () => {
+import { AnalyticsData } from '~/services/analytics-service';
+import { Skeleton } from './ui/skeleton';
+const DashboardCharts = ({
+  analyticsData,
+}: {
+  analyticsData?: AnalyticsData;
+}) => {
   //todo get the data from api
   const weeklyAdditions = [
     { day: 'Mon', movies: 12, tvShows: 8, games: 15 },
@@ -37,77 +43,91 @@ const DashboardCharts = () => {
     { name: 'TV Shows', value: 583, color: AppColors.accent.purple },
     { name: 'Games', value: 892, color: AppColors.feedback.successLight },
   ];
-
+  console.log(analyticsData);
   return (
     <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-4">
-      {/* Bar chart */}
-      <Card className="bg-ui-600 from-base-black to-ui-900 border-ui-600 text-base-white gap-0.5 border bg-gradient-to-r">
-        <ChartContainer
-          config={weeklyAdditionsConfig}
-          className="min-h-[200px] w-full"
-        >
-          <BarChart data={weeklyAdditions}>
-            <CartesianGrid strokeDasharray="3 3" stroke={AppColors.ui[700]} />
-            <ChartTooltip
-              content={
-                <ChartTooltipContent className="bg-ui-800 text-base-white gap-2 p-2" />
-              }
-            />
-            <YAxis
-              tickMargin={10}
-              tick={true}
-              tickSize={5}
-              tickLine={true}
-              stroke={AppColors.ui[200]}
-            />
-            <XAxis
-              stroke={AppColors.ui[200]}
-              dataKey={'day'}
-              tickLine={true}
-              tickSize={5}
-              tickMargin={10}
-              tick={true}
-            />
-            <Bar dataKey={'movies'} fill="var(--color-movies)" radius={4} />
-            <Bar
-              dataKey={'tvShows'}
-              fill="var(--color-tvShows)"
-              radius={4}
-            ></Bar>
-            <Bar dataKey={'games'} fill="var(--color-games)" radius={4} />
-            <ChartLegend />
-          </BarChart>
-        </ChartContainer>
-      </Card>
-      {/* Pie chart */}
-      <Card className="bg-ui-600 from-base-black to-ui-900 border-ui-600 text-base-white gap-0.5 border bg-gradient-to-r">
-        <ChartContainer config={{}} className="min-h-[200px] w-full">
-          <PieChart>
-            {/* @TODO get a way to dynamically change the size of pi chart */}
-            <Pie
-              data={mediaDistribution}
-              cx="50%"
-              cy="50%"
-              innerRadius={60}
-              outerRadius={120}
-              paddingAngle={5}
-              dataKey="value"
+      {!analyticsData ? (
+        <>
+          <Skeleton className="bg-ui-600 h-60 w-full rounded-xl md:h-100" />
+          <Skeleton className="bg-ui-600 h-60 w-full rounded-xl md:h-100" />
+        </>
+      ) : (
+        <>
+          {/* Bar chart */}
+          <Card className="bg-ui-600 from-base-black to-ui-900 border-ui-600 text-base-white gap-0.5 border bg-gradient-to-r">
+            <ChartContainer
+              config={weeklyAdditionsConfig}
+              className="min-h-[200px] w-full"
             >
-              {mediaDistribution.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={entry.color} />
-              ))}
-            </Pie>
-            <ChartTooltip
-              content={
-                <ChartTooltipContent className="bg-ui-800 text-base-white gap-2 p-2" />
-              }
-            />
-            <ChartLegend />
-          </PieChart>
-        </ChartContainer>
-      </Card>
+              <BarChart data={weeklyAdditions}>
+                <CartesianGrid
+                  strokeDasharray="3 3"
+                  stroke={AppColors.ui[700]}
+                />
+                <ChartTooltip
+                  content={
+                    <ChartTooltipContent className="bg-ui-800 text-base-white gap-2 p-2" />
+                  }
+                />
+                <YAxis
+                  tickMargin={10}
+                  tick={true}
+                  tickSize={5}
+                  tickLine={true}
+                  stroke={AppColors.ui[200]}
+                />
+                <XAxis
+                  stroke={AppColors.ui[200]}
+                  dataKey={'day'}
+                  tickLine={true}
+                  tickSize={5}
+                  tickMargin={10}
+                  tick={true}
+                />
+                <Bar dataKey={'movies'} fill="var(--color-movies)" radius={4} />
+                <Bar
+                  dataKey={'tvShows'}
+                  fill="var(--color-tvShows)"
+                  radius={4}
+                ></Bar>
+                <Bar dataKey={'games'} fill="var(--color-games)" radius={4} />
+                <ChartLegend />
+              </BarChart>
+            </ChartContainer>
+          </Card>
+
+          {/* Pie chart */}
+          <Card className="bg-ui-600 from-base-black to-ui-900 border-ui-600 text-base-white gap-0.5 border bg-gradient-to-r">
+            <ChartContainer config={{}} className="min-h-[200px] w-full">
+              <PieChart>
+                {/* @TODO get a way to dynamically change the size of pi chart */}
+                <Pie
+                  data={mediaDistribution}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={60}
+                  outerRadius={120}
+                  paddingAngle={5}
+                  dataKey="value"
+                >
+                  {mediaDistribution.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Pie>
+                <ChartTooltip
+                  content={
+                    <ChartTooltipContent className="bg-ui-800 text-base-white gap-2 p-2" />
+                  }
+                />
+                <ChartLegend />
+              </PieChart>
+            </ChartContainer>
+          </Card>
+        </>
+      )}
     </div>
   );
 };
 
 export default DashboardCharts;
+// /      <Skeleton className="bg-ui-600 h-60 w-full round-xl" />

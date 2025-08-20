@@ -45,7 +45,7 @@ const StatCard = ({
 
   //in case data is not available
   if (!value) {
-    return <Skeleton className="h-20 w-full bg-ui-600" />;
+    return <Skeleton className="h-20 w-full bg-ui-600 rounded-xl" />;
   }
 
   return (
