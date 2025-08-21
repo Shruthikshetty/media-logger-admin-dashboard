@@ -1,8 +1,8 @@
 import React, { JSX, useEffect } from 'react';
 import { SidebarTrigger } from './ui/sidebar';
-import { Bell, User, User2Icon } from 'lucide-react';
+import { Bell, User } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
-import { useGetUserDetails } from '~/services/useer-service';
+import { useGetUserDetails } from '~/services/user-service';
 import { useAuthStore } from '~/state-management/auth-store';
 import { Skeleton } from './ui/skeleton';
 
