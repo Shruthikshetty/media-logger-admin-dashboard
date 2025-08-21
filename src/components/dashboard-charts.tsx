@@ -26,7 +26,6 @@ import { AnalyticsData } from '~/services/analytics-service';
 import { Skeleton } from './ui/skeleton';
 import TitleSubtitle from './title-subtitle';
 
-
 /**
  * This component displays the dashboard charts containing the pie chart and the bar chart
  * @param param0 [analyticsData] this is the data received from the analytics service
@@ -73,12 +72,12 @@ const DashboardCharts = ({
                   subtitle: 'text-base',
                 }}
                 title="Weekly Content Additions"
-                subtitle="New media added to the library this week"
+                subtitle="New media added to the library in the last 7 days"
               />
             </CardHeader>
             <ChartContainer
               config={WeeklyAdditionsConfig}
-              className="min-h-[200px] w-full"
+              className="[&_.recharts-cartesian-axis-tick_text]:fill-ui-200 [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-ui-800 min-h-[200px] w-full [&_.recharts-cartesian-axis-tick_text]:text-sm"
             >
               <BarChart data={analyticsData?.weeklyMediaCount ?? []}>
                 <CartesianGrid
