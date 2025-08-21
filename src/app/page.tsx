@@ -1,9 +1,10 @@
 'use client';
-import { Film, Gamepad2, Tv, Users } from 'lucide-react';
+import { Film, Gamepad2, Plus, Tv, Users } from 'lucide-react';
 import DashboardCharts from '~/components/dashboard-charts';
 import ManageCard from '~/components/manage-card';
 import StatCard from '~/components/stat-card';
 import TitleSubtitle from '~/components/title-subtitle';
+import { Button } from '~/components/ui/button';
 import { MANAGE_CARDS_DASHBOARD } from '~/constants/screen.constants';
 import { useDashboardAnalyticsData } from '~/services/analytics-service';
 
@@ -62,12 +63,18 @@ export default function Home() {
 
   return (
     <div className="flex flex-col gap-6 p-5">
-      <TitleSubtitle
-        title="Media Management Dashboard"
-        subtitle="Manage your media library efficiently"
-      />
+      <div className="flex items-center justify-between gap-4">
+        <TitleSubtitle
+          title="Media Management Dashboard"
+          subtitle="Manage your media library efficiently"
+        />
+        <Button className="from-brand-600 to-accent-purple bg-gradient-to-r px-5 hover:opacity-80 active:scale-95 md:px-7 md:py-4">
+          <Plus className="!size-4" />
+          Quick Add
+        </Button>
+      </div>
       {/* total media count cards */}
-      <div className="grid grid-cols-1 gap-2 sm:grid-cols-4 sm:gap-4">
+      <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-4 md:grid-cols-4">
         {totalMediaStat.map((stat, index) => {
           return <StatCard key={index} {...stat} />;
         })}
@@ -76,7 +83,6 @@ export default function Home() {
       <DashboardCharts analyticsData={analyticsData} />
       {/* navigation cards */}
       <div className="grid grid-cols-1 gap-2 sm:grid-cols-3 sm:gap-4">
-        {/* @TODO: find a way to make all cards have same height */}
         {MANAGE_CARDS_DASHBOARD.map((card, index) => (
           <ManageCard
             key={index}
