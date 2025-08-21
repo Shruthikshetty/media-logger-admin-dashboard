@@ -2,6 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';
+import { AnalyticsDataStaleTime } from '~/constants/config.constants';
 import { Endpoints } from '~/constants/endpoints.constants';
 import { QueryKeys } from '~/constants/query-key.constants';
 import { useAuthStore } from '~/state-management/auth-store';
@@ -47,13 +48,15 @@ type ResponseAnalyticsData = {
  * custom hook to fetch the analytics data for dashboard
  */
 export const useDashboardAnalyticsData = () => {
+  //get token
+  const token = useAuthStore((s) => s.token);
   return useQuery<ResponseAnalyticsData, AxiosError<ApiError>>({
     queryKey: [QueryKeys.dashboardAnalytics],
+    enabled: Boolean(token), // no token do not fetch
+    staleTime: AnalyticsDataStaleTime,
     queryFn: async () =>
       axios<ResponseAnalyticsData>(Endpoints.analyticsDashboard, {
-        headers: {
-          Authorization: `Bearer ${useAuthStore.getState().token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       }).then((res) => res.data),
   });
 };

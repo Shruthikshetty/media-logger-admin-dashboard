@@ -50,6 +50,10 @@ or
 yarn install
 ```
 
+Add env files
+
+- take env variables from the env.example and create a .env file
+
 ## Running Locally
 
 Start the development server:

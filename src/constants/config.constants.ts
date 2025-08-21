@@ -41,4 +41,7 @@ export const PieChartMediaDistributionConfig = {
     label: 'Games',
     color: AppColors.feedback.successLight,
   },
-};
+} satisfies ChartConfig;
+
+//slate time for analytics data
+export const AnalyticsDataStaleTime = 1 * 60 * 1000; //1 min
