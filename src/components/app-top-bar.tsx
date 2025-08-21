@@ -1,7 +1,10 @@
-import React, { JSX } from 'react';
+import React, { JSX, useEffect } from 'react';
 import { SidebarTrigger } from './ui/sidebar';
-import { Bell, User } from 'lucide-react';
+import { Bell, User, User2Icon } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
+import { useGetUserDetails } from '~/services/useer-service';
+import { useAuthStore } from '~/state-management/auth-store';
+import { Skeleton } from './ui/skeleton';
 
 /**
  * A component that renders the top bar for the app.
@@ -9,6 +12,17 @@ import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
  * @returns {JSX.Element}
  */
 const AppTopBar = (): JSX.Element => {
+  // fetch user details
+  const { isLoading, data } = useGetUserDetails();
+  // get zustand setter for user
+  const setUser = useAuthStore((state) => state.setUser);
+  //set the user details
+  useEffect(() => {
+    if (data?.data) {
+      setUser(data.data);
+    }
+  }, [data, setUser]);
+
   return (
     <header className="bg-base-black/80 border-ui-600 sticky top-0 z-100 h-16 w-full overflow-hidden border-b pr-1 pl-1 backdrop-blur-sm lg:h-[4.6rem] lg:pr-3 lg:pl-3">
       <div className="flex h-full flex-row items-center justify-between">
@@ -27,16 +41,21 @@ const AppTopBar = (): JSX.Element => {
           {/* notification icon */}
           <Bell className="text-base-white h-5 w-5 lg:h-7 lg:w-7" />
           {/* profile image */}
-          <Avatar>
-            {/* @TODO : add profile image from API */}
-            <AvatarImage
-              src="https://github.com/shadcn.png"
-              className="h-7 w-7 rounded-full lg:h-10 lg:w-10"
-              alt="profile"
-            />
-            <AvatarFallback className="text-sm text-white">
-              <User className="bg-brand-200 h-6 w-6 rounded-full p-1 lg:h-10 lg:w-10" />
-            </AvatarFallback>
+          <Avatar className="border-ui-600 border-1">
+            {isLoading ? (
+              <Skeleton className="h-10 w-10 rounded-full" />
+            ) : (
+              <>
+                <AvatarImage
+                  src={data?.data?.profileImg}
+                  className="h-8 w-8 rounded-full lg:h-10 lg:w-10"
+                  alt="profile"
+                />
+                <AvatarFallback className="text-sm text-white">
+                  <User className="bg-brand-200 h-8 w-8 rounded-full p-1 lg:h-10 lg:w-10" />
+                </AvatarFallback>
+              </>
+            )}
           </Avatar>
         </div>
       </div>

@@ -22,7 +22,7 @@ type authStore = {
   setUser: (user: Partial<User>) => void;
 };
 
-//create the global store for auth
+//create the global store for auth , contains user details
 export const useAuthStore = create<authStore>((set) => ({
   token: '',
   setToken: (token: string) => set((prev) => ({ ...prev, token: token })),
