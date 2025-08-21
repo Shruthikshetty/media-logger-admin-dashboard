@@ -34,7 +34,7 @@ export type AnalyticsData = {
   totalTvShows: number;
   totalMedia: number;
   currentMonthData: SingleDayData[];
-  weeklyData: SingleDayData[];
+  weeklyMediaCount: SingleDayData[];
   percentageChangeFromLastMonth: PercentageChangeFromLastMonth;
 };
 

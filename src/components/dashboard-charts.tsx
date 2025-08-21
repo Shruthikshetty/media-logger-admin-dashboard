@@ -24,24 +24,12 @@ import { Card, CardHeader } from './ui/card';
 import { AppColors } from '~/constants/colors.constants';
 import { AnalyticsData } from '~/services/analytics-service';
 import { Skeleton } from './ui/skeleton';
-import { Car } from 'lucide-react';
 import TitleSubtitle from './title-subtitle';
 const DashboardCharts = ({
   analyticsData,
 }: {
   analyticsData?: AnalyticsData;
 }) => {
-  //todo get the data from api
-  const weeklyAdditions = [
-    { day: 'Mon', movies: 12, tvShows: 8, games: 15 },
-    { day: 'Tue', movies: 19, tvShows: 12, games: 18 },
-    { day: 'Wed', movies: 15, tvShows: 10, games: 14 },
-    { day: 'Thu', movies: 22, tvShows: 15, games: 20 },
-    { day: 'Fri', movies: 28, tvShows: 18, games: 25 },
-    { day: 'Sat', movies: 35, tvShows: 22, games: 30 },
-    { day: 'Sun', movies: 25, tvShows: 16, games: 22 },
-  ];
-
   //data to display pie chart
   const mediaDistribution = [
     {
@@ -86,7 +74,7 @@ const DashboardCharts = ({
               config={WeeklyAdditionsConfig}
               className="min-h-[200px] w-full"
             >
-              <BarChart data={weeklyAdditions}>
+              <BarChart data={analyticsData?.weeklyMediaCount ?? []}>
                 <CartesianGrid
                   strokeDasharray="3 3"
                   stroke={AppColors.ui[700]}
@@ -105,7 +93,7 @@ const DashboardCharts = ({
                 />
                 <XAxis
                   stroke={AppColors.ui[200]}
-                  dataKey={'day'}
+                  dataKey={'weekday'}
                   tickLine={true}
                   tickSize={5}
                   tickMargin={10}
