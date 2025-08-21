@@ -12,7 +12,7 @@ export const CookieNames = {
 export const TokenExpiry = 1; //days
 
 //config for the bar chart used in dashboard
-export const weeklyAdditionsConfig = {
+export const WeeklyAdditionsConfig = {
   movies: {
     label: 'Movies',
     color: AppColors.brand[500],
@@ -26,3 +26,22 @@ export const weeklyAdditionsConfig = {
     color: AppColors.feedback.successLight,
   },
 } satisfies ChartConfig;
+
+//config for pie chart
+export const PieChartMediaDistributionConfig = {
+  movies: {
+    label: 'Movies',
+    color: AppColors.brand[500],
+  },
+  tvShows: {
+    label: 'Tv Shows',
+    color: AppColors.accent.purple,
+  },
+  games: {
+    label: 'Games',
+    color: AppColors.feedback.successLight,
+  },
+} satisfies ChartConfig;
+
+//slate time for analytics data
+export const AnalyticsDataStaleTime = 1 * 60 * 1000; //1 min

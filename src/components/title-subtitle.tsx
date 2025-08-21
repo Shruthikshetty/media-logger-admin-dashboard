@@ -7,7 +7,7 @@ type TitleSubtitleProps = {
   customStyles?: {
     root?: string;
     title?: string;
-    subtitle?:string;
+    subtitle?: string;
   };
 };
 

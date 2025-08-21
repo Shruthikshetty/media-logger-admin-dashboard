@@ -10,7 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
  */
 const AppTopBar = (): JSX.Element => {
   return (
-    <div className="bg-base-black border-base-white h-16 w-full overflow-hidden border-b pr-1 pl-1 lg:h-[4.6rem] lg:pr-3 lg:pl-3">
+    <div className="bg-base-black border-ui-600 h-16 w-full overflow-hidden border-b pr-1 pl-1 lg:h-[4.6rem] lg:pr-3 lg:pl-3">
       <div className="flex h-full flex-row items-center justify-between">
         <div className="flex flex-row items-center">
           {/* trigger */}
@@ -20,7 +20,7 @@ const AppTopBar = (): JSX.Element => {
           {/* online status  */}
           <div className="flex flex-row items-center gap-2">
             <div className="bg-feedback-success-light h-3 w-3 animate-pulse rounded-full" />
-            <h1 className="text-ui-600 text-sm">System Status: Online</h1>
+            <h1 className="text-ui-400 text-sm">System Status: Online</h1>
           </div>
         </div>
         <div className="flex flex-row items-center gap-2.5">

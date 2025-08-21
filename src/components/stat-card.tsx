@@ -1,15 +1,17 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { LucideIcon, TrendingUp } from 'lucide-react';
+import { LucideIcon, TrendingDown, TrendingUp } from 'lucide-react';
 import { cn } from '~/lib/utils';
+import { Skeleton } from './ui/skeleton';
 
 type StatCardProps = {
   title: string;
-  value: number;
-  change: number;
+  value?: number;
+  changePercent?: number;
   className?: string;
   Icon?: LucideIcon;
   iconClassName?: string;
+  changeDirection?: 'up' | 'down';
 };
 
 /**
@@ -25,20 +27,26 @@ type StatCardProps = {
  *
  * @param {string} title - The title of the stat.
  * @param {number} value - The value of the stat.
- * @param {number} change - The change from last month.
+ * @param {number} changePercent - The change from last month.
  * @param {string} [className] - The class name of the component.
  * @param {LucideIcon} [Icon] - The icon to display above the stat.
  * @param {string} [iconClassName] - The class name of the icon.
  */
 
 const StatCard = ({
-  change,
+  changePercent,
   title,
   value,
   className,
   Icon,
   iconClassName,
+  changeDirection = 'up',
 }: StatCardProps) => {
+  //in case data is not available
+  if (value == undefined || value == null) {
+    return <Skeleton className="bg-ui-600 h-20 w-full rounded-xl" />;
+  }
+
   return (
     <Card
       className={cn(
@@ -57,10 +65,17 @@ const StatCard = ({
       {/* stats */}
       <CardContent>
         <p className="text-2xl font-bold">{value}</p>
-        <div className='flex flex-row items-center gap-2'>
+        <div className="flex flex-row items-center gap-2">
           {/* @TODO implement logic to show increase or decrease */}
-          <TrendingUp className='h-4 w-4 text-feedback-success'/>
-          <p className="text-ui-400 text-sm">+{change} from last month</p>
+          {changeDirection === 'up' ? (
+            <TrendingUp className="text-feedback-success h-4 w-4" />
+          ) : (
+            <TrendingDown className="text-feedback-error h-4 w-4" />
+          )}
+          <p className="text-ui-400 text-sm">
+            {changeDirection === 'up' ? '+' : '-'}
+            {changePercent} from last month
+          </p>
         </div>
       </CardContent>
     </Card>
