@@ -25,6 +25,12 @@ import { AppColors } from '~/constants/colors.constants';
 import { AnalyticsData } from '~/services/analytics-service';
 import { Skeleton } from './ui/skeleton';
 import TitleSubtitle from './title-subtitle';
+
+
+/**
+ * This component displays the dashboard charts containing the pie chart and the bar chart
+ * @param param0 [analyticsData] this is the data received from the analytics service
+ */
 const DashboardCharts = ({
   analyticsData,
 }: {

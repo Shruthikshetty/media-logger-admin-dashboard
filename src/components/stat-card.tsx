@@ -42,10 +42,9 @@ const StatCard = ({
   iconClassName,
   changeDirection = 'up',
 }: StatCardProps) => {
-
   //in case data is not available
   if (!value) {
-    return <Skeleton className="h-20 w-full bg-ui-600 rounded-xl" />;
+    return <Skeleton className="bg-ui-600 h-20 w-full rounded-xl" />;
   }
 
   return (

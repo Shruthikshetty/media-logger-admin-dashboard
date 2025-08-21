@@ -34,7 +34,7 @@ function AppSideBar() {
   }, [pathName]);
 
   return (
-    <Sidebar className="border-r-2 border-ui-600">
+    <Sidebar className="border-ui-600 border-r-2">
       <SidebarContent className="bg-base-black text-base-white">
         {/* logo  */}
         <SidebarGroup className="border-ui-600 border-b pt-3 pb-4 pl-5">

@@ -15,7 +15,7 @@ export default function Home() {
   //fetch dashboard analytics data
   const { data } = useDashboardAnalyticsData();
   const analyticsData = data?.data;
-  
+
   //data to display stats cards
   const totalMediaStat = [
     {
@@ -76,6 +76,7 @@ export default function Home() {
       <DashboardCharts analyticsData={analyticsData} />
       {/* navigation cards */}
       <div className="grid grid-cols-1 gap-2 sm:grid-cols-3 sm:gap-4">
+        {/* @TODO: find a way to make all cards have same height */}
         {MANAGE_CARDS_DASHBOARD.map((card, index) => (
           <ManageCard
             key={index}

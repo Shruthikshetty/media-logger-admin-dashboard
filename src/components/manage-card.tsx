@@ -19,6 +19,23 @@ type ManageCardProps = {
   href: string;
 };
 
+/**
+ * A linkable card component for management pages.
+ * Display a cards with title and description. on press will navigate to respective Tab
+ * @param {string} [className] - The class name of the component.
+ * @param {string} description - The description of the card.
+ * @param {string} title - The title of the card.
+ * @param {LucideIcon} [Icon] - The icon to show at the left of the title.
+ * @param {string} [iconClassName] - The class name of the icon.
+ * @param {string} [href] - The link href of the card.
+ *
+ * @example
+ * <ManageCard
+ *   title="Manage Users"
+ *   description="Manage users in your organization."
+ *   href="/settings/users"
+ * />
+ */
 function ManageCard({
   className,
   description,
