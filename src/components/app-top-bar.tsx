@@ -20,7 +20,7 @@ const AppTopBar = (): JSX.Element => {
           {/* online status  */}
           <div className="flex flex-row items-center gap-2">
             <div className="bg-feedback-success-light h-3 w-3 animate-pulse rounded-full" />
-            <h1 className="text-ui-600 text-sm">System Status: Online</h1>
+            <h1 className="text-ui-400 text-sm">System Status: Online</h1>
           </div>
         </div>
         <div className="flex flex-row items-center gap-2.5">

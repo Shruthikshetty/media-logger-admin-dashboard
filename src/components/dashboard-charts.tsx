@@ -5,7 +5,6 @@ import {
   Bar,
   BarChart,
   CartesianGrid,
-  Cell,
   Pie,
   PieChart,
   XAxis,
@@ -21,10 +20,12 @@ import {
   PieChartMediaDistributionConfig,
   WeeklyAdditionsConfig,
 } from '~/constants/config.constants';
-import { Card } from './ui/card';
+import { Card, CardHeader } from './ui/card';
 import { AppColors } from '~/constants/colors.constants';
 import { AnalyticsData } from '~/services/analytics-service';
 import { Skeleton } from './ui/skeleton';
+import { Car } from 'lucide-react';
+import TitleSubtitle from './title-subtitle';
 const DashboardCharts = ({
   analyticsData,
 }: {
@@ -71,6 +72,16 @@ const DashboardCharts = ({
         <>
           {/* Bar chart */}
           <Card className="bg-ui-600 from-base-black to-ui-900 border-ui-600 text-base-white gap-0.5 border bg-gradient-to-r">
+            <CardHeader className="mb-3">
+              <TitleSubtitle
+                customStyles={{
+                  title: 'text-2xl font-semibold',
+                  subtitle: 'text-base',
+                }}
+                title="Weekly Content Additions"
+                subtitle="New media added to the library this week"
+              />
+            </CardHeader>
             <ChartContainer
               config={WeeklyAdditionsConfig}
               className="min-h-[200px] w-full"
@@ -114,6 +125,16 @@ const DashboardCharts = ({
 
           {/* Pie chart */}
           <Card className="bg-ui-600 from-base-black to-ui-900 border-ui-600 text-base-white gap-0.5 border bg-gradient-to-r">
+            <CardHeader className="mb-3">
+              <TitleSubtitle
+                customStyles={{
+                  title: 'text-2xl font-semibold',
+                  subtitle: 'text-base',
+                }}
+                title="Media Library Distribution"
+                subtitle="Current breakdown of your media collection"
+              />
+            </CardHeader>
             <ChartContainer
               config={PieChartMediaDistributionConfig}
               className="min-h-[200px] w-full"
@@ -144,4 +165,3 @@ const DashboardCharts = ({
 };
 
 export default DashboardCharts;
-// /      <Skeleton className="bg-ui-600 h-60 w-full round-xl" />

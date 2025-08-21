@@ -44,7 +44,7 @@ function AppSideBar() {
             </div>
             <div>
               <h1 className="text-xl font-bold">Media Logger</h1>
-              <h2 className="text-ui-600 text-sm font-light">
+              <h2 className="text-ui-400 text-sm font-light">
                 Admin Dashboard
               </h2>
             </div>
