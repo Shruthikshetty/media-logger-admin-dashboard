@@ -10,7 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
  */
 const AppTopBar = (): JSX.Element => {
   return (
-    <div className="bg-base-black border-ui-600 h-16 w-full overflow-hidden border-b pr-1 pl-1 lg:h-[4.6rem] lg:pr-3 lg:pl-3">
+    <header className="bg-base-black/80 border-ui-600 sticky top-0 z-100 h-16 w-full overflow-hidden border-b pr-1 pl-1 backdrop-blur-sm lg:h-[4.6rem] lg:pr-3 lg:pl-3">
       <div className="flex h-full flex-row items-center justify-between">
         <div className="flex flex-row items-center">
           {/* trigger */}
@@ -40,7 +40,7 @@ const AppTopBar = (): JSX.Element => {
           </Avatar>
         </div>
       </div>
-    </div>
+    </header>
   );
 };
 
