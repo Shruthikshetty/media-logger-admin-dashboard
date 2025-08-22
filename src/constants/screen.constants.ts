@@ -1,9 +1,11 @@
 import {
+  Bell,
   Film,
   Gamepad2,
   LayoutDashboard,
   Settings,
   Tv,
+  User,
   Users,
 } from 'lucide-react';
 
@@ -39,5 +41,19 @@ export const MANAGE_CARDS_DASHBOARD = [
     Icon: Gamepad2,
     style: 'text-green-500',
     href: '/games',
+  },
+];
+
+// list of menu items in profile menu appears on click of profile icon
+export const ProfileMeneItems = [
+  {
+    name: 'Profile',
+    icon: User,
+    href: '/profile',
+  },
+  {
+    name: 'Notifications',
+    icon: Bell,
+    href: '/', //@TODO in progress
   },
 ];
