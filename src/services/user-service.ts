@@ -17,11 +17,13 @@ type ResponseUserDetails = {
 
 //custom hook to fetch the user details
 export const useGetUserDetails = () => {
+  //check if token is set
+  const tokenSet = useAuthStore((s) => s.tokenSet);
   //get token
   const token = useAuthStore((s) => s.token);
   return useQuery<ResponseUserDetails, AxiosError<ApiError>>({
-    queryKey: [QueryKeys.userDetails, token],
-    enabled: Boolean(token), // no token do not fetch
+    queryKey: [QueryKeys.userDetails],
+    enabled: tokenSet, // no token do not fetch
     staleTime: UserDataStaleTime,
     queryFn: async () =>
       axios

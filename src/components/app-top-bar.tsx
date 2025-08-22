@@ -1,3 +1,4 @@
+"use client";
 import React, { JSX, useEffect } from 'react';
 import { SidebarTrigger } from './ui/sidebar';
 import { Bell, User } from 'lucide-react';
