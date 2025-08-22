@@ -48,7 +48,7 @@ const AuthGuard = ({ children }: { children: React.ReactNode }) => {
       <AppSideBar />
       <div className="h-full w-full grow flex-col">
         <AppTopBar />
-        <main className="bg-base-black h-full w-full overflow-y-auto">
+        <main className="bg-base-black dark:text-base-black dark:bg-base-white h-full w-full overflow-y-auto">
           {children}
         </main>
       </div>

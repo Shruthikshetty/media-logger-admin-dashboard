@@ -1,3 +1,4 @@
+'use client';
 import React, { JSX, useEffect } from 'react';
 import { SidebarTrigger } from './ui/sidebar';
 import { Bell, User } from 'lucide-react';
@@ -7,6 +8,8 @@ import { useAuthStore } from '~/state-management/auth-store';
 import { Skeleton } from './ui/skeleton';
 import { cn } from '~/lib/utils';
 import ProfilePressDropdown from './profile-press-dropdown';
+import { Button } from './ui/button';
+import { useThemeStore } from '~/state-management/theme-store';
 
 /**
  * A component that renders the top bar for the app.
@@ -25,6 +28,9 @@ const AppTopBar = (): JSX.Element => {
     }
   }, [data, setUser]);
 
+  //get themes
+  const { theme, setTheme } = useThemeStore();
+
   return (
     <header className="bg-base-black/80 border-ui-600 sticky top-0 z-50 h-16 w-full border-b pr-1 pl-1 backdrop-blur-sm lg:h-[4.6rem] lg:pr-3 lg:pl-3">
       <div className="flex h-full flex-row items-center justify-between">
@@ -42,6 +48,12 @@ const AppTopBar = (): JSX.Element => {
               )}
             />
             <h1 className="text-ui-400 text-sm">System Status: Online</h1>
+            <Button
+              className="hover:bg-ui-600"
+              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+            >
+              Switch to : {theme === 'dark' ? 'Light' : 'Dark'}
+            </Button>
           </div>
         </div>
         <div className="flex flex-row items-center gap-2.5">

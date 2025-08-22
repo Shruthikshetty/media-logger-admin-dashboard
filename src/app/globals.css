@@ -1,7 +1,7 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
-@custom-variant dark (&:is(.dark *));
+@custom-variant dark (&:where(.dark  , .dark *));
 
 @theme inline {
   --color-background: var(--background);
@@ -65,13 +65,14 @@
   --color-feedback-info: #3b82f6;
   --color-accent-purple: #8b5cf6;
   --color-accent-indigo: #6366f1;
+  --radius: 0.625rem;
 }
 
-:root {
+/* :root {
   --radius: 0.625rem;
-  --background: #ffffff; /* fallback */
+  --background: #ffffff; 
   --background: oklch(1 0 0);
-  --foreground: #262626; /* fallback */
+  --foreground: #262626; 
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
@@ -102,12 +103,12 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
-}
+} */
 
-.dark {
-  --background: #262626; /* fallback */
+/* .dark {
+  --background: #262626; 
   --background: oklch(0.145 0 0);
-  --foreground: #fafafa; /* fallback */
+  --foreground: #fafafa; 
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);
@@ -138,7 +139,7 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
-}
+} */
 
 @layer base {
   * {
