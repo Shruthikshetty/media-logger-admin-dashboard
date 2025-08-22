@@ -20,7 +20,7 @@ export const useGetUserDetails = () => {
   //get token
   const token = useAuthStore((s) => s.token);
   return useQuery<ResponseUserDetails, AxiosError<ApiError>>({
-    queryKey: [QueryKeys.userDetails],
+    queryKey: [QueryKeys.userDetails, token],
     enabled: Boolean(token), // no token do not fetch
     staleTime: UserDataStaleTime,
     queryFn: async () =>

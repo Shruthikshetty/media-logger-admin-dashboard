@@ -51,7 +51,7 @@ export const useDashboardAnalyticsData = () => {
   //get token
   const token = useAuthStore((s) => s.token);
   return useQuery<ResponseAnalyticsData, AxiosError<ApiError>>({
-    queryKey: [QueryKeys.dashboardAnalytics],
+    queryKey: [QueryKeys.dashboardAnalytics, token],
     enabled: Boolean(token), // no token do not fetch
     staleTime: AnalyticsDataStaleTime,
     queryFn: async () =>

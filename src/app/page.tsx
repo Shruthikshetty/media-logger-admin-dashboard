@@ -23,9 +23,9 @@ export default function Home() {
       title: 'Total movies',
       value: analyticsData?.totalMovies,
       changePercent:
-        analyticsData?.percentageChangeFromLastMonth?.movies.percentage,
+        analyticsData?.percentageChangeFromLastMonth?.movies?.percentage,
       changeDirection:
-        analyticsData?.percentageChangeFromLastMonth?.movies.change,
+        analyticsData?.percentageChangeFromLastMonth?.movies?.change,
       Icon: Film,
       iconClassName: 'text-blue-500',
     },
@@ -33,9 +33,9 @@ export default function Home() {
       title: 'Total TV Shows',
       value: analyticsData?.totalTvShows,
       changePercent:
-        analyticsData?.percentageChangeFromLastMonth?.tvShows.percentage,
+        analyticsData?.percentageChangeFromLastMonth?.tvShows?.percentage,
       changeDirection:
-        analyticsData?.percentageChangeFromLastMonth?.tvShows.change,
+        analyticsData?.percentageChangeFromLastMonth?.tvShows?.change,
       Icon: Tv,
       iconClassName: 'text-purple-500',
     },
@@ -43,9 +43,9 @@ export default function Home() {
       title: 'Total Games',
       value: analyticsData?.totalGames,
       changePercent:
-        analyticsData?.percentageChangeFromLastMonth?.games.percentage,
+        analyticsData?.percentageChangeFromLastMonth?.games?.percentage,
       changeDirection:
-        analyticsData?.percentageChangeFromLastMonth?.games.change,
+        analyticsData?.percentageChangeFromLastMonth?.games?.change,
       Icon: Gamepad2,
       iconClassName: 'text-green-500',
     },
@@ -53,9 +53,9 @@ export default function Home() {
       title: 'Total Users',
       value: analyticsData?.totalUsers,
       changePercent:
-        analyticsData?.percentageChangeFromLastMonth?.users.percentage,
+        analyticsData?.percentageChangeFromLastMonth?.users?.percentage,
       changeDirection:
-        analyticsData?.percentageChangeFromLastMonth?.users.change,
+        analyticsData?.percentageChangeFromLastMonth?.users?.change,
       Icon: Users,
       iconClassName: 'text-orange-500',
     },

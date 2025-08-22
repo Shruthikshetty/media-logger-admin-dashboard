@@ -41,7 +41,10 @@ const AppTopBar = (): JSX.Element => {
                 data?.data ? 'bg-feedback-success-light' : 'bg-feedback-error',
               )}
             />
-            <h1 className="text-ui-400 text-sm">System Status: Online</h1>
+            <h1 className="text-ui-400 text-sm">
+              System Status:{' '}
+              {isLoading ? 'Loading' : data?.data ? 'Online' : 'Offline'}
+            </h1>
           </div>
         </div>
         <div className="flex flex-row items-center gap-2.5">

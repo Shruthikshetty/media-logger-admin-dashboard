@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import React from 'react';
 import {
   DropdownMenu,
@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
 import { LogOut } from 'lucide-react';
-import { ProfileMeneItems } from '~/constants/screen.constants';
+import { ProfileMenuItems } from '~/constants/screen.constants';
 import { useRouter } from 'next/navigation';
 
 //@TODO inProgress
@@ -36,14 +36,14 @@ const ProfilePressDropdown = ({ children }: ProfilePressDropdownProps) => {
           </DropdownMenuLabel>
           <DropdownMenuSeparator className="bg-ui-600" />
           <DropdownMenuGroup>
-            {ProfileMeneItems.map((item, index) => (
+            {ProfileMenuItems.map((item) => (
               <DropdownMenuItem
                 onClick={() => router.push(item.href)}
-                key={index}
+                key={item.name}
                 className="hover:bg-ui-800 flex flex-row gap-2 rounded-md p-2"
               >
                 <item.icon className="text-base-white size-5" />
-                <p className="test-sm">{item.name}</p>
+                <p className="text-sm">{item.name}</p>
               </DropdownMenuItem>
             ))}
           </DropdownMenuGroup>

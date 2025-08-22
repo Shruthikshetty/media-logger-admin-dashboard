@@ -45,7 +45,7 @@ export const MANAGE_CARDS_DASHBOARD = [
 ];
 
 // list of menu items in profile menu appears on click of profile icon
-export const ProfileMeneItems = [
+export const ProfileMenuItems = [
   {
     name: 'Profile',
     icon: User,
