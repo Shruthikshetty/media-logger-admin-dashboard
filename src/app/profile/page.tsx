@@ -2,7 +2,7 @@
 import React from 'react';
 import TitleSubtitle from '~/components/title-subtitle';
 import { useAuthStore } from '~/state-management/auth-store';
-
+//@TODO inProgress
 const Profile = () => {
   //get the user data from the store
   const userDetails = useAuthStore((s) => s.user);
