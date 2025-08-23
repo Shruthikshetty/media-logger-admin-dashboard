@@ -32,14 +32,12 @@ export const useSpinnerStore = create<spinnerStore>((set) => ({
   /**
    * set the spinner state
    */
-  setShowSpinner: (showSpinner: boolean) =>
-    set((prev) => ({ ...prev, showSpinner: showSpinner })),
+  setShowSpinner: (showSpinner: boolean) => set({ showSpinner: showSpinner }),
 
   /**
    * toggle spinner state
    */
-  toggleSpinner: () =>
-    set((prev) => ({ ...prev, showSpinner: !prev.showSpinner })),
+  toggleSpinner: () => set((prev) => ({ showSpinner: !prev.showSpinner })),
 
   /**
    * set the spinner options
@@ -52,7 +50,6 @@ export const useSpinnerStore = create<spinnerStore>((set) => ({
     options?: Partial<spinnerOptions>;
   }) =>
     set((prev) => ({
-      ...prev,
       showSpinner: showSpinner ?? prev.showSpinner,
       spinnerOptions: { ...prev.spinnerOptions, ...(options ?? {}) },
     })),

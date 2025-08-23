@@ -13,6 +13,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from '~/components/ui/sidebar';
 import { NAVIGATION_ICONS } from '~/constants/screen.constants';
 import { cn } from '~/lib/utils';
@@ -33,15 +34,24 @@ function AppSideBar() {
     );
   }, [pathName]);
 
+  //get the sidebar state
+  const { setOpenMobile } = useSidebar();
+
   return (
     <Sidebar className="border-ui-600 border-r-2">
       <SidebarContent className="bg-base-black text-base-white">
         {/* logo  */}
         <SidebarGroup className="border-ui-600 border-b pt-3 pb-4 pl-5">
           <div className="flex flex-row items-center gap-3">
-            <div>
+            <Link
+              href={'/'}
+              onClick={() => {
+                //if mobile sidebar is open close it
+                setOpenMobile(false);
+              }}
+            >
               <Film className="to-accent-purple h-8 w-9 rounded-md bg-gradient-to-r from-blue-600 p-1" />
-            </div>
+            </Link>
             <div>
               <h1 className="text-xl font-bold">Media Logger</h1>
               <h2 className="text-ui-400 text-sm font-light">

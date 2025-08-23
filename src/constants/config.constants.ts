@@ -45,3 +45,6 @@ export const PieChartMediaDistributionConfig = {
 
 //slate time for analytics data
 export const AnalyticsDataStaleTime = 1 * 60 * 1000; //1 min
+
+//slate time for user data
+export const UserDataStaleTime = 5 * 60 * 1000; //5 min

@@ -17,15 +17,16 @@ export interface User {
 //type for auth store
 type authStore = {
   token: string;
+  tokenSet: boolean;
   setToken: (token: string) => void;
   user: User;
   setUser: (user: Partial<User>) => void;
 };
 
-//create the global store for auth
+//create the global store for auth , contains user details
 export const useAuthStore = create<authStore>((set) => ({
   token: '',
-  setToken: (token: string) => set((prev) => ({ ...prev, token: token })),
+  tokenSet: false,
   user: {
     _id: '',
     name: '',
@@ -38,6 +39,13 @@ export const useAuthStore = create<authStore>((set) => ({
     createdAt: '',
     updatedAt: '',
   },
+  /**
+   * set the token
+   */
+  setToken: (token: string) => set({ token: token, tokenSet: !!token }),
+  /**
+   * set user details
+   */
   setUser: (user: Partial<User>) =>
-    set((prev) => ({ ...prev, user: { ...prev.user, ...user } })),
+    set((prev) => ({ user: { ...prev.user, ...user } })),
 }));
