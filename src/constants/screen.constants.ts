@@ -57,3 +57,12 @@ export const ProfileMenuItems = [
     href: '/', //@TODO in progress
   },
 ];
+
+// role color mapping
+export const ROLE_COLOR_MAPPING: Record<
+  string,
+  'destructive' | 'secondary' | 'default' | 'outline'
+> = {
+  admin: 'destructive',
+  user: 'secondary',
+};
