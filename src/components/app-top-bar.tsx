@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import React, { JSX, useEffect } from 'react';
 import { SidebarTrigger } from './ui/sidebar';
 import { Bell, User } from 'lucide-react';
@@ -61,7 +61,11 @@ const AppTopBar = (): JSX.Element => {
                   <AvatarImage
                     src={data?.data?.profileImg}
                     className="h-8 w-8 rounded-full lg:h-10 lg:w-10"
-                    alt="profile"
+                    alt={
+                      data?.data?.name
+                        ? `${data?.data?.name} profile image`
+                        : 'Profile image'
+                    }
                   />
                   <AvatarFallback className="text-sm text-white">
                     <User className="bg-brand-200 h-8 w-8 rounded-full p-1 lg:h-10 lg:w-10" />

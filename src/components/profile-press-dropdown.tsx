@@ -22,7 +22,11 @@ const ProfilePressDropdown = ({ children }: ProfilePressDropdownProps) => {
   const router = useRouter();
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
+      <DropdownMenuTrigger asChild>
+        <button type="button" aria-label="open profile menu">
+          {children}
+        </button>
+      </DropdownMenuTrigger>
       <DropdownMenuPortal>
         <DropdownMenuContent
           className="bg-base-black border-ui-600 shadow-ui-600 text-base-white z-60 mx-5 my-2 min-w-50 rounded-lg border p-0.5 pb-1 shadow-[0px_0px_15px] lg:min-w-80"
