@@ -21,12 +21,11 @@ type authStore = {
   setToken: (token: string) => void;
   user: User;
   setUser: (user: Partial<User>) => void;
+  resetAuth: () => void;
 };
 
-//create the global store for auth , contains user details
-export const useAuthStore = create<authStore>((set) => ({
+const initialState = {
   token: '',
-  tokenSet: false,
   user: {
     _id: '',
     name: '',
@@ -39,6 +38,12 @@ export const useAuthStore = create<authStore>((set) => ({
     createdAt: '',
     updatedAt: '',
   },
+};
+
+//create the global store for auth , contains user details
+export const useAuthStore = create<authStore>((set) => ({
+  ...initialState,
+  tokenSet: false,
   /**
    * set the token
    */
@@ -48,4 +53,8 @@ export const useAuthStore = create<authStore>((set) => ({
    */
   setUser: (user: Partial<User>) =>
     set((prev) => ({ user: { ...prev.user, ...user } })),
+  /**
+   * reset the store
+   */
+  resetAuth: () => set(initialState),
 }));
