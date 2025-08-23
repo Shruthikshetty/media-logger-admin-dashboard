@@ -1,6 +1,6 @@
 'use client';
 import { AvatarFallback, AvatarImage } from '@radix-ui/react-avatar';
-import { Calendar, Star, Trophy, User } from 'lucide-react';
+import { Calendar, Camera, Star, Trophy, User } from 'lucide-react';
 import React from 'react';
 import RoleBadge from '~/components/role-badge';
 import TitleSubtitle from '~/components/title-subtitle';
@@ -25,18 +25,25 @@ const Profile = () => {
         subtitle="Manage your profile information and account settings"
       />
       <div>
+        {/* Profile image Card */}
         <Card className="border-ui-600 text-base-white from-base-black to-ui-900 bg-gradient-to-r">
           <CardHeader>
             <div className="flex w-full flex-col items-center justify-center gap-2">
-              <Avatar className="border-ui-600 border-1">
-                <AvatarImage
-                  className="h-30 w-30 rounded-full"
-                  src={userDetails?.profileImg}
-                />
-                <AvatarFallback>
-                  <User className="bg-brand-200 text-base-white h-30 w-30 rounded-full p-3" />
-                </AvatarFallback>
-              </Avatar>
+              <div className="relative">
+                <Avatar className="border-ui-600 border-1">
+                  <AvatarImage
+                    className="h-30 w-30 rounded-full"
+                    src={userDetails?.profileImg}
+                  />
+                  <AvatarFallback>
+                    <User className="bg-brand-200 text-base-white h-30 w-30 rounded-full p-3" />
+                  </AvatarFallback>
+                </Avatar>
+                {/* TODO functionality to change profile image */}
+                <button className="bg-base-black border-ui-600 absolute right-0 bottom-0 flex items-center justify-center rounded-full border p-2 hover:opacity-70 active:scale-95">
+                  <Camera className="h-6 w-6" />
+                </button>
+              </div>
               <p className="text-xl">{userDetails?.name}</p>
               <RoleBadge role={userDetails?.role} />
             </div>
@@ -75,6 +82,7 @@ const Profile = () => {
             </p>
           </CardContent>
         </Card>
+        {/* Profile info card */}
       </div>
     </div>
   );
