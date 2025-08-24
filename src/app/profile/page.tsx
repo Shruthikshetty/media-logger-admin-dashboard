@@ -1,6 +1,16 @@
 'use client';
 import { AvatarFallback, AvatarImage } from '@radix-ui/react-avatar';
-import { Calendar, Camera, Star, Trophy, User } from 'lucide-react';
+import {
+  Calendar,
+  Camera,
+  Edit,
+  Mail,
+  MapPin,
+  Shield,
+  Star,
+  Trophy,
+  User,
+} from 'lucide-react';
 import React from 'react';
 import RoleBadge from '~/components/role-badge';
 import TitleSubtitle from '~/components/title-subtitle';
@@ -10,6 +20,7 @@ import { Card, CardContent, CardHeader } from '~/components/ui/card';
 import { useAuthStore } from '~/state-management/auth-store';
 import { getXPLevel } from '~/lib/exp-mapping';
 import { cn } from '~/lib/utils';
+import { Button } from '~/components/ui/button';
 
 const Profile = () => {
   //get the user data from the store
@@ -18,13 +29,45 @@ const Profile = () => {
   //get the level based on the xp
   const xpLevel = getXPLevel(userDetails?.xp ?? 0);
 
+  //profile information
+  const profileInfo = [
+    {
+      label: 'Full Name',
+      value: userDetails?.name,
+    },
+    {
+      label: 'Email Address',
+      value: userDetails?.email,
+      icon: <Mail className="text-ui-400 h-5 w-5" />,
+    },
+    {
+      label: 'Role',
+      value: userDetails?.role,
+      icon: <Shield className="text-ui-400 h-5 w-5" />,
+    },
+    {
+      label: 'Experience Points',
+      value: userDetails?.xp,
+      icon: <Trophy className="text-feedback-warning h-5 w-5" />,
+    },
+    {
+      label: 'Location',
+      value: userDetails?.location,
+      icon: <MapPin className="text-ui-400 h-5 w-5" />,
+    },
+    {
+      label: 'Bio',
+      value: userDetails?.bio,
+    },
+  ];
+
   return (
     <div className="flex flex-col gap-5 p-5">
       <TitleSubtitle
         title="My Profile"
         subtitle="Manage your profile information and account settings"
       />
-      <div>
+      <div className="grid grid-cols-1 gap-5">
         {/* Profile image Card */}
         <Card className="border-ui-600 text-base-white from-base-black to-ui-900 bg-gradient-to-r">
           <CardHeader>
@@ -83,6 +126,37 @@ const Profile = () => {
           </CardContent>
         </Card>
         {/* Profile info card */}
+        <Card className="border-ui-600 text-base-white from-base-black to-ui-900 bg-gradient-to-r">
+          <CardHeader>
+            <div className="flex flex-row gap-4">
+              <TitleSubtitle
+                title="Profile Information"
+                subtitle="Your personal details and account information"
+                customStyles={{
+                  title: 'text-2xl font-semibold',
+                  subtitle: 'text-base',
+                }}
+              />
+              <Button className="border-ui-600 bg-brand-500 hover:bg-brand-200 border p-4.5 active:scale-95">
+                <Edit className="mr-2 h-4 w-4" />
+                Edit Profile
+              </Button>
+            </div>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-5">
+            {profileInfo.map((info) => {
+              return (
+                <div key={info.label} className="flex flex-col">
+                  <p className="text-ui-400 font-semibold">{info.label}</p>
+                  <div className="flex flex-row items-center gap-2">
+                    {info?.icon}
+                    <p className="text-lg">{info.value}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
