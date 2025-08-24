@@ -5,7 +5,6 @@ export function capitalizeFirstLetter(string: string) {
     : '';
 }
 
-
 //format number indian style
 export function formatToIndianNumber(num: number) {
   return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
