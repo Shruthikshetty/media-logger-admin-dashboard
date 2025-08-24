@@ -74,6 +74,10 @@ const EditProfileDialog = ({
             toast: '!bg-feedback-success',
           },
         });
+        //close dialog
+        setOpen(false);
+        //refetch user details
+        refetchUserDetails();
       },
       onError: (error) => {
         //toast message for error
@@ -82,12 +86,6 @@ const EditProfileDialog = ({
             toast: '!bg-feedback-error',
           },
         });
-      },
-      onSettled: () => {
-        //close dialog
-        setOpen(false);
-        //refetch user details
-        refetchUserDetails();
       },
     });
   };
@@ -186,7 +184,7 @@ const EditProfileDialog = ({
               render={({ field }) => (
                 <FormItem>
                   <Label htmlFor="bio" className="text-base">
-                    Location
+                    Bio
                   </Label>
                   <FormControl>
                     <Textarea
@@ -208,6 +206,7 @@ const EditProfileDialog = ({
             {/* Buttons */}
             <div className="flex flex-row justify-end gap-2">
               <Button
+                variant={'outline'}
                 type="button"
                 onClick={() => profileUpdateForm.reset(userExistingData)}
               >

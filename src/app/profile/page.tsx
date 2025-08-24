@@ -54,7 +54,7 @@ const Profile = () => {
     },
     {
       label: 'Experience Points',
-      value: userDetails?.xp,
+      value: formatToIndianNumber(userDetails?.xp),
       icon: <Trophy className="text-feedback-warning h-5 w-5" />,
     },
     {

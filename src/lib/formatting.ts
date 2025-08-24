@@ -5,9 +5,20 @@ export function capitalizeFirstLetter(string: string) {
     : '';
 }
 
-//format number indian style
+// format number in Indian style (3-2-2 grouping). Uses Intl first, falls back to regex.
 export function formatToIndianNumber(num: number) {
-  return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+  if (!num) return '-';
+  try {
+    return new Intl.NumberFormat('en-IN', { useGrouping: true }).format(num);
+  } catch {
+    const [intPart, decPart] = String(num).split('.');
+    const sign = intPart.startsWith('-') ? '-' : '';
+    const digits = sign ? intPart.slice(1) : intPart;
+    const lastThree = digits.slice(-3);
+    const others = digits.slice(0, -3).replace(/\B(?=(\d{2})+(?!\d))/g, ',');
+    const formatted = (others ? others + ',' : '') + lastThree;
+    return sign + (decPart ? `${formatted}.${decPart}` : formatted);
+  }
 }
 
 //format name each word to capitalize
