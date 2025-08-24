@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -26,25 +26,74 @@ import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Button } from './ui/button';
 import { Textarea } from './ui/textarea';
+import {
+  useGetUserDetails,
+  useUpdateUserDetails,
+} from '~/services/user-service';
+import { toast } from 'sonner';
 
 type EditProfileDialogProps = {
   children: React.ReactNode;
-  defaultValues?: UpdateProfileSchemaType;
+  userExistingData?: UpdateProfileSchemaType;
 };
 
 const EditProfileDialog = ({
   children,
-  defaultValues,
+  userExistingData,
 }: EditProfileDialogProps) => {
+  //open and close state for dialog
+  const [open, setOpen] = React.useState(false);
+
   //crete user profile update form
   const profileUpdateForm = useForm<UpdateProfileSchemaType>({
     mode: 'onChange',
-    defaultValues: defaultValues ?? updateProfileDefaultValues,
+    defaultValues: updateProfileDefaultValues,
     resolver: zodResolver(updateProfileSchema),
   });
 
+  //populate form with existing data
+  useEffect(() => {
+    if (userExistingData) {
+      profileUpdateForm.reset(userExistingData);
+    }
+  }, [userExistingData, profileUpdateForm]);
+
+  //get the custom mutation hook for profile update
+  const { mutate } = useUpdateUserDetails();
+
+  //get user details custom hook
+  const { refetch: refetchUserDetails } = useGetUserDetails();
+
+  //handle submit
+  const onSubmit = (data: UpdateProfileSchemaType) => {
+    mutate(data, {
+      onSuccess: () => {
+        //toast message
+        toast.success('Profile update successful', {
+          classNames: {
+            toast: '!bg-feedback-success',
+          },
+        });
+      },
+      onError: (error) => {
+        //toast message for error
+        toast.error(error?.response?.data.message ?? 'Something went wrong', {
+          classNames: {
+            toast: '!bg-feedback-error',
+          },
+        });
+      },
+      onSettled: () => {
+        //close dialog
+        setOpen(false);
+        //refetch user details
+        refetchUserDetails();
+      },
+    });
+  };
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="bg-brand-900 border-ui-600 max-w-[95%] min-w-[50%] lg:min-w-[40%]">
         <DialogHeader className="gap-1">
@@ -58,7 +107,7 @@ const EditProfileDialog = ({
         </DialogHeader>
         <Form {...profileUpdateForm}>
           <form
-            onSubmit={profileUpdateForm.handleSubmit(() => {})}
+            onSubmit={profileUpdateForm.handleSubmit(onSubmit)}
             className="flex flex-col gap-3"
           >
             <FormField<UpdateProfileSchemaType>
@@ -158,7 +207,10 @@ const EditProfileDialog = ({
 
             {/* Buttons */}
             <div className="flex flex-row justify-end gap-2">
-              <Button type="button" onClick={() => profileUpdateForm.reset()}>
+              <Button
+                type="button"
+                onClick={() => profileUpdateForm.reset(userExistingData)}
+              >
                 Reset
               </Button>
               <Button type="submit" variant={'blue'}>

@@ -173,7 +173,14 @@ const Profile = () => {
                 }}
               />
               {/* TODO functionality to edit profile */}
-              <EditProfileDialog>
+              <EditProfileDialog
+                userExistingData={{
+                  email: userDetails?.email ?? '',
+                  name: userDetails?.name ?? '',
+                  bio: userDetails?.bio ?? '',
+                  location: userDetails?.location ?? '',
+                }}
+              >
                 <Button
                   className="border-ui-600 bg-brand-500 hover:bg-brand-200 border p-4.5 active:scale-95"
                   disabled={!userDetails?._id}
