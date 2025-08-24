@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '~/components/ui/button';
@@ -23,6 +23,7 @@ import { useAuthStore } from '~/state-management/auth-store';
 import { toast } from 'sonner';
 import Cookies from 'js-cookie';
 import { CookieNames, TokenExpiry } from '~/constants/config.constants';
+import { useSpinnerStore } from '~/state-management/spinner-store';
 
 /**
  * This component renders the login page.
@@ -42,10 +43,19 @@ const Login = () => {
   const { setToken } = useAuthStore();
 
   //import the mutation for auth login
-  const { mutate, error } = useLoginUser();
+  const { mutate, error, isPending } = useLoginUser();
+
+  //get the spinner state from the store
+  const setSpinner = useSpinnerStore((state) => state.setShowSpinner);
+
+  useEffect(() => {
+    // show spinner if loading
+    if (isPending) setSpinner(true);
+  }, [isPending, setSpinner]);
 
   //submit the form
   const onSubmit = (data: LoginSchema) => {
+    //@TODO check for user role to be admin
     //call the login api
     mutate(data, {
       onSuccess: (data) => {
@@ -70,6 +80,10 @@ const Login = () => {
             toast: '!bg-feedback-error',
           },
         });
+      },
+      onSettled: () => {
+        // hide spinner
+        setSpinner(false);
       },
     });
   };
