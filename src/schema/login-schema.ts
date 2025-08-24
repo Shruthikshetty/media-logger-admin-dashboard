@@ -5,14 +5,14 @@ import { Regex } from '~/constants/patterns.constants';
 export const loginSchema = z.object({
   email: z
     .string({
-      message: 'Email must be string',
+      error: 'Email must be string',
     })
     .min(1, 'Email is required')
     .regex(Regex.email, 'Email is not valid'),
 
   password: z
     .string({
-      message: 'Password must be string',
+      error: 'Password must be string',
     })
     .min(1, 'Password is required'),
 });

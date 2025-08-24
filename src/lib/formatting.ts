@@ -4,3 +4,9 @@ export function capitalizeFirstLetter(string: string) {
     ? string.charAt(0).toUpperCase() + string.slice(1).toLowerCase()
     : '';
 }
+
+
+//format number indian style
+export function formatToIndianNumber(num: number) {
+  return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+}

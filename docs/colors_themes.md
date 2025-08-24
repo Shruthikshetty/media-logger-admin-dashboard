@@ -15,7 +15,7 @@
 | Brand 200 | `#60a5fa` | <span style="background-color:#60a5fa; padding:0.5em 1em; border:1px solid #ccc;"> </span> |
 | Brand 500 | `#3b82f6` | <span style="background-color:#3b82f6; padding:0.5em 1em; border:1px solid #ccc;"> </span> |
 | Brand 600 | `#2563eb` | <span style="background-color:#2563eb; padding:0.5em 1em; border:1px solid #ccc;"> </span> |
-
+| Brand 900 | `#091427` | <span style="background-color:#091427; padding:0.5em 1em; border:1px solid #ccc;"> </span> |
 ## UI Shades
 
 | Name   | Hex       | Preview                                                                                    |

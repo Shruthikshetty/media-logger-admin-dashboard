@@ -22,6 +22,8 @@ import { cn } from '~/lib/utils';
 import { Button } from '~/components/ui/button';
 import BackButton from '~/components/back-button';
 import { Skeleton } from '~/components/ui/skeleton';
+import { formatToIndianNumber } from '~/lib/formatting';
+import EditProfileDialog from '~/components/edit-profile-dialog';
 
 const Profile = () => {
   //get the user data from the store
@@ -53,7 +55,7 @@ const Profile = () => {
     },
     {
       label: 'Location',
-      value: userDetails?.location,
+      value: userDetails?.location ?? '-',
       icon: <MapPin className="text-ui-400 h-5 w-5" />,
     },
     {
@@ -111,11 +113,12 @@ const Profile = () => {
                   className="text-feedback-warning h-5 w-5"
                   strokeWidth={2}
                 />
-                {/* @TODO create a formatter for number with commas */}
                 {!userDetails?._id ? (
                   <Skeleton className="h-4 w-20 max-w-50" />
                 ) : (
-                  <p className="text-lg font-bold">{userDetails.xp}</p>
+                  <p className="text-lg font-bold">
+                    {formatToIndianNumber(userDetails.xp)}
+                  </p>
                 )}
               </div>
             </div>
@@ -170,13 +173,15 @@ const Profile = () => {
                 }}
               />
               {/* TODO functionality to edit profile */}
-              <Button
-                className="border-ui-600 bg-brand-500 hover:bg-brand-200 border p-4.5 active:scale-95"
-                disabled={!userDetails?._id}
-              >
-                <Edit className="mr-2 h-4 w-4" />
-                Edit Profile
-              </Button>
+              <EditProfileDialog>
+                <Button
+                  className="border-ui-600 bg-brand-500 hover:bg-brand-200 border p-4.5 active:scale-95"
+                  disabled={!userDetails?._id}
+                >
+                  <Edit className="mr-2 h-4 w-4" />
+                  Edit Profile
+                </Button>
+              </EditProfileDialog>
             </div>
           </CardHeader>
           <CardContent className="flex flex-col gap-5 lg:grid lg:grid-cols-2">
