@@ -79,7 +79,7 @@ const ProfilePressDropdown = ({ children }: ProfilePressDropdownProps) => {
           <DropdownMenuSeparator className="bg-ui-600" />
           <DropdownMenuItem
             className="hover:bg-ui-800 focus:bg-ui-800 focus:text-base-white flex flex-row gap-2 rounded-md p-2"
-            onClick={handleLogout}
+            onSelect={handleLogout}
           >
             <LogOut className="text-base-white size-5" />
             <p className="test-sm">Log out</p>
