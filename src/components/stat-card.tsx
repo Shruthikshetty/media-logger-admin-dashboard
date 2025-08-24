@@ -66,7 +66,6 @@ const StatCard = ({
       <CardContent>
         <p className="text-2xl font-bold">{value}</p>
         <div className="flex flex-row items-center gap-2">
-          {/* @TODO implement logic to show increase or decrease */}
           {changeDirection === 'up' ? (
             <TrendingUp className="text-feedback-success h-4 w-4" />
           ) : (
