@@ -16,9 +16,11 @@ const RoleBadge = ({ role }: { role?: string }) => {
   return (
     <Badge
       variant={ROLE_COLOR_MAPPING[role.toLowerCase()]}
-      className="items-center justify-center rounded-full px-2.5 text-sm"
+      className="flex flex-row items-center justify-center rounded-full px-2.5 text-sm hover:opacity-80"
     >
-      <Shield strokeWidth={3} />
+      <p>
+        <Shield strokeWidth={3} className="h-4 w-4" />
+      </p>
       <p>{capitalizeFirstLetter(role)}</p>
     </Badge>
   );

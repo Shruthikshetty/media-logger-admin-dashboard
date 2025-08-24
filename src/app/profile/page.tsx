@@ -22,6 +22,7 @@ import { getXPLevel } from '~/lib/exp-mapping';
 import { cn } from '~/lib/utils';
 import { Button } from '~/components/ui/button';
 import BackButton from '~/components/back-button';
+import { Skeleton } from '~/components/ui/skeleton';
 
 const Profile = () => {
   //get the user data from the store
@@ -76,16 +77,26 @@ const Profile = () => {
             <div className="flex w-full flex-col items-center justify-center gap-2">
               <div className="relative">
                 <Avatar className="border-ui-600 border-1">
-                  <AvatarImage
-                    className="h-30 w-30 rounded-full"
-                    src={userDetails?.profileImg}
-                  />
-                  <AvatarFallback>
-                    <User className="bg-brand-200 text-base-white h-30 w-30 rounded-full p-3" />
-                  </AvatarFallback>
+                  {!userDetails?._id ? (
+                    //incase of loading
+                    <Skeleton className="h-30 w-30 rounded-full" />
+                  ) : (
+                    <>
+                      <AvatarImage
+                        className="h-30 w-30 rounded-full"
+                        src={userDetails?.profileImg}
+                      />
+                      <AvatarFallback>
+                        <User className="bg-brand-200 text-base-white h-30 w-30 rounded-full p-3" />
+                      </AvatarFallback>
+                    </>
+                  )}
                 </Avatar>
                 {/* TODO functionality to change profile image */}
-                <button className="bg-base-black border-ui-600 absolute right-0 bottom-0 flex items-center justify-center rounded-full border p-2 hover:opacity-70 active:scale-95">
+                <button
+                  className="bg-base-black border-ui-600 absolute right-0 bottom-0 flex items-center justify-center rounded-full border p-2 hover:opacity-70 active:scale-95"
+                  disabled={!userDetails._id}
+                >
                   <Camera className="h-6 w-6" />
                 </button>
               </div>
@@ -102,29 +113,49 @@ const Profile = () => {
                   strokeWidth={2}
                 />
                 {/* @TODO create a formatter for number with commas */}
-                <p className="text-lg font-bold">{userDetails.xp}</p>
+                {!userDetails?._id ? (
+                  <Skeleton className="h-4 w-20 max-w-50" />
+                ) : (
+                  <p className="text-lg font-bold">{userDetails.xp}</p>
+                )}
               </div>
             </div>
             <div className="flex flex-row items-center justify-between">
               <p className="text-ui-400">Level</p>
               <div className="flex flex-row items-center gap-2">
-                <Star
-                  className={cn('h-4 w-4', `${xpLevel.color}`)}
-                  strokeWidth={3}
-                />
-                <p className={cn('text-lg font-bold', `${xpLevel.color}`)}>
-                  {xpLevel.level}
-                </p>
+                {!userDetails?._id ? (
+                  <Skeleton className="h-4 w-20 max-w-50" />
+                ) : (
+                  <>
+                    <Star
+                      className={cn('h-4 w-4', `${xpLevel.color}`)}
+                      strokeWidth={3}
+                    />
+                    <p className={cn('text-lg font-bold', `${xpLevel.color}`)}>
+                      {xpLevel.level}
+                    </p>
+                  </>
+                )}
               </div>
             </div>
-            <p className="text-ui-400 flex flex-row items-center gap-2">
-              <Calendar className="h-5 w-5" />
-              Joined {moment(userDetails.createdAt).format('DD/MM/YYYY')}
-            </p>
-            <p className="text-ui-400 flex flex-row items-center gap-2">
-              <Calendar className="h-5 w-5" />
-              Updated {moment(userDetails.updatedAt).format('DD/MM/YYYY')}
-            </p>
+            {!userDetails?._id ? (
+              //incase of loading
+              <>
+                <Skeleton className="h-4 w-40 max-w-70" />
+                <Skeleton className="h-4 w-40 max-w-70" />
+              </>
+            ) : (
+              <>
+                <p className="text-ui-400 flex flex-row items-center gap-2">
+                  <Calendar className="h-5 w-5" />
+                  Joined {moment(userDetails?.createdAt).format('DD/MM/YYYY')}
+                </p>
+                <p className="text-ui-400 flex flex-row items-center gap-2">
+                  <Calendar className="h-5 w-5" />
+                  Updated {moment(userDetails?.updatedAt).format('DD/MM/YYYY')}
+                </p>
+              </>
+            )}
           </CardContent>
         </Card>
         {/* Profile info card */}
@@ -139,14 +170,26 @@ const Profile = () => {
                   subtitle: 'text-base',
                 }}
               />
-              <Button className="border-ui-600 bg-brand-500 hover:bg-brand-200 border p-4.5 active:scale-95">
+              {/* TODO functionality to edit profile */}
+              <Button
+                className="border-ui-600 bg-brand-500 hover:bg-brand-200 border p-4.5 active:scale-95"
+                disabled={!userDetails?._id}
+              >
                 <Edit className="mr-2 h-4 w-4" />
                 Edit Profile
               </Button>
             </div>
           </CardHeader>
           <CardContent className="flex flex-col gap-5 lg:grid lg:grid-cols-2">
-            {profileInfo.map((info) => {
+            {profileInfo.map((info, index) => {
+              if (!userDetails?._id)
+                // if data is loading
+                return (
+                  <React.Fragment key={index}>
+                    <Skeleton className="h-4 max-w-50" />
+                    <Skeleton className="h-4 max-w-70" />
+                  </React.Fragment>
+                );
               return (
                 <div
                   key={info.label}
