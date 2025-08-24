@@ -67,9 +67,9 @@ const Profile = () => {
         title="My Profile"
         subtitle="Manage your profile information and account settings"
       />
-      <div className="grid grid-cols-1 gap-5">
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-10">
         {/* Profile image Card */}
-        <Card className="border-ui-600 text-base-white from-base-black to-ui-900 bg-gradient-to-r">
+        <Card className="border-ui-600 text-base-white from-base-black to-ui-900 bg-gradient-to-r md:col-span-4 lg:col-span-3">
           <CardHeader>
             <div className="flex w-full flex-col items-center justify-center gap-2">
               <div className="relative">
@@ -126,7 +126,7 @@ const Profile = () => {
           </CardContent>
         </Card>
         {/* Profile info card */}
-        <Card className="border-ui-600 text-base-white from-base-black to-ui-900 bg-gradient-to-r">
+        <Card className="border-ui-600 text-base-white from-base-black to-ui-900 overflow-hidden bg-gradient-to-r md:col-span-6 lg:col-span-7">
           <CardHeader>
             <div className="flex flex-row gap-4">
               <TitleSubtitle
@@ -143,10 +143,16 @@ const Profile = () => {
               </Button>
             </div>
           </CardHeader>
-          <CardContent className="flex flex-col gap-5">
+          <CardContent className="flex flex-col gap-5 lg:grid lg:grid-cols-2">
             {profileInfo.map((info) => {
               return (
-                <div key={info.label} className="flex flex-col">
+                <div
+                  key={info.label}
+                  className={cn(
+                    'flex flex-col',
+                    info.label === 'Bio' ? 'col-span-2' : 'col-span-1',
+                  )}
+                >
                   <p className="text-ui-400 font-semibold">{info.label}</p>
                   <div className="flex flex-row items-center gap-2">
                     {info?.icon}
