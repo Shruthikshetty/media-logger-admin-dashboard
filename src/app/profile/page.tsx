@@ -22,7 +22,11 @@ import { cn } from '~/lib/utils';
 import { Button } from '~/components/ui/button';
 import BackButton from '~/components/back-button';
 import { Skeleton } from '~/components/ui/skeleton';
-import { formatToIndianNumber } from '~/lib/formatting';
+import {
+  capitalizeFirstLetter,
+  formatName,
+  formatToIndianNumber,
+} from '~/lib/formatting';
 import EditProfileDialog from '~/components/edit-profile-dialog';
 
 const Profile = () => {
@@ -36,7 +40,7 @@ const Profile = () => {
   const profileInfo = [
     {
       label: 'Full Name',
-      value: userDetails?.name,
+      value: formatName(userDetails?.name),
     },
     {
       label: 'Email Address',
@@ -45,7 +49,7 @@ const Profile = () => {
     },
     {
       label: 'Role',
-      value: userDetails?.role,
+      value: capitalizeFirstLetter(userDetails?.role),
       icon: <Shield className="text-ui-400 h-5 w-5" />,
     },
     {
@@ -101,7 +105,7 @@ const Profile = () => {
                   <Camera className="h-6 w-6" />
                 </button>
               </div>
-              <p className="text-xl">{userDetails?.name}</p>
+              <p className="text-xl">{formatName(userDetails?.name)}</p>
               <RoleBadge role={userDetails?.role} />
             </div>
           </CardHeader>

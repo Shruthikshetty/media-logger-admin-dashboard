@@ -9,3 +9,13 @@ export function capitalizeFirstLetter(string: string) {
 export function formatToIndianNumber(num: number) {
   return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
 }
+
+//format name each word to capitalize
+export function formatName(name: string) {
+  //if no name return empty
+  if (!name) return '';
+  return name
+    .split(' ')
+    .map((word) => capitalizeFirstLetter(word))
+    .join(' ');
+}
