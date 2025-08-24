@@ -1,7 +1,6 @@
 'use client';
 import { AvatarFallback, AvatarImage } from '@radix-ui/react-avatar';
 import {
-  ArrowLeft,
   Calendar,
   Camera,
   Edit,
@@ -22,12 +21,9 @@ import { useAuthStore } from '~/state-management/auth-store';
 import { getXPLevel } from '~/lib/exp-mapping';
 import { cn } from '~/lib/utils';
 import { Button } from '~/components/ui/button';
-import { useRouter } from 'next/navigation';
+import BackButton from '~/components/back-button';
 
 const Profile = () => {
-  // initialize router
-  const router = useRouter();
-
   //get the user data from the store
   const userDetails = useAuthStore((s) => s.user);
 
@@ -68,13 +64,7 @@ const Profile = () => {
 
   return (
     <div className="flex flex-col gap-5 p-5">
-      <Button
-        onClick={() => router.back()}
-        className="border-ui-600 hover:bg-ui-700 hover:border-ui-200 text-ui-200 hover:text-base-white max-w-40 border bg-transparent active:scale-95"
-      >
-        <ArrowLeft className="text-ui-200 size-4" strokeWidth={2} />
-        Back
-      </Button>
+      <BackButton />
       <TitleSubtitle
         title="My Profile"
         subtitle="Manage your profile information and account settings"
