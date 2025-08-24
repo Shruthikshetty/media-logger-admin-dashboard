@@ -47,7 +47,7 @@ const ProfilePressDropdown = ({ children }: ProfilePressDropdownProps) => {
         <button
           type="button"
           aria-label="open profile menu"
-          disabled={!!userDetails}
+          disabled={!userDetails?._id}
         >
           {children}
         </button>

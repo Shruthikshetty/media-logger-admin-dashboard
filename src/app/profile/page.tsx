@@ -1,5 +1,4 @@
 'use client';
-import { AvatarFallback, AvatarImage } from '@radix-ui/react-avatar';
 import {
   Calendar,
   Camera,
@@ -14,7 +13,7 @@ import {
 import React from 'react';
 import RoleBadge from '~/components/role-badge';
 import TitleSubtitle from '~/components/title-subtitle';
-import { Avatar } from '~/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
 import moment from 'moment';
 import { Card, CardContent, CardHeader } from '~/components/ui/card';
 import { useAuthStore } from '~/state-management/auth-store';
@@ -95,7 +94,7 @@ const Profile = () => {
                 {/* TODO functionality to change profile image */}
                 <button
                   className="bg-base-black border-ui-600 absolute right-0 bottom-0 flex items-center justify-center rounded-full border p-2 hover:opacity-70 active:scale-95"
-                  disabled={!userDetails._id}
+                  disabled={!userDetails?._id}
                 >
                   <Camera className="h-6 w-6" />
                 </button>

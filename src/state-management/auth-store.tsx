@@ -38,12 +38,12 @@ const initialState = {
     createdAt: '',
     updatedAt: '',
   },
+  tokenSet: false,
 };
 
 //create the global store for auth , contains user details
 export const useAuthStore = create<authStore>((set) => ({
   ...initialState,
-  tokenSet: false,
   /**
    * set the token
    */
