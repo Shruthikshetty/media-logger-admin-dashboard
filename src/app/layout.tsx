@@ -6,11 +6,13 @@ import AppLayoutProviders from './layout-providers';
 const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin'],
+  fallback: ['sans-serif'],
 });
 
 const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
   subsets: ['latin'],
+  fallback: ['monospace'],
 });
 
 export const metadata: Metadata = {

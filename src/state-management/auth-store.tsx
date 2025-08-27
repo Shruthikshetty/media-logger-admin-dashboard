@@ -16,7 +16,6 @@ export interface User {
 
 //type for auth store
 type authStore = {
-  token: string;
   tokenSet: boolean;
   setToken: (token: string) => void;
   user: User;
@@ -25,7 +24,6 @@ type authStore = {
 };
 
 const initialState = {
-  token: '',
   user: {
     _id: '',
     name: '',
@@ -47,7 +45,7 @@ export const useAuthStore = create<authStore>((set) => ({
   /**
    * set the token
    */
-  setToken: (token: string) => set({ token: token, tokenSet: !!token }),
+  setToken: (token: string) => set({ tokenSet: !!token }),
   /**
    * set user details
    */

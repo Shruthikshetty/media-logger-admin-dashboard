@@ -3,12 +3,13 @@
  */
 
 import { useMutation, useQuery } from '@tanstack/react-query';
-import axios, { AxiosError } from 'axios';
+import { AxiosError } from 'axios';
 import { UserDataStaleTime } from '~/constants/config.constants';
 import { Endpoints } from '~/constants/endpoints.constants';
 import { QueryKeys } from '~/constants/query-key.constants';
 import { useAuthStore, User } from '~/state-management/auth-store';
 import { ApiError } from '~/types/global.types';
+import apiClient from '~/lib/api-client';
 
 type ResponseUserDetails = {
   success: boolean;
@@ -35,27 +36,19 @@ type RequestUpdateUserDetails = Partial<{
 export const useGetUserDetails = () => {
   //check if token is set
   const tokenSet = useAuthStore((s) => s.tokenSet);
-  //get token
-  const token = useAuthStore((s) => s.token);
   return useQuery<ResponseUserDetails, AxiosError<ApiError>>({
     queryKey: [QueryKeys.userDetails],
     enabled: tokenSet, // no token do not fetch
     staleTime: UserDataStaleTime,
     queryFn: async () =>
-      axios
-        .get<ResponseUserDetails>(Endpoints.userDetails, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
+      apiClient
+        .get<ResponseUserDetails>(Endpoints.userDetails)
         .then((res) => res.data),
   });
 };
 
 //custom hook to update user details
 export const useUpdateUserDetails = () => {
-  //get token
-  const token = useAuthStore((s) => s.token);
   return useMutation<
     ResponseUpdateUserDetails,
     AxiosError<ApiError>,
@@ -63,12 +56,8 @@ export const useUpdateUserDetails = () => {
   >({
     mutationKey: [QueryKeys.updateUserDetails],
     mutationFn: (details: RequestUpdateUserDetails) =>
-      axios
-        .patch<ResponseUpdateUserDetails>(Endpoints.userDetails, details, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
+      apiClient
+        .patch<ResponseUpdateUserDetails>(Endpoints.userDetails, details)
         .then((res) => res.data),
   });
 };
