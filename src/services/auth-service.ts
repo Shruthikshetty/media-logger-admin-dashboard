@@ -5,6 +5,7 @@ import axios, { AxiosError } from 'axios';
 import { Endpoints } from '~/constants/endpoints.constants';
 import { QueryKeys } from '~/constants/query-key.constants';
 import { ApiError } from '~/types/global.types';
+import apiClient from '~/lib/api-client';
 
 type RequestAuthType = {
   email: string;
@@ -26,7 +27,7 @@ export const useLoginUser = () => {
   return useMutation<ResponseAuthType, AxiosError<ApiError>, RequestAuthType>({
     mutationKey: [QueryKeys.login],
     mutationFn: (req: RequestAuthType) =>
-      axios
+      apiClient
         .post<ResponseAuthType>(Endpoints.login, req)
         .then((res) => res.data),
   });

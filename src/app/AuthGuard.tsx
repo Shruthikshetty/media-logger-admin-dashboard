@@ -16,7 +16,7 @@ const AuthGuard = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const pathname = usePathname();
   //get check if the user is logged in
-  const token = useAuthStore((state) => state.token);
+  const isTokenSet = useAuthStore((state) => state.tokenSet);
   const setToken = useAuthStore((state) => state.setToken);
 
   const resetSpinner = useSpinnerStore((state) => state.resetSpinner);
@@ -37,9 +37,11 @@ const AuthGuard = ({ children }: { children: React.ReactNode }) => {
   }, [router, pathname, resetSpinner, setToken]);
 
   // if the user is not logged in return the login page
-  if (!token) {
+  if (!isTokenSet) {
     if (pathname === '/login') return children;
     return null;
+  } else if (pathname === '/login') {
+    return children;
   }
 
   // if the user is logged in return the sidebar with the tabs
