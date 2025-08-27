@@ -6,4 +6,5 @@ export const QueryKeys = {
   login: 'login',
   dashboardAnalytics: 'dashboard-analytics-data',
   userDetails: 'user-details',
+  updateUserDetails: 'update-user-details',
 };
