@@ -35,11 +35,12 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response.status === 401) {
+    const status = error?.response?.status;
+    if (status === 401) {
       //set token state to false
       useAuthStore.getState().resetAuth();
       //remove token from cookie
-      Cookies.remove(CookieNames.token);
+      Cookies.remove(CookieNames.token, { path: '/' });
       // Force a hard redirect to the login page.
       if (typeof window !== 'undefined') {
         window.location.href = '/login';

@@ -25,6 +25,7 @@ const AuthGuard = ({ children }: { children: React.ReactNode }) => {
     const cookieToken = Cookies.get(CookieNames.token);
     // check for token in cookies
     if (!cookieToken) {
+      setToken(''); // ensure tokenSet becomes false
       router.replace('/login');
     } else if (pathname === '/login') {
       setToken(cookieToken);

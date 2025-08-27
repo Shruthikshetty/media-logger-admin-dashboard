@@ -1,7 +1,7 @@
 // this file contains the auth related services
 
 import { useMutation } from '@tanstack/react-query';
-import axios, { AxiosError } from 'axios';
+import { AxiosError } from 'axios';
 import { Endpoints } from '~/constants/endpoints.constants';
 import { QueryKeys } from '~/constants/query-key.constants';
 import { ApiError } from '~/types/global.types';
