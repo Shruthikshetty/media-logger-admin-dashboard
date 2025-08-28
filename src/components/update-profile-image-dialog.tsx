@@ -1,22 +1,39 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from './ui/dialog';
 import { Card } from './ui/card';
-import { ImageIcon, Upload, UploadIcon } from 'lucide-react';
+import { ImageIcon, UploadIcon } from 'lucide-react';
 import { Button } from './ui/button';
 
 const UpdateProfileImage = ({ children }: { children: React.ReactNode }) => {
+  //dialog open state
+  const [open, setOpen] = useState(false);
+  //file input ref
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //check if file exists
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
+      console.log('file uploaded');
+    }
+  };
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="bg-brand-900 border-ui-600 max-w-[95%] min-w-[50%] lg:min-w-[40%]">
         <DialogHeader>
           <DialogTitle className="text-xl">Upload Profile Image</DialogTitle>
+          <DialogDescription hidden>
+            Modal to upload profile image
+          </DialogDescription>
         </DialogHeader>
         {/* main content  */}
         <div>
@@ -29,9 +46,14 @@ const UpdateProfileImage = ({ children }: { children: React.ReactNode }) => {
               <p className="text-base">Drag and drop your image here</p>
               <p className="text-ui-400 text-sm">or click to browse files</p>
             </div>
+            {/* file upload button */}
             <Button
+              aria-label="upload file button"
+              type="button"
               variant="outline"
-              onClick={() => {}}
+              onClick={() => {
+                fileInputRef.current?.click();
+              }}
               className="text-base-white"
             >
               <UploadIcon className="mr-3 size-4" />
@@ -41,6 +63,14 @@ const UpdateProfileImage = ({ children }: { children: React.ReactNode }) => {
               PNG, JPG up to 2MB • Will be cropped to square
             </p>
           </Card>
+          {/* file input hidden*/}
+          <input
+            type="file"
+            accept="image/*"
+            hidden
+            ref={fileInputRef}
+            onChange={handleFileChange}
+          />
         </div>
       </DialogContent>
     </Dialog>
