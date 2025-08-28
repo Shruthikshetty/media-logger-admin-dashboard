@@ -10,18 +10,73 @@ import {
 import { Card } from './ui/card';
 import { ImageIcon, UploadIcon } from 'lucide-react';
 import { Button } from './ui/button';
+import { Progress } from './ui/progress';
+import { resizeImageKeepAspect } from '~/lib/image-resize';
+import { MAX_IMAGE_SIZE } from '~/constants/config.constants';
 
 const UpdateProfileImage = ({ children }: { children: React.ReactNode }) => {
   //dialog open state
   const [open, setOpen] = useState(false);
+  // image state
+  const [image, setImage] = useState(''); // store base 64
   //file input ref
   const fileInputRef = React.useRef<HTMLInputElement>(null);
+  // image upload progress state
+  const [uploadProgress, setUploadProgress] = useState(0);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUploadProgress(0);
     //check if file exists
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
-      console.log('file uploaded');
+
+      //in case file size is > 2mb
+      if (file.size > MAX_IMAGE_SIZE) {
+        setUploadProgress(10);
+        //read image data
+        const reader = new FileReader();
+
+        reader.onload = async (event) => {
+          setUploadProgress(40);
+          const img = new window.Image();
+          img.src = event.target?.result as string;
+
+          img.onload = async () => {
+            setUploadProgress(70); // resizing
+            //resize and store
+            const resized = resizeImageKeepAspect({
+              img,
+              maxWidth: 500,
+              maxHeight: 500,
+            });
+            setImage(resized);
+            setUploadProgress(100);
+            setImage(
+              resizeImageKeepAspect({ img, maxWidth: 500, maxHeight: 500 }),
+            );
+          };
+
+          //@TODO handle error
+          img.onerror = () => {
+            setUploadProgress(0);
+          };
+        };
+        reader.onerror = () => {
+          setUploadProgress(0);
+        };
+        reader.readAsDataURL(file);
+      } else {
+        setUploadProgress(10);
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          setImage((event?.target?.result as string) ?? '');
+          setUploadProgress(100);
+        };
+        reader.onerror = () => {
+          setUploadProgress(0);
+        };
+        reader.readAsDataURL(file);
+      }
     }
   };
 
@@ -62,6 +117,18 @@ const UpdateProfileImage = ({ children }: { children: React.ReactNode }) => {
             <p className="text-ui-400 text-sm">
               PNG, JPG up to 2MB • Will be cropped to square
             </p>
+            {/* upload progress container  */}
+            {uploadProgress > 0 && (
+              <div className="flex w-full flex-col gap-2 px-5">
+                <p className="text-base-white text-base">
+                  Processing your image ...
+                </p>
+                <Progress
+                  value={uploadProgress}
+                  className="border-ui-600 h-4 border bg-transparent"
+                />
+              </div>
+            )}
           </Card>
           {/* file input hidden*/}
           <input
