@@ -103,6 +103,7 @@ const Profile = () => {
                     </>
                   )}
                 </Avatar>
+                {/* update profile image */}
                 <UpdateProfileImage>
                   <button
                     type="button"
