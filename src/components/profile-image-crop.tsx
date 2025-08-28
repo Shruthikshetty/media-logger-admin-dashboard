@@ -10,6 +10,16 @@ interface ProfileImageCropProps {
   onCropComplete: (croppedFile: File) => void; // send the cropped file back
 }
 
+/**
+ * A component to crop a profile image
+ *
+ * @param {string} imageSrc preview image (could be object URL)
+ * @param {() => void} onBack callback for user pressing back/cancel
+ * @param {(croppedFile: File) => void} onCropComplete send the cropped file back
+ * @param {string} [fileName="cropped.jpg"] file name optional
+ *
+ * @returns a JSX.Element
+ */
 const ProfileImageCropper = ({
   imageSrc,
   onBack,
@@ -37,7 +47,7 @@ const ProfileImageCropper = ({
 
   return (
     <>
-      <div className="h-min-[500px] h-max-[1000px] relative h-[700px] w-[90%] overflow-clip rounded-xl">
+      <div className="relative h-[700px] max-h-[1000px] min-h-[500px] w-[90%] overflow-clip rounded-xl">
         <Cropper
           image={imageSrc}
           crop={crop}

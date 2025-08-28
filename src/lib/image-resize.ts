@@ -73,13 +73,16 @@ export function dataURLToFile(dataUrl: string, filename: string): File {
  *
  * @param {string} imageSrc - The image source (dataURL or image path).
  * @param {{ x: number, y: number, width: number, height: number }} pixelCrop - The crop parameters.
- *
+ * @param {string} [mimeType='image/jpeg'] - The MIME type of the cropped image (default: 'image/jpeg').
+ * @param {number} [quality=0.92] - The quality of the cropped image (default: 0.92).
  * @returns {Promise<Blob>} The cropped image as a blob.
  * @throws {Error} If the canvas context is not available or the image fails to load.
  */
 export async function getCroppedImg(
   imageSrc: string, // dataURL or image path
   pixelCrop: { x: number; y: number; width: number; height: number },
+  mimeType: string = 'image/jpeg',
+  quality: number = 0.92,
 ): Promise<Blob> {
   const image = document.createElement('img');
   image.src = imageSrc;
@@ -87,25 +90,25 @@ export async function getCroppedImg(
     image.onload = resolve;
   });
   const canvas = document.createElement('canvas');
-  canvas.width = pixelCrop.width;
-  canvas.height = pixelCrop.height;
+  //calculate safe values
+  const sx = Math.max(0, Math.floor(pixelCrop.x));
+  const sy = Math.max(0, Math.floor(pixelCrop.y));
+  const sw = Math.max(1, Math.floor(pixelCrop.width));
+  const sh = Math.max(1, Math.floor(pixelCrop.height));
+  canvas.width = sw;
+  canvas.height = sh;
+
   const ctx = canvas.getContext('2d');
   if (!ctx) throw new Error('Canvas 2D context unavailable');
-  ctx.drawImage(
-    image,
-    pixelCrop.x,
-    pixelCrop.y,
-    pixelCrop.width,
-    pixelCrop.height,
-    0,
-    0,
-    pixelCrop.width,
-    pixelCrop.height,
-  );
-  return new Promise((resolve) => {
-    canvas.toBlob((blob) => {
-      if (!blob) throw new Error('Failed to create blob');
-      resolve(blob);
-    }, 'image/jpeg');
+  ctx.drawImage(image, sx, sy, sw, sh, 0, 0, sw, sh);
+  return new Promise<Blob>((resolve, reject) => {
+    canvas.toBlob(
+      (blob) => {
+        if (!blob) return reject(new Error('Failed to create blob'));
+        resolve(blob);
+      },
+      mimeType,
+      quality,
+    );
   });
 }
