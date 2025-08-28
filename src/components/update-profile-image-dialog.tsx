@@ -14,6 +14,8 @@ import { Progress } from './ui/progress';
 import { dataURLToFile, resizeImageKeepAspect } from '~/lib/image-resize';
 import { MAX_IMAGE_SIZE } from '~/constants/config.constants';
 import Image from 'next/image';
+import { Avatar } from '@radix-ui/react-avatar';
+import { AvatarFallback, AvatarImage } from './ui/avatar';
 
 const UpdateProfileImage = ({ children }: { children: React.ReactNode }) => {
   //dialog open state
@@ -24,7 +26,10 @@ const UpdateProfileImage = ({ children }: { children: React.ReactNode }) => {
   const fileInputRef = React.useRef<HTMLInputElement>(null);
   // image upload progress state
   const [uploadProgress, setUploadProgress] = useState(0);
+  //confirmation on the image upload
+  const [confirmed, setConfirmed] = useState(false);
 
+  //handle the selected image file
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setUploadProgress(0);
     //check if file exists
@@ -130,7 +135,7 @@ const UpdateProfileImage = ({ children }: { children: React.ReactNode }) => {
           )}
 
           {/* show uploaded image  */}
-          {uploadProgress === 100 && image && (
+          {uploadProgress === 100 && image && !confirmed && (
             <Card className="border-ui-600 flex items-center justify-center border bg-transparent">
               <Image
                 src={URL.createObjectURL(image)}
@@ -140,12 +145,44 @@ const UpdateProfileImage = ({ children }: { children: React.ReactNode }) => {
               />
               {/* buttons container  */}
               <div className="flex flex-row gap-2">
-                <Button variant={'outline'} className="text-base-white">
+                <Button
+                  variant={'outline'}
+                  className="text-base-white"
+                  onClick={() => {
+                    setImage(undefined);
+                    setUploadProgress(0);
+                  }}
+                >
                   Back
                 </Button>
-                <Button variant={'blue'}>Continue</Button>
+                <Button variant={'blue'} onClick={() => setConfirmed(true)}>
+                  Continue
+                </Button>
               </div>
             </Card>
+          )}
+
+          {confirmed && image && (
+            <div className="flex flex-col items-center justify-center gap-3">
+              <p className="text-ui-400">
+                Perfect! Your profile image is ready
+              </p>
+              <Avatar>
+                <AvatarImage
+                  src={URL.createObjectURL(image)}
+                  className="border-ui-600 h-50 w-50 rounded-full border-3"
+                />
+                <AvatarFallback>
+                  <ImageIcon className="text-ui-400 h-30 w-30 rounded-full" />
+                </AvatarFallback>
+              </Avatar>
+              <div className="mt-5 flex flex-row gap-2">
+                <Button variant={'outline'} onClick={() => setConfirmed(false)}>
+                  Back
+                </Button>
+                <Button variant={'blue'}>Use this image</Button>
+              </div>
+            </div>
           )}
 
           {/* file input hidden*/}
