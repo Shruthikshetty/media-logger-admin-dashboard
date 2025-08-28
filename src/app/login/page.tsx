@@ -24,6 +24,7 @@ import { toast } from 'sonner';
 import Cookies from 'js-cookie';
 import { CookieNames, TokenExpiry } from '~/constants/config.constants';
 import { useSpinnerStore } from '~/state-management/spinner-store';
+import { UserRoles } from '~/constants/screen.constants';
 
 /**
  * This component renders the login page.
@@ -40,7 +41,8 @@ const Login = () => {
   const route = useRouter();
 
   //get store data
-  const { setToken } = useAuthStore();
+  const setToken = useAuthStore((s) => s.setToken);
+  const setUser = useAuthStore((s) => s.setUser);
 
   //import the mutation for auth login
   const { mutate, error, isPending } = useLoginUser();
@@ -55,12 +57,22 @@ const Login = () => {
 
   //submit the form
   const onSubmit = (data: LoginSchema) => {
-    //@TODO check for user role to be admin
     //call the login api
     mutate(data, {
       onSuccess: (data) => {
+        //check if user is a admin
+        if (!(data.data.user.role.toLowerCase() === UserRoles.admin)) {
+          toast.error('You do not have admin access', {
+            classNames: {
+              toast: '!bg-feedback-error',
+            },
+          });
+          return;
+        }
         // set the token
         setToken(data.data.token);
+        // set user in store
+        setUser(data.data.user);
         // set token in cookie
         Cookies.set(CookieNames.token, data.data.token, {
           expires: TokenExpiry, // days
@@ -75,7 +87,7 @@ const Login = () => {
       },
       onError: (error) => {
         // show message a pop up
-        toast.error(error?.response?.data.message ?? 'Something went wrong', {
+        toast.error(error?.response?.data?.message ?? 'Something went wrong', {
           classNames: {
             toast: '!bg-feedback-error',
           },

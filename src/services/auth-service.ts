@@ -6,6 +6,7 @@ import { Endpoints } from '~/constants/endpoints.constants';
 import { QueryKeys } from '~/constants/query-key.constants';
 import { ApiError } from '~/types/global.types';
 import apiClient from '~/lib/api-client';
+import { User } from '~/state-management/auth-store';
 
 type RequestAuthType = {
   email: string;
@@ -16,6 +17,7 @@ type ResponseAuthType = {
   success: boolean;
   data: {
     token: string;
+    user: User;
   };
   message?: string;
 };

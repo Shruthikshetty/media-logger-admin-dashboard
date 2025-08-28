@@ -58,6 +58,12 @@ export const ProfileMenuItems = [
   },
 ];
 
+// user roles
+export const UserRoles = {
+  admin: 'admin',
+  user: 'user',
+};
+
 // role color mapping
 export const ROLE_COLOR_MAPPING: Record<
   string,

@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -37,6 +38,11 @@ type EditProfileDialogProps = {
   userExistingData?: UpdateProfileSchemaType;
 };
 
+/**
+ * This component is used to edit the user profile
+ * this opens a dialog to edit the user profile
+ * @param : - pass the current user details as props
+ */
 const EditProfileDialog = ({
   children,
   userExistingData,
@@ -98,10 +104,10 @@ const EditProfileDialog = ({
           <DialogTitle className="text-base-white text-xl">
             Edit Profile
           </DialogTitle>
-          <p className="text-ui-400 text-base">
+          <DialogDescription className="text-ui-400 text-base">
             Update your profile information below. Fields marked with * are
             required.
-          </p>
+          </DialogDescription>
         </DialogHeader>
         <Form {...profileUpdateForm}>
           <form

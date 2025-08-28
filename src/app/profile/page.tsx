@@ -28,7 +28,13 @@ import {
   formatToIndianNumber,
 } from '~/lib/formatting';
 import EditProfileDialog from '~/components/edit-profile-dialog';
+import UpdateProfileImage from '~/components/update-profile-image-dialog';
 
+/**
+ * @description This is the profile page with all the user details with edit option to update user details
+ *              and update profile image
+ * @returns the profile page
+ */
 const Profile = () => {
   //get the user data from the store
   const userDetails = useAuthStore((s) => s.user);
@@ -97,13 +103,16 @@ const Profile = () => {
                     </>
                   )}
                 </Avatar>
-                {/* TODO functionality to change profile image */}
-                <button
-                  className="bg-base-black border-ui-600 absolute right-0 bottom-0 flex items-center justify-center rounded-full border p-2 hover:opacity-70 active:scale-95"
-                  disabled={!userDetails?._id}
-                >
-                  <Camera className="h-6 w-6" />
-                </button>
+                <UpdateProfileImage>
+                  <button
+                    type="button"
+                    aria-label="update profile image"
+                    className="bg-base-black border-ui-600 absolute right-0 bottom-0 flex items-center justify-center rounded-full border p-2 hover:opacity-70 active:scale-95"
+                    disabled={!userDetails?._id}
+                  >
+                    <Camera className="h-6 w-6" />
+                  </button>
+                </UpdateProfileImage>
               </div>
               <p className="text-xl">{formatName(userDetails?.name)}</p>
               <RoleBadge role={userDetails?.role} />
@@ -176,7 +185,6 @@ const Profile = () => {
                   subtitle: 'text-base',
                 }}
               />
-              {/* TODO functionality to edit profile */}
               <EditProfileDialog
                 userExistingData={{
                   email: userDetails?.email ?? '',

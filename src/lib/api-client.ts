@@ -5,7 +5,6 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { CookieNames } from '~/constants/config.constants';
-
 import { baseUrl } from '~/constants/endpoints.constants';
 import { useAuthStore } from '~/state-management/auth-store';
 
