@@ -39,8 +39,29 @@ export function resizeImageKeepAspect({
   canvas.width = newWidth;
   canvas.height = newHeight;
   const ctx = canvas.getContext('2d');
-  if (!ctx) throw new Error("Canvas 2D context unavailable")
+  if (!ctx) throw new Error('Canvas 2D context unavailable');
   ctx.drawImage(img, 0, 0, newWidth, newHeight);
 
   return canvas.toDataURL('image/jpeg');
+}
+
+/**
+ * Converts a data URI (base64) to a File object
+ * @param dataUrl The data URL string (e.g., "data:image/jpeg;base64,...")
+ * @param filename Desired filename (with extension)
+ * @returns File object
+ */
+export function dataURLToFile(dataUrl: string, filename: string): File {
+  const [prefix, base64] = dataUrl.split(',');
+  const mimeMatch = prefix.match(/:(.*?);/);
+  const mime: string = mimeMatch ? mimeMatch[1] : 'application/octet-stream';
+
+  const binary = window.atob(base64);
+  const array = new Uint8Array(binary.length);
+
+  for (let i = 0; i < binary.length; i++) {
+    array[i] = binary.charCodeAt(i);
+  }
+
+  return new File([array], filename, { type: mime });
 }
