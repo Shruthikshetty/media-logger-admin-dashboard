@@ -30,6 +30,11 @@ import {
 import EditProfileDialog from '~/components/edit-profile-dialog';
 import UpdateProfileImage from '~/components/update-profile-image-dialog';
 
+/**
+ * @description This is the profile page with all the user details with edit option to update user details
+ *              and update profile image
+ * @returns the profile page
+ */
 const Profile = () => {
   //get the user data from the store
   const userDetails = useAuthStore((s) => s.user);

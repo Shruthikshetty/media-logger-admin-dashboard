@@ -14,8 +14,7 @@ import { Progress } from './ui/progress';
 import { dataURLToFile, resizeImageKeepAspect } from '~/lib/image-resize';
 import { MAX_IMAGE_SIZE } from '~/constants/config.constants';
 import Image from 'next/image';
-import { Avatar } from '@radix-ui/react-avatar';
-import { AvatarFallback, AvatarImage } from './ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { useUploadImage } from '~/services/uploads-service';
 import {
   useGetUserDetails,
@@ -177,7 +176,18 @@ const UpdateProfileImage = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog
+      open={open}
+      onOpenChange={(next) => {
+        setOpen(next);
+        // make sure to clear all state on esc or outside click
+        if (!next) {
+          setConfirmed(false);
+          setImage(undefined);
+          setUploadProgress(0);
+        }
+      }}
+    >
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="bg-brand-900 border-ui-600 max-w-[95%] min-w-[50%] lg:min-w-[40%]">
         <DialogHeader>

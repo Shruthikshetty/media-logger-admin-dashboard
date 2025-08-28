@@ -20,7 +20,9 @@ export function resizeImageKeepAspect({
   maxWidth,
   maxHeight,
 }: ImageResizeOptions) {
-  const { width, height } = img;
+  // Get image dimensions
+  const width = img.naturalWidth ?? img.width;
+  const height = img.naturalHeight ?? img.height;
 
   let newWidth = width;
   let newHeight = height;
