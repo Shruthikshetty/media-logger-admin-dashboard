@@ -23,12 +23,15 @@ import {
 } from '~/services/user-service';
 import { toast } from 'sonner';
 import { useSpinnerStore } from '~/state-management/spinner-store';
+import { cn } from '~/lib/utils';
 
 const UpdateProfileImage = ({ children }: { children: React.ReactNode }) => {
   //dialog open state
   const [open, setOpen] = useState(false);
   // image state
   const [image, setImage] = useState<File>(); // image file
+  //drag state to indicate drag over
+  const [drag, setDrag] = useState(false);
   //file input ref
   const fileInputRef = React.useRef<HTMLInputElement>(null);
   // image upload progress state
@@ -102,6 +105,31 @@ const UpdateProfileImage = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  // handles drag over for the drop image area
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setDrag(true);
+  };
+
+  //handle on drop
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setDrag(false);
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      handleFileChange({
+        target: {
+          files: e.dataTransfer.files,
+        },
+      } as React.ChangeEvent<HTMLInputElement>);
+    }
+  };
+
+  //handles Drag leave for the drop image area
+  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setDrag(false);
+  };
+
   const handleConfirmImageUpload = () => {
     // check if image exists
     if (!image) return;
@@ -163,7 +191,15 @@ const UpdateProfileImage = ({ children }: { children: React.ReactNode }) => {
           {uploadProgress < 100 && (
             <>
               {/* drag and drop area */}
-              <Card className="border-ui-600 hover:border-ui-400 flex flex-col items-center justify-center gap-4 border-2 border-dashed bg-transparent">
+              <Card
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+                className={cn(
+                  'border-ui-600 hover:border-ui-400 flex flex-col items-center justify-center gap-4 border-2 border-dashed bg-transparent transition-colors',
+                  drag && 'border-brand-500 bg-brand-500/10',
+                )}
+              >
                 <div className="bg-ui-700 rounded-full p-2">
                   <ImageIcon className="text-ui-400 h-7 w-7" />
                 </div>
@@ -205,7 +241,7 @@ const UpdateProfileImage = ({ children }: { children: React.ReactNode }) => {
             </>
           )}
 
-          {/* show uploaded image  */}
+          {/* show uploaded image with crop option */}
           {uploadProgress === 100 && image && !confirmed && (
             <Card className="border-ui-600 flex items-center justify-center border bg-transparent">
               <Image
@@ -232,7 +268,7 @@ const UpdateProfileImage = ({ children }: { children: React.ReactNode }) => {
               </div>
             </Card>
           )}
-
+          {/* show the final image in a avatar view  */}
           {confirmed && image && (
             <div className="flex flex-col items-center justify-center gap-3">
               <p className="text-ui-400">
