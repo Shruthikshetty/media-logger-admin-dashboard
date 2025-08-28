@@ -7,4 +7,5 @@ export const QueryKeys = {
   dashboardAnalytics: 'dashboard-analytics-data',
   userDetails: 'user-details',
   updateUserDetails: 'update-user-details',
+  uploadImage: 'upload-image',
 };

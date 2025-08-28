@@ -16,6 +16,13 @@ import { MAX_IMAGE_SIZE } from '~/constants/config.constants';
 import Image from 'next/image';
 import { Avatar } from '@radix-ui/react-avatar';
 import { AvatarFallback, AvatarImage } from './ui/avatar';
+import { useUploadImage } from '~/services/uploads-service';
+import {
+  useGetUserDetails,
+  useUpdateUserDetails,
+} from '~/services/user-service';
+import { toast } from 'sonner';
+import { useSpinnerStore } from '~/state-management/spinner-store';
 
 const UpdateProfileImage = ({ children }: { children: React.ReactNode }) => {
   //dialog open state
@@ -28,6 +35,24 @@ const UpdateProfileImage = ({ children }: { children: React.ReactNode }) => {
   const [uploadProgress, setUploadProgress] = useState(0);
   //confirmation on the image upload
   const [confirmed, setConfirmed] = useState(false);
+  //custom image upload hook
+  const { mutate: uploadImageMutate } = useUploadImage();
+  //get the custom user profile update hook
+  const { mutate: updateUserDetailsMutate } = useUpdateUserDetails();
+  //get the spinner state from the store
+  const setSpinner = useSpinnerStore((state) => state.setShowSpinner);
+  //get user profile custom hook
+  const { refetch } = useGetUserDetails();
+
+  //unexpected error toast
+  const handleUnexpectedError = () => {
+    //toast message for error
+    toast.error('Something went wrong', {
+      classNames: {
+        toast: '!bg-feedback-error',
+      },
+    });
+  };
 
   //handle the selected image file
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -75,6 +100,52 @@ const UpdateProfileImage = ({ children }: { children: React.ReactNode }) => {
         setUploadProgress(100);
       }
     }
+  };
+
+  const handleConfirmImageUpload = () => {
+    // check if image exists
+    if (!image) return;
+    setSpinner(true);
+    // upload image
+    uploadImageMutate(image, {
+      onSuccess: (data) => {
+        // update the user profile
+        updateUserDetailsMutate(
+          {
+            profileImg: data.data.url,
+          },
+          {
+            onSuccess: () => {
+              setConfirmed(true);
+            },
+            onError: () => {
+              handleUnexpectedError();
+            },
+            onSettled: () => {
+              // reset all state
+              setOpen(false);
+              setConfirmed(false);
+              setImage(undefined);
+              setUploadProgress(0);
+              // refetch user details
+              refetch();
+              //push a toast message
+              toast.success('Profile image updated successfully', {
+                classNames: {
+                  toast: '!bg-feedback-success',
+                },
+              });
+              // set loading false
+              setSpinner(false);
+            },
+          },
+        );
+      },
+      onError: () => {
+        handleUnexpectedError();
+        setSpinner(false);
+      },
+    });
   };
 
   return (
@@ -177,10 +248,20 @@ const UpdateProfileImage = ({ children }: { children: React.ReactNode }) => {
                 </AvatarFallback>
               </Avatar>
               <div className="mt-5 flex flex-row gap-2">
-                <Button variant={'outline'} onClick={() => setConfirmed(false)}>
+                <Button
+                  variant={'outline'}
+                  onClick={() => setConfirmed(false)}
+                  type="button"
+                >
                   Back
                 </Button>
-                <Button variant={'blue'}>Use this image</Button>
+                <Button
+                  variant={'blue'}
+                  onClick={handleConfirmImageUpload}
+                  type="button"
+                >
+                  Use this image
+                </Button>
               </div>
             </div>
           )}

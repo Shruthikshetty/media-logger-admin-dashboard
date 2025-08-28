@@ -9,4 +9,5 @@ export const Endpoints = {
   login: `/api/auth/login`,
   analyticsDashboard: `/api/analytic/dashboard-admin`,
   userDetails: `/api/user`,
+  uploadImage: `/api/upload/image`,
 };
