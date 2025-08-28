@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -45,6 +45,18 @@ const UpdateProfileImage = ({ children }: { children: React.ReactNode }) => {
   const setSpinner = useSpinnerStore((state) => state.setShowSpinner);
   //get user profile custom hook
   const { refetch } = useGetUserDetails();
+  // object URL for previews
+  const [previewUrl, setPreviewUrl] = useState<string>();
+  //handle image preview when image changes
+  useEffect(() => {
+    if (!image) {
+      setPreviewUrl(undefined);
+      return;
+    }
+    const url = URL.createObjectURL(image);
+    setPreviewUrl(url);
+    return () => URL.revokeObjectURL(url);
+  }, [image]);
 
   //unexpected error toast
   const handleUnexpectedError = (errorMessage = 'Something went wrong') => {
@@ -57,11 +69,11 @@ const UpdateProfileImage = ({ children }: { children: React.ReactNode }) => {
   };
 
   //handle the selected image file
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFiles = async (files: FileList | null) => {
     setUploadProgress(0);
     //check if file exists
-    if (e.target.files && e.target.files.length > 0) {
-      const file = e.target.files[0];
+    if (files && files.length > 0) {
+      const file = files[0];
 
       //in case file size is > 2mb
       if (file.size > MAX_IMAGE_SIZE) {
@@ -115,11 +127,7 @@ const UpdateProfileImage = ({ children }: { children: React.ReactNode }) => {
     e.preventDefault();
     setDrag(false);
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      handleFileChange({
-        target: {
-          files: e.dataTransfer.files,
-        },
-      } as React.ChangeEvent<HTMLInputElement>);
+      handleFiles(e.dataTransfer.files);
     }
   };
 
@@ -256,10 +264,10 @@ const UpdateProfileImage = ({ children }: { children: React.ReactNode }) => {
           )}
 
           {/* show uploaded image with crop option */}
-          {uploadProgress === 100 && image && !confirmed && (
+          {uploadProgress === 100 && !confirmed && previewUrl && (
             <Card className="border-ui-600 flex items-center justify-center border bg-transparent">
               <Image
-                src={URL.createObjectURL(image)}
+                src={previewUrl}
                 alt="profile image"
                 width={500}
                 height={700}
@@ -283,14 +291,14 @@ const UpdateProfileImage = ({ children }: { children: React.ReactNode }) => {
             </Card>
           )}
           {/* show the final image in a avatar view  */}
-          {confirmed && image && (
+          {confirmed && previewUrl && (
             <div className="flex flex-col items-center justify-center gap-3">
               <p className="text-ui-400">
                 Perfect! Your profile image is ready
               </p>
               <Avatar>
                 <AvatarImage
-                  src={URL.createObjectURL(image)}
+                  src={previewUrl}
                   className="border-ui-600 h-50 w-50 rounded-full border-3"
                 />
                 <AvatarFallback>
@@ -319,10 +327,10 @@ const UpdateProfileImage = ({ children }: { children: React.ReactNode }) => {
           {/* file input hidden*/}
           <input
             type="file"
-            accept="image/*"
+            accept="image/png,image/jpeg,image/webp"
             hidden
             ref={fileInputRef}
-            onChange={handleFileChange}
+            onChange={(e) => handleFiles(e.target.files)}
           />
         </div>
       </DialogContent>

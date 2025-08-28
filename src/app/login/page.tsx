@@ -87,7 +87,7 @@ const Login = () => {
       },
       onError: (error) => {
         // show message a pop up
-        toast.error(error?.response?.data.message ?? 'Something went wrong', {
+        toast.error(error?.response?.data?.message ?? 'Something went wrong', {
           classNames: {
             toast: '!bg-feedback-error',
           },
