@@ -47,9 +47,9 @@ const UpdateProfileImage = ({ children }: { children: React.ReactNode }) => {
   const { refetch } = useGetUserDetails();
 
   //unexpected error toast
-  const handleUnexpectedError = () => {
+  const handleUnexpectedError = (errorMessage = 'Something went wrong') => {
     //toast message for error
-    toast.error('Something went wrong', {
+    toast.error(errorMessage, {
       classNames: {
         toast: '!bg-feedback-error',
       },
@@ -134,45 +134,48 @@ const UpdateProfileImage = ({ children }: { children: React.ReactNode }) => {
     if (!image) return;
     setSpinner(true);
     // upload image
-    uploadImageMutate(image, {
-      onSuccess: (data) => {
-        // update the user profile
-        updateUserDetailsMutate(
-          {
-            profileImg: data.data.url,
-          },
-          {
-            onSuccess: () => {
-              setConfirmed(true);
+    uploadImageMutate(
+      { file: image },
+      {
+        onSuccess: (data) => {
+          // update the user profile
+          updateUserDetailsMutate(
+            {
+              profileImg: data.data.url,
             },
-            onError: () => {
-              handleUnexpectedError();
+            {
+              onSuccess: () => {
+                setConfirmed(true);
+              },
+              onError: (error) => {
+                handleUnexpectedError(error?.response?.data.message);
+              },
+              onSettled: () => {
+                // reset all state
+                setOpen(false);
+                setConfirmed(false);
+                setImage(undefined);
+                setUploadProgress(0);
+                // refetch user details
+                refetch();
+                //push a toast message
+                toast.success('Profile image updated successfully', {
+                  classNames: {
+                    toast: '!bg-feedback-success',
+                  },
+                });
+                // set loading false
+                setSpinner(false);
+              },
             },
-            onSettled: () => {
-              // reset all state
-              setOpen(false);
-              setConfirmed(false);
-              setImage(undefined);
-              setUploadProgress(0);
-              // refetch user details
-              refetch();
-              //push a toast message
-              toast.success('Profile image updated successfully', {
-                classNames: {
-                  toast: '!bg-feedback-success',
-                },
-              });
-              // set loading false
-              setSpinner(false);
-            },
-          },
-        );
+          );
+        },
+        onError: (error) => {
+          handleUnexpectedError(error?.response?.data.message);
+          setSpinner(false);
+        },
       },
-      onError: () => {
-        handleUnexpectedError();
-        setSpinner(false);
-      },
-    });
+    );
   };
 
   return (
@@ -242,6 +245,7 @@ const UpdateProfileImage = ({ children }: { children: React.ReactNode }) => {
                       Processing your image ...
                     </p>
                     <Progress
+                      max={100} // set max to 100 since it's a percentage
                       value={uploadProgress}
                       className="border-ui-600 [&>*]:bg-brand-500 h-4 animate-pulse border bg-transparent"
                     />

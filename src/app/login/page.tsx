@@ -60,7 +60,6 @@ const Login = () => {
     //call the login api
     mutate(data, {
       onSuccess: (data) => {
-        console.log(data.data.user.role);
         //check if user is a admin
         if (!(data.data.user.role.toLowerCase() === UserRoles.admin)) {
           toast.error('You do not have admin access', {

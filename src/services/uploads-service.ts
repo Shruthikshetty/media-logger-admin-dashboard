@@ -17,11 +17,20 @@ type ResponseUploadImage = {
   message: string;
 };
 
+type UploadImageVars = {
+  file: File;
+  onProgress?: (percent: number) => void;
+};
+
 //custom hook to upload image
 export const useUploadImage = () => {
-  return useMutation<ResponseUploadImage, AxiosError<ApiError>, File>({
+  return useMutation<
+    ResponseUploadImage,
+    AxiosError<ApiError>,
+    UploadImageVars
+  >({
     mutationKey: [QueryKeys.uploadImage],
-    mutationFn: async (file: File) => {
+    mutationFn: async ({ file, onProgress }: UploadImageVars) => {
       // convert image file to form data
       const formData = new FormData();
       formData.append('image', file);
@@ -29,6 +38,12 @@ export const useUploadImage = () => {
         .post<ResponseUploadImage>(Endpoints.uploadImage, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
+          },
+          //get percentage of upload optional
+          onUploadProgress: (evt) => {
+            if (!evt.total) return;
+            const percent = Math.round((evt.loaded * 100) / evt.total);
+            onProgress?.(percent);
           },
         })
         .then((res) => res.data);
