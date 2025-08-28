@@ -37,6 +37,11 @@ type EditProfileDialogProps = {
   userExistingData?: UpdateProfileSchemaType;
 };
 
+/**
+ * This component is used to edit the user profile
+ * this opens a dialog to edit the user profile
+ * @param : - pass the current user details as props
+ */
 const EditProfileDialog = ({
   children,
   userExistingData,
