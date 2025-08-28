@@ -13,7 +13,6 @@ import { Button } from './ui/button';
 import { Progress } from './ui/progress';
 import { dataURLToFile, resizeImageKeepAspect } from '~/lib/image-resize';
 import { MAX_IMAGE_SIZE } from '~/constants/config.constants';
-import Image from 'next/image';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { useUploadImage } from '~/services/uploads-service';
 import {
@@ -23,6 +22,7 @@ import {
 import { toast } from 'sonner';
 import { useSpinnerStore } from '~/state-management/spinner-store';
 import { cn } from '~/lib/utils';
+import ProfileImageCropper from './profile-image-crop';
 
 const UpdateProfileImage = ({ children }: { children: React.ReactNode }) => {
   //dialog open state
@@ -265,29 +265,20 @@ const UpdateProfileImage = ({ children }: { children: React.ReactNode }) => {
 
           {/* show uploaded image with crop option */}
           {uploadProgress === 100 && !confirmed && previewUrl && (
-            <Card className="border-ui-600 flex items-center justify-center border bg-transparent">
-              <Image
-                src={previewUrl}
-                alt="profile image"
-                width={500}
-                height={700}
+            <Card className="flex items-center justify-center border-0 bg-transparent">
+              <ProfileImageCropper
+                onBack={() => {
+                  setImage(undefined);
+                  setUploadProgress(0);
+                }}
+                fileName={image?.name}
+                imageSrc={previewUrl}
+                onCropComplete={(file) => {
+                  // save the cropped image
+                  setImage(file);
+                  setConfirmed(true);
+                }}
               />
-              {/* buttons container  */}
-              <div className="flex flex-row gap-2">
-                <Button
-                  variant={'outline'}
-                  className="text-base-white"
-                  onClick={() => {
-                    setImage(undefined);
-                    setUploadProgress(0);
-                  }}
-                >
-                  Back
-                </Button>
-                <Button variant={'blue'} onClick={() => setConfirmed(true)}>
-                  Continue
-                </Button>
-              </div>
             </Card>
           )}
           {/* show the final image in a avatar view  */}
