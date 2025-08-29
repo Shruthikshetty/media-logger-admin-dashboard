@@ -1,10 +1,73 @@
+import { PlusIcon, Search, UploadIcon } from 'lucide-react';
 import React from 'react';
+import TitleSubtitle from '~/components/title-subtitle';
+import { Button } from '~/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '~/components/ui/card';
+import { Input } from '~/components/ui/input';
 
 //@todo screen in progress
 const MoviesTab = () => {
   return (
-    <div>
-      <p className="text-feedback-success-light text-3xl">Movies Component</p>
+    <div className="text-base-white flex flex-col gap-7 p-5">
+      {/* Header */}
+      <div className="flex flex-row items-center justify-between">
+        <TitleSubtitle
+          title="Movies Management"
+          subtitle="Manage your movie collection"
+        />
+        <div className="flex flex-col gap-3 md:flex-row">
+          <Button variant={'outline'}>
+            <UploadIcon className="mr-1 size-4" />
+            Import json
+          </Button>
+          <Button
+            variant={'outline'}
+            className="from-brand-200 to-brand-600 border-0 bg-gradient-to-r hover:opacity-80"
+          >
+            <PlusIcon className="mr-1 size-4" />
+            Add Movie
+          </Button>
+        </div>
+      </div>
+
+      {/* Search bar  and filter*/}
+      <Card className="border-ui-600 text-base-white from-base-black to-ui-900 bg-gradient-to-r">
+        <CardHeader>
+          <CardDescription hidden>
+            Search and filter the Movies date
+          </CardDescription>
+          <div className="relative max-w-[500px]">
+            <Search className="absolute top-1/2 ml-2 h-5 w-5 -translate-y-1/2 transform" />
+            <Input
+              type="text"
+              className="border-ui-400 pl-10"
+              id="search"
+              placeholder="Search movies by title or description..."
+            />
+          </div>
+          {/* @TODO Filters  */}
+        </CardHeader>
+      </Card>
+      {/* all the movie data goes here */}
+      <Card className="border-ui-600 text-base-white from-base-black to-ui-900 bg-gradient-to-r">
+        <CardHeader>
+          <CardTitle className="text-xl font-semibold">
+            TV Shows Directory (2 shows)
+          </CardTitle>
+          <CardDescription className="text-ui-400 text-sm">
+            Complete list of TV shows available on the platform
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          
+        </CardContent>
+      </Card>
     </div>
   );
 };
