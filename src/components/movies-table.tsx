@@ -115,7 +115,7 @@ const MoviesTable = ({ loading, table }: MoviesTableType) => {
             ))}
           </TableBody>
         </Table>
-        <ScrollBar orientation="horizontal" className="bg-ui-600 rounded-xl" />
+        <ScrollBar orientation="horizontal" className="bg-ui-800 rounded-xl" />
       </ScrollArea>
       {/* @TODO dummy pagination in progress */}
       <Pagination className="text-base-white">

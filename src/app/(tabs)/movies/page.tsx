@@ -35,7 +35,7 @@ const MoviesTab = () => {
   });
 
   return (
-    <div className="flex flex-col gap-5 p-5 w-full">
+    <div className="flex flex-col gap-5 p-5">
       {/* Header */}
       <div className="flex flex-row items-center justify-between">
         <TitleSubtitle
@@ -76,7 +76,7 @@ const MoviesTab = () => {
         </CardHeader>
       </Card>
       {/* all the movie data goes here */}
-      <Card className="border-ui-600 text-base-white from-base-black to-ui-900 w-full bg-gradient-to-r">
+      <Card className="border-ui-600 text-base-white from-base-black to-ui-900 bg-gradient-to-r">
         <CardHeader>
           <CardTitle className="text-xl font-semibold">
             TV Shows Directory (2 shows)
