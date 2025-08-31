@@ -1,5 +1,6 @@
 import { PlusIcon, Search, UploadIcon } from 'lucide-react';
 import React from 'react';
+import MoviesTable from '~/components/movies-table';
 import TitleSubtitle from '~/components/title-subtitle';
 import { Button } from '~/components/ui/button';
 import {
@@ -11,7 +12,10 @@ import {
 } from '~/components/ui/card';
 import { Input } from '~/components/ui/input';
 
-//@todo screen in progress
+/**
+ * this renders the movies screen containing all movies list
+ * @returns the movies tab
+ */
 const MoviesTab = () => {
   return (
     <div className="text-base-white flex flex-col gap-7 p-5">
@@ -65,7 +69,7 @@ const MoviesTab = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          
+          <MoviesTable />
         </CardContent>
       </Card>
     </div>
