@@ -6,3 +6,15 @@ export type ApiError = {
   message?: string;
   success: boolean;
 };
+
+export interface Pagination {
+  total: number;
+  start: number;
+  limit: number;
+  currentPage: number;
+  totalPages: number;
+  hasMore: boolean;
+  hasPrevious: boolean;
+  nextPage: number | null;
+  previousPage: number | null;
+}

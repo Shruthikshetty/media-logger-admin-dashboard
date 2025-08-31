@@ -15,8 +15,35 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from './ui/pagination';
+import { T } from 'vitest/dist/chunks/reporters.d.BFLkQcL6.js';
+import { Skeleton } from './ui/skeleton';
 
-const MoviesTable = () => {
+type MoviesTableType = {
+  loading: boolean;
+};
+
+/**
+ * This returns all the movie details in table format
+ */
+const MoviesTable = ({ loading }: MoviesTableType) => {
+  //if loading return a skeleton table
+  if (loading)
+    return (
+      <Table>
+        <TableBody>
+          {[...Array(4)].map((_, i) => (
+            <TableRow key={i}>
+              {[...Array(4)].map((_, i) => (
+                <TableCell key={i}>
+                  <Skeleton className="h-8 w-full rounded-md" />
+                </TableCell>
+              ))}
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    );
+  //if not loading return the table
   return (
     <>
       <Table>

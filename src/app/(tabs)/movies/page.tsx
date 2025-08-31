@@ -1,5 +1,6 @@
+'use client';
 import { PlusIcon, Search, UploadIcon } from 'lucide-react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import MoviesTable from '~/components/movies-table';
 import TitleSubtitle from '~/components/title-subtitle';
 import { Button } from '~/components/ui/button';
@@ -11,12 +12,22 @@ import {
   CardTitle,
 } from '~/components/ui/card';
 import { Input } from '~/components/ui/input';
+import { useFetchMovies } from '~/services/movies-service';
 
 /**
  * this renders the movies screen containing all movies list
  * @returns the movies tab
  */
 const MoviesTab = () => {
+  //custom hook for getting all the movies (its a mutation hook)
+  const { data, isPending, mutate } = useFetchMovies();
+  //fetch all the movies at initial render
+  useEffect(() => {
+    mutate();
+  }, [mutate]);
+
+  // create a table with all the movies data
+
   return (
     <div className="text-base-white flex flex-col gap-7 p-5">
       {/* Header */}
@@ -69,7 +80,7 @@ const MoviesTab = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <MoviesTable />
+          <MoviesTable loading={true} />
         </CardContent>
       </Card>
     </div>
