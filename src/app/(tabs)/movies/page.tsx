@@ -1,7 +1,8 @@
 'use client';
+import { getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import { PlusIcon, Search, UploadIcon } from 'lucide-react';
 import React, { useEffect } from 'react';
-import MoviesTable from '~/components/movies-table';
+import MoviesTable, { movieColumns } from '~/components/movies-table';
 import TitleSubtitle from '~/components/title-subtitle';
 import { Button } from '~/components/ui/button';
 import {
@@ -27,9 +28,14 @@ const MoviesTab = () => {
   }, [mutate]);
 
   // create a table with all the movies data
+  const movieTable = useReactTable({
+    data: data?.data.movies || [],
+    columns: movieColumns,
+    getCoreRowModel: getCoreRowModel(),
+  });
 
   return (
-    <div className="text-base-white flex flex-col gap-7 p-5">
+    <div className="flex flex-col gap-5 p-5 w-full">
       {/* Header */}
       <div className="flex flex-row items-center justify-between">
         <TitleSubtitle
@@ -70,7 +76,7 @@ const MoviesTab = () => {
         </CardHeader>
       </Card>
       {/* all the movie data goes here */}
-      <Card className="border-ui-600 text-base-white from-base-black to-ui-900 bg-gradient-to-r">
+      <Card className="border-ui-600 text-base-white from-base-black to-ui-900 w-full bg-gradient-to-r">
         <CardHeader>
           <CardTitle className="text-xl font-semibold">
             TV Shows Directory (2 shows)
@@ -80,7 +86,7 @@ const MoviesTab = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <MoviesTable loading={true} />
+          <MoviesTable loading={isPending} table={movieTable} />
         </CardContent>
       </Card>
     </div>

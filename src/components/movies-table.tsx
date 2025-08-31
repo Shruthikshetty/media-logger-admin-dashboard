@@ -15,17 +15,61 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from './ui/pagination';
-import { T } from 'vitest/dist/chunks/reporters.d.BFLkQcL6.js';
 import { Skeleton } from './ui/skeleton';
+import {
+  ColumnDef,
+  flexRender,
+  Table as ReactTable,
+} from '@tanstack/react-table';
+import { Movie } from '~/services/movies-service';
+import { ScrollArea, ScrollBar } from './ui/scroll-area';
 
 type MoviesTableType = {
   loading: boolean;
+  table: ReactTable<Movie>;
 };
+
+//creating columns for the movies table
+export const movieColumns: ColumnDef<
+  Movie,
+  string | undefined | string[] | number | boolean
+>[] = [
+  {
+    accessorKey: 'posterUrl',
+    header: 'Movie',
+    cell: (props) => <TableCell>{props.getValue()}</TableCell>,
+  },
+  {
+    accessorKey: 'genre',
+    header: 'Genre',
+    cell: (props) => <TableCell>{props.getValue()}</TableCell>,
+  },
+  {
+    accessorKey: 'title',
+    header: 'Title',
+    cell: (props) => <TableCell>{props.getValue()}</TableCell>,
+  },
+  {
+    accessorKey: 'averageRating',
+    header: 'Rating',
+    cell: (props) => <TableCell>{props.getValue()}</TableCell>,
+  },
+  {
+    accessorKey: 'languages',
+    header: 'Languages',
+    cell: (props) => <TableCell>{props.getValue()}</TableCell>,
+  },
+  {
+    accessorKey: 'releaseDate',
+    header: 'Release Date',
+    cell: (props) => <TableCell>{props.getValue()}</TableCell>,
+  },
+];
 
 /**
  * This returns all the movie details in table format
  */
-const MoviesTable = ({ loading }: MoviesTableType) => {
+const MoviesTable = ({ loading, table }: MoviesTableType) => {
   //if loading return a skeleton table
   if (loading)
     return (
@@ -46,18 +90,34 @@ const MoviesTable = ({ loading }: MoviesTableType) => {
   //if not loading return the table
   return (
     <>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="text-base-white">Movie Name</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          <TableRow>
-            <TableCell>Star Wars</TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
+      <ScrollArea className="rounded-md pb-3 whitespace-nowrap">
+        <Table>
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id} className="hover:bg-ui-800">
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id} className="text-base-white">
+                    {header.column.columnDef?.header as string}
+                  </TableHead>
+                ))}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows.map((row) => (
+              <TableRow key={row.id} className="hover:bg-ui-800">
+                {row.getVisibleCells().map((cell) => (
+                  <React.Fragment key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </React.Fragment>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+        <ScrollBar orientation="horizontal" className="bg-ui-600 rounded-xl" />
+      </ScrollArea>
+      {/* @TODO dummy pagination in progress */}
       <Pagination className="text-base-white">
         <PaginationContent>
           <PaginationItem>
