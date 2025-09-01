@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import Image from 'next/image';
 import { LucideIcon, Image as LucideImage } from 'lucide-react';
 import { cn } from '~/lib/utils';
@@ -23,6 +23,8 @@ const CustomImage = ({
   // hold the loading state for images
   const [loading, setLoading] = useState(true);
   // in case of broken link or nullish src
+  // get placeholder color
+  const placeholderColor = useMemo(() => getRandomColor(), []);
   if (!src || error)
     return (
       <div className="bg-ui-600 flex h-full max-h-[150px] min-h-[80px] w-full max-w-[80px] flex-col items-center justify-center rounded-lg p-2">
@@ -31,22 +33,23 @@ const CustomImage = ({
     );
   return (
     <>
-      {loading && (
-        <div
-          className="bg-ui-600 flex h-full max-h-[150px] min-h-[80px] w-full max-w-[80px] rounded-lg p-2"
-          style={{
-            background: getRandomColor(),
-          }}
-        ></div>
-      )}
-      <Image
-        className={cn('rounded-lg', !loading && 'hidden')}
-        onError={() => setError(true)}
-        alt={alt}
-        src={src}
-        onLoad={() => setLoading(false)}
-        {...restProps}
-      />
+      <div
+        className="bg-ui-600 flex h-full max-h-[150px] min-h-[80px] w-full max-w-[80px] rounded-lg"
+        style={{
+          backgroundColor: loading ? placeholderColor : undefined,
+          width: restProps.width,
+          height: restProps.height,
+        }}
+      >
+        <Image
+          className={cn('rounded-lg', !loading && 'hidden')}
+          onError={() => setError(true)}
+          alt={alt}
+          src={src}
+          onLoad={() => setLoading(false)}
+          {...restProps}
+        />
+      </div>
     </>
   );
 };
