@@ -13,6 +13,8 @@ import { getRandomColor } from '~/lib/color';
 const CustomImage = ({
   Icon = LucideImage,
   alt = 'custom image',
+  width,
+  height,
   src = '',
   ...restProps
 }: Omit<React.ComponentProps<typeof Image>, 'onError'> & {
@@ -27,25 +29,38 @@ const CustomImage = ({
   const placeholderColor = useMemo(() => getRandomColor(), []);
   if (!src || error)
     return (
-      <div className="bg-ui-600 flex h-full max-h-[150px] min-h-[80px] w-full max-w-[80px] flex-col items-center justify-center rounded-lg p-2">
+      <div
+        className="bg-ui-600 flex h-full w-full flex-col items-center justify-center rounded-lg p-2"
+        style={{
+          maxHeight: `${height}px`,
+          maxWidth: `${width}px`,
+          minHeight: `${(height as number) / 2}px`,
+        }}
+      >
         <Icon className="h-full w-full" />
       </div>
     );
   return (
     <>
       <div
-        className="bg-ui-600 flex h-full max-h-[150px] min-h-[80px] w-full max-w-[80px] rounded-lg"
+        className="flex h-full w-full rounded-lg"
         style={{
           backgroundColor: loading ? placeholderColor : undefined,
-          width: restProps.width,
-          height: restProps.height,
+          maxHeight: `${height}px`,
+          maxWidth: `${width}px`,
+          minHeight: `${(height as number) / 2}px`,
         }}
       >
         <Image
           className={cn('rounded-lg', !loading && 'hidden')}
           onError={() => setError(true)}
           alt={alt}
+          width={width}
+          height={height}
           src={src}
+          style={{
+            minHeight: `${(height as number) / 2}px`,
+          }}
           onLoad={() => setLoading(false)}
           {...restProps}
         />
