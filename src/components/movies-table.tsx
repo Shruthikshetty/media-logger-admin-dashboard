@@ -25,6 +25,9 @@ import {
 import { Movie } from '~/services/movies-service';
 import { ScrollArea, ScrollBar } from './ui/scroll-area';
 import CustomImage from './custom-image';
+import { Badge } from './ui/badge';
+import { Star } from 'lucide-react';
+import moment from 'moment';
 
 type MoviesTableType = {
   loading: boolean;
@@ -52,29 +55,68 @@ export const movieColumns: ColumnDef<
     ),
   },
   {
-    accessorKey: 'genre',
-    header: 'Genre',
-    cell: (props) => <TableCell>{props.getValue()}</TableCell>,
-  },
-  {
     accessorKey: 'title',
     header: 'Title',
-    cell: (props) => <TableCell>{props.getValue()}</TableCell>,
+    cell: (props) => (
+      <TableCell className="text-base-white text-base">
+        {props.getValue()}
+      </TableCell>
+    ),
+  },
+  {
+    accessorKey: 'genre',
+    header: 'Genre',
+    cell: (props) => (
+      <TableCell>
+        {(props.getValue() as string[]).map((genre, index) => (
+          <Badge
+            key={index}
+            className="bg-ui-600 text-base-white rounded-full px-3"
+          >
+            {genre}
+          </Badge>
+        ))}
+      </TableCell>
+    ),
   },
   {
     accessorKey: 'averageRating',
     header: 'Rating',
-    cell: (props) => <TableCell>{props.getValue()}</TableCell>,
+    cell: (props) => (
+      <TableCell>
+        <div className="flex flex-row items-center gap-2">
+          <p className="text-base-white text-lg">{props.getValue()}</p>
+          {!!props.getValue() && <Star className="h-4 w-4 text-yellow-300" />}
+        </div>
+      </TableCell>
+    ),
   },
   {
     accessorKey: 'languages',
     header: 'Languages',
-    cell: (props) => <TableCell>{props.getValue()}</TableCell>,
+    cell: (props) => (
+      <TableCell>
+        <div className="flex max-w-40 flex-row items-center justify-start gap-2 wrap-normal">
+          {(props.getValue() as string[]).map((lang, index) => (
+            <Badge
+              key={index}
+              className="border-ui-600 rounded-full border-2 px-3"
+            >
+              {lang}
+            </Badge>
+          ))}
+        </div>
+      </TableCell>
+    ),
   },
   {
     accessorKey: 'releaseDate',
     header: 'Release Date',
-    cell: (props) => <TableCell>{props.getValue()}</TableCell>,
+    cell: (props) => (
+      <TableCell className='text-base-white text-base'>
+        {moment(props.getValue() as string).format('DD/MM/YYYY')}
+      </TableCell>
+    ),
   },
 ];
 
@@ -108,7 +150,10 @@ const MoviesTable = ({ loading, table }: MoviesTableType) => {
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id} className="hover:bg-ui-800">
                 {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id} className="text-base-white">
+                  <TableHead
+                    key={header.id}
+                    className="text-ui-200 text-base font-bold"
+                  >
                     {header.column.columnDef?.header as string}
                   </TableHead>
                 ))}

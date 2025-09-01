@@ -5,6 +5,7 @@ import { LucideIcon, Image as LucideImage } from 'lucide-react';
 import { cn } from '~/lib/utils';
 import { getRandomColor } from '~/lib/color';
 
+//@TODO make the image max , min height and width configurable so as to make it reusable in other areas
 /** this is a custom image component
  * its a wrapper on next/image
  * it handles any broken link and replaces it with a default image
@@ -24,9 +25,9 @@ const CustomImage = ({
   const [error, setError] = useState(false);
   // hold the loading state for images
   const [loading, setLoading] = useState(true);
-  // in case of broken link or nullish src
   // get placeholder color
   const placeholderColor = useMemo(() => getRandomColor(), []);
+  // in case of broken link or nullish src
   if (!src || error)
     return (
       <div
@@ -40,6 +41,7 @@ const CustomImage = ({
         <Icon className="h-full w-full" />
       </div>
     );
+  // render the image
   return (
     <>
       <div
