@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import {
   Table,
@@ -23,6 +24,7 @@ import {
 } from '@tanstack/react-table';
 import { Movie } from '~/services/movies-service';
 import { ScrollArea, ScrollBar } from './ui/scroll-area';
+import CustomImage from './custom-image';
 
 type MoviesTableType = {
   loading: boolean;
@@ -37,7 +39,17 @@ export const movieColumns: ColumnDef<
   {
     accessorKey: 'posterUrl',
     header: 'Movie',
-    cell: (props) => <TableCell>{props.getValue()}</TableCell>,
+    cell: (props) => (
+      <TableCell>
+        <CustomImage
+          alt="movie poster"
+          src={props.getValue() as string}
+          width={80}
+          height={150}
+          className="rounded-lg"
+        />
+      </TableCell>
+    ),
   },
   {
     accessorKey: 'genre',
