@@ -26,7 +26,7 @@ import { Movie } from '~/services/movies-service';
 import { ScrollArea, ScrollBar } from './ui/scroll-area';
 import CustomImage from './custom-image';
 import { Badge } from './ui/badge';
-import { Star } from 'lucide-react';
+import { Plus, Star } from 'lucide-react';
 import moment from 'moment';
 
 type MoviesTableType = {
@@ -110,10 +110,24 @@ export const movieColumns: ColumnDef<
     ),
   },
   {
+    accessorKey: 'ageRating',
+    header: 'Age Rating',
+    cell: (props) => (
+      <TableCell>
+        <Badge className="text-base-white border-ui-600 text-md flex flex-row items-center justify-center rounded-full border">
+          <p>{props.getValue()}</p>
+          <p>
+            <Plus className="size-3" strokeWidth={3} />
+          </p>
+        </Badge>
+      </TableCell>
+    ),
+  },
+  {
     accessorKey: 'releaseDate',
     header: 'Release Date',
     cell: (props) => (
-      <TableCell className='text-base-white text-base'>
+      <TableCell className="text-base-white text-base">
         {moment(props.getValue() as string).format('DD/MM/YYYY')}
       </TableCell>
     ),
