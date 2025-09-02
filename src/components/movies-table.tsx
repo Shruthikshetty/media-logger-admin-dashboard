@@ -28,6 +28,7 @@ import CustomImage from './custom-image';
 import { Badge } from './ui/badge';
 import { Plus, Star } from 'lucide-react';
 import moment from 'moment';
+import CollapsableBadgeList from './collapsable-badge-list';
 
 type MoviesTableType = {
   loading: boolean;
@@ -68,14 +69,13 @@ export const movieColumns: ColumnDef<
     header: 'Genre',
     cell: (props) => (
       <TableCell>
-        {(props.getValue() as string[]).map((genre, index) => (
-          <Badge
-            key={index}
-            className="bg-ui-600 text-base-white rounded-full px-3"
-          >
-            {genre}
-          </Badge>
-        ))}
+        <CollapsableBadgeList
+          list={props.getValue() as string[]}
+          style={{
+            itemBadge: 'bg-ui-700 border-0',
+            buttonBadge: 'bg-ui-700 border-0',
+          }}
+        />
       </TableCell>
     ),
   },
@@ -94,20 +94,13 @@ export const movieColumns: ColumnDef<
   {
     accessorKey: 'languages',
     header: 'Languages',
-    cell: (props) => (
-      <TableCell>
-        <div className="flex max-w-40 flex-row items-center justify-start gap-2 wrap-normal">
-          {(props.getValue() as string[]).map((lang, index) => (
-            <Badge
-              key={index}
-              className="border-ui-600 rounded-full border-2 px-3"
-            >
-              {lang}
-            </Badge>
-          ))}
-        </div>
-      </TableCell>
-    ),
+    cell: (props) => {
+      return (
+        <TableCell>
+          <CollapsableBadgeList list={props.getValue() as string[]} />
+        </TableCell>
+      );
+    },
   },
   {
     accessorKey: 'ageRating',
