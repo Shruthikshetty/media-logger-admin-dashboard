@@ -87,7 +87,9 @@ export const movieColumns: ColumnDef<
     cell: (props) => (
       <TableCell>
         <div className="flex flex-row items-center gap-2">
-          <p className="text-base-white text-lg">{props.getValue()}</p>
+          <p className="text-base-white text-lg">
+            {Boolean(props.getValue()) ? props.getValue() : '???'}
+          </p>
           {!!props.getValue() && <Star className="h-4 w-4 text-yellow-300" />}
         </div>
       </TableCell>
@@ -98,7 +100,9 @@ export const movieColumns: ColumnDef<
     header: 'Runtime',
     cell: (props) => (
       <TableCell>
-        <p className="text-base-white text-base">{props.getValue()} min</p>
+        <p className="text-base-white text-base">
+          {Boolean(props.getValue()) ? `${props.getValue()} min` : '???'}
+        </p>
       </TableCell>
     ),
   },

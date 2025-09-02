@@ -2,7 +2,6 @@
 import React, { useMemo, useState } from 'react';
 import Image from 'next/image';
 import { LucideIcon, Image as LucideImage } from 'lucide-react';
-import { cn } from '~/lib/utils';
 import { getRandomColor } from '~/lib/color';
 
 //@TODO make the image max , min height and width configurable so as to make it reusable in other areas
@@ -28,14 +27,18 @@ const CustomImage = ({
   // get placeholder color
   const placeholderColor = useMemo(() => getRandomColor(), []);
   // in case of broken link or nullish src
+
+  //get the numeric height and width
+  const numericWidth = typeof width === 'number' ? width : undefined;
+  const numericHeight = typeof height === 'number' ? height : undefined;
   if (!src || error)
     return (
       <div
         className="bg-ui-600 flex h-full w-full flex-col items-center justify-center rounded-lg p-2"
         style={{
-          maxHeight: `${height}px`,
-          maxWidth: `${width}px`,
-          minHeight: `${(height as number) / 2}px`,
+          maxHeight: numericHeight ? `${numericHeight}px` : undefined,
+          maxWidth: numericWidth ? `${numericWidth}px` : undefined,
+          minHeight: numericHeight ? `${numericHeight / 2}px` : undefined,
         }}
       >
         <Icon className="h-full w-full" />
@@ -48,20 +51,21 @@ const CustomImage = ({
         className="flex h-full w-full rounded-lg"
         style={{
           backgroundColor: loading ? placeholderColor : undefined,
-          maxHeight: `${height}px`,
-          maxWidth: `${width}px`,
-          minHeight: `${(height as number) / 2}px`,
+          maxHeight: numericHeight ? `${numericHeight}px` : undefined,
+          maxWidth: numericWidth ? `${numericWidth}px` : undefined,
+          minHeight: numericHeight ? `${numericHeight / 2}px` : undefined,
         }}
       >
         <Image
-          className={cn('rounded-lg', !loading && 'hidden')}
+          className="rounded-lg"
           onError={() => setError(true)}
           alt={alt}
           width={width}
           height={height}
           src={src}
+          hidden={loading}
           style={{
-            minHeight: `${(height as number) / 2}px`,
+            minHeight: numericHeight ? `${numericHeight / 2}px` : undefined,
           }}
           onLoad={() => setLoading(false)}
           {...restProps}

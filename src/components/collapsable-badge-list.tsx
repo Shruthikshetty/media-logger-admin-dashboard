@@ -14,7 +14,7 @@ type CollapsableBadgeListProps = {
 };
 
 const CollapsableBadgeList = ({
-  list,
+  list = [],
   maxDisplayed = 3,
   style,
 }: CollapsableBadgeListProps) => {
