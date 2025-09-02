@@ -26,9 +26,11 @@ import { Movie } from '~/services/movies-service';
 import { ScrollArea, ScrollBar } from './ui/scroll-area';
 import CustomImage from './custom-image';
 import { Badge } from './ui/badge';
-import { Plus, Star } from 'lucide-react';
+import { Calendar, Plus, Star } from 'lucide-react';
 import moment from 'moment';
 import CollapsableBadgeList from './collapsable-badge-list';
+import { cn } from '~/lib/utils';
+import { capitalizeFirstLetter } from '~/lib/formatting';
 
 type MoviesTableType = {
   loading: boolean;
@@ -92,6 +94,15 @@ export const movieColumns: ColumnDef<
     ),
   },
   {
+    accessorKey: 'runTime',
+    header: 'Runtime',
+    cell: (props) => (
+      <TableCell>
+        <p className="text-base-white text-base">{props.getValue()} min</p>
+      </TableCell>
+    ),
+  },
+  {
     accessorKey: 'languages',
     header: 'Languages',
     cell: (props) => {
@@ -120,8 +131,27 @@ export const movieColumns: ColumnDef<
     accessorKey: 'releaseDate',
     header: 'Release Date',
     cell: (props) => (
+      <TableCell className="text-base-white">
+        <div className="flex flex-row items-center gap-2 text-base">
+          <Calendar className="h-5 w-5" />
+          {moment(props.getValue() as string).format('DD/MM/YYYY')}
+        </div>
+      </TableCell>
+    ),
+  },
+  {
+    accessorKey: 'status',
+    header: 'Status',
+    cell: (props) => (
       <TableCell className="text-base-white text-base">
-        {moment(props.getValue() as string).format('DD/MM/YYYY')}
+        <Badge
+          className={cn(
+            'text-base-white rounded-full px-2',
+            props.getValue() === 'released' ? 'bg-brand-600' : 'bg-ui-600',
+          )}
+        >
+          {capitalizeFirstLetter(props.getValue() as string)}
+        </Badge>
       </TableCell>
     ),
   },
@@ -152,12 +182,15 @@ const MoviesTable = ({ loading, table }: MoviesTableType) => {
   return (
     <>
       <ScrollArea className="rounded-md pb-3 whitespace-nowrap">
-        <Table>
+        <Table className="min-w-full">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id} className="hover:bg-ui-800">
                 {headerGroup.headers.map((header) => (
                   <TableHead
+                    style={{
+                      width: header.column.columnDef.size,
+                    }}
                     key={header.id}
                     className="text-ui-200 text-base font-bold"
                   >
