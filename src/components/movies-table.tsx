@@ -1,0 +1,245 @@
+'use client';
+import React from 'react';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from './ui/table';
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from './ui/pagination';
+import { Skeleton } from './ui/skeleton';
+import {
+  ColumnDef,
+  flexRender,
+  Table as ReactTable,
+} from '@tanstack/react-table';
+import { Movie } from '~/services/movies-service';
+import { ScrollArea, ScrollBar } from './ui/scroll-area';
+import CustomImage from './custom-image';
+import { Badge } from './ui/badge';
+import { Calendar, Plus, Star } from 'lucide-react';
+import moment from 'moment';
+import CollapsableBadgeList from './collapsable-badge-list';
+import { cn } from '~/lib/utils';
+import { capitalizeFirstLetter } from '~/lib/formatting';
+
+type MoviesTableType = {
+  loading: boolean;
+  table: ReactTable<Movie>;
+};
+
+//creating columns for the movies table
+export const movieColumns: ColumnDef<
+  Movie,
+  string | undefined | string[] | number | boolean
+>[] = [
+  {
+    accessorKey: 'posterUrl',
+    header: 'Movie',
+    cell: (props) => (
+      <TableCell>
+        <CustomImage
+          alt="movie poster"
+          src={props.getValue() as string}
+          width={80}
+          height={150}
+          className="rounded-lg"
+        />
+      </TableCell>
+    ),
+  },
+  {
+    accessorKey: 'title',
+    header: 'Title',
+    cell: (props) => (
+      <TableCell className="text-base-white text-base">
+        {props.getValue()}
+      </TableCell>
+    ),
+  },
+  {
+    accessorKey: 'genre',
+    header: 'Genre',
+    cell: (props) => (
+      <TableCell>
+        <CollapsableBadgeList
+          list={props.getValue() as string[]}
+          style={{
+            itemBadge: 'bg-ui-700 border-0',
+            buttonBadge: 'bg-ui-700 border-0',
+          }}
+        />
+      </TableCell>
+    ),
+  },
+  {
+    accessorKey: 'averageRating',
+    header: 'Rating',
+    cell: (props) => (
+      <TableCell>
+        <div className="flex flex-row items-center gap-2">
+          <p className="text-base-white text-lg">
+            {Boolean(props.getValue()) ? props.getValue() : '???'}
+          </p>
+          {!!props.getValue() && <Star className="h-4 w-4 text-yellow-300" />}
+        </div>
+      </TableCell>
+    ),
+  },
+  {
+    accessorKey: 'runTime',
+    header: 'Runtime',
+    cell: (props) => (
+      <TableCell>
+        <p className="text-base-white text-base">
+          {Boolean(props.getValue()) ? `${props.getValue()} min` : '???'}
+        </p>
+      </TableCell>
+    ),
+  },
+  {
+    accessorKey: 'languages',
+    header: 'Languages',
+    cell: (props) => {
+      return (
+        <TableCell>
+          <CollapsableBadgeList list={props.getValue() as string[]} />
+        </TableCell>
+      );
+    },
+  },
+  {
+    accessorKey: 'ageRating',
+    header: 'Age Rating',
+    cell: (props) => (
+      <TableCell>
+        <Badge className="text-base-white border-ui-600 text-md flex flex-row items-center justify-center rounded-full border">
+          <p>{props.getValue()}</p>
+          <p>
+            <Plus className="size-3" strokeWidth={3} />
+          </p>
+        </Badge>
+      </TableCell>
+    ),
+  },
+  {
+    accessorKey: 'releaseDate',
+    header: 'Release Date',
+    cell: (props) => (
+      <TableCell className="text-base-white">
+        <div className="flex flex-row items-center gap-2 text-base">
+          <Calendar className="h-5 w-5" />
+          {!!props.getValue()
+            ? moment(props.getValue() as string).format('DD/MM/YYYY')
+            : '???'}
+        </div>
+      </TableCell>
+    ),
+  },
+  {
+    accessorKey: 'status',
+    header: 'Status',
+    cell: (props) => (
+      <TableCell className="text-base-white text-base">
+        <Badge
+          className={cn(
+            'text-base-white rounded-full px-2',
+            (props.getValue() as string) === 'released'
+              ? 'bg-brand-600'
+              : 'bg-ui-600',
+          )}
+        >
+          {capitalizeFirstLetter(props.getValue() as string)}
+        </Badge>
+      </TableCell>
+    ),
+  },
+];
+
+/**
+ * This returns all the movie details in table format
+ */
+const MoviesTable = ({ loading, table }: MoviesTableType) => {
+  //if loading return a skeleton table
+  if (loading)
+    return (
+      <Table>
+        <TableBody>
+          {[...Array(4)].map((_, i) => (
+            <TableRow key={i}>
+              {[...Array(4)].map((_, i) => (
+                <TableCell key={i}>
+                  <Skeleton className="h-8 w-full rounded-md" />
+                </TableCell>
+              ))}
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    );
+  //if not loading return the table
+  return (
+    <>
+      <ScrollArea className="rounded-md pb-3 whitespace-nowrap">
+        <Table className="min-w-full">
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id} className="hover:bg-ui-800">
+                {headerGroup.headers.map((header) => (
+                  <TableHead
+                    style={{
+                      width: header.column.columnDef.size,
+                    }}
+                    key={header.id}
+                    className="text-ui-200 text-base font-bold"
+                  >
+                    {header.column.columnDef?.header as string}
+                  </TableHead>
+                ))}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows.map((row) => (
+              <TableRow key={row.id} className="hover:bg-ui-800">
+                {row.getVisibleCells().map((cell) => (
+                  <React.Fragment key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </React.Fragment>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+        <ScrollBar orientation="horizontal" className="bg-ui-800 rounded-xl" />
+      </ScrollArea>
+      {/* @TODO dummy pagination in progress */}
+      <Pagination className="text-base-white">
+        <PaginationContent>
+          <PaginationPrevious>Previous</PaginationPrevious>
+          <PaginationItem>
+            <PaginationLink>1</PaginationLink>
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationLink>2</PaginationLink>
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationLink>3</PaginationLink>
+          </PaginationItem>
+          <PaginationNext>Next</PaginationNext>
+        </PaginationContent>
+      </Pagination>
+    </>
+  );
+};
+
+export default MoviesTable;

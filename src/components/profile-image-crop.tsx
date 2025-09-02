@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Cropper, { Area } from 'react-easy-crop';
 import { Button } from './ui/button';
 import { getCroppedImg } from '~/lib/image-resize';
+import { toast } from 'sonner';
 
 interface ProfileImageCropProps {
   imageSrc: string; // preview image (could be object URL)
@@ -37,12 +38,20 @@ const ProfileImageCropper = ({
   const showCroppedImage = async () => {
     // return in case of no croppedAreaPixels
     if (!croppedAreaPixels) return;
-    // use a utility to crop image from pixels and get a file/blob
-    const croppedBlob = await getCroppedImg(imageSrc, croppedAreaPixels); // utility needed
-    const croppedFile = new File([croppedBlob], fileName, {
-      type: 'image/jpeg',
-    });
-    onCropComplete(croppedFile);
+    try {
+      // use a utility to crop image from pixels and get a file/blob
+      const croppedBlob = await getCroppedImg(imageSrc, croppedAreaPixels); // utility needed
+      const croppedFile = new File([croppedBlob], fileName, {
+        type: 'image/jpeg',
+      });
+      onCropComplete(croppedFile);
+    } catch (e: unknown) {
+      toast.error((e as Error)?.message ?? 'Something went wrong', {
+        classNames: {
+          toast: '!bg-feedback-error',
+        },
+      });
+    }
   };
 
   return (

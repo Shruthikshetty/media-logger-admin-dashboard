@@ -89,7 +89,7 @@ const Profile = () => {
               <div className="relative">
                 <Avatar className="border-ui-600 border-1">
                   {!userDetails?._id ? (
-                    //incase of loading
+                    //in case of loading
                     <Skeleton className="h-30 w-30 rounded-full" />
                   ) : (
                     <>
@@ -103,6 +103,7 @@ const Profile = () => {
                     </>
                   )}
                 </Avatar>
+                {/* update profile image */}
                 <UpdateProfileImage>
                   <button
                     type="button"
@@ -154,7 +155,7 @@ const Profile = () => {
               </div>
             </div>
             {!userDetails?._id ? (
-              //incase of loading
+              //in case of loading
               <>
                 <Skeleton className="h-4 w-40 max-w-70" />
                 <Skeleton className="h-4 w-40 max-w-70" />

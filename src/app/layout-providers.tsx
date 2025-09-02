@@ -5,6 +5,7 @@ import React from 'react';
 import AuthGuard from './AuthGuard';
 import { Toaster } from 'sonner';
 import { SpinnerOverlay } from '~/components/app-spinner';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 /**
  * This component contains all the providers for the app
@@ -26,6 +27,8 @@ const AppLayoutProviders = ({ children }: { children: React.ReactNode }) => {
         }}
       />
       <SpinnerOverlay />
+      {/* dev tool for tanstack query only appears in development */}
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 };
