@@ -236,7 +236,11 @@ const MoviesTable = ({
       <Pagination className="text-base-white">
         <PaginationContent>
           <PaginationPrevious
-            isActive={pagination?.hasPrevious}
+            className={
+              pagination?.hasPrevious
+                ? 'cursor-pointer'
+                : 'hover:bg-ui-600 hover:text-base-white cursor-not-allowed'
+            }
             onClick={() => {
               if (pagination?.hasPrevious) {
                 setPage((s) => s - 1);
@@ -248,6 +252,7 @@ const MoviesTable = ({
           {[...Array(pagination?.totalPages ?? 0)].map((_, i) => (
             <PaginationItem key={i}>
               <PaginationLink
+                isActive={page === i + 1}
                 onClick={() => {
                   setPage(i + 1);
                 }}
@@ -257,7 +262,11 @@ const MoviesTable = ({
             </PaginationItem>
           ))}
           <PaginationNext
-            isActive={pagination?.hasMore}
+            className={
+              pagination?.hasMore
+                ? 'cursor-pointer'
+                : 'hover:bg-ui-600 hover:text-base-white cursor-not-allowed'
+            }
             onClick={() => {
               if (pagination?.hasMore) {
                 setPage((s) => s + 1);
