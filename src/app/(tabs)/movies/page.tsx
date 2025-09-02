@@ -13,6 +13,7 @@ import {
   CardTitle,
 } from '~/components/ui/card';
 import { Input } from '~/components/ui/input';
+import { Skeleton } from '~/components/ui/skeleton';
 import { useFetchMovies } from '~/services/movies-service';
 
 /**
@@ -60,7 +61,7 @@ const MoviesTab = () => {
       {/* Search bar  and filter*/}
       <Card className="border-ui-600 text-base-white from-base-black to-ui-900 bg-gradient-to-r">
         <CardHeader>
-          <CardDescription className='sr-only'>
+          <CardDescription className="sr-only">
             Search and filter the Movies date
           </CardDescription>
           <div className="relative max-w-[500px]">
@@ -78,11 +79,15 @@ const MoviesTab = () => {
       {/* all the movie data goes here */}
       <Card className="border-ui-600 text-base-white from-base-black to-ui-900 bg-gradient-to-r">
         <CardHeader>
-          <CardTitle className="text-xl font-semibold">
-            TV Shows Directory (2 shows)
-          </CardTitle>
+          {isPending ? (
+            <Skeleton className="h-4 max-w-50" />
+          ) : (
+            <CardTitle className="text-xl font-semibold">
+              Movie Directory ({data?.data.pagination.total} movies)
+            </CardTitle>
+          )}
           <CardDescription className="text-ui-400 text-sm">
-            Complete list of TV shows available on the platform
+            Complete list of movies in your collection
           </CardDescription>
         </CardHeader>
         <CardContent>
