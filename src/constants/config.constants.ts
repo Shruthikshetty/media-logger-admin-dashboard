@@ -50,4 +50,7 @@ export const AnalyticsDataStaleTime = 1 * 60 * 1000; //1 min
 export const UserDataStaleTime = 5 * 60 * 1000; //5 min
 
 // image upload max size
-export const MAX_IMAGE_SIZE = 2 * 1024 * 1024; // 2mb
+export const MaxImageSize = 2 * 1024 * 1024; // 2mb
+
+// fetch all movies slate time for analytics data
+export const FetchAllMoviesStaleTime = 1 * 60 * 1000; //1 min

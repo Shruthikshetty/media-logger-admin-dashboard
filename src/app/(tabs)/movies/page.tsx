@@ -1,7 +1,7 @@
 'use client';
 import { getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import { PlusIcon, Search, UploadIcon } from 'lucide-react';
-import React, { useEffect } from 'react';
+import React from 'react';
 import MoviesTable, { movieColumns } from '~/components/movies-table';
 import TitleSubtitle from '~/components/title-subtitle';
 import { Button } from '~/components/ui/button';
@@ -21,12 +21,10 @@ import { useFetchMovies } from '~/services/movies-service';
  * @returns the movies tab
  */
 const MoviesTab = () => {
-  //custom hook for getting all the movies (its a mutation hook)
-  const { data, isPending, mutate } = useFetchMovies();
-  //fetch all the movies at initial render
-  useEffect(() => {
-    mutate();
-  }, [mutate]);
+  // stores the current pagination page
+  const [page, setPage] = React.useState(1);
+  // custom hook for getting all the movies
+  const { data, isLoading } = useFetchMovies({ page });
 
   // create a table with all the movies data
   const movieTable = useReactTable({
@@ -79,7 +77,7 @@ const MoviesTab = () => {
       {/* all the movie data goes here */}
       <Card className="border-ui-600 text-base-white from-base-black to-ui-900 bg-gradient-to-r">
         <CardHeader>
-          {isPending ? (
+          {isLoading ? (
             <Skeleton className="h-4 max-w-50" />
           ) : (
             <CardTitle className="text-xl font-semibold">
@@ -91,7 +89,13 @@ const MoviesTab = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <MoviesTable loading={isPending} table={movieTable} />
+          <MoviesTable
+            loading={isLoading}
+            table={movieTable}
+            page={page}
+            setPage={setPage}
+            pagination={data?.data.pagination}
+          />
         </CardContent>
       </Card>
     </div>

@@ -2,12 +2,14 @@
  * @file contains all the movies related services
  */
 
-import { useMutation } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
+import { FetchAllMoviesStaleTime } from '~/constants/config.constants';
 import { Endpoints } from '~/constants/endpoints.constants';
 import { QueryKeys } from '~/constants/query-key.constants';
 import apiClient from '~/lib/api-client';
 import { ApiError, Pagination } from '~/types/global.types';
+import { keepPreviousData } from '@tanstack/react-query';
 
 export interface Movie {
   _id: string;
@@ -38,13 +40,22 @@ type MoviesResponse = {
   message?: string;
 };
 
-//get all the movies
-export const useFetchMovies = () => {
-  return useMutation<MoviesResponse, AxiosError<ApiError>>({
-    mutationKey: [QueryKeys.fetchMovies],
-    mutationFn: () =>
+//get all the movies from the api with pagination
+export const useFetchMovies = (
+  params: { limit?: number; page?: number } = {
+    limit: 20,
+    page: 1,
+  },
+) => {
+  return useQuery<MoviesResponse, AxiosError<ApiError>>({
+    queryKey: [QueryKeys.fetchMovies, params.limit, params.page],
+    staleTime: FetchAllMoviesStaleTime,
+    placeholderData: keepPreviousData,
+    queryFn: () =>
       apiClient
-        .get<MoviesResponse>(Endpoints.fetchMovies)
+        .get<MoviesResponse>(
+          `${Endpoints.fetchMovies}?limit=${params.limit}&page=${params.page}`,
+        )
         .then((res) => res.data),
   });
 };

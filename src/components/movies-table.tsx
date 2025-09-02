@@ -31,10 +31,14 @@ import moment from 'moment';
 import CollapsableBadgeList from './collapsable-badge-list';
 import { cn } from '~/lib/utils';
 import { capitalizeFirstLetter } from '~/lib/formatting';
+import type { Pagination as PaginationType } from '~/types/global.types';
 
 type MoviesTableType = {
   loading: boolean;
   table: ReactTable<Movie>;
+  page: number;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
+  pagination?: PaginationType;
 };
 
 //creating columns for the movies table
@@ -168,7 +172,13 @@ export const movieColumns: ColumnDef<
 /**
  * This returns all the movie details in table format
  */
-const MoviesTable = ({ loading, table }: MoviesTableType) => {
+const MoviesTable = ({
+  loading,
+  table,
+  pagination,
+  page,
+  setPage,
+}: MoviesTableType) => {
   //if loading return a skeleton table
   if (loading)
     return (
@@ -225,17 +235,37 @@ const MoviesTable = ({ loading, table }: MoviesTableType) => {
       {/* @TODO dummy pagination in progress */}
       <Pagination className="text-base-white">
         <PaginationContent>
-          <PaginationPrevious>Previous</PaginationPrevious>
-          <PaginationItem>
-            <PaginationLink>1</PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink>2</PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink>3</PaginationLink>
-          </PaginationItem>
-          <PaginationNext>Next</PaginationNext>
+          <PaginationPrevious
+            isActive={pagination?.hasPrevious}
+            onClick={() => {
+              if (pagination?.hasPrevious) {
+                setPage((s) => s - 1);
+              }
+            }}
+          >
+            Previous
+          </PaginationPrevious>
+          {[...Array(pagination?.totalPages ?? 0)].map((_, i) => (
+            <PaginationItem key={i}>
+              <PaginationLink
+                onClick={() => {
+                  setPage(i + 1);
+                }}
+              >
+                {i + 1}
+              </PaginationLink>
+            </PaginationItem>
+          ))}
+          <PaginationNext
+            isActive={pagination?.hasMore}
+            onClick={() => {
+              if (pagination?.hasMore) {
+                setPage((s) => s + 1);
+              }
+            }}
+          >
+            Next
+          </PaginationNext>
         </PaginationContent>
       </Pagination>
     </>
