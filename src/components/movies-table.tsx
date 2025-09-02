@@ -138,7 +138,9 @@ export const movieColumns: ColumnDef<
       <TableCell className="text-base-white">
         <div className="flex flex-row items-center gap-2 text-base">
           <Calendar className="h-5 w-5" />
-          {moment(props.getValue() as string).format('DD/MM/YYYY')}
+          {!!props.getValue()
+            ? moment(props.getValue() as string).format('DD/MM/YYYY')
+            : '???'}
         </div>
       </TableCell>
     ),
@@ -151,7 +153,9 @@ export const movieColumns: ColumnDef<
         <Badge
           className={cn(
             'text-base-white rounded-full px-2',
-            props.getValue() === 'released' ? 'bg-brand-600' : 'bg-ui-600',
+            (props.getValue() as string) === 'released'
+              ? 'bg-brand-600'
+              : 'bg-ui-600',
           )}
         >
           {capitalizeFirstLetter(props.getValue() as string)}
@@ -221,9 +225,7 @@ const MoviesTable = ({ loading, table }: MoviesTableType) => {
       {/* @TODO dummy pagination in progress */}
       <Pagination className="text-base-white">
         <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious>Previous</PaginationPrevious>
-          </PaginationItem>
+          <PaginationPrevious>Previous</PaginationPrevious>
           <PaginationItem>
             <PaginationLink>1</PaginationLink>
           </PaginationItem>
@@ -233,9 +235,7 @@ const MoviesTable = ({ loading, table }: MoviesTableType) => {
           <PaginationItem>
             <PaginationLink>3</PaginationLink>
           </PaginationItem>
-          <PaginationNext>
-            <PaginationNext>Next</PaginationNext>
-          </PaginationNext>
+          <PaginationNext>Next</PaginationNext>
         </PaginationContent>
       </Pagination>
     </>

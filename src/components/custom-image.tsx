@@ -63,9 +63,9 @@ const CustomImage = ({
           width={width}
           height={height}
           src={src}
-          hidden={loading}
           style={{
             minHeight: numericHeight ? `${numericHeight / 2}px` : undefined,
+            opacity: loading ? 0 : 1,
           }}
           onLoad={() => setLoading(false)}
           {...restProps}
