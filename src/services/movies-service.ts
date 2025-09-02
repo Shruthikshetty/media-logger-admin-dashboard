@@ -41,21 +41,25 @@ type MoviesResponse = {
 };
 
 //get all the movies from the api with pagination
-export const useFetchMovies = (
-  params: { limit?: number; page?: number } = {
-    limit: 20,
-    page: 1,
-  },
-) => {
+export const useFetchMovies = ({
+  limit = 20,
+  page = 1,
+}: {
+  limit?: number;
+  page?: number;
+} = {}) => {
   return useQuery<MoviesResponse, AxiosError<ApiError>>({
-    queryKey: [QueryKeys.fetchMovies, params.limit, params.page],
+    queryKey: [QueryKeys.fetchMovies, limit, page],
     staleTime: FetchAllMoviesStaleTime,
     placeholderData: keepPreviousData,
     queryFn: () =>
       apiClient
-        .get<MoviesResponse>(
-          `${Endpoints.fetchMovies}?limit=${params.limit}&page=${params.page}`,
-        )
+        .get<MoviesResponse>(Endpoints.fetchMovies, {
+          params: {
+            limit,
+            page,
+          },
+        })
         .then((res) => res.data),
   });
 };

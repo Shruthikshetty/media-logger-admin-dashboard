@@ -75,6 +75,19 @@ const UpdateProfileImage = ({ children }: { children: React.ReactNode }) => {
     if (files && files.length > 0) {
       const file = files[0];
 
+      // check required file type in case of drag and drop
+      if (!file.type?.startsWith('image/')) {
+        toast.error(
+          'Unsupported file type. Please upload a PNG, JPG, or WEBP.',
+          {
+            classNames: {
+              toast: '!bg-feedback-error',
+            },
+          },
+        );
+        return;
+      }
+
       //in case file size is > 2mb
       if (file.size > MaxImageSize) {
         setUploadProgress(10);

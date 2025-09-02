@@ -24,7 +24,7 @@ const MoviesTab = () => {
   // stores the current pagination page
   const [page, setPage] = React.useState(1);
   // custom hook for getting all the movies
-  const { data, isLoading } = useFetchMovies({ page });
+  const { data, isLoading } = useFetchMovies({ page, limit: 20 });
 
   // create a table with all the movies data
   const movieTable = useReactTable({
@@ -60,7 +60,7 @@ const MoviesTab = () => {
       <Card className="border-ui-600 text-base-white from-base-black to-ui-900 bg-gradient-to-r">
         <CardHeader>
           <CardDescription className="sr-only">
-            Search and filter the Movies date
+            Search and filter the Movies data
           </CardDescription>
           <div className="relative max-w-[500px]">
             <Search className="absolute top-1/2 ml-2 h-5 w-5 -translate-y-1/2 transform" />
