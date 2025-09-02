@@ -230,9 +230,12 @@ const MoviesTable = ({
             ))}
           </TableBody>
         </Table>
-        <ScrollBar orientation="horizontal" className="bg-ui-800 rounded-xl" />
+        <ScrollBar
+          orientation="horizontal"
+          className="bg-ui-800 rounded-xl"
+          barClassName="hover:bg-ui-400 bg-ui-600"
+        />
       </ScrollArea>
-      {/* @TODO dummy pagination in progress */}
       <Pagination className="text-base-white">
         <PaginationContent>
           <PaginationPrevious
