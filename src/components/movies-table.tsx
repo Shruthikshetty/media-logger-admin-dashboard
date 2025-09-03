@@ -26,13 +26,14 @@ import { Movie } from '~/services/movies-service';
 import { ScrollArea, ScrollBar } from './ui/scroll-area';
 import CustomImage from './custom-image';
 import { Badge } from './ui/badge';
-import { Calendar, Ellipsis, Plus, Star } from 'lucide-react';
+import { Calendar, Plus, Star } from 'lucide-react';
 import moment from 'moment';
 import CollapsableBadgeList from './collapsable-badge-list';
 import { cn } from '~/lib/utils';
 import { capitalizeFirstLetter } from '~/lib/formatting';
 import type { Pagination as PaginationType } from '~/types/global.types';
 import MovieActionDropdown from './movie-actions-dropdown';
+import { Checkbox } from './ui/checkbox';
 
 type MoviesTableType = {
   loading: boolean;
@@ -47,6 +48,18 @@ export const movieColumns: ColumnDef<
   Movie,
   string | undefined | string[] | number | boolean
 >[] = [
+  {
+    id: 'select',
+    header: () => (
+      <Checkbox className="data-[state=checked]:bg-base-white data-[state=checked]:text-base-black" />
+    ),
+    cell: () => (
+      <TableCell>
+        <Checkbox className="data-[state=checked]:bg-base-white data-[state=checked]:text-base-black" />
+      </TableCell>
+    ),
+  },
+
   {
     accessorKey: 'posterUrl',
     header: 'Movie',
@@ -225,7 +238,10 @@ const MoviesTable = ({
                     key={header.id}
                     className="text-ui-200 text-base font-bold"
                   >
-                    {header.column.columnDef?.header as string}
+                    {flexRender(
+                      header.column.columnDef?.header,
+                      header.getContext(),
+                    )}
                   </TableHead>
                 ))}
               </TableRow>
