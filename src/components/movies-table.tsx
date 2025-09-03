@@ -50,12 +50,22 @@ export const movieColumns: ColumnDef<
 >[] = [
   {
     id: 'select',
-    header: () => (
-      <Checkbox className="data-[state=checked]:bg-base-white data-[state=checked]:text-base-black" />
+    header: (props) => (
+      <Checkbox
+        className="data-[state=checked]:bg-base-white data-[state=checked]:text-base-black"
+        checked={props.table.getIsAllRowsSelected()}
+        aria-label="select all"
+        onCheckedChange={() => props.table.toggleAllRowsSelected()}
+      />
     ),
-    cell: () => (
+    cell: (props) => (
       <TableCell>
-        <Checkbox className="data-[state=checked]:bg-base-white data-[state=checked]:text-base-black" />
+        <Checkbox
+          className="data-[state=checked]:bg-base-white data-[state=checked]:text-base-black"
+          checked={props.row.getIsSelected()}
+          aria-label="select row"
+          onCheckedChange={() => props.row.toggleSelected()}
+        />
       </TableCell>
     ),
   },
