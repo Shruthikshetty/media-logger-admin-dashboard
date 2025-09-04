@@ -68,6 +68,7 @@ export const movieColumns: ColumnDef<
         />
       </TableCell>
     ),
+    size: 50,
   },
 
   {
@@ -96,6 +97,7 @@ export const movieColumns: ColumnDef<
         </p>
       </TableCell>
     ),
+    size: 500,
   },
   {
     accessorKey: 'genre',
@@ -193,6 +195,7 @@ export const movieColumns: ColumnDef<
         </Badge>
       </TableCell>
     ),
+    size: 100,
   },
   {
     id: 'action',
@@ -202,6 +205,7 @@ export const movieColumns: ColumnDef<
         <MovieActionDropdown movieId={props.row.original._id} />
       </TableCell>
     ),
+    size: 50,
   },
 ];
 
