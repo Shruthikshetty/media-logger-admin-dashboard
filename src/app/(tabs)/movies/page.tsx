@@ -39,6 +39,8 @@ const MoviesTab = () => {
       rowSelection,
     },
     onRowSelectionChange: setRowSelection,
+    enableRowSelection: true,
+    getRowId: (row) => row._id,
     columns: movieColumns,
     getCoreRowModel: getCoreRowModel(),
   });
@@ -48,9 +50,9 @@ const MoviesTab = () => {
   const handleBulkDelete = () => {
     //in case no row is selected
     if (Object.keys(rowSelection).length === 0) return;
-    const getSelectedMovieIds = Object.keys(rowSelection).map((key) => {
-      return data?.data.movies[key as unknown as number]._id;
-    });
+    const getSelectedMovieIds = movieTable
+      .getSelectedRowModel()
+      .rows.map((row) => row.original._id);
     console.log(getSelectedMovieIds);
   };
 
