@@ -32,6 +32,8 @@ import CollapsableBadgeList from './collapsable-badge-list';
 import { cn } from '~/lib/utils';
 import { capitalizeFirstLetter } from '~/lib/formatting';
 import type { Pagination as PaginationType } from '~/types/global.types';
+import MovieActionDropdown from './movie-actions-dropdown';
+import { Checkbox } from './ui/checkbox';
 
 type MoviesTableType = {
   loading: boolean;
@@ -46,6 +48,29 @@ export const movieColumns: ColumnDef<
   Movie,
   string | undefined | string[] | number | boolean
 >[] = [
+  {
+    id: 'select',
+    header: (props) => (
+      <Checkbox
+        className="data-[state=checked]:bg-base-white data-[state=checked]:text-base-black"
+        checked={props.table.getIsAllRowsSelected()}
+        aria-label="select all"
+        onCheckedChange={() => props.table.toggleAllRowsSelected()}
+      />
+    ),
+    cell: (props) => (
+      <TableCell>
+        <Checkbox
+          className="data-[state=checked]:bg-base-white data-[state=checked]:text-base-black"
+          checked={props.row.getIsSelected()}
+          aria-label="select row"
+          onCheckedChange={() => props.row.toggleSelected()}
+        />
+      </TableCell>
+    ),
+    size: 50,
+  },
+
   {
     accessorKey: 'posterUrl',
     header: 'Movie',
@@ -66,9 +91,13 @@ export const movieColumns: ColumnDef<
     header: 'Title',
     cell: (props) => (
       <TableCell className="text-base-white text-base">
-        {props.getValue()}
+        <p className="text-lg font-semibold">{props.getValue()}</p>
+        <p className="text-small text-ui-400 line-clamp-3 text-wrap">
+          {props.row.original.description}
+        </p>
       </TableCell>
     ),
+    size: 500,
   },
   {
     accessorKey: 'genre',
@@ -166,6 +195,17 @@ export const movieColumns: ColumnDef<
         </Badge>
       </TableCell>
     ),
+    size: 100,
+  },
+  {
+    id: 'action',
+    header: 'Actions',
+    cell: (props) => (
+      <TableCell>
+        <MovieActionDropdown movieId={props.row.original._id} />
+      </TableCell>
+    ),
+    size: 50,
   },
 ];
 
@@ -212,7 +252,10 @@ const MoviesTable = ({
                     key={header.id}
                     className="text-ui-200 text-base font-bold"
                   >
-                    {header.column.columnDef?.header as string}
+                    {flexRender(
+                      header.column.columnDef?.header,
+                      header.getContext(),
+                    )}
                   </TableHead>
                 ))}
               </TableRow>
