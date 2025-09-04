@@ -20,6 +20,7 @@ const MovieActionDropdown = ({ movieId }: { movieId: string }) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
+        aria-label="Open movie actions"
         type="button"
         className="hover:bg-ui-600 rounded-md p-1"
       >

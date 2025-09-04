@@ -45,11 +45,14 @@ const MoviesTab = () => {
     getCoreRowModel: getCoreRowModel(),
   });
 
+  //derived selected row length
+  const selectedRowLength = movieTable.getSelectedRowModel().rows?.length ?? 0;
+
   //@TODO in progress
   //function to handle deleting selected rows
   const handleBulkDelete = () => {
     //in case no row is selected
-    if (Object.keys(rowSelection).length === 0) return;
+    if (selectedRowLength === 0) return;
     const getSelectedMovieIds = movieTable
       .getSelectedRowModel()
       .rows.map((row) => row.original._id);
@@ -87,23 +90,27 @@ const MoviesTab = () => {
           </CardDescription>
           <div className="flex flex-row items-center justify-between gap-2">
             <div className="relative max-w-[500px] grow">
-              <Search className="absolute top-1/2 ml-2 h-5 w-5 -translate-y-1/2 transform" />
+              <Search
+                className="absolute top-1/2 ml-2 h-5 w-5 -translate-y-1/2 transform"
+                aria-hidden="true"
+              />
               <Input
+                aria-label="Search movies by title"
                 type="text"
                 className="border-ui-400 pl-10"
                 id="search"
                 placeholder="Search movies by title"
               />
             </div>
-            {Object.keys(rowSelection).length > 0 && (
+            {selectedRowLength > 0 && (
               <Button
                 variant={'red'}
-                aria-label="delete selected button"
+                aria-label={`delete selected movies (${selectedRowLength})`}
                 onClick={handleBulkDelete}
                 className="ml-auto"
               >
                 <Trash2 className="size-4" />
-                selected
+                selected ({selectedRowLength})
               </Button>
             )}
           </div>
