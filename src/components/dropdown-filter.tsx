@@ -68,7 +68,7 @@ const DropdownFilter = ({
           {label}
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <ScrollArea className="max-h-100 overflow-auto rounded-md pb-3 whitespace-normal">
+        <ScrollArea className="max-h-100 overflow-auto">
           <DropdownMenuGroup>
             {options.map((option) => (
               <DropdownMenuItem
