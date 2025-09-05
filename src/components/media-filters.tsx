@@ -1,28 +1,45 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import DropdownFilter from './dropdown-filter';
-import { Badge } from './ui/badge';
-import { Button } from './ui/button';
-import { X } from 'lucide-react';
+import BadgeWithCross from './badge-with-cross';
 
-export interface FilterConfig {
+//all possible filter value types
+type FilterValue =
+  | string // For single-select dropdowns, text inputs
+  | string[]; // For multi-select dropdowns
+
+// filter state type
+export type FiltersState = Record<string, FilterValue | undefined>;
+
+//base filter config
+interface BaseFilterConfig {
   key: string;
   label: string;
+}
+
+//config type for dropdown
+interface DropdownConfig extends BaseFilterConfig {
   type: 'dropdown';
   multiselect: boolean;
   options: string[];
 }
 
+// Union of all configurations
+export type FilterConfig = DropdownConfig;
+
 type MediaFiltersProps = {
   config: FilterConfig[];
-  onFilterChange: (filters: Record<string, string[]>) => void;
+  onFilterChange: (filters: FiltersState) => void;
 };
 
 //generate initial filters based on config
 const generateInitialFilters = (config: FilterConfig[]) => () => {
-  const initialFilters: Record<string, string[]> = {};
+  const initialFilters: FiltersState = {};
   config.forEach((filter) => {
-    initialFilters[filter.key] = [];
+    switch (filter.type) {
+      case 'dropdown':
+        initialFilters[filter.key] = filter.multiselect ? [] : undefined;
+    }
   });
   return initialFilters;
 };
@@ -33,7 +50,7 @@ const generateInitialFilters = (config: FilterConfig[]) => () => {
  */
 const MediaFilters = ({ config, onFilterChange }: MediaFiltersProps) => {
   // store the selected filters
-  const [filters, setFilters] = useState<Record<string, string[]>>(
+  const [filters, setFilters] = useState<FiltersState>(
     generateInitialFilters(config)(),
   );
 
@@ -60,7 +77,7 @@ const MediaFilters = ({ config, onFilterChange }: MediaFiltersProps) => {
               <DropdownFilter
                 key={filter.key}
                 options={filter.options}
-                selected={filters[filter.key]}
+                selected={filters[filter.key] as string[] | string}
                 multiselect={filter.multiselect}
                 setSelected={(selected) =>
                   setFilters({ ...filters, [filter.key]: selected })
@@ -74,25 +91,30 @@ const MediaFilters = ({ config, onFilterChange }: MediaFiltersProps) => {
       {/* Active Filter Badges Display */}
       <div className="flex flex-wrap items-center gap-2">
         {Object.entries(filters).map(([filterName, selectedItems]) => {
-          if (selectedItems.length === 0) return null;
-          return (
-            <Badge
-              key={`${filterName}`} // Create a unique key
-              className="bg-ui-700 flex items-center gap-1 rounded-full pr-1 pl-2.5"
-            >
-              <span className="text:xs">
-                {filterName}: {selectedItems.map((item) => item).join(', ')}
-              </span>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="hover:bg-muted h-5 w-5 rounded-full p-0"
-                onClick={handleFilterRemove.bind(null, filterName)}
-              >
-                <X className="h-3 w-3" />
-              </Button>
-            </Badge>
-          );
+          console.log(filterName);
+          switch (config.find((filter) => filter.key === filterName)?.type) {
+            case 'dropdown':
+              if (typeof selectedItems === 'string') {
+                return (
+                  <BadgeWithCross
+                    key={filterName}
+                    label={selectedItems}
+                    handleClick={() => handleFilterRemove(filterName)}
+                  />
+                );
+              } else if (
+                Array.isArray(selectedItems) &&
+                selectedItems.length > 0
+              ) {
+                return (
+                  <BadgeWithCross
+                    key={filterName}
+                    label={selectedItems?.join(', ')}
+                    handleClick={() => handleFilterRemove(filterName)}
+                  />
+                );
+              }
+          }
         })}
       </div>
     </div>

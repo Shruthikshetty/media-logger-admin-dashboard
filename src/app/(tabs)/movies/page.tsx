@@ -36,6 +36,13 @@ const movieFilterConfig: FilterConfig[] = [
     multiselect: true,
     options: ['English', 'Hindi'],
   },
+  {
+    key: 'status',
+    label: 'Status',
+    type: 'dropdown',
+    multiselect: false,
+    options: ['released', 'upcoming'],
+  },
 ];
 
 /**
