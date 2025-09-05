@@ -35,6 +35,7 @@ export interface NumberInputConfig extends BaseFilterConfig {
   max?: number;
   icon?: LucideIcon;
   iconClassName?: string;
+  helperText?: string;
 }
 
 // Union of all configurations
@@ -68,7 +69,7 @@ const generateInitialFilters = (config: FilterConfig[]) => () => {
 const MediaFilters = ({ config, onFilterChange }: MediaFiltersProps) => {
   // store the selected filters
   const [filters, setFilters] = useState<FiltersState>(
-    generateInitialFilters(config)(),
+    generateInitialFilters(config),
   );
 
   //function to remove a filter
@@ -141,13 +142,16 @@ const MediaFilters = ({ config, onFilterChange }: MediaFiltersProps) => {
       {/* Active Filter Badges Display */}
       <div className="flex flex-wrap items-center gap-2">
         {Object.entries(filters).map(([filterName, selectedItems]) => {
-          switch (config.find((filter) => filter.key === filterName)?.type) {
+          // extract the filter config
+          const filterConfig = config.find((f) => f.key === filterName);
+          // render badges based on filter type
+          switch (filterConfig?.type) {
             case 'dropdown':
               if (typeof selectedItems === 'string') {
                 return (
                   <BadgeWithCross
                     key={filterName}
-                    label={selectedItems}
+                    label={`${filterConfig.label}: ${selectedItems}`}
                     handleClick={() => handleFilterRemove(filterName)}
                   />
                 );
@@ -158,7 +162,7 @@ const MediaFilters = ({ config, onFilterChange }: MediaFiltersProps) => {
                 return (
                   <BadgeWithCross
                     key={filterName}
-                    label={selectedItems?.join(', ')}
+                    label={`${filterConfig.label}: ${selectedItems?.join(', ')}`}
                     handleClick={() => handleFilterRemove(filterName)}
                   />
                 );
@@ -169,7 +173,7 @@ const MediaFilters = ({ config, onFilterChange }: MediaFiltersProps) => {
                 return (
                   <BadgeWithCross
                     key={filterName}
-                    label={`${selectedItems}`}
+                    label={`${filterConfig.label}: ${selectedItems}`}
                     handleClick={() => handleFilterRemove(filterName)}
                   />
                 );

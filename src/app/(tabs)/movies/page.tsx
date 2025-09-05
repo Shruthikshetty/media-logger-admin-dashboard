@@ -62,6 +62,7 @@ const movieFilterConfig: FilterConfig[] = [
     max: 10,
     icon: Star,
     iconClassName: 'text-yellow-500',
+    helperText:"Average rating between 0 to 10",
   },
 ];
 

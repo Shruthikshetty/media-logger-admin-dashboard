@@ -102,6 +102,9 @@ const NumberInputFilter = ({
               onChange={handleChange}
             />
           </div>
+          {filters?.helperText && (
+            <p className="text-ui-400 mt-2 text-xs">{filters.helperText}</p>
+          )}
         </form>
       </PopoverContent>
     </Popover>
@@ -109,4 +112,3 @@ const NumberInputFilter = ({
 };
 
 export default NumberInputFilter;
-
