@@ -9,4 +9,5 @@ export const QueryKeys = {
   updateUserDetails: 'update-user-details',
   uploadImage: 'upload-image',
   fetchMovies: 'fetch-movies',
+  filterMovies: 'filter-movies',
 };

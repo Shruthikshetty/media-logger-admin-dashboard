@@ -18,3 +18,8 @@ export interface Pagination {
   nextPage: number | null;
   previousPage: number | null;
 }
+
+export interface FilterLimits<T = number> {
+  gte: T;
+  lte: T;
+}

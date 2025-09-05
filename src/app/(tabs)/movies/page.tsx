@@ -18,7 +18,7 @@ import {
 } from '~/components/ui/card';
 import { Input } from '~/components/ui/input';
 import { Skeleton } from '~/components/ui/skeleton';
-import { useFetchMovies } from '~/services/movies-service';
+import { useFilterMovies } from '~/services/movies-service';
 
 /**
  * this renders the movies screen containing all movies list
@@ -30,7 +30,7 @@ const MoviesTab = () => {
   // stores row selection state
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   // custom hook for getting all the movies
-  const { data, isLoading } = useFetchMovies({ page, limit: 20 });
+  const { data, isLoading } = useFilterMovies({ page, limit: 20 });
 
   // create a table with all the movies data
   const movieTable = useReactTable({

@@ -11,4 +11,5 @@ export const Endpoints = {
   userDetails: `/api/user`,
   uploadImage: `/api/upload/image`,
   fetchMovies: `/api/movie`,
+  filterMovies: `/api/movie/filter`,
 };
