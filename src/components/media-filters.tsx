@@ -23,7 +23,7 @@ interface DropdownConfig extends BaseFilterConfig {
   type: 'dropdown';
   multiselect: boolean;
   options: string[];
-  icon?: LucideIcon 
+  icon?: LucideIcon;
 }
 
 // Union of all configurations
@@ -45,7 +45,7 @@ const generateInitialFilters = (config: FilterConfig[]) => () => {
   });
   return initialFilters;
 };
- 
+
 /**
  * This component is used to configure and provide filters
  * for diff media type based on the config provided
@@ -58,10 +58,12 @@ const MediaFilters = ({ config, onFilterChange }: MediaFiltersProps) => {
 
   //function to remove a filter
   const handleFilterRemove = (filterName: string) => {
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      [filterName]: [],
-    }));
+    setFilters((prev) => {
+      const cfg = config.find((f) => f.key === filterName);
+      const reset =
+        cfg && 'multiselect' in cfg && cfg.multiselect ? [] : undefined;
+      return { ...prev, [filterName]: reset };
+    });
   };
 
   //send the filters to the parent
