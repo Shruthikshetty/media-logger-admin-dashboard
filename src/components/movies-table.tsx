@@ -279,7 +279,7 @@ const MoviesTable = ({
           barClassName="hover:bg-ui-400 bg-ui-600"
         />
       </ScrollArea>
-      <Pagination className="text-base-white">
+      <Pagination className="text-base-white mt-2">
         <PaginationContent>
           <PaginationPrevious
             className={

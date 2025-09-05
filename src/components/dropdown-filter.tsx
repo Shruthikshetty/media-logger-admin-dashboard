@@ -10,7 +10,7 @@ import {
 } from './ui/dropdown-menu';
 import { Button } from './ui/button';
 import { LucideIcon, X } from 'lucide-react';
-import { ScrollArea, ScrollBar } from './ui/scroll-area';
+import scrollBarStyles from '../css-modules/scrollbar.module.css';
 
 /**
  * This component is used in Media filter
@@ -68,38 +68,31 @@ const DropdownFilter = ({
           {label}
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <ScrollArea className="max-h-100 overflow-auto">
-          <DropdownMenuGroup>
-            {options.map((option) => (
-              <DropdownMenuItem
-                className="hover:bg-ui-800 focus:bg-ui-800 focus:text-base-white text-md flex flex-row justify-between gap-2 rounded-md p-2"
-                key={option}
-                onClick={(e) => {
-                  if (multiselect) {
-                    //prevent default behavior in case of multi selection
-                    e.preventDefault();
-                  }
-                  handleSelection(option);
-                }}
-              >
-                <p>{option}</p>
-                {/* in case of multi selection */}
-                {multiselect && selected.includes(option) && (
-                  <p className="bg-brand-600 rounded-full p-1"></p>
-                )}
-                {/* in case of single selection */}
-                {!multiselect && selected === option && (
-                  <p className="bg-brand-600 rounded-full p-1"></p>
-                )}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuGroup>
-          <ScrollBar
-            orientation="vertical"
-            className="bg-ui-800 rounded-xl"
-            barClassName="hover:bg-ui-400 bg-ui-600"
-          />
-        </ScrollArea>
+        <DropdownMenuGroup className={scrollBarStyles.scrollContainerFilterDropdown}>
+          {options.map((option) => (
+            <DropdownMenuItem
+              className="hover:bg-ui-800 focus:bg-ui-800 focus:text-base-white text-md flex flex-row justify-between gap-2 rounded-md p-2"
+              key={option}
+              onClick={(e) => {
+                if (multiselect) {
+                  //prevent default behavior in case of multi selection
+                  e.preventDefault();
+                }
+                handleSelection(option);
+              }}
+            >
+              <p>{option}</p>
+              {/* in case of multi selection */}
+              {multiselect && selected.includes(option) && (
+                <p className="bg-brand-600 rounded-full p-1"></p>
+              )}
+              {/* in case of single selection */}
+              {!multiselect && selected === option && (
+                <p className="bg-brand-600 rounded-full p-1"></p>
+              )}
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuGroup>
         {multiselect && (
           <>
             <DropdownMenuSeparator />

@@ -57,7 +57,7 @@ export const MaxImageSize = 2 * 1024 * 1024; // 2mb
 // fetch all movies slate time for analytics data
 export const FetchAllMoviesStaleTime = 1 * 60 * 1000; //1 min
 
-// movie asn Tv genres
+// movie and Tv genres
 export const GENRE_MOVIE_TV = [
   'Action',
   'Adventure',

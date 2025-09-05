@@ -29,7 +29,7 @@ const BadgeWithCross = ({
         className,
       )}
     >
-      <span className="text:xs">{label}</span>
+      <span className="text:xs text-wrap">{label}</span>
       <Button
         variant="ghost"
         size="icon"
