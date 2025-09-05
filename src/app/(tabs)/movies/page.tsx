@@ -6,6 +6,7 @@ import {
 } from '@tanstack/react-table';
 import { PlusIcon, Search, Trash2, UploadIcon } from 'lucide-react';
 import React, { useState } from 'react';
+import MediaFilters, { FilterConfig } from '~/components/media-filters';
 import MoviesTable, { movieColumns } from '~/components/movies-table';
 import TitleSubtitle from '~/components/title-subtitle';
 import { Button } from '~/components/ui/button';
@@ -19,6 +20,23 @@ import {
 import { Input } from '~/components/ui/input';
 import { Skeleton } from '~/components/ui/skeleton';
 import { useFilterMovies } from '~/services/movies-service';
+
+const movieFilterConfig: FilterConfig[] = [
+  {
+    key: 'genres',
+    label: 'Genres',
+    type: 'dropdown',
+    multiselect: true,
+    options: ['Action', 'Adventure', 'Animation'],
+  },
+  {
+    key: 'languages',
+    label: 'Language',
+    type: 'dropdown',
+    multiselect: true,
+    options: ['English', 'Hindi'],
+  },
+];
 
 /**
  * this renders the movies screen containing all movies list
@@ -114,7 +132,12 @@ const MoviesTab = () => {
               </Button>
             )}
           </div>
-          {/* @TODO Filters  */}
+          <MediaFilters
+            config={movieFilterConfig}
+            onFilterChange={(filters) => {
+              console.log(filters);
+            }}
+          />
         </CardHeader>
       </Card>
       {/* all the movie data goes here */}
