@@ -9,6 +9,7 @@ import {
   FunnelPlus,
   PlusIcon,
   Search,
+  Star,
   Trash2,
   UploadIcon,
 } from 'lucide-react';
@@ -52,6 +53,15 @@ const movieFilterConfig: FilterConfig[] = [
     multiselect: false,
     options: ['released', 'upcoming'],
     icon: FunnelPlus,
+  },
+  {
+    key: 'averageRating',
+    label: 'Average Rating',
+    type: 'number-input',
+    min: 0,
+    max: 10,
+    icon: Star,
+    iconClassName: 'text-yellow-500',
   },
 ];
 
