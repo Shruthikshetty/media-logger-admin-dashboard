@@ -4,17 +4,9 @@ import {
   RowSelectionState,
   useReactTable,
 } from '@tanstack/react-table';
-import {
-  BookA,
-  FunnelPlus,
-  PlusIcon,
-  Search,
-  Star,
-  Trash2,
-  UploadIcon,
-} from 'lucide-react';
+import { PlusIcon, Search, Trash2, UploadIcon } from 'lucide-react';
 import React, { useState } from 'react';
-import MediaFilters, { FilterConfig } from '~/components/media-filters';
+import MediaFilters from '~/components/media-filters';
 import MoviesTable, { movieColumns } from '~/components/movies-table';
 import TitleSubtitle from '~/components/title-subtitle';
 import { Button } from '~/components/ui/button';
@@ -27,44 +19,8 @@ import {
 } from '~/components/ui/card';
 import { Input } from '~/components/ui/input';
 import { Skeleton } from '~/components/ui/skeleton';
+import { MovieFilterConfig } from '~/constants/config.constants';
 import { useFilterMovies } from '~/services/movies-service';
-
-const movieFilterConfig: FilterConfig[] = [
-  {
-    key: 'genres',
-    label: 'Genres',
-    type: 'dropdown',
-    multiselect: true,
-    options: ['Action', 'Adventure', 'Animation'],
-    icon: FunnelPlus,
-  },
-  {
-    key: 'languages',
-    label: 'Language',
-    type: 'dropdown',
-    multiselect: true,
-    options: ['English', 'Hindi'],
-    icon: BookA,
-  },
-  {
-    key: 'status',
-    label: 'Status',
-    type: 'dropdown',
-    multiselect: false,
-    options: ['released', 'upcoming'],
-    icon: FunnelPlus,
-  },
-  {
-    key: 'averageRating',
-    label: 'Average Rating',
-    type: 'number-input',
-    min: 0,
-    max: 10,
-    icon: Star,
-    iconClassName: 'text-yellow-500',
-    helperText:"Average rating between 0 to 10",
-  },
-];
 
 /**
  * this renders the movies screen containing all movies list
@@ -162,7 +118,7 @@ const MoviesTab = () => {
               )}
             </div>
             <MediaFilters
-              config={movieFilterConfig}
+              config={MovieFilterConfig}
               onFilterChange={(filters) => {
                 console.log(filters);
               }}

@@ -10,6 +10,7 @@ import {
 } from './ui/dropdown-menu';
 import { Button } from './ui/button';
 import { LucideIcon, X } from 'lucide-react';
+import { ScrollArea, ScrollBar } from './ui/scroll-area';
 
 /**
  * This component is used in Media filter
@@ -63,42 +64,51 @@ const DropdownFilter = ({
         className="bg-base-black border-ui-600 text-base-white z-60 my-2 rounded-lg border p-1 pb-1"
         align="center"
       >
-        <DropdownMenuLabel>{label}</DropdownMenuLabel>
+        <DropdownMenuLabel className="text-md font-semibold">
+          {label}
+        </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          {options.map((option) => (
-            <DropdownMenuItem
-              className="hover:bg-ui-800 focus:bg-ui-800 focus:text-base-white text-md flex flex-row justify-between gap-2 rounded-md p-2"
-              key={option}
-              onClick={(e) => {
-                if (multiselect) {
-                  //prevent default behavior in case of multi selection
-                  e.preventDefault();
-                }
-                handleSelection(option);
-              }}
-            >
-              <p>{option}</p>
-              {/* in case of multi selection */}
-              {multiselect && selected.includes(option) && (
-                <p className="bg-brand-600 rounded-full p-1"></p>
-              )}
-              {/* in case of single selection */}
-              {!multiselect && selected === option && (
-                <p className="bg-brand-600 rounded-full p-1"></p>
-              )}
-            </DropdownMenuItem>
-          ))}
-          {multiselect && (
-            <>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="hover:bg-ui-800 focus:bg-ui-800 focus:text-base-white text-md justify-between pr-3">
-                Done
-                <X />
+        <ScrollArea className="max-h-100 overflow-auto rounded-md pb-3 whitespace-normal">
+          <DropdownMenuGroup>
+            {options.map((option) => (
+              <DropdownMenuItem
+                className="hover:bg-ui-800 focus:bg-ui-800 focus:text-base-white text-md flex flex-row justify-between gap-2 rounded-md p-2"
+                key={option}
+                onClick={(e) => {
+                  if (multiselect) {
+                    //prevent default behavior in case of multi selection
+                    e.preventDefault();
+                  }
+                  handleSelection(option);
+                }}
+              >
+                <p>{option}</p>
+                {/* in case of multi selection */}
+                {multiselect && selected.includes(option) && (
+                  <p className="bg-brand-600 rounded-full p-1"></p>
+                )}
+                {/* in case of single selection */}
+                {!multiselect && selected === option && (
+                  <p className="bg-brand-600 rounded-full p-1"></p>
+                )}
               </DropdownMenuItem>
-            </>
-          )}
-        </DropdownMenuGroup>
+            ))}
+          </DropdownMenuGroup>
+          <ScrollBar
+            orientation="vertical"
+            className="bg-ui-800 rounded-xl"
+            barClassName="hover:bg-ui-400 bg-ui-600"
+          />
+        </ScrollArea>
+        {multiselect && (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem className="hover:bg-ui-800 focus:bg-ui-800 focus:text-base-white text-md justify-between pr-3">
+              Done
+              <X />
+            </DropdownMenuItem>
+          </>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );
