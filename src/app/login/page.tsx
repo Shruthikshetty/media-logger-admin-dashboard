@@ -77,6 +77,7 @@ const Login = () => {
         Cookies.set(CookieNames.token, data.data.token, {
           expires: TokenExpiry, // days
           path: '/', // accessible across the app
+          secure: true,
         });
         toast.info('Login successful', {
           classNames: {
