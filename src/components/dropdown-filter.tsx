@@ -9,7 +9,7 @@ import {
   DropdownMenuSeparator,
 } from './ui/dropdown-menu';
 import { Button } from './ui/button';
-import { X } from 'lucide-react';
+import { LucideIcon, X } from 'lucide-react';
 
 /**
  * This component is used in Media filter
@@ -21,12 +21,14 @@ const DropdownFilter = ({
   multiselect,
   setSelected,
   label,
+  Icon,
 }: {
   options: string[];
   selected: string[] | string;
   multiselect: boolean;
   setSelected: (selected: string[] | string) => void;
   label: string;
+  Icon?: LucideIcon;
 }) => {
   //state to store open state of the dropdown
   const [open, setOpen] = useState(false);
@@ -52,7 +54,8 @@ const DropdownFilter = ({
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
-        <Button variant={'outline'} type="button">
+        <Button variant={'outline'} type="button" className="border-ui-600">
+          {Icon && <Icon className="mr-2 h-4 w-4" />}
           {label}
         </Button>
       </DropdownMenuTrigger>

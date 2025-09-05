@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import DropdownFilter from './dropdown-filter';
 import BadgeWithCross from './badge-with-cross';
+import { LucideIcon } from 'lucide-react';
 
 //all possible filter value types
 type FilterValue =
@@ -22,6 +23,7 @@ interface DropdownConfig extends BaseFilterConfig {
   type: 'dropdown';
   multiselect: boolean;
   options: string[];
+  icon?: LucideIcon 
 }
 
 // Union of all configurations
@@ -43,7 +45,7 @@ const generateInitialFilters = (config: FilterConfig[]) => () => {
   });
   return initialFilters;
 };
-
+ 
 /**
  * This component is used to configure and provide filters
  * for diff media type based on the config provided
@@ -75,6 +77,7 @@ const MediaFilters = ({ config, onFilterChange }: MediaFiltersProps) => {
           if (filter.type === 'dropdown') {
             return (
               <DropdownFilter
+                Icon={filter?.icon}
                 key={filter.key}
                 options={filter.options}
                 selected={filters[filter.key] as string[] | string}
