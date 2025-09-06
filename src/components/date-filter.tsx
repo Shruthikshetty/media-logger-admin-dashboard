@@ -58,7 +58,7 @@ const DateFilter = ({
   const getButtonTitle = () => {
     if (value) {
       if (value?.gte && value?.lte) {
-        return `${moment(value?.gte).format('DD/MM/YYYY')} - ${moment(value?.gte).format('DD/MM/YYYY')}`;
+        return `${moment(value?.gte).format('DD/MM/YYYY')} - ${moment(value?.lte).format('DD/MM/YYYY')}`;
       } else if (value?.gte) {
         return `From ${moment(value?.gte).format('DD/MM/YYYY')}`;
       } else if (value?.lte) {
@@ -68,14 +68,32 @@ const DateFilter = ({
     return filters.label;
   };
 
+  // Determine which date to show as selected in the calendar
+  const selectedDate = dateType === 'from' ? value?.gte : value?.lte;
+
+  // Determine disabled dates
+  const disableDates = (day: Date) => {
+    if (dateType === 'from') {
+      if (!value?.lte) return false;
+      return day > value?.lte;
+    } else {
+      if (!value?.gte) return false;
+      return day < value?.gte;
+    }
+  };
+  // Determine which date to visually "pin"
+  const pinnedDate = dateType === 'from' ? value?.lte : value?.gte;
+
   return (
     <Popover>
+      {/* Main Trigger Button */}
       <PopoverTrigger asChild>
         <Button variant={'outline'} type="button" aria-label="date filter open">
           {filters.icon && <filters.icon className="h-4 w-4" />}
           {getButtonTitle()}
         </Button>
       </PopoverTrigger>
+      {/* Main Popover Content */}
       <PopoverContent className="bg-base-black text-base-white flex w-auto flex-col gap-4">
         <PopoverClose className="absolute top-3 right-3">
           <X className="hover:text-base-white text-ui-400 h-5 w-5" />
@@ -83,6 +101,7 @@ const DateFilter = ({
         {/* Inner content */}
         <Popover>
           <p>{filters.label}</p>
+          {/* "From" and "To" Buttons */}
           <div className="flex flex-row items-center justify-center gap-5">
             <div>
               <p className="text-ui-400 mb-1 text-xs">From</p>
@@ -118,11 +137,15 @@ const DateFilter = ({
           <PopoverContent className="bg-base-black w-auto">
             <Calendar
               mode="single"
-              selected={value?.gte}
+              selected={selectedDate}
               captionLayout="dropdown"
               onSelect={handleValueChange}
               className="text-base-white"
               buttonVariant={'outline'}
+              disabled={disableDates}
+              modifiers={{
+                pinned: pinnedDate ? [pinnedDate] : [],
+              }}
               classNames={{
                 years_dropdown: 'text-base-black',
                 months_dropdown: 'text-base-black',
