@@ -8,6 +8,12 @@ import { Button } from './ui/button';
 import { Label } from './ui/label';
 import { X } from 'lucide-react';
 
+type NumberInputFilterProps = {
+  filters: NumberInputConfig;
+  value: number | undefined;
+  setValue: (value: number | undefined) => void;
+};
+
 /**
  * This component is used in Media filter
  * provides a input with number type
@@ -17,11 +23,7 @@ const NumberInputFilter = ({
   filters,
   setValue,
   value,
-}: {
-  filters: NumberInputConfig;
-  value: number | undefined;
-  setValue: (value: number | undefined) => void;
-}) => {
+}: NumberInputFilterProps) => {
   //store popover open state
   const [open, setOpen] = useState(false);
 

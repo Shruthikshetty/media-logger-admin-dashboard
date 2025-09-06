@@ -12,6 +12,15 @@ import { Button } from './ui/button';
 import { LucideIcon, X } from 'lucide-react';
 import scrollBarStyles from '../css-modules/scrollbar.module.css';
 
+type DropdownFilterProps = {
+  options: string[];
+  selected: string[] | string;
+  multiselect: boolean;
+  setSelected: (selected: string[] | string) => void;
+  label: string;
+  Icon?: LucideIcon;
+};
+
 /**
  * This component is used in Media filter
  * provides a dropdown with provided options
@@ -23,14 +32,7 @@ const DropdownFilter = ({
   setSelected,
   label,
   Icon,
-}: {
-  options: string[];
-  selected: string[] | string;
-  multiselect: boolean;
-  setSelected: (selected: string[] | string) => void;
-  label: string;
-  Icon?: LucideIcon;
-}) => {
+}: DropdownFilterProps) => {
   //state to store open state of the dropdown
   const [open, setOpen] = useState(false);
 
@@ -68,7 +70,9 @@ const DropdownFilter = ({
           {label}
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuGroup className={scrollBarStyles.scrollContainerFilterDropdown}>
+        <DropdownMenuGroup
+          className={scrollBarStyles.scrollContainerFilterDropdown}
+        >
           {options.map((option) => (
             <DropdownMenuItem
               className="hover:bg-ui-800 focus:bg-ui-800 focus:text-base-white text-md flex flex-row justify-between gap-2 rounded-md p-2"

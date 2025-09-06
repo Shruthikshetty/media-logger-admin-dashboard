@@ -4,12 +4,17 @@ import DropdownFilter from './dropdown-filter';
 import BadgeWithCross from './badge-with-cross';
 import { LucideIcon } from 'lucide-react';
 import NumberInputFilter from './number-input-filter';
+import RangeFilter from './range-filter';
+import { FilterLimits } from '~/types/global.types';
+
+export type RangeState = FilterLimits<number | undefined>;
 
 //all possible filter value types
 type FilterValue =
   | string // For single-select dropdowns, text inputs
   | string[] // For multi-select dropdowns
-  | number; // For number inputs
+  | number // For number inputs
+  | RangeState;
 
 // filter state type
 export type FiltersState = Record<string, FilterValue | undefined>;
@@ -38,8 +43,18 @@ export interface NumberInputConfig extends BaseFilterConfig {
   helperText?: string;
 }
 
+//config type for range select filter
+export interface RangeConfig extends BaseFilterConfig {
+  type: 'range';
+  min: number;
+  max: number;
+  icon?: LucideIcon;
+  step: number;
+  unitLabel?: string;
+}
+
 // Union of all configurations
-export type FilterConfig = DropdownConfig | NumberInputConfig;
+export type FilterConfig = DropdownConfig | NumberInputConfig | RangeConfig;
 
 type MediaFiltersProps = {
   config: FilterConfig[];
@@ -57,6 +72,8 @@ const generateInitialFilters = (config: FilterConfig[]) => () => {
       case 'number-input':
         initialFilters[filter.key] = undefined;
         break;
+      case 'range':
+        initialFilters[filter.key] = undefined;
     }
   });
   return initialFilters;
@@ -133,6 +150,17 @@ const MediaFilters = ({ config, onFilterChange }: MediaFiltersProps) => {
                       ...filters,
                       [filter.key]: value,
                     })
+                  }
+                />
+              );
+            case 'range':
+              return (
+                <RangeFilter
+                  key={filter.key}
+                  filters={filter}
+                  value={filters[filter.key] as RangeState | undefined}
+                  onValueChange={(value) =>
+                    setFilters({ ...filters, [filter.key]: value })
                   }
                 />
               );

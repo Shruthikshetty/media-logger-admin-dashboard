@@ -5,7 +5,7 @@
 import type { ChartConfig } from '~/components/ui/chart';
 import { AppColors } from './colors.constants';
 import { FilterConfig } from '~/components/media-filters';
-import { BookA, FunnelPlus, Star, Tag } from 'lucide-react';
+import { BookA, FunnelPlus, Star, Tag, UserRound } from 'lucide-react';
 
 export const CookieNames = {
   token: 'token',
@@ -229,5 +229,15 @@ export const MovieFilterConfig: FilterConfig[] = [
     multiselect: true,
     options: TAGS,
     icon: Tag,
+  },
+  {
+    key: 'ageRating',
+    label: 'Age Rating',
+    type: 'range',
+    max: 22,
+    min: 0,
+    step: 1,
+    icon: UserRound,
+    unitLabel:"years"
   },
 ];
