@@ -3,11 +3,18 @@ import React, { useEffect, useState } from 'react';
 import DropdownFilter from './dropdown-filter';
 import BadgeWithCross from './badge-with-cross';
 import { LucideIcon } from 'lucide-react';
+import NumberInputFilter from './number-input-filter';
+import RangeFilter from './range-filter';
+import { FilterLimits } from '~/types/global.types';
+
+export type RangeState = FilterLimits<number | undefined>;
 
 //all possible filter value types
 type FilterValue =
   | string // For single-select dropdowns, text inputs
-  | string[]; // For multi-select dropdowns
+  | string[] // For multi-select dropdowns
+  | number // For number inputs
+  | RangeState;
 
 // filter state type
 export type FiltersState = Record<string, FilterValue | undefined>;
@@ -26,8 +33,28 @@ interface DropdownConfig extends BaseFilterConfig {
   icon?: LucideIcon;
 }
 
+//config for number input
+export interface NumberInputConfig extends BaseFilterConfig {
+  type: 'number-input';
+  min?: number;
+  max?: number;
+  icon?: LucideIcon;
+  iconClassName?: string;
+  helperText?: string;
+}
+
+//config type for range select filter
+export interface RangeConfig extends BaseFilterConfig {
+  type: 'range';
+  min: number;
+  max: number;
+  icon?: LucideIcon;
+  step: number;
+  unitLabel?: string;
+}
+
 // Union of all configurations
-export type FilterConfig = DropdownConfig;
+export type FilterConfig = DropdownConfig | NumberInputConfig | RangeConfig;
 
 type MediaFiltersProps = {
   config: FilterConfig[];
@@ -41,6 +68,12 @@ const generateInitialFilters = (config: FilterConfig[]) => () => {
     switch (filter.type) {
       case 'dropdown':
         initialFilters[filter.key] = filter.multiselect ? [] : undefined;
+        break;
+      case 'number-input':
+        initialFilters[filter.key] = undefined;
+        break;
+      case 'range':
+        initialFilters[filter.key] = undefined;
     }
   });
   return initialFilters;
@@ -53,16 +86,34 @@ const generateInitialFilters = (config: FilterConfig[]) => () => {
 const MediaFilters = ({ config, onFilterChange }: MediaFiltersProps) => {
   // store the selected filters
   const [filters, setFilters] = useState<FiltersState>(
-    generateInitialFilters(config)(),
+    generateInitialFilters(config),
   );
 
   //function to remove a filter
   const handleFilterRemove = (filterName: string) => {
     setFilters((prev) => {
       const cfg = config.find((f) => f.key === filterName);
-      const reset =
-        cfg && 'multiselect' in cfg && cfg.multiselect ? [] : undefined;
-      return { ...prev, [filterName]: reset };
+
+      if (!cfg) return prev; // Safety fallback
+
+      let resetValue: FilterValue | undefined;
+
+      // Reset the value based on the filter type
+      switch (cfg.type) {
+        case 'dropdown':
+          resetValue = cfg.multiselect ? [] : undefined;
+          break;
+        case 'number-input':
+          resetValue = undefined;
+          break;
+        case 'range':
+          resetValue = undefined;
+          break;
+        default:
+          resetValue = undefined;
+      }
+
+      return { ...prev, [filterName]: resetValue };
     });
   };
 
@@ -76,34 +127,59 @@ const MediaFilters = ({ config, onFilterChange }: MediaFiltersProps) => {
       <div className="flex flex-row flex-wrap gap-2">
         {/* show filters based on type */}
         {config.map((filter) => {
-          if (filter.type === 'dropdown') {
-            return (
-              <DropdownFilter
-                Icon={filter?.icon}
-                key={filter.key}
-                options={filter.options}
-                selected={filters[filter.key] as string[] | string}
-                multiselect={filter.multiselect}
-                setSelected={(selected) =>
-                  setFilters({ ...filters, [filter.key]: selected })
-                }
-                label={filter.label}
-              />
-            );
+          switch (filter.type) {
+            case 'dropdown':
+              return (
+                <DropdownFilter
+                  Icon={filter?.icon}
+                  key={filter.key}
+                  options={filter.options}
+                  selected={filters[filter.key] as string[] | string}
+                  multiselect={filter.multiselect}
+                  setSelected={(selected) =>
+                    setFilters((prev) => ({ ...prev, [filter.key]: selected }))
+                  }
+                  label={filter.label}
+                />
+              );
+            case 'number-input':
+              return (
+                <NumberInputFilter
+                  key={filter.key}
+                  filters={filter}
+                  value={filters[filter.key] as number | undefined}
+                  setValue={(value) =>
+                    setFilters((prev) => ({ ...prev, [filter.key]: value }))
+                  }
+                />
+              );
+            case 'range':
+              return (
+                <RangeFilter
+                  key={filter.key}
+                  filters={filter}
+                  value={filters[filter.key] as RangeState | undefined}
+                  onValueChange={(value) =>
+                    setFilters((prev) => ({ ...prev, [filter.key]: value }))
+                  }
+                />
+              );
           }
         })}
       </div>
       {/* Active Filter Badges Display */}
       <div className="flex flex-wrap items-center gap-2">
         {Object.entries(filters).map(([filterName, selectedItems]) => {
-          console.log(filterName);
-          switch (config.find((filter) => filter.key === filterName)?.type) {
+          // extract the filter config
+          const filterConfig = config.find((f) => f.key === filterName);
+          // render badges based on filter type
+          switch (filterConfig?.type) {
             case 'dropdown':
               if (typeof selectedItems === 'string') {
                 return (
                   <BadgeWithCross
                     key={filterName}
-                    label={selectedItems}
+                    label={`${filterConfig.label}: ${selectedItems}`}
                     handleClick={() => handleFilterRemove(filterName)}
                   />
                 );
@@ -114,11 +190,35 @@ const MediaFilters = ({ config, onFilterChange }: MediaFiltersProps) => {
                 return (
                   <BadgeWithCross
                     key={filterName}
-                    label={selectedItems?.join(', ')}
+                    label={`${filterConfig.label}: ${selectedItems?.join(', ')}`}
                     handleClick={() => handleFilterRemove(filterName)}
                   />
                 );
               }
+              break;
+            case 'number-input':
+              if (selectedItems !== undefined) {
+                return (
+                  <BadgeWithCross
+                    key={filterName}
+                    label={`${filterConfig.label}: ${selectedItems}`}
+                    handleClick={() => handleFilterRemove(filterName)}
+                  />
+                );
+              }
+              break;
+            case 'range':
+              if (selectedItems !== undefined) {
+                console.log(selectedItems);
+                return (
+                  <BadgeWithCross
+                    key={filterName}
+                    label={`${filterConfig.label}: ${(selectedItems as RangeState)?.gte} - ${(selectedItems as RangeState)?.lte}`}
+                    handleClick={() => handleFilterRemove(filterName)}
+                  />
+                );
+              }
+              break;
           }
         })}
       </div>

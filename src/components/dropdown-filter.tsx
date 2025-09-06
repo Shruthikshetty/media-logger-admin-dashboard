@@ -10,6 +10,16 @@ import {
 } from './ui/dropdown-menu';
 import { Button } from './ui/button';
 import { LucideIcon, X } from 'lucide-react';
+import scrollBarStyles from '../css-modules/scrollbar.module.css';
+
+type DropdownFilterProps = {
+  options: string[];
+  selected: string[] | string;
+  multiselect: boolean;
+  setSelected: (selected: string[] | string) => void;
+  label: string;
+  Icon?: LucideIcon;
+};
 
 /**
  * This component is used in Media filter
@@ -22,14 +32,7 @@ const DropdownFilter = ({
   setSelected,
   label,
   Icon,
-}: {
-  options: string[];
-  selected: string[] | string;
-  multiselect: boolean;
-  setSelected: (selected: string[] | string) => void;
-  label: string;
-  Icon?: LucideIcon;
-}) => {
+}: DropdownFilterProps) => {
   //state to store open state of the dropdown
   const [open, setOpen] = useState(false);
 
@@ -63,9 +66,13 @@ const DropdownFilter = ({
         className="bg-base-black border-ui-600 text-base-white z-60 my-2 rounded-lg border p-1 pb-1"
         align="center"
       >
-        <DropdownMenuLabel>{label}</DropdownMenuLabel>
+        <DropdownMenuLabel className="text-md font-semibold">
+          {label}
+        </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuGroup>
+        <DropdownMenuGroup
+          className={scrollBarStyles.scrollContainerFilterDropdown}
+        >
           {options.map((option) => (
             <DropdownMenuItem
               className="hover:bg-ui-800 focus:bg-ui-800 focus:text-base-white text-md flex flex-row justify-between gap-2 rounded-md p-2"
@@ -89,16 +96,19 @@ const DropdownFilter = ({
               )}
             </DropdownMenuItem>
           ))}
-          {multiselect && (
-            <>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="hover:bg-ui-800 focus:bg-ui-800 focus:text-base-white text-md justify-between pr-3">
-                Done
-                <X />
-              </DropdownMenuItem>
-            </>
-          )}
         </DropdownMenuGroup>
+        {multiselect && (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              className="hover:bg-ui-800 focus:bg-ui-800 focus:text-base-white text-md justify-between pr-3"
+              aria-label="close dropdown or done"
+            >
+              Done
+              <X />
+            </DropdownMenuItem>
+          </>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );

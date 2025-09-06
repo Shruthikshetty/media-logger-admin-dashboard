@@ -4,16 +4,9 @@ import {
   RowSelectionState,
   useReactTable,
 } from '@tanstack/react-table';
-import {
-  BookA,
-  FunnelPlus,
-  PlusIcon,
-  Search,
-  Trash2,
-  UploadIcon,
-} from 'lucide-react';
+import { Plus, Search, Trash2, Upload } from 'lucide-react';
 import React, { useState } from 'react';
-import MediaFilters, { FilterConfig } from '~/components/media-filters';
+import MediaFilters from '~/components/media-filters';
 import MoviesTable, { movieColumns } from '~/components/movies-table';
 import TitleSubtitle from '~/components/title-subtitle';
 import { Button } from '~/components/ui/button';
@@ -26,34 +19,8 @@ import {
 } from '~/components/ui/card';
 import { Input } from '~/components/ui/input';
 import { Skeleton } from '~/components/ui/skeleton';
+import { MovieFilterConfig } from '~/constants/config.constants';
 import { useFilterMovies } from '~/services/movies-service';
-
-const movieFilterConfig: FilterConfig[] = [
-  {
-    key: 'genres',
-    label: 'Genres',
-    type: 'dropdown',
-    multiselect: true,
-    options: ['Action', 'Adventure', 'Animation'],
-    icon: FunnelPlus,
-  },
-  {
-    key: 'languages',
-    label: 'Language',
-    type: 'dropdown',
-    multiselect: true,
-    options: ['English', 'Hindi'],
-    icon: BookA,
-  },
-  {
-    key: 'status',
-    label: 'Status',
-    type: 'dropdown',
-    multiselect: false,
-    options: ['released', 'upcoming'],
-    icon: FunnelPlus,
-  },
-];
 
 /**
  * this renders the movies screen containing all movies list
@@ -104,14 +71,14 @@ const MoviesTab = () => {
         />
         <div className="flex flex-col gap-3 md:flex-row">
           <Button variant={'outline'}>
-            <UploadIcon className="mr-1 size-4" />
+            <Upload className="mr-1 size-4" />
             Import json
           </Button>
           <Button
             variant={'outline'}
             className="from-brand-200 to-brand-600 border-0 bg-gradient-to-r hover:opacity-80"
           >
-            <PlusIcon className="mr-1 size-4" />
+            <Plus className="mr-1 size-4" />
             Add Movie
           </Button>
         </div>
@@ -151,7 +118,7 @@ const MoviesTab = () => {
               )}
             </div>
             <MediaFilters
-              config={movieFilterConfig}
+              config={MovieFilterConfig}
               onFilterChange={(filters) => {
                 console.log(filters);
               }}
