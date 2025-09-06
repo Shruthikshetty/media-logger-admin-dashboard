@@ -106,6 +106,9 @@ const MediaFilters = ({ config, onFilterChange }: MediaFiltersProps) => {
         case 'number-input':
           resetValue = undefined;
           break;
+        case 'range':
+          resetValue = undefined;
+          break;
         default:
           resetValue = undefined;
       }
@@ -202,6 +205,18 @@ const MediaFilters = ({ config, onFilterChange }: MediaFiltersProps) => {
                   <BadgeWithCross
                     key={filterName}
                     label={`${filterConfig.label}: ${selectedItems}`}
+                    handleClick={() => handleFilterRemove(filterName)}
+                  />
+                );
+              }
+              break;
+            case 'range':
+              if (selectedItems !== undefined) {
+                console.log(selectedItems);
+                return (
+                  <BadgeWithCross
+                    key={filterName}
+                    label={`${filterConfig.label}: ${(selectedItems as RangeState)?.gte} - ${(selectedItems as RangeState)?.lte}`}
                     handleClick={() => handleFilterRemove(filterName)}
                   />
                 );
