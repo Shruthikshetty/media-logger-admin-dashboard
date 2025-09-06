@@ -137,7 +137,7 @@ const MediaFilters = ({ config, onFilterChange }: MediaFiltersProps) => {
                   selected={filters[filter.key] as string[] | string}
                   multiselect={filter.multiselect}
                   setSelected={(selected) =>
-                    setFilters({ ...filters, [filter.key]: selected })
+                    setFilters((prev) => ({ ...prev, [filter.key]: selected }))
                   }
                   label={filter.label}
                 />
@@ -149,10 +149,7 @@ const MediaFilters = ({ config, onFilterChange }: MediaFiltersProps) => {
                   filters={filter}
                   value={filters[filter.key] as number | undefined}
                   setValue={(value) =>
-                    setFilters({
-                      ...filters,
-                      [filter.key]: value,
-                    })
+                    setFilters((prev) => ({ ...prev, [filter.key]: value }))
                   }
                 />
               );
@@ -163,7 +160,7 @@ const MediaFilters = ({ config, onFilterChange }: MediaFiltersProps) => {
                   filters={filter}
                   value={filters[filter.key] as RangeState | undefined}
                   onValueChange={(value) =>
-                    setFilters({ ...filters, [filter.key]: value })
+                    setFilters((prev) => ({ ...prev, [filter.key]: value }))
                   }
                 />
               );

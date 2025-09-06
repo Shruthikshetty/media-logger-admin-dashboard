@@ -100,7 +100,10 @@ const DropdownFilter = ({
         {multiselect && (
           <>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="hover:bg-ui-800 focus:bg-ui-800 focus:text-base-white text-md justify-between pr-3">
+            <DropdownMenuItem
+              className="hover:bg-ui-800 focus:bg-ui-800 focus:text-base-white text-md justify-between pr-3"
+              aria-label="close dropdown or done"
+            >
               Done
               <X />
             </DropdownMenuItem>

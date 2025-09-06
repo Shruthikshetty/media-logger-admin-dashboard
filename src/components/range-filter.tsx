@@ -1,5 +1,5 @@
 import React, { useDeferredValue } from 'react';
-import { RangeConfig, RangeState } from './media-filters';
+import type { RangeConfig, RangeState } from './media-filters';
 import { Popover, PopoverTrigger, PopoverContent } from './ui/popover';
 import { Button } from './ui/button';
 import { Slider } from './ui/slider';
@@ -37,7 +37,8 @@ const RangeFilter = ({
   //get button title
   const getButtonTitle = () => {
     if (value) {
-      return `${value.gte} - ${value.lte} ${filters?.unitLabel}`;
+      const unit = filters.unitLabel ? ` ${filters.unitLabel}` : '';
+      return `${value.gte} - ${value.lte}${unit}`;
     }
     return filters.label;
   };
