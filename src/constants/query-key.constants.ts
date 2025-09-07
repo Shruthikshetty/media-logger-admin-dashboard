@@ -10,4 +10,5 @@ export const QueryKeys = {
   uploadImage: 'upload-image',
   fetchMovies: 'fetch-movies',
   filterMovies: 'filter-movies',
+  movieDetails: 'movie-details',
 };

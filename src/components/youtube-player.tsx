@@ -7,8 +7,7 @@ interface YoutubePlayerProps extends Omit<YouTubeProps, 'videoId' | 'opts'> {
   autoplay?: 1 | 0;
   controls?: 1 | 0;
   rel?: 1 | 0;
-  modestbranding?: 1 | 0; 
-  color:"blue"
+  modestbranding?: 1 | 0;
 }
 
 const YoutubePlayer = ({

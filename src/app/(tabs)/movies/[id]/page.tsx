@@ -22,10 +22,16 @@ import { cn } from '~/lib/utils';
 import { capitalizeFirstLetter } from '~/lib/formatting';
 import CustomImage from '~/components/custom-image';
 import YoutubePlayer from '~/components/youtube-player';
+import { useGetMovieDetails } from '~/services/movies-service';
+import { useParams } from 'next/navigation';
 
 const MovieDetails = () => {
   // hold the trailer visibility state
   const [trailerVisible, setTrailerVisible] = useState(false);
+  //get the movie id from params
+  const movieId = (useParams()?.id as string) ?? '';
+  //fetch the movie details
+  const { data, isLoading } = useGetMovieDetails(movieId);
 
   // returns the styled title with icon
   const renderMovieInfoTitle = useCallback(
@@ -62,9 +68,7 @@ const MovieDetails = () => {
             <div className="flex w-full flex-row items-end gap-2">
               <CustomImage
                 alt={'poster image'}
-                src={
-                  'https://i.imgur.com/vIV727U_d.webp?maxwidth=520&shape=thumb&fidelity=high'
-                }
+                src={data?.data.posterUrl}
                 width={180}
                 height={300}
                 maxHeight={300}
@@ -72,22 +76,22 @@ const MovieDetails = () => {
                 className="border-ui-600 rounded-xl border-1 shadow-2xl"
               />
               <div className="bg-base-black/80 rounded-xl p-3 pb-10">
-                <p className="mb-2 text-3xl font-bold">The Matrix</p>
+                <p className="mb-2 text-3xl font-bold">{data?.data.title}</p>
                 <div className="flex flex-row flex-wrap items-center justify-center gap-4">
                   <p className="text-md flex flex-row items-center gap-1 font-semibold">
                     <Star className="text-feedback-warning h-4 w-4" />
-                    8.7
+                    {data?.data?.averageRating}
                   </p>
                   <p className="text-md flex flex-row items-center gap-1 font-semibold">
                     <Calendar className="h-4 w-4" />
-                    1999
+                    {data?.data?.releaseDate}
                   </p>
                   <p className="text-md flex flex-row items-center gap-1 font-semibold">
                     <Clock className="h-4 w-4" />
-                    136min
+                    {data?.data?.runTime} min
                   </p>
                   <Badge className="bg-ui-700 hover:bg-ui-600 rounded-full border-0 px-2">
-                    13+
+                    {data?.data.ageRating}+
                   </Badge>
                 </div>
               </div>
@@ -132,7 +136,7 @@ const MovieDetails = () => {
               <div className="flex flex-row justify-between gap-2">
                 <TitleSubtitle
                   title="Overview"
-                  subtitle="A computer hacker learns from mysterious rebels about the true nature of his reality and his role in the war against its controllers."
+                  subtitle={data?.data?.description}
                   customStyles={{
                     title: 'text-2xl font-bold mb-1',
                     subtitle: 'text-md',
@@ -148,7 +152,7 @@ const MovieDetails = () => {
               <div className="flex flex-col gap-2">
                 <p className="text-base-white font-semi text-lg">Genres</p>
                 <CollapsableBadgeList
-                  list={['Action', 'Drama', 'Thriller']}
+                  list={data?.data?.genre ?? []}
                   maxDisplayed={10}
                   style={{
                     buttonBadge: 'bg-ui-700 border-0 hover:bg-ui-600',
@@ -160,7 +164,7 @@ const MovieDetails = () => {
               <div className="flex flex-col gap-2">
                 <p className="text-base-white font-semi text-lg">Tags</p>
                 <CollapsableBadgeList
-                  list={['Crime ', 'Block Buster', 'Thriller']}
+                  list={data?.data?.tags ?? []}
                   maxDisplayed={10}
                   style={{
                     buttonBadge:
@@ -193,7 +197,7 @@ const MovieDetails = () => {
                 <div className="flex flex-col gap-2">
                   {renderMovieInfoTitle('Languages', Globe)}
                   <CollapsableBadgeList
-                    list={['English ', 'Russian', 'Australian']}
+                    list={data?.data.languages ?? []}
                     maxDisplayed={5}
                     style={{
                       buttonBadge:
@@ -212,13 +216,15 @@ const MovieDetails = () => {
                       'released' === 'released' ? 'bg-brand-600' : 'bg-ui-600',
                     )}
                   >
-                    {capitalizeFirstLetter('released')}
+                    {capitalizeFirstLetter(data?.data?.status ?? '')}
                   </Badge>
                 </div>
                 {/* Release date */}
                 <div>
                   {renderMovieInfoTitle('Release Date')}
-                  <p className="text-md text-ui-400">22/02/2023</p>
+                  <p className="text-md text-ui-400">
+                    {data?.data.releaseDate}
+                  </p>
                 </div>
               </div>
             </CardContent>
