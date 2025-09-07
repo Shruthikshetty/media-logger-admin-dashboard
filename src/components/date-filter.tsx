@@ -91,7 +91,7 @@ const DateFilter = ({
     <Popover>
       {/* Main Trigger Button */}
       <PopoverTrigger asChild>
-        <Button variant={'outline'} type="button" aria-label="date filter open">
+        <Button variant={'outline'} type="button" aria-label="date filter open" className="border-ui-600">
           {filters.icon && <filters.icon className="h-4 w-4" />}
           {getButtonTitle()}
         </Button>
