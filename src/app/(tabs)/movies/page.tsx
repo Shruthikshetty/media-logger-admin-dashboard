@@ -6,7 +6,8 @@ import {
 } from '@tanstack/react-table';
 import { Plus, Search, Trash2, Upload } from 'lucide-react';
 import moment from 'moment';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 import MediaFilters, {
   DateState,
   FiltersState,
@@ -51,7 +52,7 @@ const MoviesTab = () => {
   // stores row selection state
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   // custom hook for getting all the movies
-  const { data, isLoading } = useFilterMovies({
+  const { data, isLoading, isFetching, isError, error } = useFilterMovies({
     page,
     limit: 20,
     ageRating: filters?.ageRating,
@@ -72,6 +73,17 @@ const MoviesTab = () => {
     genre: filters?.genre?.length > 0 ? filters?.genre : undefined,
     languages: filters?.languages?.length > 0 ? filters?.languages : undefined,
   });
+
+  //catch any unexpected errors
+  useEffect(() => {
+    if (isError)
+      toast.error(error?.response?.data?.message ?? error.message, {
+        classNames: {
+          toast: '!bg-feedback-error',
+        },
+      });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isError]);
 
   // create a table with all the movies data
   const movieTable = useReactTable({
@@ -171,7 +183,7 @@ const MoviesTab = () => {
       {/* all the movie data goes here */}
       <Card className="border-ui-600 text-base-white from-base-black to-ui-900 bg-gradient-to-r">
         <CardHeader>
-          {isLoading ? (
+          {isLoading || isFetching ? (
             <Skeleton className="h-4 max-w-50" />
           ) : (
             <CardTitle className="text-xl font-semibold">
@@ -184,7 +196,7 @@ const MoviesTab = () => {
         </CardHeader>
         <CardContent>
           <MoviesTable
-            loading={isLoading}
+            loading={isLoading || isFetching}
             table={movieTable}
             page={page}
             setPage={setPage}
