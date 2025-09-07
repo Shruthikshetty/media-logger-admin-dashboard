@@ -5,8 +5,9 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { Plus, Search, Trash2, Upload } from 'lucide-react';
+import moment from 'moment';
 import React, { useState } from 'react';
-import MediaFilters from '~/components/media-filters';
+import MediaFilters, { FiltersState } from '~/components/media-filters';
 import MoviesTable, { movieColumns } from '~/components/movies-table';
 import TitleSubtitle from '~/components/title-subtitle';
 import { Button } from '~/components/ui/button';
@@ -20,7 +21,8 @@ import {
 import { Input } from '~/components/ui/input';
 import { Skeleton } from '~/components/ui/skeleton';
 import { MovieFilterConfig } from '~/constants/config.constants';
-import { useFilterMovies } from '~/services/movies-service';
+import { MovieStatus, useFilterMovies } from '~/services/movies-service';
+import { FilterLimits } from '~/types/global.types';
 
 /**
  * this renders the movies screen containing all movies list
@@ -29,10 +31,41 @@ import { useFilterMovies } from '~/services/movies-service';
 const MoviesTab = () => {
   // stores the current pagination page
   const [page, setPage] = useState(1);
+  // store filters data for movies
+  const [filters, setFilters] = useState<FiltersState>();
   // stores row selection state
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   // custom hook for getting all the movies
-  const { data, isLoading } = useFilterMovies({ page, limit: 20 });
+  const { data, isLoading } = useFilterMovies({
+    page,
+    limit: 20,
+    ageRating: filters?.ageRating as number,
+    averageRating: filters?.averageRating as number,
+    status: filters?.status as MovieStatus,
+    runTime: filters?.runTime as FilterLimits<number>,
+    releaseDate: filters?.releaseDate
+      ? {
+          gte: filters.releaseDate?.gte
+            ? moment(filters.releaseDate?.gte).toISOString()
+            : undefined,
+          lte: filters.releaseDate?.lte
+            ? moment(filters.releaseDate?.lte).toISOString()
+            : undefined,
+        }
+      : undefined,
+    tags:
+      (filters?.tags as string[])?.length > 0
+        ? (filters?.tags as string[])
+        : undefined,
+    genre:
+      (filters?.genre as string[])?.length > 0
+        ? (filters?.genre as string[])
+        : undefined,
+    languages:
+      (filters?.languages as string[])?.length > 0
+        ? (filters?.languages as string[])
+        : undefined,
+  });
 
   // create a table with all the movies data
   const movieTable = useReactTable({
@@ -119,8 +152,12 @@ const MoviesTab = () => {
             </div>
             <MediaFilters
               config={MovieFilterConfig}
-              onFilterChange={(filters) => {
-                console.log(filters);
+              onFilterChange={(newFilters) => {
+                // reset page
+                setPage(1);
+                console.log(newFilters);
+                // set new filters
+                setFilters(newFilters);
               }}
             />
           </div>

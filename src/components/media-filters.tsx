@@ -137,8 +137,11 @@ const MediaFilters = ({ config, onFilterChange }: MediaFiltersProps) => {
 
   //send the filters to the parent
   useEffect(() => {
-    onFilterChange(filters);
-  }, [filters, onFilterChange]);
+    if (filters) {
+      onFilterChange(filters);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filters]);
 
   return (
     <div className="flex flex-col gap-3">
