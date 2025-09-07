@@ -15,10 +15,23 @@ const CustomImage = ({
   alt = 'custom image',
   width,
   height,
+  maxHeight,
+  maxWidth,
+  minHeight,
+  minWidth,
   src = '',
   ...restProps
-}: Omit<React.ComponentProps<typeof Image>, 'onError'> & {
+}: Omit<
+  React.ComponentProps<typeof Image>,
+  'onError' | 'width' | 'height' | 'fill'
+> & {
   Icon?: LucideIcon;
+  maxHeight?: number;
+  maxWidth?: number;
+  minHeight?: number;
+  minWidth?: number;
+  width: number;
+  height: number;
 }) => {
   // hold the error state
   const [error, setError] = useState(false);
@@ -26,20 +39,21 @@ const CustomImage = ({
   const [loading, setLoading] = useState(true);
   // get placeholder color
   const placeholderColor = useMemo(() => getRandomColor(), []);
-  // in case of broken link or nullish src
 
-  //get the numeric height and width
-  const numericWidth = typeof width === 'number' ? width : undefined;
-  const numericHeight = typeof height === 'number' ? height : undefined;
+  // construct the min and max height and width
+  const heightWidthStyle = {
+    maxHeight: maxHeight ? `${maxHeight}px` : undefined,
+    maxWidth: maxWidth ? `${maxWidth}px` : undefined,
+    minHeight: minHeight ? `${minHeight}px` : undefined,
+    minWidth: minWidth ? `${minWidth}px` : undefined,
+  };
+
+  // in case of broken link or nullish src
   if (!src || error)
     return (
       <div
         className="bg-ui-600 flex h-full w-full flex-col items-center justify-center rounded-lg p-2"
-        style={{
-          maxHeight: numericHeight ? `${numericHeight}px` : undefined,
-          maxWidth: numericWidth ? `${numericWidth}px` : undefined,
-          minHeight: numericHeight ? `${numericHeight / 2}px` : undefined,
-        }}
+        style={heightWidthStyle}
       >
         <Icon className="h-full w-full" />
       </div>
@@ -51,9 +65,7 @@ const CustomImage = ({
         className="flex h-full w-full rounded-lg"
         style={{
           backgroundColor: loading ? placeholderColor : undefined,
-          maxHeight: numericHeight ? `${numericHeight}px` : undefined,
-          maxWidth: numericWidth ? `${numericWidth}px` : undefined,
-          minHeight: numericHeight ? `${numericHeight / 2}px` : undefined,
+          ...heightWidthStyle,
         }}
       >
         <Image
@@ -64,8 +76,8 @@ const CustomImage = ({
           height={height}
           src={src}
           style={{
-            minHeight: numericHeight ? `${numericHeight / 2}px` : undefined,
             opacity: loading ? 0 : 1,
+            ...heightWidthStyle,
           }}
           onLoad={() => setLoading(false)}
           {...restProps}
