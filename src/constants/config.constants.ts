@@ -5,7 +5,15 @@
 import type { ChartConfig } from '~/components/ui/chart';
 import { AppColors } from './colors.constants';
 import { FilterConfig } from '~/components/media-filters';
-import { BookA, CalendarDays, Clock, FunnelPlus, Star, Tag, UserRound } from 'lucide-react';
+import {
+  BookA,
+  CalendarDays,
+  Clock,
+  FunnelPlus,
+  Star,
+  Tag,
+  UserRound,
+} from 'lucide-react';
 
 export const CookieNames = {
   token: 'token',

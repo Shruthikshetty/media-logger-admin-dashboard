@@ -48,7 +48,7 @@ type MoviesFilterRequest = {
   languages?: string[];
   status?: MovieStatus;
   tags?: string[];
-  ageRating?: number;
+  ageRating?: FilterLimits<number>;
   releaseDate?: FilterLimits<string | undefined>; // ISO format
   runTime?: FilterLimits<number>;
   averageRating?: number;

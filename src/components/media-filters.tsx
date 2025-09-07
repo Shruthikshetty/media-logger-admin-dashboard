@@ -263,7 +263,7 @@ const MediaFilters = ({ config, onFilterChange }: MediaFiltersProps) => {
                 return (
                   <BadgeWithCross
                     key={filterName}
-                    label={`${filterConfig.label}: ${(selectedItems as RangeState)?.gte ? moment((selectedItems as RangeState)?.gte).format('DD/MM/YYYY') : '∞'} - ${(selectedItems as RangeState)?.lte ? moment((selectedItems as RangeState)?.lte).format('DD/MM/YYYY') : '∞'}`}
+                    label={`${filterConfig.label}: ${(selectedItems as DateState)?.gte ? moment((selectedItems as DateState)?.gte).format('DD/MM/YYYY') : '∞'} - ${(selectedItems as DateState)?.lte ? moment((selectedItems as DateState)?.lte).format('DD/MM/YYYY') : '∞'}`}
                     handleClick={() => handleFilterRemove(filterName)}
                   />
                 );

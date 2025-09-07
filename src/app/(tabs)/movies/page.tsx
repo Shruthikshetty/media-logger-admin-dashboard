@@ -7,7 +7,10 @@ import {
 import { Plus, Search, Trash2, Upload } from 'lucide-react';
 import moment from 'moment';
 import React, { useState } from 'react';
-import MediaFilters, { FiltersState } from '~/components/media-filters';
+import MediaFilters, {
+  DateState,
+  FiltersState,
+} from '~/components/media-filters';
 import MoviesTable, { movieColumns } from '~/components/movies-table';
 import TitleSubtitle from '~/components/title-subtitle';
 import { Button } from '~/components/ui/button';
@@ -24,6 +27,18 @@ import { MovieFilterConfig } from '~/constants/config.constants';
 import { MovieStatus, useFilterMovies } from '~/services/movies-service';
 import { FilterLimits } from '~/types/global.types';
 
+//filter data type
+interface FiltersType extends FiltersState {
+  ageRating: FilterLimits<number>;
+  averageRating: number;
+  status: MovieStatus;
+  runTime: FilterLimits<number>;
+  releaseDate: DateState;
+  tags: string[];
+  genre: string[];
+  languages: string[];
+}
+
 /**
  * this renders the movies screen containing all movies list
  * @returns the movies tab
@@ -32,17 +47,17 @@ const MoviesTab = () => {
   // stores the current pagination page
   const [page, setPage] = useState(1);
   // store filters data for movies
-  const [filters, setFilters] = useState<FiltersState>();
+  const [filters, setFilters] = useState<FiltersType>(null!);
   // stores row selection state
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   // custom hook for getting all the movies
   const { data, isLoading } = useFilterMovies({
     page,
     limit: 20,
-    ageRating: filters?.ageRating as number,
-    averageRating: filters?.averageRating as number,
-    status: filters?.status as MovieStatus,
-    runTime: filters?.runTime as FilterLimits<number>,
+    ageRating: filters?.ageRating,
+    averageRating: filters?.averageRating,
+    status: filters?.status,
+    runTime: filters?.runTime,
     releaseDate: filters?.releaseDate
       ? {
           gte: filters.releaseDate?.gte
@@ -53,18 +68,9 @@ const MoviesTab = () => {
             : undefined,
         }
       : undefined,
-    tags:
-      (filters?.tags as string[])?.length > 0
-        ? (filters?.tags as string[])
-        : undefined,
-    genre:
-      (filters?.genre as string[])?.length > 0
-        ? (filters?.genre as string[])
-        : undefined,
-    languages:
-      (filters?.languages as string[])?.length > 0
-        ? (filters?.languages as string[])
-        : undefined,
+    tags: filters?.tags?.length > 0 ? filters?.tags : undefined,
+    genre: filters?.genre?.length > 0 ? filters?.genre : undefined,
+    languages: filters?.languages?.length > 0 ? filters?.languages : undefined,
   });
 
   // create a table with all the movies data
@@ -155,9 +161,8 @@ const MoviesTab = () => {
               onFilterChange={(newFilters) => {
                 // reset page
                 setPage(1);
-                console.log(newFilters);
                 // set new filters
-                setFilters(newFilters);
+                setFilters(newFilters as FiltersType);
               }}
             />
           </div>
