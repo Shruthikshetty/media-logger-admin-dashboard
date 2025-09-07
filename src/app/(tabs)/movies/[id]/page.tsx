@@ -4,12 +4,23 @@ import BackButton from '~/components/back-button';
 import { Card, CardContent, CardHeader } from '~/components/ui/card';
 import Image from 'next/image';
 import { Button } from '~/components/ui/button';
-import { Globe, LucideIcon, PenSquare, Play, Users, X } from 'lucide-react';
+import {
+  Calendar,
+  Clock,
+  Globe,
+  LucideIcon,
+  PenSquare,
+  Play,
+  Star,
+  Users,
+  X,
+} from 'lucide-react';
 import TitleSubtitle from '~/components/title-subtitle';
 import CollapsableBadgeList from '~/components/collapsable-badge-list';
 import { Badge } from '~/components/ui/badge';
 import { cn } from '~/lib/utils';
 import { capitalizeFirstLetter } from '~/lib/formatting';
+import CustomImage from '~/components/custom-image';
 const trailerUrl =
   'https://www.youtube.com/embed/e-ORhEE9VVg?list=RDe-ORhEE9VVg';
 
@@ -36,23 +47,55 @@ const MovieDetails = () => {
         {/* Back drop area */}
         <div className="relative h-96 w-full overflow-clip rounded-t-2xl">
           {/* @TODO check to use next background image */}
-          {/* <Image
+          <Image
             alt="backdrop"
             fill
             src={
-              'https://i.imgur.com/Hmys8kh_d.webp?maxwidth=520&shape=thumb&fidelity=high'
+              'https://i.imgur.com/sNxxSMr_d.webp?maxwidth=520&shape=thumb&fidelity=high'
             }
             quality={100}
             sizes="100vw"
             className="absolute opacity-90"
-          /> */}
+          />
           {/* poster */}
-          <div className="absolute z-10 h-full w-full">
-            <p>Hello world</p>
+          <div className="absolute z-10 flex h-full w-full flex-col items-baseline justify-end p-5 md:pl-30">
+            <div className="flex w-full flex-row items-end gap-2">
+              <CustomImage
+                alt={'poster image'}
+                src={
+                  'https://i.imgur.com/vIV727U_d.webp?maxwidth=520&shape=thumb&fidelity=high'
+                }
+                width={180}
+                height={300}
+                maxHeight={300}
+                maxWidth={200}
+                className="border-ui-600 rounded-xl border-1 shadow-2xl"
+              />
+              <div className="bg-base-black/80 rounded-xl p-3 pb-10">
+                <p className="mb-2 text-3xl font-bold">The Matrix</p>
+                <div className="flex flex-row flex-wrap gap-4 items-center justify-center">
+                  <p className="text-md flex flex-row items-center gap-1 font-semibold">
+                    <Star className="text-feedback-warning h-4 w-4" />
+                    8.7
+                  </p>
+                  <p className="text-md flex flex-row items-center gap-1 font-semibold">
+                    <Calendar className="h-4 w-4" />
+                    1999
+                  </p>
+                  <p className="text-md flex flex-row items-center gap-1 font-semibold">
+                    <Clock className="h-4 w-4" />
+                    136min
+                  </p>
+                  <Badge className="bg-ui-700 hover:bg-ui-600 rounded-full border-0 px-2">
+                    13+
+                  </Badge>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         {/*  Inner cards  */}
-        <div className="grid w-full grid-cols-1 gap-3 px-5 md:grid-cols-10">
+        <CardContent className="grid w-full grid-cols-1 gap-3 px-5 md:grid-cols-10">
           {/* movie information  */}
           <Card className="border-0 bg-transparent md:col-span-6">
             <CardHeader className="p-0">
@@ -117,7 +160,7 @@ const MovieDetails = () => {
                   list={['Action', 'Drama', 'Thriller']}
                   maxDisplayed={10}
                   style={{
-                    buttonBadge: 'bg-ui-700 border-0 hover:bg-ui-600 ',
+                    buttonBadge: 'bg-ui-700 border-0 hover:bg-ui-600',
                     itemBadge: 'bg-ui-700 border-0 hover:bg-ui-600',
                   }}
                 />
@@ -189,7 +232,7 @@ const MovieDetails = () => {
               </div>
             </CardContent>
           </Card>
-        </div>
+        </CardContent>
       </Card>
     </div>
   );
