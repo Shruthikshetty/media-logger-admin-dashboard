@@ -7,16 +7,41 @@ import {
   DropdownMenuContent,
   DropdownMenuPortal,
 } from './ui/dropdown-menu';
-import { Ellipsis } from 'lucide-react';
-import { MOVIE_ACTIONS_DROPDOWN_ITEMS } from '~/constants/screen.constants';
+import { Ellipsis, Eye, SquarePen, Trash2 } from 'lucide-react';
 import { cn } from '~/lib/utils';
-//@TODO functionality in progress
 /**
  * This component is used to display the actions for a movie
  * Mainly used in movie table performs actions like view details , edit , delete
  * @param movieId
  */
 const MovieActionDropdown = ({ movieId }: { movieId: string }) => {
+  // movie actions dropdown items
+  const movieActionItems = [
+    {
+      title: 'View Details',
+      icon: Eye,
+      color: 'text-base-white',
+      onClick: () => {}, // propagate event to parent
+    },
+    {
+      title: 'Edit Movie',
+      icon: SquarePen,
+      color: 'text-base-white',
+      onClick: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        e.stopPropagation();
+        //@TODO open edit modal 
+      },
+    },
+    {
+      title: 'Delete Movie',
+      icon: Trash2,
+      color: 'text-feedback-error',
+      onClick: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        e.stopPropagation();
+        // @TODO open delete movie
+      },
+    },
+  ];
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
@@ -32,7 +57,7 @@ const MovieActionDropdown = ({ movieId }: { movieId: string }) => {
           align="center"
         >
           <DropdownMenuGroup>
-            {MOVIE_ACTIONS_DROPDOWN_ITEMS.map((item) => (
+            {movieActionItems.map((item) => (
               <DropdownMenuItem
                 disabled={!movieId}
                 key={item.title}
@@ -40,6 +65,7 @@ const MovieActionDropdown = ({ movieId }: { movieId: string }) => {
                   'hover:bg-ui-800 focus:bg-ui-800 focus:text-base-white text-md flex flex-row gap-2 rounded-md p-2',
                   item.color,
                 )}
+                onClick={item.onClick}
               >
                 <item.icon className={cn('h-5 w-5', item.color)} />
                 {item.title}

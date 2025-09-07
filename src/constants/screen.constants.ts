@@ -1,12 +1,9 @@
 import {
   Bell,
-  Eye,
   Film,
   Gamepad2,
   LayoutDashboard,
   Settings,
-  SquarePen,
-  Trash2,
   Tv,
   User,
   Users,
@@ -75,22 +72,3 @@ export const ROLE_COLOR_MAPPING: Record<
   admin: 'destructive',
   user: 'secondary',
 };
-
-// movie actions dropdown items
-export const MOVIE_ACTIONS_DROPDOWN_ITEMS = [
-  {
-    title: 'View Details',
-    icon: Eye,
-    color: 'text-base-white',
-  },
-  {
-    title: 'Edit Movie',
-    icon: SquarePen,
-    color: 'text-base-white',
-  },
-  {
-    title: 'Delete Movie',
-    icon: Trash2,
-    color: 'text-feedback-error',
-  },
-];

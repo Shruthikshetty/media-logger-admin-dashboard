@@ -34,6 +34,7 @@ import { capitalizeFirstLetter } from '~/lib/formatting';
 import type { Pagination as PaginationType } from '~/types/global.types';
 import MovieActionDropdown from './movie-actions-dropdown';
 import { Checkbox } from './ui/checkbox';
+import { useRouter } from 'next/navigation';
 
 type MoviesTableType = {
   loading: boolean;
@@ -219,6 +220,7 @@ const MoviesTable = ({
   page,
   setPage,
 }: MoviesTableType) => {
+  const router = useRouter();
   //if loading return a skeleton table
   if (loading)
     return (
@@ -263,7 +265,14 @@ const MoviesTable = ({
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows.map((row) => (
-              <TableRow key={row.id} className="hover:bg-ui-800">
+              <TableRow
+                key={row.id}
+                className="hover:bg-ui-800"
+                onClick={() => {
+                  // navigate to details screen
+                  router.push(`/movies/${row.original._id}`);
+                }}
+              >
                 {row.getVisibleCells().map((cell) => (
                   <React.Fragment key={cell.id}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
