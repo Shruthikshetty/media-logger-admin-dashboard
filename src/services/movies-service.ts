@@ -11,7 +11,7 @@ import apiClient from '~/lib/api-client';
 import { ApiError, FilterLimits, Pagination } from '~/types/global.types';
 import { keepPreviousData } from '@tanstack/react-query';
 
-type MovieStatus = 'released' | 'upcoming';
+export type MovieStatus = 'released' | 'upcoming';
 
 export interface Movie {
   _id: string;
@@ -48,8 +48,8 @@ type MoviesFilterRequest = {
   languages?: string[];
   status?: MovieStatus;
   tags?: string[];
-  ageRating?: number;
-  releaseDate?: FilterLimits<string>; // ISO format
+  ageRating?: FilterLimits<number>;
+  releaseDate?: FilterLimits<string | undefined>; // ISO format
   runTime?: FilterLimits<number>;
   averageRating?: number;
   page?: number;
@@ -90,13 +90,19 @@ export const useFilterMovies = ({
     queryKey: [QueryKeys.filterMovies, limit, page, restFilters],
     staleTime: FetchAllMoviesStaleTime,
     placeholderData: keepPreviousData,
-    queryFn: () =>
+    queryFn: ({ signal }) =>
       apiClient
-        .post<MoviesResponse>(Endpoints.filterMovies, {
-          limit,
-          page,
-          ...restFilters,
-        })
+        .post<MoviesResponse>(
+          Endpoints.filterMovies,
+          {
+            limit,
+            page,
+            ...restFilters,
+          },
+          {
+            signal, // used to cancel the request
+          },
+        )
         .then((res) => res.data),
   });
 };

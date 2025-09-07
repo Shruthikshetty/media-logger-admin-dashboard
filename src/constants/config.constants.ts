@@ -5,7 +5,15 @@
 import type { ChartConfig } from '~/components/ui/chart';
 import { AppColors } from './colors.constants';
 import { FilterConfig } from '~/components/media-filters';
-import { BookA, Clock, FunnelPlus, Star, Tag, UserRound } from 'lucide-react';
+import {
+  BookA,
+  CalendarDays,
+  Clock,
+  FunnelPlus,
+  Star,
+  Tag,
+  UserRound,
+} from 'lucide-react';
 
 export const CookieNames = {
   token: 'token',
@@ -238,16 +246,22 @@ export const MovieFilterConfig: FilterConfig[] = [
     min: 0,
     step: 1,
     icon: UserRound,
-    unitLabel:"years"
+    unitLabel: 'years',
   },
   {
-    key: "runTime",
-    label: "Runtime",
-    type: "range",
+    key: 'runTime',
+    label: 'Runtime',
+    type: 'range',
     max: 600, // 10 hours
     min: 0,
     step: 1,
     icon: Clock,
-    unitLabel:"min"
-  }
+    unitLabel: 'min',
+  },
+  {
+    key: 'releaseDate',
+    label: 'Release Date',
+    type: 'date',
+    icon: CalendarDays,
+  },
 ];

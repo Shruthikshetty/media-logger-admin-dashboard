@@ -3,6 +3,8 @@ import type { RangeConfig, RangeState } from './media-filters';
 import { Popover, PopoverTrigger, PopoverContent } from './ui/popover';
 import { Button } from './ui/button';
 import { Slider } from './ui/slider';
+import { PopoverClose } from '@radix-ui/react-popover';
+import { X } from 'lucide-react';
 
 /**
  * This component is used in media filters
@@ -63,6 +65,7 @@ const RangeFilter = ({
 
   return (
     <Popover>
+      {/* Trigger button */}
       <PopoverTrigger asChild>
         <Button
           type="button"
@@ -78,10 +81,16 @@ const RangeFilter = ({
         className="bg-base-black text-base-white border-ui-600 flex flex-col gap-4 pb-6"
         align="start"
       >
+        {/* Close button */}
+        <PopoverClose className="absolute top-3 right-3">
+          <X className="hover:text-base-white text-ui-400 h-5 w-5" />
+        </PopoverClose>
+        {/* Main content */}
         <p className="flex flex-row gap-5 font-semibold">
           <span>{filters.label}</span>
           <span>{` ${twoWayRangeValue.gte}${filters.unitLabel ? ` ${filters.unitLabel}` : ''} - ${twoWayRangeValue.lte}${filters.unitLabel ? ` ${filters.unitLabel}` : ''}`}</span>
         </p>
+        {/* Slider */}
         <Slider
           value={tempValue}
           onValueChange={(value: [number, number]) => setTempValue(value)}
@@ -91,6 +100,7 @@ const RangeFilter = ({
           onValueCommit={handleValueCommit}
           className="[&_[data-slot=slider-range]]:bg-brand-600 [&_[data-slot=slider-thumb]]:bg-base-black [&_[data-slot=slider-thumb]]:border-brand-600 [&_[data-slot=slider-track]]:bg-ui-400 [&_[data-slot=slider-thumb]]:border-3 [&_[data-slot=slider-thumb]]:p-1.5"
         />
+        {/* Min Max info */}
         <p className="flex w-full flex-row justify-between text-xs">
           <span>min: {filters.min}</span>
           <span>max: {filters.max}</span>

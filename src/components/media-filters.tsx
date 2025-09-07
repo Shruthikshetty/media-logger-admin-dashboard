@@ -6,15 +6,20 @@ import { LucideIcon } from 'lucide-react';
 import NumberInputFilter from './number-input-filter';
 import RangeFilter from './range-filter';
 import { FilterLimits } from '~/types/global.types';
+import DateFilter from './date-filter';
+import moment from 'moment';
 
 export type RangeState = FilterLimits<number | undefined>;
+
+export type DateState = FilterLimits<Date | undefined>;
 
 //all possible filter value types
 type FilterValue =
   | string // For single-select dropdowns, text inputs
   | string[] // For multi-select dropdowns
   | number // For number inputs
-  | RangeState;
+  | RangeState
+  | DateState;
 
 // filter state type
 export type FiltersState = Record<string, FilterValue | undefined>;
@@ -53,8 +58,17 @@ export interface RangeConfig extends BaseFilterConfig {
   unitLabel?: string;
 }
 
+export interface DateConfig extends BaseFilterConfig {
+  type: 'date';
+  icon?: LucideIcon;
+}
+
 // Union of all configurations
-export type FilterConfig = DropdownConfig | NumberInputConfig | RangeConfig;
+export type FilterConfig =
+  | DropdownConfig
+  | NumberInputConfig
+  | RangeConfig
+  | DateConfig;
 
 type MediaFiltersProps = {
   config: FilterConfig[];
@@ -74,6 +88,10 @@ const generateInitialFilters = (config: FilterConfig[]) => () => {
         break;
       case 'range':
         initialFilters[filter.key] = undefined;
+        break;
+      case 'date':
+        initialFilters[filter.key] = undefined;
+        break;
     }
   });
   return initialFilters;
@@ -119,8 +137,11 @@ const MediaFilters = ({ config, onFilterChange }: MediaFiltersProps) => {
 
   //send the filters to the parent
   useEffect(() => {
-    onFilterChange(filters);
-  }, [filters, onFilterChange]);
+    if (filters) {
+      onFilterChange(filters);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filters]);
 
   return (
     <div className="flex flex-col gap-3">
@@ -161,6 +182,25 @@ const MediaFilters = ({ config, onFilterChange }: MediaFiltersProps) => {
                   value={filters[filter.key] as RangeState | undefined}
                   onValueChange={(value) =>
                     setFilters((prev) => ({ ...prev, [filter.key]: value }))
+                  }
+                />
+              );
+            case 'date':
+              return (
+                <DateFilter
+                  key={filter.key}
+                  filters={filter}
+                  value={filters[filter.key] as DateState | undefined}
+                  setValue={(value) =>
+                    setFilters((prev) => {
+                      const someKeyValueDefined = value
+                        ? Object.values(value).some(Boolean)
+                        : false;
+                      return {
+                        ...prev,
+                        [filter.key]: someKeyValueDefined ? value : undefined,
+                      };
+                    })
                   }
                 />
               );
@@ -209,11 +249,21 @@ const MediaFilters = ({ config, onFilterChange }: MediaFiltersProps) => {
               break;
             case 'range':
               if (selectedItems !== undefined) {
-                console.log(selectedItems);
                 return (
                   <BadgeWithCross
                     key={filterName}
                     label={`${filterConfig.label}: ${(selectedItems as RangeState)?.gte} - ${(selectedItems as RangeState)?.lte}`}
+                    handleClick={() => handleFilterRemove(filterName)}
+                  />
+                );
+              }
+              break;
+            case 'date':
+              if (selectedItems !== undefined) {
+                return (
+                  <BadgeWithCross
+                    key={filterName}
+                    label={`${filterConfig.label}: ${(selectedItems as DateState)?.gte ? moment((selectedItems as DateState)?.gte).format('DD/MM/YYYY') : '∞'} - ${(selectedItems as DateState)?.lte ? moment((selectedItems as DateState)?.lte).format('DD/MM/YYYY') : '∞'}`}
                     handleClick={() => handleFilterRemove(filterName)}
                   />
                 );
