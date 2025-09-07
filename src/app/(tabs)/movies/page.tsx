@@ -6,7 +6,7 @@ import {
 } from '@tanstack/react-table';
 import { Plus, Search, Trash2, Upload } from 'lucide-react';
 import moment from 'moment';
-import React, { useEffect, useState } from 'react';
+import React, { useDeferredValue, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import MediaFilters, {
   DateState,
@@ -25,6 +25,7 @@ import {
 import { Input } from '~/components/ui/input';
 import { Skeleton } from '~/components/ui/skeleton';
 import { MovieFilterConfig } from '~/constants/config.constants';
+import useDelayedLoading from '~/hooks/use-delayed-loading';
 import { MovieStatus, useFilterMovies } from '~/services/movies-service';
 import { FilterLimits } from '~/types/global.types';
 
@@ -38,6 +39,7 @@ interface FiltersType extends FiltersState {
   tags: string[];
   genre: string[];
   languages: string[];
+  searchText: string | undefined;
 }
 
 /**
@@ -47,6 +49,10 @@ interface FiltersType extends FiltersState {
 const MoviesTab = () => {
   // stores the current pagination page
   const [page, setPage] = useState(1);
+  // holds th search text for movies
+  const [searchText, setSearchText] = useState<string>('');
+  // derive a differed value
+  const deferredSearchText = useDeferredValue(searchText);
   // store filters data for movies
   const [filters, setFilters] = useState<FiltersType>(null!);
   // stores row selection state
@@ -72,7 +78,10 @@ const MoviesTab = () => {
     tags: filters?.tags?.length > 0 ? filters?.tags : undefined,
     genre: filters?.genre?.length > 0 ? filters?.genre : undefined,
     languages: filters?.languages?.length > 0 ? filters?.languages : undefined,
+    searchText: deferredSearchText,
   });
+  //extracting delayed loading 
+  const loading = useDelayedLoading (isLoading || isFetching);
 
   //catch any unexpected errors
   useEffect(() => {
@@ -82,7 +91,7 @@ const MoviesTab = () => {
           toast: '!bg-feedback-error',
         },
       });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isError]);
 
   // create a table with all the movies data
@@ -154,6 +163,10 @@ const MoviesTab = () => {
                   className="border-ui-600 pl-10"
                   id="search"
                   placeholder="Search movies by title"
+                  value={searchText}
+                  onChange={(e) => {
+                    setSearchText(e.target.value);
+                  }}
                 />
               </div>
               {selectedRowLength > 0 && (
@@ -183,7 +196,7 @@ const MoviesTab = () => {
       {/* all the movie data goes here */}
       <Card className="border-ui-600 text-base-white from-base-black to-ui-900 bg-gradient-to-r">
         <CardHeader>
-          {isLoading || isFetching ? (
+          {loading ? (
             <Skeleton className="h-4 max-w-50" />
           ) : (
             <CardTitle className="text-xl font-semibold">
@@ -196,7 +209,7 @@ const MoviesTab = () => {
         </CardHeader>
         <CardContent>
           <MoviesTable
-            loading={isLoading || isFetching}
+            loading={loading}
             table={movieTable}
             page={page}
             setPage={setPage}
