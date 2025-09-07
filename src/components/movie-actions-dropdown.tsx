@@ -29,7 +29,7 @@ const MovieActionDropdown = ({ movieId }: { movieId: string }) => {
       color: 'text-base-white',
       onClick: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         e.stopPropagation();
-        //@TODO open edit modal 
+        //@TODO open edit modal
       },
     },
     {
@@ -48,6 +48,7 @@ const MovieActionDropdown = ({ movieId }: { movieId: string }) => {
         aria-label="Open movie actions"
         type="button"
         className="hover:bg-ui-600 rounded-md p-1"
+        onClick={(e) => e.stopPropagation()}
       >
         <Ellipsis />
       </DropdownMenuTrigger>

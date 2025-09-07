@@ -21,7 +21,10 @@ const CustomImage = ({
   minWidth,
   src = '',
   ...restProps
-}: Omit<React.ComponentProps<typeof Image>, 'onError' | 'width' | 'height'> & {
+}: Omit<
+  React.ComponentProps<typeof Image>,
+  'onError' | 'width' | 'height' | 'fill'
+> & {
   Icon?: LucideIcon;
   maxHeight?: number;
   maxWidth?: number;
