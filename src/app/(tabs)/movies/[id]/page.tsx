@@ -21,8 +21,7 @@ import { Badge } from '~/components/ui/badge';
 import { cn } from '~/lib/utils';
 import { capitalizeFirstLetter } from '~/lib/formatting';
 import CustomImage from '~/components/custom-image';
-const trailerUrl =
-  'https://www.youtube.com/embed/e-ORhEE9VVg?list=RDe-ORhEE9VVg';
+import YoutubePlayer from '~/components/youtube-player';
 
 const MovieDetails = () => {
   // hold the trailer visibility state
@@ -46,16 +45,17 @@ const MovieDetails = () => {
       <Card className="border-ui-600 text-base-white from-base-black to-ui-900 bg-gradient-to-r pt-0">
         {/* Back drop area */}
         <div className="relative h-96 w-full overflow-clip rounded-t-2xl">
-          {/* @TODO check to use next background image */}
           <Image
-            alt="backdrop"
-            fill
+            alt="backdrop image"
+            layout="fill"
+            objectFit="cover"
+            objectPosition="center"
             src={
               'https://i.imgur.com/sNxxSMr_d.webp?maxwidth=520&shape=thumb&fidelity=high'
             }
             quality={100}
             sizes="100vw"
-            className="absolute opacity-90"
+            className="absolute"
           />
           {/* poster */}
           <div className="absolute z-10 flex h-full w-full flex-col items-baseline justify-end p-5 md:pl-30">
@@ -73,7 +73,7 @@ const MovieDetails = () => {
               />
               <div className="bg-base-black/80 rounded-xl p-3 pb-10">
                 <p className="mb-2 text-3xl font-bold">The Matrix</p>
-                <div className="flex flex-row flex-wrap gap-4 items-center justify-center">
+                <div className="flex flex-row flex-wrap items-center justify-center gap-4">
                   <p className="text-md flex flex-row items-center gap-1 font-semibold">
                     <Star className="text-feedback-warning h-4 w-4" />
                     8.7
@@ -123,16 +123,7 @@ const MovieDetails = () => {
                 </CardHeader>
                 {trailerVisible && (
                   <CardContent>
-                    {/*@todo Update to react-youtube */}
-                    <div className="aspect-video w-full">
-                      <iframe
-                        src={trailerUrl}
-                        title={`${''} Trailer`}
-                        className="h-full w-full rounded-lg shadow-lg"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowFullScreen
-                      />
-                    </div>
+                    <YoutubePlayer videoId={'e-ORhEE9VVg'} />
                   </CardContent>
                 )}
               </Card>
