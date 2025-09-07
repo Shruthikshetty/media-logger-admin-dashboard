@@ -1,8 +1,33 @@
-import React from 'react';
+'use client';
+import React, { useCallback, useState } from 'react';
 import BackButton from '~/components/back-button';
-import { Card } from '~/components/ui/card';
+import { Card, CardContent, CardHeader } from '~/components/ui/card';
 import Image from 'next/image';
+import { Button } from '~/components/ui/button';
+import { Globe, LucideIcon, PenSquare, Play, Users, X } from 'lucide-react';
+import TitleSubtitle from '~/components/title-subtitle';
+import CollapsableBadgeList from '~/components/collapsable-badge-list';
+import { Badge } from '~/components/ui/badge';
+import { cn } from '~/lib/utils';
+import { capitalizeFirstLetter } from '~/lib/formatting';
+const trailerUrl =
+  'https://www.youtube.com/embed/e-ORhEE9VVg?list=RDe-ORhEE9VVg';
+
 const MovieDetails = () => {
+  // hold the trailer visibility state
+  const [trailerVisible, setTrailerVisible] = useState(false);
+
+  // returns the styled title with icon
+  const renderMovieInfoTitle = useCallback(
+    (title: string, Icon?: LucideIcon) => (
+      <p className="flex flex-row items-center gap-2 text-lg">
+        {Icon && <Icon className="h-5 w-5" />}
+        <span>{title}</span>
+      </p>
+    ),
+    [],
+  );
+
   return (
     <div className="flex h-full w-full flex-col gap-5 p-5">
       <BackButton className="min-w-40" />
@@ -10,7 +35,8 @@ const MovieDetails = () => {
       <Card className="border-ui-600 text-base-white from-base-black to-ui-900 bg-gradient-to-r pt-0">
         {/* Back drop area */}
         <div className="relative h-96 w-full overflow-clip rounded-t-2xl">
-          <Image
+          {/* @TODO check to use next background image */}
+          {/* <Image
             alt="backdrop"
             fill
             src={
@@ -19,11 +45,150 @@ const MovieDetails = () => {
             quality={100}
             sizes="100vw"
             className="absolute opacity-90"
-          />
+          /> */}
           {/* poster */}
           <div className="absolute z-10 h-full w-full">
             <p>Hello world</p>
           </div>
+        </div>
+        {/*  Inner cards  */}
+        <div className="grid w-full grid-cols-1 gap-3 px-5 md:grid-cols-10">
+          {/* movie information  */}
+          <Card className="border-0 bg-transparent md:col-span-6">
+            <CardHeader className="p-0">
+              {/* youtube trailer */}
+              <Card className="from-brand-600/30 to-base-black border-brand-500/50 bg-gradient-to-r transition">
+                <CardHeader>
+                  <div className="text-base-white flex-roe flex justify-between gap-5">
+                    <p className="flex flex-row items-center gap-3">
+                      <Play className="text-brand-600 h-7 w-7" />
+                      <span>Watch Official Trailer</span>
+                    </p>
+                    <Button
+                      className="border-ui-600"
+                      variant={'outline'}
+                      onClick={() => setTrailerVisible((s) => !s)}
+                    >
+                      {trailerVisible ? (
+                        <X className="h-4 w-4" />
+                      ) : (
+                        <Play className="h-4 w-4" />
+                      )}
+                      {trailerVisible ? 'Hide Trailer' : 'Show Trailer'}
+                    </Button>
+                  </div>
+                </CardHeader>
+                {trailerVisible && (
+                  <CardContent>
+                    {/*@todo Update to react-youtube */}
+                    <div className="aspect-video w-full">
+                      <iframe
+                        src={trailerUrl}
+                        title={`${''} Trailer`}
+                        className="h-full w-full rounded-lg shadow-lg"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowFullScreen
+                      />
+                    </div>
+                  </CardContent>
+                )}
+              </Card>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-3 p-0">
+              <div className="flex flex-row justify-between gap-2">
+                <TitleSubtitle
+                  title="Overview"
+                  subtitle="A computer hacker learns from mysterious rebels about the true nature of his reality and his role in the war against its controllers."
+                  customStyles={{
+                    title: 'text-2xl font-bold mb-1',
+                    subtitle: 'text-md',
+                  }}
+                />
+                {/* Edit button */}
+                <Button variant={'blue'}>
+                  <PenSquare />
+                  Edit Movie
+                </Button>
+              </div>
+              {/* genre badges */}
+              <div className="flex flex-col gap-2">
+                <p className="text-base-white font-semi text-lg">Genres</p>
+                <CollapsableBadgeList
+                  list={['Action', 'Drama', 'Thriller']}
+                  maxDisplayed={10}
+                  style={{
+                    buttonBadge: 'bg-ui-700 border-0 hover:bg-ui-600 ',
+                    itemBadge: 'bg-ui-700 border-0 hover:bg-ui-600',
+                  }}
+                />
+              </div>
+              {/* tag badges*/}
+              <div className="flex flex-col gap-2">
+                <p className="text-base-white font-semi text-lg">Tags</p>
+                <CollapsableBadgeList
+                  list={['Crime ', 'Block Buster', 'Thriller']}
+                  maxDisplayed={10}
+                  style={{
+                    buttonBadge:
+                      'bg-ui-transparent border-ui-600 hover:border-ui-400 border-1',
+                    itemBadge:
+                      'bg-ui-transparent border-ui-600 hover:border-ui-400 border-1',
+                  }}
+                />
+              </div>
+            </CardContent>
+          </Card>
+          {/* Additional information  */}
+          <Card className="border-ui-600 gap-2 bg-transparent md:col-span-4">
+            <CardHeader className="text-base-white text-2xl font-bold">
+              Movie Info
+            </CardHeader>
+            <CardContent className="text-base-white">
+              <div className="flex flex-col gap-4">
+                {/* Directors */}
+                <div>
+                  {renderMovieInfoTitle('Director', Users)}
+                  <p className="text-md text-ui-400">John Doe</p>
+                </div>
+                {/* Casts */}
+                <div>
+                  {renderMovieInfoTitle('Cast', Users)}
+                  <p className="text-md text-ui-400">John Doe</p>
+                </div>
+                {/* Languages */}
+                <div className="flex flex-col gap-2">
+                  {renderMovieInfoTitle('Languages', Globe)}
+                  <CollapsableBadgeList
+                    list={['English ', 'Russian', 'Australian']}
+                    maxDisplayed={5}
+                    style={{
+                      buttonBadge:
+                        'bg-ui-transparent border-ui-600 hover:border-ui-400 border-1',
+                      itemBadge:
+                        'bg-ui-transparent border-ui-600 hover:border-ui-400 border-1',
+                    }}
+                  />
+                </div>
+                {/*Status */}
+                <div className="flex flex-col gap-2">
+                  {renderMovieInfoTitle('Status')}
+                  <Badge
+                    className={cn(
+                      'text-base-white rounded-full px-2',
+                      'released' === 'released' ? 'bg-brand-600' : 'bg-ui-600',
+                    )}
+                  >
+                    {capitalizeFirstLetter('released')}
+                  </Badge>
+                </div>
+                {/* Release date */}
+                <div>
+                  {renderMovieInfoTitle('Release Date')}
+                  <p className="text-md text-ui-400">22/02/2023</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </Card>
     </div>
