@@ -222,3 +222,4 @@ const MoviesTab = () => {
 };
 
 export default MoviesTab;
+

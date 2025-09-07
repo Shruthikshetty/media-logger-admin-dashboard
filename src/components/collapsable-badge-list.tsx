@@ -49,7 +49,11 @@ const CollapsableBadgeList = ({
             'border-ui-600 flex flex-row items-center rounded-full border-2 px-2 hover:opacity-80 active:scale-95',
             style?.buttonBadge,
           )}
-          onClick={() => setIsExpanded(true)}
+          onClick={(e) => {
+            // stop event propagation
+            e.stopPropagation();
+            setIsExpanded(true);
+          }}
         >
           <p>
             <Plus className="size-3" strokeWidth={2} />
@@ -66,7 +70,10 @@ const CollapsableBadgeList = ({
               'border-ui-600 flex flex-row items-center rounded-full border-2 px-2 hover:opacity-80 active:scale-95',
               style?.buttonBadge,
             )}
-            onClick={() => setIsExpanded(false)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsExpanded(false);
+            }}
           >
             <p>
               <Minus className="size-3" strokeWidth={2} />

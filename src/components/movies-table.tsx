@@ -83,6 +83,10 @@ export const movieColumns: ColumnDef<
           width={80}
           height={150}
           className="rounded-lg"
+          maxHeight={150}
+          maxWidth={100} 
+          minHeight={100}
+          minWidth={60}
         />
       </TableCell>
     ),

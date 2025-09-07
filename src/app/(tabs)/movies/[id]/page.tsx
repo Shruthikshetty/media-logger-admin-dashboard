@@ -7,9 +7,9 @@ const MovieDetails = () => {
     <div className="flex h-full w-full flex-col gap-5 p-5">
       <BackButton className="min-w-40" />
       {/* All movie details */}
-      <Card className="border-ui-600 text-base-white from-base-black to-ui-900 overflow-clip bg-gradient-to-r py-0">
+      <Card className="border-ui-600 text-base-white from-base-black to-ui-900 bg-gradient-to-r pt-0">
         {/* Back drop area */}
-        <div className="relative h-96 w-full">
+        <div className="relative h-96 w-full rounded-t-2xl overflow-clip">
           <Image
             alt="backdrop"
             fill
