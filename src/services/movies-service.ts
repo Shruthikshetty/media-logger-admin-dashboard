@@ -4,7 +4,10 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { FetchAllMoviesStaleTime } from '~/constants/config.constants';
+import {
+  FetchAllMoviesStaleTime,
+  FetchMovieDetailsStaleTime,
+} from '~/constants/config.constants';
 import { Endpoints } from '~/constants/endpoints.constants';
 import { QueryKeys } from '~/constants/query-key.constants';
 import apiClient from '~/lib/api-client';
@@ -30,15 +33,21 @@ export interface Movie {
   status: string;
   tags?: string[];
   ageRating?: number;
-  trailerYoutubeUrl?: string;
+  youtubeVideoId?: string;
 }
 
-type MoviesResponse = {
+type GetAllMoviesResponse = {
   success: boolean;
   data: {
     movies: Movie[];
     pagination: Pagination;
   };
+  message?: string;
+};
+
+type GetMovieDetailsResponse = {
+  success: boolean;
+  data: Movie;
   message?: string;
 };
 
@@ -64,13 +73,13 @@ export const useFetchMovies = ({
   limit?: number;
   page?: number;
 } = {}) => {
-  return useQuery<MoviesResponse, AxiosError<ApiError>>({
+  return useQuery<GetAllMoviesResponse, AxiosError<ApiError>>({
     queryKey: [QueryKeys.fetchMovies, limit, page],
     staleTime: FetchAllMoviesStaleTime,
     placeholderData: keepPreviousData,
     queryFn: () =>
       apiClient
-        .get<MoviesResponse>(Endpoints.fetchMovies, {
+        .get<GetAllMoviesResponse>(Endpoints.fetchMovies, {
           params: {
             limit,
             page,
@@ -86,13 +95,13 @@ export const useFilterMovies = ({
   page = 1,
   ...restFilters
 }: MoviesFilterRequest = {}) => {
-  return useQuery<MoviesResponse, AxiosError<ApiError>>({
+  return useQuery<GetAllMoviesResponse, AxiosError<ApiError>>({
     queryKey: [QueryKeys.filterMovies, limit, page, restFilters],
     staleTime: FetchAllMoviesStaleTime,
     placeholderData: keepPreviousData,
     queryFn: ({ signal }) =>
       apiClient
-        .post<MoviesResponse>(
+        .post<GetAllMoviesResponse>(
           Endpoints.filterMovies,
           {
             limit,
@@ -103,6 +112,21 @@ export const useFilterMovies = ({
             signal, // used to cancel the request
           },
         )
+        .then((res) => res.data),
+  });
+};
+
+//fetch a single movie details
+export const useGetMovieDetails = (movieId: string) => {
+  return useQuery<GetMovieDetailsResponse, AxiosError<ApiError>>({
+    queryKey: [QueryKeys.movieDetails, movieId],
+    staleTime: FetchMovieDetailsStaleTime,
+    enabled: Boolean(movieId),
+    queryFn: ({ signal }) =>
+      apiClient
+        .get<GetMovieDetailsResponse>(Endpoints.fetchMovies + `/${movieId}`, {
+          signal,
+        })
         .then((res) => res.data),
   });
 };

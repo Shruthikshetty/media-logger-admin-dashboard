@@ -23,7 +23,7 @@ const CustomImage = ({
   ...restProps
 }: Omit<
   React.ComponentProps<typeof Image>,
-  'onError' | 'width' | 'height' | 'fill'
+  'onError' | 'width' | 'height' | 'fill' | 'src'
 > & {
   Icon?: LucideIcon;
   maxHeight?: number;
@@ -32,6 +32,7 @@ const CustomImage = ({
   minWidth?: number;
   width: number;
   height: number;
+  src?: string;
 }) => {
   // hold the error state
   const [error, setError] = useState(false);
