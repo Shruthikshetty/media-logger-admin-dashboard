@@ -58,18 +58,16 @@ const MovieDetails = () => {
         <Card className="border-ui-600 text-base-white from-base-black to-ui-900 bg-gradient-to-r pt-0">
           {/* Back drop area */}
           <div className="relative h-96 w-full overflow-clip rounded-t-2xl">
-            <Image
-              alt={`Backdrop for ${data?.data.title ?? 'movie'}`}
-              fill
-              //@TOTO fix once data is sanitized
-              src={
-                data?.data.backdropUrl ||
-                'https://i.imgur.com/sNxxSMr_d.webp?maxwidth=520&shape=thumb&fidelity=high'
-              }
-              quality={75}
-              sizes="100vw"
-              className="absolute inset-0 object-cover object-center"
-            />
+            {data?.data.backdropUrl && (
+              <Image
+                alt={`Backdrop for ${data?.data.title ?? 'movie'}`}
+                fill
+                src={data?.data.backdropUrl}
+                quality={75}
+                sizes="100vw"
+                className="absolute inset-0 object-cover object-center"
+              />
+            )}
             {/* poster */}
             <div className="absolute z-10 flex h-full w-full flex-col items-baseline justify-end p-5 md:pl-30">
               <div className="flex w-full flex-row items-end gap-2">
@@ -128,12 +126,16 @@ const MovieDetails = () => {
                     <div className="text-base-white flex flex-row justify-between gap-5">
                       <p className="flex flex-row items-center gap-3">
                         <Play className="text-brand-600 h-7 w-7" />
-                        <span>Watch Official Trailer</span>
+                        <span>
+                          {!data?.data?.youtubeVideoId
+                            ? 'Sorry Trailer Not Available'
+                            : 'Watch Official Trailer'}
+                        </span>
                       </p>
                       <Button
                         className="border-ui-600"
                         variant={'outline'}
-                        disabled={isLoading}
+                        disabled={isLoading || !data?.data?.youtubeVideoId}
                         onClick={() => setTrailerVisible((s) => !s)}
                       >
                         {trailerVisible ? (
@@ -145,10 +147,10 @@ const MovieDetails = () => {
                       </Button>
                     </div>
                   </CardHeader>
-                  {trailerVisible && (
+                  {trailerVisible && data?.data?.youtubeVideoId && (
                     <CardContent>
                       {/* @TODO */}
-                      <YoutubePlayer videoId={'e-ORhEE9VVg'} />
+                      <YoutubePlayer videoId={data?.data?.youtubeVideoId} />
                     </CardContent>
                   )}
                 </Card>
