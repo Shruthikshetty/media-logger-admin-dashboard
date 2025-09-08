@@ -30,6 +30,7 @@ import {
   ListLoader,
   LoadingProvider,
 } from '~/components/custom-loaders';
+import moment from 'moment';
 const MovieDetails = () => {
   // hold the trailer visibility state
   const [trailerVisible, setTrailerVisible] = useState(false);
@@ -60,6 +61,7 @@ const MovieDetails = () => {
             <Image
               alt={`Backdrop for ${data?.data.title ?? 'movie'}`}
               fill
+              //@TOTO
               src={
                 data?.data.backdropUrl ||
                 'https://i.imgur.com/sNxxSMr_d.webp?maxwidth=520&shape=thumb&fidelity=high'
@@ -96,15 +98,15 @@ const MovieDetails = () => {
                     <div className="flex flex-row flex-wrap items-center justify-center gap-4">
                       <p className="text-md flex flex-row items-center gap-1 font-semibold">
                         <Star className="text-feedback-warning h-4 w-4" />
-                        {data?.data?.averageRating}
+                        {data?.data?.averageRating ?? '???'}
                       </p>
                       <p className="text-md flex flex-row items-center gap-1 font-semibold">
                         <Calendar className="h-4 w-4" />
-                        {data?.data?.releaseDate}
+                        {moment(data?.data?.releaseDate).format('YYYY/MM/DD')}
                       </p>
                       <p className="text-md flex flex-row items-center gap-1 font-semibold">
                         <Clock className="h-4 w-4" />
-                        {data?.data?.runTime} min
+                        {data?.data?.runTime ?? '???'} min
                       </p>
                       <Badge className="bg-ui-700 hover:bg-ui-600 rounded-full border-0 px-2">
                         {data?.data.ageRating}+
@@ -159,7 +161,9 @@ const MovieDetails = () => {
                   >
                     <TitleSubtitle
                       title="Overview"
-                      subtitle={data?.data?.description}
+                      subtitle={
+                        data?.data?.description ?? 'No description available.'
+                      }
                       customStyles={{
                         title: 'text-2xl font-bold mb-1',
                         subtitle: 'text-md',
@@ -174,7 +178,9 @@ const MovieDetails = () => {
                 </div>
                 {/* genre badges */}
                 <div className="flex flex-col gap-2">
-                  <p className="text-base-white font-semi text-lg">Genres</p>
+                  {data?.data?.genre && data?.data?.genre.length > 0 && (
+                    <p className="text-base-white font-semi text-lg">Genres</p>
+                  )}
                   <LoadingWrapper
                     fallback={<ListLoader noOfItems={4} itemClassName="w-15" />}
                   >
@@ -190,7 +196,9 @@ const MovieDetails = () => {
                 </div>
                 {/* tag badges*/}
                 <div className="flex flex-col gap-2">
-                  <p className="text-base-white font-semi text-lg">Tags</p>
+                  {data?.data?.tags && data?.data?.tags.length > 0 && (
+                    <p className="text-base-white font-semi text-lg">Tags</p>
+                  )}
                   <LoadingWrapper
                     fallback={<ListLoader noOfItems={3} itemClassName="w-15" />}
                   >
@@ -227,7 +235,16 @@ const MovieDetails = () => {
                         />
                       }
                     >
-                      <p className="text-md text-ui-400">John Doe</p>
+                      <div className="flex flex-col gap-1">
+                        {data?.data.directors?.map((director) => (
+                          <p key={director} className="text-md text-ui-400">
+                            {director}
+                          </p>
+                        ))}
+                        {data?.data.directors?.length === 0 && (
+                          <p className="text-md text-ui-400">???</p>
+                        )}
+                      </div>
                     </LoadingWrapper>
                   </div>
                   {/* Casts */}
@@ -242,7 +259,16 @@ const MovieDetails = () => {
                         />
                       }
                     >
-                      <p className="text-md text-ui-400">John Doe</p>
+                      <div className="flex flex-col gap-1">
+                        {data?.data.cast?.map((director) => (
+                          <p key={director} className="text-md text-ui-400">
+                            {director}
+                          </p>
+                        ))}
+                        {data?.data.cast?.length === 0 && (
+                          <p className="text-md text-ui-400">???</p>
+                        )}
+                      </div>
                     </LoadingWrapper>
                   </div>
                   {/* Languages */}
@@ -290,7 +316,7 @@ const MovieDetails = () => {
                       fallback={<Skeleton className="h-5 w-20 rounded-2xl" />}
                     >
                       <p className="text-md text-ui-400">
-                        {data?.data.releaseDate}
+                        {moment(data?.data.releaseDate).format('MMM DD, YYYY')}
                       </p>
                     </LoadingWrapper>
                   </div>
