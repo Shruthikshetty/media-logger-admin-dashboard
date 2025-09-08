@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import AppLayoutProviders from './layout-providers';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -30,6 +31,8 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} bg-base-black text-base-white h-full w-full antialiased`}
       >
+        {/* vercel dev insights tool */}
+        <SpeedInsights />
         <AppLayoutProviders>{children}</AppLayoutProviders>
       </body>
     </html>
