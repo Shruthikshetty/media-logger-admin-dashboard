@@ -61,24 +61,24 @@ const MoviesTab = () => {
   const { data, isLoading, isFetching, isError, error } = useFilterMovies({
     page,
     limit: 20,
-    ageRating: filters?.ageRating,
-    averageRating: filters?.averageRating,
-    status: filters?.status,
-    runTime: filters?.runTime,
-    releaseDate: filters?.releaseDate
-      ? {
-          gte: filters.releaseDate?.gte
-            ? moment(filters.releaseDate?.gte).toISOString()
-            : undefined,
-          lte: filters.releaseDate?.lte
-            ? moment(filters.releaseDate?.lte).toISOString()
-            : undefined,
-        }
-      : undefined,
-    tags: filters?.tags?.length > 0 ? filters?.tags : undefined,
-    genre: filters?.genre?.length > 0 ? filters?.genre : undefined,
-    languages: filters?.languages?.length > 0 ? filters?.languages : undefined,
-    searchText: deferredSearchText,
+    // ageRating: filters?.ageRating,
+    // averageRating: filters?.averageRating,
+    // status: filters?.status,
+    // runTime: filters?.runTime,
+    // releaseDate: filters?.releaseDate
+    //   ? {
+    //       gte: filters.releaseDate?.gte
+    //         ? moment(filters.releaseDate?.gte).toISOString()
+    //         : undefined,
+    //       lte: filters.releaseDate?.lte
+    //         ? moment(filters.releaseDate?.lte).toISOString()
+    //         : undefined,
+    //     }
+    //   : undefined,
+    // tags: filters?.tags?.length > 0 ? filters?.tags : undefined,
+    // genre: filters?.genre?.length > 0 ? filters?.genre : undefined,
+    // languages: filters?.languages?.length > 0 ? filters?.languages : undefined,
+    // searchText: deferredSearchText,
   });
   //extracting delayed loading 
   const loading = useDelayedLoading (isLoading || isFetching);
