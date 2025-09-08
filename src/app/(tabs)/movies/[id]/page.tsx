@@ -61,7 +61,7 @@ const MovieDetails = () => {
             <Image
               alt={`Backdrop for ${data?.data.title ?? 'movie'}`}
               fill
-              //@TOTO
+              //@TOTO fix once data is sanitized
               src={
                 data?.data.backdropUrl ||
                 'https://i.imgur.com/sNxxSMr_d.webp?maxwidth=520&shape=thumb&fidelity=high'
@@ -147,6 +147,7 @@ const MovieDetails = () => {
                   </CardHeader>
                   {trailerVisible && (
                     <CardContent>
+                      {/* @TODO */}
                       <YoutubePlayer videoId={'e-ORhEE9VVg'} />
                     </CardContent>
                   )}
