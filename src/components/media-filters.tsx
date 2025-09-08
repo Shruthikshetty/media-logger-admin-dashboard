@@ -276,4 +276,4 @@ const MediaFilters = ({ config, onFilterChange }: MediaFiltersProps) => {
   );
 };
 
-export default MediaFilters;
+export default React.memo(MediaFilters)
