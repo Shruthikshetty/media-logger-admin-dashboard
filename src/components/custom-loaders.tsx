@@ -41,20 +41,29 @@ export const ListLoader = ({
 };
 
 // The context can hold a boolean value or be undefined if no provider is used.
-export const LoadingContext = createContext<boolean | undefined>(undefined);
+export const LoadingContext = createContext<
+  | {
+      isLoading?: boolean;
+      defaultFallback?: React.ReactNode;
+    }
+  | undefined
+>(undefined);
 
 /**
  * An optional provider for managing a shared loading state.
+ * It also has a fallback loader to display while content is loading.
  */
 export const LoadingProvider = ({
+  defaultFallback = <Skeleton className="h-7 w-30 rounded-md my-1" />,
   isLoading,
   children,
 }: {
   isLoading: boolean;
   children: React.ReactNode;
+  defaultFallback?: React.ReactNode;
 }) => {
   return (
-    <LoadingContext.Provider value={isLoading}>
+    <LoadingContext.Provider value={{ isLoading, defaultFallback }}>
       {children}
     </LoadingContext.Provider>
   );
@@ -92,10 +101,10 @@ export const LoadingWrapper = ({
 
   // The logic to determine the final state remains the same.
   // The `isLoading` prop takes precedence over the context value.
-  const showLoader = isLoadingProp ?? contextLoading ?? false;
+  const showLoader = isLoadingProp ?? contextLoading?.isLoading ?? false;
 
   if (showLoader) {
-    return <>{fallback}</>;
+    return <>{fallback ?? contextLoading?.defaultFallback}</>;
   }
 
   return <>{children}</>;
