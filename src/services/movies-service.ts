@@ -33,7 +33,7 @@ export interface Movie {
   status: string;
   tags?: string[];
   ageRating?: number;
-  trailerYoutubeUrl?: string;
+  youtubeVideoId?: string;
 }
 
 type GetAllMoviesResponse = {
