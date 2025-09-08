@@ -122,9 +122,11 @@ export const useGetMovieDetails = (movieId: string) => {
     queryKey: [QueryKeys.movieDetails, movieId],
     staleTime: FetchMovieDetailsStaleTime,
     enabled: Boolean(movieId),
-    queryFn: () =>
+    queryFn: ({ signal }) =>
       apiClient
-        .get<GetMovieDetailsResponse>(Endpoints.fetchMovies + `/${movieId}`)
+        .get<GetMovieDetailsResponse>(Endpoints.fetchMovies + `/${movieId}`, {
+          signal,
+        })
         .then((res) => res.data),
   });
 };

@@ -52,16 +52,15 @@ const MovieDetails = () => {
         {/* Back drop area */}
         <div className="relative h-96 w-full overflow-clip rounded-t-2xl">
           <Image
-            alt="backdrop image"
-            layout="fill"
-            objectFit="cover"
-            objectPosition="center"
+            alt={`Backdrop for ${data?.data.title ?? 'movie'}`}
+            fill
             src={
+              data?.data.backdropUrl ||
               'https://i.imgur.com/sNxxSMr_d.webp?maxwidth=520&shape=thumb&fidelity=high'
             }
-            quality={100}
+            quality={75}
             sizes="100vw"
-            className="absolute"
+            className="absolute inset-0 object-cover object-center"
           />
           {/* poster */}
           <div className="absolute z-10 flex h-full w-full flex-col items-baseline justify-end p-5 md:pl-30">
@@ -106,7 +105,7 @@ const MovieDetails = () => {
               {/* youtube trailer */}
               <Card className="from-brand-600/30 to-base-black border-brand-500/50 bg-gradient-to-r transition">
                 <CardHeader>
-                  <div className="text-base-white flex-roe flex justify-between gap-5">
+                  <div className="text-base-white flex flex-row justify-between gap-5">
                     <p className="flex flex-row items-center gap-3">
                       <Play className="text-brand-600 h-7 w-7" />
                       <span>Watch Official Trailer</span>
@@ -213,7 +212,9 @@ const MovieDetails = () => {
                   <Badge
                     className={cn(
                       'text-base-white rounded-full px-2',
-                      'released' === 'released' ? 'bg-brand-600' : 'bg-ui-600',
+                      data?.data?.status === 'released'
+                        ? 'bg-brand-600'
+                        : 'bg-ui-600',
                     )}
                   >
                     {capitalizeFirstLetter(data?.data?.status ?? '')}
