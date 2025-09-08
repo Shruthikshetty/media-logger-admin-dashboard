@@ -6,7 +6,12 @@ import {
 } from '@tanstack/react-table';
 import { Plus, Search, Trash2, Upload } from 'lucide-react';
 import moment from 'moment';
-import React, { useDeferredValue, useEffect, useState } from 'react';
+import React, {
+  useDeferredValue,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { toast } from 'sonner';
 import MediaFilters, {
   DateState,
@@ -57,31 +62,38 @@ const MoviesTab = () => {
   const [filters, setFilters] = useState<FiltersType>(null!);
   // stores row selection state
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+  // memoizes the movies filter query
+  const moviesFiltersQuery = useMemo(
+    () => ({
+      page,
+      limit: 20,
+      ageRating: filters?.ageRating,
+      averageRating: filters?.averageRating,
+      status: filters?.status,
+      runTime: filters?.runTime,
+      releaseDate: filters?.releaseDate
+        ? {
+            gte: filters.releaseDate?.gte
+              ? moment(filters.releaseDate?.gte).toISOString()
+              : undefined,
+            lte: filters.releaseDate?.lte
+              ? moment(filters.releaseDate?.lte).toISOString()
+              : undefined,
+          }
+        : undefined,
+      tags: filters?.tags?.length > 0 ? filters?.tags : undefined,
+      genre: filters?.genre?.length > 0 ? filters?.genre : undefined,
+      languages:
+        filters?.languages?.length > 0 ? filters?.languages : undefined,
+      searchText: deferredSearchText,
+    }),
+    [page, filters, deferredSearchText],
+  );
   // custom hook for getting all the movies
-  const { data, isLoading, isFetching, isError, error } = useFilterMovies({
-    page,
-    limit: 20,
-    // ageRating: filters?.ageRating,
-    // averageRating: filters?.averageRating,
-    // status: filters?.status,
-    // runTime: filters?.runTime,
-    // releaseDate: filters?.releaseDate
-    //   ? {
-    //       gte: filters.releaseDate?.gte
-    //         ? moment(filters.releaseDate?.gte).toISOString()
-    //         : undefined,
-    //       lte: filters.releaseDate?.lte
-    //         ? moment(filters.releaseDate?.lte).toISOString()
-    //         : undefined,
-    //     }
-    //   : undefined,
-    // tags: filters?.tags?.length > 0 ? filters?.tags : undefined,
-    // genre: filters?.genre?.length > 0 ? filters?.genre : undefined,
-    // languages: filters?.languages?.length > 0 ? filters?.languages : undefined,
-    // searchText: deferredSearchText,
-  });
-  //extracting delayed loading 
-  const loading = useDelayedLoading (isLoading || isFetching);
+  const { data, isLoading, isFetching, isError, error } =
+    useFilterMovies(moviesFiltersQuery);
+  //extracting delayed loading
+  const loading = useDelayedLoading(isLoading || isFetching);
 
   //catch any unexpected errors
   useEffect(() => {
@@ -94,12 +106,22 @@ const MoviesTab = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isError]);
 
+  // Create a stable empty array reference for the data prop
+  const defaultData = useMemo(
+    () => data?.data?.movies ?? [],
+    [data?.data?.movies],
+  );
+  // Memoize the table state object
+  const tableState = useMemo(
+    () => ({
+      rowSelection,
+    }),
+    [rowSelection],
+  );
   // create a table with all the movies data
   const movieTable = useReactTable({
-    data: data?.data.movies || [],
-    state: {
-      rowSelection,
-    },
+    data: defaultData,
+    state: tableState,
     onRowSelectionChange: setRowSelection,
     enableRowSelection: true,
     getRowId: (row) => row._id,
@@ -222,4 +244,3 @@ const MoviesTab = () => {
 };
 
 export default MoviesTab;
-
