@@ -55,9 +55,9 @@ export const useDashboardAnalyticsData = () => {
     queryKey: [QueryKeys.dashboardAnalytics],
     enabled: Boolean(isTokenSet), // no token do not fetch
     staleTime: AnalyticsDataStaleTime,
-    queryFn: async () =>
-      apiClient<ResponseAnalyticsData>(Endpoints.analyticsDashboard).then(
-        (res) => res.data,
-      ),
+    queryFn: async ({ signal }) =>
+      apiClient<ResponseAnalyticsData>(Endpoints.analyticsDashboard, {
+        signal,
+      }).then((res) => res.data),
   });
 };
