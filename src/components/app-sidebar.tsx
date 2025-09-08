@@ -7,6 +7,7 @@ import { useMemo } from 'react';
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -17,7 +18,7 @@ import {
 } from '~/components/ui/sidebar';
 import { NAVIGATION_ICONS } from '~/constants/screen.constants';
 import { cn } from '~/lib/utils';
-
+import Attributions from './attributions';
 /**
  * this component is the sidebar for the app
  * @returns {JSX.Element}
@@ -95,6 +96,9 @@ function AppSideBar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter className="bg-base-black">
+        <Attributions />
+      </SidebarFooter>
     </Sidebar>
   );
 }
