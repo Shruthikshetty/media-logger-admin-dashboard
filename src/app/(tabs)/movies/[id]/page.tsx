@@ -24,6 +24,9 @@ import CustomImage from '~/components/custom-image';
 import YoutubePlayer from '~/components/youtube-player';
 import { useGetMovieDetails } from '~/services/movies-service';
 import { useParams } from 'next/navigation';
+import { Skeleton } from '~/components/ui/skeleton';
+import { LoadingWrapper, ListLoader } from '~/components/custom-loaders';
+import { is } from 'date-fns/locale';
 
 const MovieDetails = () => {
   // hold the trailer visibility state
@@ -75,24 +78,36 @@ const MovieDetails = () => {
                 className="border-ui-600 rounded-xl border-1 shadow-2xl"
               />
               <div className="bg-base-black/80 rounded-xl p-3 pb-10">
-                <p className="mb-2 text-3xl font-bold">{data?.data.title}</p>
-                <div className="flex flex-row flex-wrap items-center justify-center gap-4">
-                  <p className="text-md flex flex-row items-center gap-1 font-semibold">
-                    <Star className="text-feedback-warning h-4 w-4" />
-                    {data?.data?.averageRating}
-                  </p>
-                  <p className="text-md flex flex-row items-center gap-1 font-semibold">
-                    <Calendar className="h-4 w-4" />
-                    {data?.data?.releaseDate}
-                  </p>
-                  <p className="text-md flex flex-row items-center gap-1 font-semibold">
-                    <Clock className="h-4 w-4" />
-                    {data?.data?.runTime} min
-                  </p>
-                  <Badge className="bg-ui-700 hover:bg-ui-600 rounded-full border-0 px-2">
-                    {data?.data.ageRating}+
-                  </Badge>
-                </div>
+                {/* Title */}
+                <LoadingWrapper
+                  isLoading={isLoading}
+                  fallback={<Skeleton className="mb-5 h-6 w-40" />}
+                >
+                  <p className="mb-2 text-3xl font-bold">{data?.data.title}</p>
+                </LoadingWrapper>
+                {/* Additional info */}
+                <LoadingWrapper
+                  isLoading={isLoading}
+                  fallback={<ListLoader noOfItems={4} itemClassName="w-10" />}
+                >
+                  <div className="flex flex-row flex-wrap items-center justify-center gap-4">
+                    <p className="text-md flex flex-row items-center gap-1 font-semibold">
+                      <Star className="text-feedback-warning h-4 w-4" />
+                      {data?.data?.averageRating}
+                    </p>
+                    <p className="text-md flex flex-row items-center gap-1 font-semibold">
+                      <Calendar className="h-4 w-4" />
+                      {data?.data?.releaseDate}
+                    </p>
+                    <p className="text-md flex flex-row items-center gap-1 font-semibold">
+                      <Clock className="h-4 w-4" />
+                      {data?.data?.runTime} min
+                    </p>
+                    <Badge className="bg-ui-700 hover:bg-ui-600 rounded-full border-0 px-2">
+                      {data?.data.ageRating}+
+                    </Badge>
+                  </div>
+                </LoadingWrapper>
               </div>
             </div>
           </div>
@@ -113,6 +128,7 @@ const MovieDetails = () => {
                     <Button
                       className="border-ui-600"
                       variant={'outline'}
+                      disabled={isLoading}
                       onClick={() => setTrailerVisible((s) => !s)}
                     >
                       {trailerVisible ? (
@@ -133,16 +149,23 @@ const MovieDetails = () => {
             </CardHeader>
             <CardContent className="flex flex-col gap-3 p-0">
               <div className="flex flex-row justify-between gap-2">
-                <TitleSubtitle
-                  title="Overview"
-                  subtitle={data?.data?.description}
-                  customStyles={{
-                    title: 'text-2xl font-bold mb-1',
-                    subtitle: 'text-md',
-                  }}
-                />
+                <LoadingWrapper
+                  isLoading={isLoading}
+                  fallback={
+                    <ListLoader noOfItems={2} vertical itemClassName="w-39" />
+                  }
+                >
+                  <TitleSubtitle
+                    title="Overview"
+                    subtitle={data?.data?.description}
+                    customStyles={{
+                      title: 'text-2xl font-bold mb-1',
+                      subtitle: 'text-md',
+                    }}
+                  />
+                </LoadingWrapper>
                 {/* Edit button */}
-                <Button variant={'blue'}>
+                <Button variant={'blue'} disabled={isLoading}>
                   <PenSquare />
                   Edit Movie
                 </Button>
@@ -150,28 +173,38 @@ const MovieDetails = () => {
               {/* genre badges */}
               <div className="flex flex-col gap-2">
                 <p className="text-base-white font-semi text-lg">Genres</p>
-                <CollapsableBadgeList
-                  list={data?.data?.genre ?? []}
-                  maxDisplayed={10}
-                  style={{
-                    buttonBadge: 'bg-ui-700 border-0 hover:bg-ui-600',
-                    itemBadge: 'bg-ui-700 border-0 hover:bg-ui-600',
-                  }}
-                />
+                <LoadingWrapper
+                  isLoading={isLoading}
+                  fallback={<ListLoader noOfItems={4} itemClassName="w-15" />}
+                >
+                  <CollapsableBadgeList
+                    list={data?.data?.genre ?? []}
+                    maxDisplayed={10}
+                    style={{
+                      buttonBadge: 'bg-ui-700 border-0 hover:bg-ui-600',
+                      itemBadge: 'bg-ui-700 border-0 hover:bg-ui-600',
+                    }}
+                  />
+                </LoadingWrapper>
               </div>
               {/* tag badges*/}
               <div className="flex flex-col gap-2">
                 <p className="text-base-white font-semi text-lg">Tags</p>
-                <CollapsableBadgeList
-                  list={data?.data?.tags ?? []}
-                  maxDisplayed={10}
-                  style={{
-                    buttonBadge:
-                      'bg-ui-transparent border-ui-600 hover:border-ui-400 border-1',
-                    itemBadge:
-                      'bg-ui-transparent border-ui-600 hover:border-ui-400 border-1',
-                  }}
-                />
+                <LoadingWrapper
+                  isLoading={isLoading}
+                  fallback={<ListLoader noOfItems={3} itemClassName="w-15" />}
+                >
+                  <CollapsableBadgeList
+                    list={data?.data?.tags ?? []}
+                    maxDisplayed={10}
+                    style={{
+                      buttonBadge:
+                        'bg-ui-transparent border-ui-600 hover:border-ui-400 border-1',
+                      itemBadge:
+                        'bg-ui-transparent border-ui-600 hover:border-ui-400 border-1',
+                    }}
+                  />
+                </LoadingWrapper>
               </div>
             </CardContent>
           </Card>
@@ -185,47 +218,76 @@ const MovieDetails = () => {
                 {/* Directors */}
                 <div>
                   {renderMovieInfoTitle('Director', Users)}
-                  <p className="text-md text-ui-400">John Doe</p>
+                  <LoadingWrapper
+                    isLoading={isLoading}
+                    fallback={
+                      <ListLoader noOfItems={3} itemClassName="w-24" vertical />
+                    }
+                  >
+                    <p className="text-md text-ui-400">John Doe</p>
+                  </LoadingWrapper>
                 </div>
                 {/* Casts */}
                 <div>
                   {renderMovieInfoTitle('Cast', Users)}
-                  <p className="text-md text-ui-400">John Doe</p>
+                  <LoadingWrapper
+                    isLoading={isLoading}
+                    fallback={
+                      <ListLoader noOfItems={2} itemClassName="w-24" vertical />
+                    }
+                  >
+                    <p className="text-md text-ui-400">John Doe</p>
+                  </LoadingWrapper>
                 </div>
                 {/* Languages */}
                 <div className="flex flex-col gap-2">
                   {renderMovieInfoTitle('Languages', Globe)}
-                  <CollapsableBadgeList
-                    list={data?.data.languages ?? []}
-                    maxDisplayed={5}
-                    style={{
-                      buttonBadge:
-                        'bg-ui-transparent border-ui-600 hover:border-ui-400 border-1',
-                      itemBadge:
-                        'bg-ui-transparent border-ui-600 hover:border-ui-400 border-1',
-                    }}
-                  />
+                  <LoadingWrapper
+                    isLoading={isLoading}
+                    fallback={<ListLoader noOfItems={3} itemClassName="w-15" />}
+                  >
+                    <CollapsableBadgeList
+                      list={data?.data.languages ?? []}
+                      maxDisplayed={5}
+                      style={{
+                        buttonBadge:
+                          'bg-ui-transparent border-ui-600 hover:border-ui-400 border-1',
+                        itemBadge:
+                          'bg-ui-transparent border-ui-600 hover:border-ui-400 border-1',
+                      }}
+                    />
+                  </LoadingWrapper>
                 </div>
                 {/*Status */}
                 <div className="flex flex-col gap-2">
                   {renderMovieInfoTitle('Status')}
-                  <Badge
-                    className={cn(
-                      'text-base-white rounded-full px-2',
-                      data?.data?.status === 'released'
-                        ? 'bg-brand-600'
-                        : 'bg-ui-600',
-                    )}
+                  <LoadingWrapper
+                    isLoading={isLoading}
+                    fallback={<Skeleton className="h-5 w-15 rounded-full" />}
                   >
-                    {capitalizeFirstLetter(data?.data?.status ?? '')}
-                  </Badge>
+                    <Badge
+                      className={cn(
+                        'text-base-white rounded-full px-2',
+                        data?.data?.status === 'released'
+                          ? 'bg-brand-600'
+                          : 'bg-ui-600',
+                      )}
+                    >
+                      {capitalizeFirstLetter(data?.data?.status ?? '')}
+                    </Badge>
+                  </LoadingWrapper>
                 </div>
                 {/* Release date */}
                 <div>
                   {renderMovieInfoTitle('Release Date')}
-                  <p className="text-md text-ui-400">
-                    {data?.data.releaseDate}
-                  </p>
+                  <LoadingWrapper
+                    fallback={<Skeleton className="h-5 w-20 rounded-2xl" />}
+                    isLoading={isLoading}
+                  >
+                    <p className="text-md text-ui-400">
+                      {data?.data.releaseDate}
+                    </p>
+                  </LoadingWrapper>
                 </div>
               </div>
             </CardContent>
