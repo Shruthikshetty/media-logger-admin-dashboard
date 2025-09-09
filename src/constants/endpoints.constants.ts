@@ -12,4 +12,5 @@ export const Endpoints = {
   uploadImage: `/api/upload/image`,
   baseMovie: `/api/movie`,
   filterMovies: `/api/movie/filter`,
+  moviesBulk: `/api/movie/bulk`,
 };

@@ -60,12 +60,14 @@ export const movieColumns: ColumnDef<
       />
     ),
     cell: (props) => (
-      <TableCell>
+      <TableCell onClick={(e) => e.stopPropagation()}>
         <Checkbox
           className="data-[state=checked]:bg-base-white data-[state=checked]:text-base-black"
           checked={props.row.getIsSelected()}
           aria-label="select row"
-          onCheckedChange={() => props.row.toggleSelected()}
+          onCheckedChange={(e) => {
+            props.row.toggleSelected();
+          }}
         />
       </TableCell>
     ),

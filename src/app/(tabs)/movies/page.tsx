@@ -1,4 +1,5 @@
 'use client';
+import { useQueryClient } from '@tanstack/react-query';
 import {
   getCoreRowModel,
   RowSelectionState,
@@ -6,12 +7,7 @@ import {
 } from '@tanstack/react-table';
 import { Plus, Search, Trash2, Upload } from 'lucide-react';
 import moment from 'moment';
-import React, {
-  useDeferredValue,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import React, { useDeferredValue, useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import MediaFilters, {
   DateState,
@@ -30,8 +26,14 @@ import {
 import { Input } from '~/components/ui/input';
 import { Skeleton } from '~/components/ui/skeleton';
 import { MovieFilterConfig } from '~/constants/config.constants';
+import { QueryKeys } from '~/constants/query-key.constants';
 import useDelayedLoading from '~/hooks/use-delayed-loading';
-import { MovieStatus, useFilterMovies } from '~/services/movies-service';
+import {
+  MovieStatus,
+  useBulkDeleteMovie,
+  useFilterMovies,
+} from '~/services/movies-service';
+import { useSpinnerStore } from '~/state-management/spinner-store';
 import { FilterLimits } from '~/types/global.types';
 
 //filter data type
@@ -62,6 +64,12 @@ const MoviesTab = () => {
   const [filters, setFilters] = useState<FiltersType>(null!);
   // stores row selection state
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+  //get spinner state
+  const toggleSpinner = useSpinnerStore((s) => s.toggleSpinner);
+  // hook used for bulk deletion of movies
+  const { mutateAsync: bulkDeleteMovies } = useBulkDeleteMovie();
+  // get the query client
+  const queryClient = useQueryClient();
   // memoizes the movies filter query
   const moviesFiltersQuery = useMemo(
     () => ({
@@ -131,8 +139,16 @@ const MoviesTab = () => {
 
   //derived selected row length
   const selectedRowLength = movieTable.getSelectedRowModel().rows?.length ?? 0;
+  const rows = movieTable.getRowModel().rows;
+  // ion case the page is empty and it's not the first page, go back one page
+  useEffect(() => {
+    // This effect runs only when the number of rows or the page changes
+    if (!isLoading && rows.length === 0 && page > 1) {
+      // If the current page is empty and it's not the first page, go back one page.
+      setPage(page - 1);
+    }
+  }, [rows.length, page, isLoading, setPage]);
 
-  //@TODO in progress
   //function to handle deleting selected rows
   const handleBulkDelete = () => {
     //in case no row is selected
@@ -140,7 +156,32 @@ const MoviesTab = () => {
     const getSelectedMovieIds = movieTable
       .getSelectedRowModel()
       .rows.map((row) => row.original._id);
-    console.log(getSelectedMovieIds);
+    // start spinner
+    toggleSpinner();
+    //delete the selected movies
+    bulkDeleteMovies(getSelectedMovieIds, {
+      onSuccess: (data) => {
+        toast.success(data.message ?? 'Movies deleted successfully', {
+          classNames: {
+            toast: '!bg-feedback-success',
+          },
+        });
+      },
+      onError: (error) => {
+        toast.error(error.response?.data?.message ?? 'Something went wrong', {
+          classNames: {
+            toast: '!bg-feedback-error',
+          },
+        });
+      },
+      onSettled: () => {
+        toggleSpinner();
+        //invalidate filter data
+        queryClient.invalidateQueries({
+          queryKey: [QueryKeys.filterMovies],
+        });
+      },
+    });
   };
 
   return (

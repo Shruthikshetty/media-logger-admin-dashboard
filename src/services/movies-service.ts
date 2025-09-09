@@ -65,6 +65,14 @@ type MoviesFilterRequest = {
   limit?: number;
 };
 
+type BulkDeleteMoviesResponse = {
+  success: boolean;
+  message: string;
+  data: {
+    deletedCount: number;
+  };
+};
+
 //get all the movies from the api with pagination
 export const useFetchMovies = ({
   limit = 20,
@@ -138,6 +146,21 @@ export const useDeleteMovie = () => {
     mutationFn: (movieId: string) =>
       apiClient
         .delete<GetMovieDetailsResponse>(Endpoints.baseMovie + `/${movieId}`)
+        .then((res) => res.data),
+  });
+};
+
+//bulk movies deletion
+export const useBulkDeleteMovie = () => {
+  return useMutation<GetMovieDetailsResponse, AxiosError<ApiError>, string[]>({
+    mutationKey: [QueryKeys.deleteMovie],
+    mutationFn: (movieIds: string[]) =>
+      apiClient
+        .delete<GetMovieDetailsResponse>(Endpoints.moviesBulk, {
+          data: {
+            movieIds,
+          },
+        })
         .then((res) => res.data),
   });
 };
