@@ -22,12 +22,15 @@ export const addMovieSchema = z.object({
     })
     .min(1, 'Description is required')
     .max(300, 'Description should be at most 300 characters long'),
-  //   averageRating: z
-  //     .number({
-  //       error: 'Average rating must be number',
-  //     })
-  //     .max(10, 'Average rating can be at most 10')
-  //     .optional(),
+
+  averageRating: z
+    .number({
+      error: 'Average rating must be number',
+    })
+    .positive('Average rating must be positive')
+    .max(10, 'Average rating can be at most 10')
+    .optional(),
+
   //   cast: z.array(z.string({ error: 'Cast must be string' }), {
   //     error: 'Cast must be an array of strings',
   //   }),
@@ -36,12 +39,14 @@ export const addMovieSchema = z.object({
   //     error: 'Directors must be an array of strings',
   //   }),
 
-  //   runTime: z.number({
-  //     error: (issue) =>
-  //       issue.input === undefined
-  //         ? 'Run time is required'
-  //         : 'Run time must be number',
-  //   }),
+  runTime: z
+    .number({
+      error: (issue) =>
+        issue.input === undefined
+          ? 'Run time is required'
+          : 'Run time must be number',
+    })
+    .positive('Run time must be positive'),
   //   languages: z.array(z.string({ error: 'Languages must be string' }), {
   //     error: 'Languages must be an array of strings',
   //   }),

@@ -61,7 +61,7 @@ const AddMovieDialog = ({ children }: { children: React.ReactNode }) => {
             onSubmit={addMovieForm.handleSubmit(onSubmit)}
             className="flex flex-col gap-4"
           >
-            <FormField<AddMovieSchemaType>
+            <FormField
               name="title"
               control={addMovieForm.control}
               render={({ field }) => (
@@ -86,7 +86,7 @@ const AddMovieDialog = ({ children }: { children: React.ReactNode }) => {
                 </FormItem>
               )}
             />
-            <FormField<AddMovieSchemaType>
+            <FormField
               name="description"
               control={addMovieForm.control}
               render={({ field }) => (
@@ -110,6 +110,70 @@ const AddMovieDialog = ({ children }: { children: React.ReactNode }) => {
                 </FormItem>
               )}
             />
+            <div className="flex flex-col gap-4 md:flex-row md:items-baseline">
+              <FormField
+                name="averageRating"
+                control={addMovieForm.control}
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <Label htmlFor="averageRating" className="text-base">
+                      Average Rating
+                    </Label>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        value={field.value === undefined ? '' : field.value}
+                        onChange={(e) =>
+                          field.onChange(
+                            e.target.value === ''
+                              ? undefined
+                              : Number(e.target.value),
+                          )
+                        }
+                        id="averageRating"
+                        type="number"
+                        placeholder="Rating (0-10)"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                    <FormDescription className="text-ui-400 text-sm">
+                      Rating must be between 0 and 10
+                    </FormDescription>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="runTime"
+                control={addMovieForm.control}
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <Label htmlFor="runTime" className="text-base">
+                      Run Time
+                    </Label>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        value={field.value === undefined ? '' : field.value}
+                        onChange={(e) =>
+                          field.onChange(
+                            e.target.value === ''
+                              ? undefined
+                              : Number(e.target.value),
+                          )
+                        }
+                        id="runTime"
+                        type="number"
+                        placeholder="Minutes"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                    <FormDescription className="text-ui-400 text-sm">
+                      Runtime in minutes must be greater than 0
+                    </FormDescription>
+                  </FormItem>
+                )}
+              />
+            </div>
             {/* Buttons */}
             <div className="flex flex-row justify-end gap-2 md:items-center md:justify-center">
               <Button

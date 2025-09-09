@@ -2,6 +2,8 @@
  * This file contains all globally used types that are not related to a specific module
  */
 
+import { Control, ControllerRenderProps, FieldValues, Path } from "react-hook-form";
+
 export type ApiError = {
   message?: string;
   success: boolean;
