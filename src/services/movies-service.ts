@@ -2,7 +2,7 @@
  * @file contains all the movies related services
  */
 
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import {
   FetchAllMoviesStaleTime,
@@ -79,7 +79,7 @@ export const useFetchMovies = ({
     placeholderData: keepPreviousData,
     queryFn: () =>
       apiClient
-        .get<GetAllMoviesResponse>(Endpoints.fetchMovies, {
+        .get<GetAllMoviesResponse>(Endpoints.baseMovie, {
           params: {
             limit,
             page,
@@ -124,9 +124,20 @@ export const useGetMovieDetails = (movieId: string) => {
     enabled: Boolean(movieId),
     queryFn: ({ signal }) =>
       apiClient
-        .get<GetMovieDetailsResponse>(Endpoints.fetchMovies + `/${movieId}`, {
+        .get<GetMovieDetailsResponse>(Endpoints.baseMovie + `/${movieId}`, {
           signal,
         })
+        .then((res) => res.data),
+  });
+};
+
+//delete movie by id
+export const useDeleteMovie = () => {
+  return useMutation<GetMovieDetailsResponse, AxiosError<ApiError>, string>({
+    mutationKey: [QueryKeys.deleteMovie],
+    mutationFn: (movieId: string) =>
+      apiClient
+        .delete<GetMovieDetailsResponse>(Endpoints.baseMovie + `/${movieId}`)
         .then((res) => res.data),
   });
 };

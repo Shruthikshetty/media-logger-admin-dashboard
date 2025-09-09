@@ -21,6 +21,17 @@ type BackDropCardPros = {
   infoData: InfoItem[];
 };
 
+/**
+ * A component that renders a backdrop image with a poster and some additional information.
+ * Used to showcase diff media data.
+ *
+ * @param {string} [posterSrc] source for the poster image
+ * @param {string} [backdropSrc] source for the backdrop image
+ * @param {InfoItem[]} [infoData] additional information to render
+ * @param {string} [title] title of the movie / other media
+ *
+ * @returns {JSX.Element}
+ */
 const BackdropCard = ({
   posterSrc,
   backdropSrc,
