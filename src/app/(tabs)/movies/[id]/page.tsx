@@ -12,6 +12,7 @@ import {
   PenSquare,
   Play,
   Star,
+  Trash2,
   Users,
   X,
 } from 'lucide-react';
@@ -70,7 +71,7 @@ const MovieDetails = () => {
             )}
             {/* poster */}
             <div className="absolute z-10 flex h-full w-full flex-col items-baseline justify-end p-5 md:pl-30">
-              <div className="flex w-full flex-row items-end gap-2">
+              <div className="flex w-full flex-row items-end gap-1 sm:gap-2">
                 <CustomImage
                   alt={'poster image'}
                   src={data?.data.posterUrl}
@@ -78,6 +79,8 @@ const MovieDetails = () => {
                   height={300}
                   maxHeight={300}
                   maxWidth={200}
+                  minHeight={120}
+                  minWidth={100}
                   className="border-ui-600 rounded-xl border-1 shadow-2xl"
                 />
                 <div className="bg-base-black/80 rounded-xl p-3 pb-10">
@@ -85,7 +88,7 @@ const MovieDetails = () => {
                   <LoadingWrapper
                     fallback={<Skeleton className="mb-5 h-6 w-40" />}
                   >
-                    <p className="mb-2 text-3xl font-bold">
+                    <p className="mb-2 text-2xl font-bold sm:text-3xl">
                       {data?.data.title}
                     </p>
                   </LoadingWrapper>
@@ -93,7 +96,7 @@ const MovieDetails = () => {
                   <LoadingWrapper
                     fallback={<ListLoader noOfItems={4} itemClassName="w-10" />}
                   >
-                    <div className="flex flex-row flex-wrap items-center justify-center gap-4">
+                    <div className="flex flex-row flex-wrap items-center justify-center gap-2 sm:gap-4">
                       <p className="text-md flex flex-row items-center gap-1 font-semibold">
                         <Star className="text-feedback-warning h-4 w-4" />
                         {data?.data?.averageRating ?? '???'}
@@ -172,11 +175,24 @@ const MovieDetails = () => {
                       }}
                     />
                   </LoadingWrapper>
-                  {/* Edit button */}
-                  <Button variant={'blue'} disabled={isLoading}>
-                    <PenSquare />
-                    Edit Movie
-                  </Button>
+                  {/* Edit  and Delete button */}
+                  <div className="flex flex-row gap-2 sm:flex-col sm:gap-3">
+                    <Button
+                      variant={'blue'}
+                      disabled={isLoading}
+                      className="flex-1 sm:flex-none"
+                    >
+                      <PenSquare />
+                      Edit Movie
+                    </Button>
+                    <Button
+                      variant={'red'}
+                      className="text-base-white flex-1 sm:flex-none"
+                    >
+                      <Trash2 />
+                      Delete Movie
+                    </Button>
+                  </div>
                 </div>
                 {/* genre badges */}
                 <div className="flex flex-col gap-2">

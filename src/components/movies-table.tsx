@@ -82,11 +82,12 @@ export const movieColumns: ColumnDef<
           src={props.getValue() as string}
           width={80}
           height={150}
-          className="rounded-lg"
+          className="aspect-[2/3] rounded-lg"
           maxHeight={150}
-          maxWidth={100} 
+          maxWidth={100}
           minHeight={100}
           minWidth={60}
+          placeHolderClassname="aspect-[2/3] px-4 [&_[data-slot='icon']]:text-ui-400"
         />
       </TableCell>
     ),
