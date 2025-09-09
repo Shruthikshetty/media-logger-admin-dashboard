@@ -9,6 +9,7 @@ import { Plus, Search, Trash2, Upload } from 'lucide-react';
 import moment from 'moment';
 import React, { useDeferredValue, useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
+import AddMovieDialog from '~/components/add-movie-dialog';
 import MediaFilters, {
   DateState,
   FiltersState,
@@ -197,13 +198,16 @@ const MoviesTab = () => {
             <Upload className="mr-1 size-4" />
             Import json
           </Button>
-          <Button
-            variant={'outline'}
-            className="from-brand-200 to-brand-600 border-0 bg-gradient-to-r hover:opacity-80"
-          >
-            <Plus className="mr-1 size-4" />
-            Add Movie
-          </Button>
+          <AddMovieDialog>
+            <Button
+              aria-label="add movie"
+              variant={'outline'}
+              className="from-brand-200 to-brand-600 border-0 bg-gradient-to-r hover:opacity-80"
+            >
+              <Plus className="mr-1 size-4" />
+              Add Movie
+            </Button>
+          </AddMovieDialog>
         </div>
       </div>
 
