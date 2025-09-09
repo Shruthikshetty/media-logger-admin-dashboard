@@ -124,7 +124,7 @@ const MovieDetails = () => {
                 <Card className="from-brand-600/30 to-base-black border-brand-500/50 bg-gradient-to-r transition">
                   <CardHeader>
                     <div className="text-base-white flex flex-row justify-between gap-5">
-                      <p className="flex flex-row items-center gap-3">
+                      <p className="flex flex-row flex-wrap items-center gap-1 sm:gap-3">
                         <Play className="text-brand-600 h-7 w-7" />
                         <span>
                           {!data?.data?.youtubeVideoId
@@ -149,14 +149,13 @@ const MovieDetails = () => {
                   </CardHeader>
                   {trailerVisible && data?.data?.youtubeVideoId && (
                     <CardContent>
-                      {/* @TODO */}
                       <YoutubePlayer videoId={data?.data?.youtubeVideoId} />
                     </CardContent>
                   )}
                 </Card>
               </CardHeader>
               <CardContent className="flex flex-col gap-3 p-0">
-                <div className="flex flex-row justify-between gap-2">
+                <div className="flex flex-col-reverse justify-between gap-2 sm:flex-row">
                   <LoadingWrapper
                     fallback={
                       <ListLoader noOfItems={2} vertical itemClassName="w-39" />
