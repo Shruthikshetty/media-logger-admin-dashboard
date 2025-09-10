@@ -14,6 +14,17 @@ type MultiSelectProps = {
   options: string[];
 };
 
+/**
+ * A dropdown component that allows for multiple selections, with an optional
+ * preview of the selected items as badges.
+ * @param {string[]} value The current values of the multiselect.
+ * @param {(value: string[]) => void} onChange Called whenever the value changes.
+ * @param {string} [placeHolder] The placeholder text to show when no values are selected.
+ * @param {boolean} [showBadges] Whether to show the selected values as badges.
+ * @param {string[]} [options] The options to be shown in the dropdown.
+ * @param {string} [dropDownLabel] The label to show above the dropdown.
+ * @returns {JSX.Element} The component.
+ */
 const MultiSelectWithBadge = ({
   value = [],
   onChange,
