@@ -28,6 +28,7 @@ import { Label } from './ui/label';
 import { Textarea } from './ui/textarea';
 import { Button } from './ui/button';
 import { Plus } from 'lucide-react';
+import NumberInput from './number-input';
 
 const AddMovieDialog = ({ children }: { children: React.ReactNode }) => {
   //open and close state for dialog
@@ -120,18 +121,9 @@ const AddMovieDialog = ({ children }: { children: React.ReactNode }) => {
                       Average Rating
                     </Label>
                     <FormControl>
-                      <Input
+                      <NumberInput
                         {...field}
-                        value={field.value === undefined ? '' : field.value}
-                        onChange={(e) =>
-                          field.onChange(
-                            e.target.value === ''
-                              ? undefined
-                              : Number(e.target.value),
-                          )
-                        }
                         id="averageRating"
-                        type="number"
                         placeholder="Rating (0-10)"
                       />
                     </FormControl>
@@ -151,18 +143,9 @@ const AddMovieDialog = ({ children }: { children: React.ReactNode }) => {
                       Run Time
                     </Label>
                     <FormControl>
-                      <Input
+                      <NumberInput
                         {...field}
-                        value={field.value === undefined ? '' : field.value}
-                        onChange={(e) =>
-                          field.onChange(
-                            e.target.value === ''
-                              ? undefined
-                              : Number(e.target.value),
-                          )
-                        }
                         id="runTime"
-                        type="number"
                         placeholder="Minutes"
                       />
                     </FormControl>
