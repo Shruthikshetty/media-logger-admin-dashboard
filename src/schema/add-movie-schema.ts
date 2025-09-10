@@ -31,13 +31,13 @@ export const addMovieSchema = z.object({
     .max(10, 'Average rating can be at most 10')
     .optional(),
 
-  //   cast: z.array(z.string({ error: 'Cast must be string' }), {
-  //     error: 'Cast must be an array of strings',
-  //   }),
+  cast: z.array(z.string({ error: 'Cast must be string' }), {
+    error: 'Cast must be an array of strings',
+  }),
 
-  //   directors: z.array(z.string({ error: 'Directors must be string' }), {
-  //     error: 'Directors must be an array of strings',
-  //   }),
+  directors: z.array(z.string({ error: 'Directors must be string' }), {
+    error: 'Directors must be an array of strings',
+  }),
 
   runTime: z
     .number({
@@ -89,11 +89,11 @@ export const addMovieSchema = z.object({
   //       error: 'Tags must be an array of strings',
   //     },
   //   ),
-  //   youtubeVideoId: z
-  //     .string({
-  //       error: 'Youtube video id must be string',
-  //     })
-  //     .optional(),
+  youtubeVideoId: z
+    .string({
+      error: 'Youtube video id must be string',
+    })
+    .optional(),
   //   releaseDate: z.date({
   //     error: (issue) =>
   //       issue.input === undefined

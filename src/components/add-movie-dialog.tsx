@@ -32,7 +32,8 @@ import NumberInput from './number-input';
 import CustomSelect from './custom-select';
 import { MEDIA_STATUS } from '~/constants/config.constants';
 import { Checkbox } from './ui/checkbox';
-import { ScrollArea, ScrollBar } from './ui/scroll-area';
+import { ScrollArea } from './ui/scroll-area';
+import ListInput from './list-input';
 
 /**
  * This is a form to Add a new movie
@@ -233,6 +234,7 @@ const AddMovieDialog = ({ children }: { children: React.ReactNode }) => {
                   </FormItem>
                 )}
               />
+
               <FormField
                 name="backdropUrl"
                 control={addMovieForm.control}
@@ -252,11 +254,82 @@ const AddMovieDialog = ({ children }: { children: React.ReactNode }) => {
                     </FormControl>
                     <FormMessage />
                     <FormDescription className="text-ui-400 text-sm">
-                      Enter the complete URL of the movie backdropUrl
+                      Enter the complete URL of the movie backdrop
                     </FormDescription>
                   </FormItem>
                 )}
               />
+              <FormField
+                name="youtubeVideoId"
+                control={addMovieForm.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <Label htmlFor="youtubeVideoId" className="text-base">
+                      Youtube Video trailer
+                    </Label>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        value={field.value ?? ''}
+                        type="text"
+                        id="youtubeVideoId"
+                        placeholder="Video ID"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                    <FormDescription className="text-ui-400 text-sm">
+                      Enter the Youtube embed code only{' '}
+                      <b>(Do not provide full url)</b>
+                    </FormDescription>
+                  </FormItem>
+                )}
+              />
+
+              <div className="flex flex-col gap-4 md:flex-row md:items-baseline">
+                <FormField
+                  name="cast"
+                  control={addMovieForm.control}
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <Label htmlFor="cast" className="text-base">
+                        Cast&apos;s
+                      </Label>
+                      <FormControl>
+                        <ListInput {...field} id="cast" placeholder="Cast name">
+                          <FormDescription className="text-ui-400 text-sm">
+                            Add all cast names one by one
+                          </FormDescription>
+                        </ListInput>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  name="directors"
+                  control={addMovieForm.control}
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <Label htmlFor="directors" className="text-base">
+                        Director&apos;s
+                      </Label>
+                      <FormControl>
+                        <ListInput
+                          {...field}
+                          id="directors"
+                          placeholder="Director name"
+                        >
+                          <FormDescription className="text-ui-400 text-sm">
+                            Add all Director&apos;s names one by one
+                          </FormDescription>
+                        </ListInput>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              {/* Checkbox for is active */}
               <FormField
                 name="isActive"
                 control={addMovieForm.control}
