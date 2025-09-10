@@ -153,7 +153,7 @@ export const useDeleteMovie = () => {
 //bulk movies deletion
 export const useBulkDeleteMovie = () => {
   return useMutation<BulkDeleteMoviesResponse, AxiosError<ApiError>, string[]>({
-    mutationKey: [QueryKeys.deleteMovie],
+    mutationKey: [QueryKeys.bulkDeleteMovies],
     mutationFn: (movieIds: string[]) =>
       apiClient
         .delete<BulkDeleteMoviesResponse>(Endpoints.moviesBulk, {
