@@ -50,16 +50,16 @@ export const addMovieSchema = z.object({
   //   languages: z.array(z.string({ error: 'Languages must be string' }), {
   //     error: 'Languages must be an array of strings',
   //   }),
-  //   posterUrl: z
-  //     .string({
-  //       error: 'Poster url must be string',
-  //     })
-  //     .optional(),
-  //   backdropUrl: z
-  //     .string({
-  //       error: 'Backdrop url must be string',
-  //     })
-  //     .optional(),
+  posterUrl: z
+    .string({
+      error: 'Poster url must be string',
+    })
+    .optional(),
+  backdropUrl: z
+    .string({
+      error: 'Backdrop url must be string',
+    })
+    .optional(),
   isActive: z
     .boolean({
       error: 'Is active must be boolean',
@@ -73,12 +73,12 @@ export const addMovieSchema = z.object({
       error: `Status must be one of the following: ${MEDIA_STATUS.join(', ')}`,
     })
     .optional(),
-    ageRating: z.number({
-      error: (issue) =>
-        issue.input === undefined
-          ? 'Age rating is required'
-          : 'Age rating must be number',
-    }),
+  ageRating: z.number({
+    error: (issue) =>
+      issue.input === undefined
+        ? 'Age rating is required'
+        : 'Age rating must be number',
+  }),
   //   tags: z.array(
   //     z
   //       .string({ error: 'Tags must be string' })
