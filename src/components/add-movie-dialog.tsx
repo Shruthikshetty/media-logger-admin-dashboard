@@ -29,6 +29,9 @@ import { Textarea } from './ui/textarea';
 import { Button } from './ui/button';
 import { Plus } from 'lucide-react';
 import NumberInput from './number-input';
+import CustomSelect from './custom-select';
+import { MEDIA_STATUS } from '~/constants/config.constants';
+import { Checkbox } from './ui/checkbox';
 
 const AddMovieDialog = ({ children }: { children: React.ReactNode }) => {
   //open and close state for dialog
@@ -157,6 +160,71 @@ const AddMovieDialog = ({ children }: { children: React.ReactNode }) => {
                 )}
               />
             </div>
+            <div className="flex flex-col gap-4 md:flex-row md:items-baseline">
+              <FormField
+                name="status"
+                control={addMovieForm.control}
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormControl>
+                      <CustomSelect
+                        {...field}
+                        options={MEDIA_STATUS}
+                        dropDownLabel="Status"
+                        label="Movie status *"
+                        placeholder="Status"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="ageRating"
+                control={addMovieForm.control}
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <Label htmlFor="ageRating" className="text-base">
+                      Age Rating *
+                    </Label>
+                    <FormControl>
+                      <NumberInput
+                        {...field}
+                        id="ageRating"
+                        placeholder="Years"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                    <FormDescription className="text-ui-400 text-sm">
+                      Age rating in years .
+                    </FormDescription>
+                  </FormItem>
+                )}
+              />
+            </div>
+            <FormField
+              name="isActive"
+              control={addMovieForm.control}
+              render={({ field }) => (
+                <FormItem className="flex-1">
+                  <Label className="text-base">Is Active</Label>
+                  <FormControl>
+                    <p className="text-ui-400 flex flex-row items-center gap-2 text-sm">
+                      <Checkbox
+                        className="data-[state=checked]:bg-brand-500 data-[state=checked]:border-brand-500 data-[state=checked]:text-base-black"
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                      <span>
+                        This Movie is Active and will be displayed on the
+                        website
+                      </span>
+                    </p>
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
             {/* Buttons */}
             <div className="flex flex-row justify-end gap-2 md:items-center md:justify-center">
               <Button

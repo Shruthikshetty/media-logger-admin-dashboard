@@ -60,25 +60,25 @@ export const addMovieSchema = z.object({
   //       error: 'Backdrop url must be string',
   //     })
   //     .optional(),
-  //   isActive: z
-  //     .boolean({
-  //       error: 'Is active must be boolean',
-  //     })
-  //     .optional(),
-  //   status: z
-  //     .string({
-  //       error: 'Status must be string',
-  //     })
-  //     .refine((val) => MEDIA_STATUS.includes(val), {
-  //       error: `Status must be one of the following: ${MEDIA_STATUS.join(', ')}`,
-  //     })
-  //     .optional(),
-  //   ageRating: z.number({
-  //     error: (issue) =>
-  //       issue.input === undefined
-  //         ? 'Age rating is required'
-  //         : 'Age rating must be number',
-  //   }),
+  isActive: z
+    .boolean({
+      error: 'Is active must be boolean',
+    })
+    .optional(),
+  status: z
+    .string({
+      error: 'Status must be string',
+    })
+    .refine((val) => MEDIA_STATUS.includes(val), {
+      error: `Status must be one of the following: ${MEDIA_STATUS.join(', ')}`,
+    })
+    .optional(),
+    ageRating: z.number({
+      error: (issue) =>
+        issue.input === undefined
+          ? 'Age rating is required'
+          : 'Age rating must be number',
+    }),
   //   tags: z.array(
   //     z
   //       .string({ error: 'Tags must be string' })
@@ -120,4 +120,6 @@ export type AddMovieSchemaType = z.infer<typeof addMovieSchema>;
 export const addMovieDefaultValues: Partial<AddMovieSchemaType> = {
   title: '',
   description: '',
+  isActive: true,
+  status: MEDIA_STATUS[0],
 };
