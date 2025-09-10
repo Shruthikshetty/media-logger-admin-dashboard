@@ -2,7 +2,7 @@
  * @file contains all the movies related services
  */
 
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, keepPreviousData } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import {
   FetchAllMoviesStaleTime,
@@ -12,7 +12,6 @@ import { Endpoints } from '~/constants/endpoints.constants';
 import { QueryKeys } from '~/constants/query-key.constants';
 import apiClient from '~/lib/api-client';
 import { ApiError, FilterLimits, Pagination } from '~/types/global.types';
-import { keepPreviousData } from '@tanstack/react-query';
 
 export type MovieStatus = 'released' | 'upcoming';
 
@@ -85,13 +84,14 @@ export const useFetchMovies = ({
     queryKey: [QueryKeys.fetchMovies, limit, page],
     staleTime: FetchAllMoviesStaleTime,
     placeholderData: keepPreviousData,
-    queryFn: () =>
+    queryFn: ({ signal }) =>
       apiClient
         .get<GetAllMoviesResponse>(Endpoints.baseMovie, {
           params: {
             limit,
             page,
           },
+          signal,
         })
         .then((res) => res.data),
   });
