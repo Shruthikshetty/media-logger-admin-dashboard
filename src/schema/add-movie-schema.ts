@@ -2,7 +2,7 @@
  * This file contains the zod schema for the add movies
  */
 
-import z from 'zod';
+import { z } from 'zod';
 import {
   GENRE_MOVIE_TV,
   MEDIA_STATUS,
