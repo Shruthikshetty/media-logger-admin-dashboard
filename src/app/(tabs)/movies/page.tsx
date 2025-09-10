@@ -1,4 +1,5 @@
 'use client';
+import { useQueryClient } from '@tanstack/react-query';
 import {
   getCoreRowModel,
   RowSelectionState,
@@ -6,13 +7,9 @@ import {
 } from '@tanstack/react-table';
 import { Plus, Search, Trash2, Upload } from 'lucide-react';
 import moment from 'moment';
-import React, {
-  useDeferredValue,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import React, { useDeferredValue, useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
+import AddMovieDialog from '~/components/add-movie-dialog';
 import MediaFilters, {
   DateState,
   FiltersState,
@@ -30,8 +27,14 @@ import {
 import { Input } from '~/components/ui/input';
 import { Skeleton } from '~/components/ui/skeleton';
 import { MovieFilterConfig } from '~/constants/config.constants';
+import { QueryKeys } from '~/constants/query-key.constants';
 import useDelayedLoading from '~/hooks/use-delayed-loading';
-import { MovieStatus, useFilterMovies } from '~/services/movies-service';
+import {
+  MovieStatus,
+  useBulkDeleteMovie,
+  useFilterMovies,
+} from '~/services/movies-service';
+import { useSpinnerStore } from '~/state-management/spinner-store';
 import { FilterLimits } from '~/types/global.types';
 
 //filter data type
@@ -62,6 +65,13 @@ const MoviesTab = () => {
   const [filters, setFilters] = useState<FiltersType>(null!);
   // stores row selection state
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+  //get spinner state
+  const setShowSpinner = useSpinnerStore((s) => s.setShowSpinner);
+  // hook used for bulk deletion of movies
+  const { mutateAsync: bulkDeleteMovies, isPending: isBulkDeleting } =
+    useBulkDeleteMovie();
+  // get the query client
+  const queryClient = useQueryClient();
   // memoizes the movies filter query
   const moviesFiltersQuery = useMemo(
     () => ({
@@ -131,8 +141,16 @@ const MoviesTab = () => {
 
   //derived selected row length
   const selectedRowLength = movieTable.getSelectedRowModel().rows?.length ?? 0;
+  const rows = movieTable.getRowModel().rows;
+  // ion case the page is empty and it's not the first page, go back one page
+  useEffect(() => {
+    // This effect runs only when the number of rows or the page changes
+    if (!isLoading && rows.length === 0 && page > 1) {
+      // If the current page is empty and it's not the first page, go back one page.
+      setPage(page - 1);
+    }
+  }, [rows.length, page, isLoading, setPage]);
 
-  //@TODO in progress
   //function to handle deleting selected rows
   const handleBulkDelete = () => {
     //in case no row is selected
@@ -140,7 +158,32 @@ const MoviesTab = () => {
     const getSelectedMovieIds = movieTable
       .getSelectedRowModel()
       .rows.map((row) => row.original._id);
-    console.log(getSelectedMovieIds);
+    // start spinner
+    setShowSpinner(true);
+    //delete the selected movies
+    bulkDeleteMovies(getSelectedMovieIds, {
+      onSuccess: (data) => {
+        toast.success(data.message ?? 'Movies deleted successfully', {
+          classNames: {
+            toast: '!bg-feedback-success',
+          },
+        });
+      },
+      onError: (error) => {
+        toast.error(error.response?.data?.message ?? 'Something went wrong', {
+          classNames: {
+            toast: '!bg-feedback-error',
+          },
+        });
+      },
+      onSettled: () => {
+        setShowSpinner(false);
+        //invalidate filter data
+        queryClient.invalidateQueries({
+          queryKey: [QueryKeys.filterMovies],
+        });
+      },
+    });
   };
 
   return (
@@ -156,13 +199,16 @@ const MoviesTab = () => {
             <Upload className="mr-1 size-4" />
             Import json
           </Button>
-          <Button
-            variant={'outline'}
-            className="from-brand-200 to-brand-600 border-0 bg-gradient-to-r hover:opacity-80"
-          >
-            <Plus className="mr-1 size-4" />
-            Add Movie
-          </Button>
+          <AddMovieDialog>
+            <Button
+              aria-label="add movie"
+              variant={'outline'}
+              className="from-brand-200 to-brand-600 border-0 bg-gradient-to-r hover:opacity-80"
+            >
+              <Plus className="mr-1 size-4" />
+              Add Movie
+            </Button>
+          </AddMovieDialog>
         </div>
       </div>
 
@@ -197,6 +243,7 @@ const MoviesTab = () => {
                   aria-label={`delete selected movies (${selectedRowLength})`}
                   onClick={handleBulkDelete}
                   className="ml-auto"
+                  disabled={isBulkDeleting}
                 >
                   <Trash2 className="size-4" />
                   selected ({selectedRowLength})

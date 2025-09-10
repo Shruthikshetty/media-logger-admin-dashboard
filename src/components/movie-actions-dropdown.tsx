@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import {
   DropdownMenu,
@@ -9,12 +10,23 @@ import {
 } from './ui/dropdown-menu';
 import { Ellipsis, Eye, SquarePen, Trash2 } from 'lucide-react';
 import { cn } from '~/lib/utils';
+import { useDeleteMovie } from '~/services/movies-service';
+import { toast } from 'sonner';
+import { useSpinnerStore } from '~/state-management/spinner-store';
+import { useQueryClient } from '@tanstack/react-query';
+import { QueryKeys } from '~/constants/query-key.constants';
 /**
  * This component is used to display the actions for a movie
  * Mainly used in movie table performs actions like view details , edit , delete
  * @param movieId
  */
 const MovieActionDropdown = ({ movieId }: { movieId: string }) => {
+  // get the query client
+  const queryClient = useQueryClient();
+  // initialize delete movie custom hook
+  const { mutate: deleteMovieMutate } = useDeleteMovie();
+  // get show spinner
+  const toggleSpinner = useSpinnerStore((s) => s.toggleSpinner);
   // movie actions dropdown items
   const movieActionItems = [
     {
@@ -38,7 +50,32 @@ const MovieActionDropdown = ({ movieId }: { movieId: string }) => {
       color: 'text-feedback-error',
       onClick: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         e.stopPropagation();
-        // @TODO open delete movie
+        // start loading
+        toggleSpinner();
+        // make delete movie request
+        deleteMovieMutate(movieId, {
+          onSuccess: () => {
+            toast.success('Movie deleted successfully', {
+              className: '!bg-feedback-success text-base-white',
+            });
+            //invalidate filter data
+            queryClient.invalidateQueries({
+              queryKey: [QueryKeys.filterMovies],
+            });
+          },
+          onError: (error) => {
+            toast.error(
+              error?.response?.data.message ?? 'Something went wrong',
+              {
+                className: '!bg-feedback-error text-base-white',
+              },
+            );
+          },
+          onSettled: () => {
+            // stop loading
+            toggleSpinner();
+          },
+        });
       },
     },
   ];

@@ -2,7 +2,6 @@
 import React, { useCallback, useState } from 'react';
 import BackButton from '~/components/back-button';
 import { Card, CardContent, CardHeader } from '~/components/ui/card';
-import Image from 'next/image';
 import { Button } from '~/components/ui/button';
 import {
   Calendar,
@@ -12,6 +11,7 @@ import {
   PenSquare,
   Play,
   Star,
+  Trash2,
   Users,
   X,
 } from 'lucide-react';
@@ -20,7 +20,6 @@ import CollapsableBadgeList from '~/components/collapsable-badge-list';
 import { Badge } from '~/components/ui/badge';
 import { cn } from '~/lib/utils';
 import { capitalizeFirstLetter } from '~/lib/formatting';
-import CustomImage from '~/components/custom-image';
 import YoutubePlayer from '~/components/youtube-player';
 import { useGetMovieDetails } from '~/services/movies-service';
 import { useParams } from 'next/navigation';
@@ -31,6 +30,8 @@ import {
   LoadingProvider,
 } from '~/components/custom-loaders';
 import moment from 'moment';
+import BackdropCard, { InfoItem } from '~/components/backdrop-card';
+import { AppColors } from '~/constants/colors.constants';
 const MovieDetails = () => {
   // hold the trailer visibility state
   const [trailerVisible, setTrailerVisible] = useState(false);
@@ -56,65 +57,42 @@ const MovieDetails = () => {
       {/* All movie details */}
       <LoadingProvider isLoading={isLoading}>
         <Card className="border-ui-600 text-base-white from-base-black to-ui-900 bg-gradient-to-r pt-0">
-          {/* Back drop area */}
-          <div className="relative h-96 w-full overflow-clip rounded-t-2xl">
-            {data?.data.backdropUrl && (
-              <Image
-                alt={`Backdrop for ${data?.data.title ?? 'movie'}`}
-                fill
-                src={data?.data.backdropUrl}
-                quality={75}
-                sizes="100vw"
-                className="absolute inset-0 object-cover object-center"
-              />
-            )}
-            {/* poster */}
-            <div className="absolute z-10 flex h-full w-full flex-col items-baseline justify-end p-5 md:pl-30">
-              <div className="flex w-full flex-row items-end gap-2">
-                <CustomImage
-                  alt={'poster image'}
-                  src={data?.data.posterUrl}
-                  width={180}
-                  height={300}
-                  maxHeight={300}
-                  maxWidth={200}
-                  className="border-ui-600 rounded-xl border-1 shadow-2xl"
-                />
-                <div className="bg-base-black/80 rounded-xl p-3 pb-10">
-                  {/* Title */}
-                  <LoadingWrapper
-                    fallback={<Skeleton className="mb-5 h-6 w-40" />}
-                  >
-                    <p className="mb-2 text-3xl font-bold">
-                      {data?.data.title}
-                    </p>
-                  </LoadingWrapper>
-                  {/* Additional info */}
-                  <LoadingWrapper
-                    fallback={<ListLoader noOfItems={4} itemClassName="w-10" />}
-                  >
-                    <div className="flex flex-row flex-wrap items-center justify-center gap-4">
-                      <p className="text-md flex flex-row items-center gap-1 font-semibold">
-                        <Star className="text-feedback-warning h-4 w-4" />
-                        {data?.data?.averageRating ?? '???'}
-                      </p>
-                      <p className="text-md flex flex-row items-center gap-1 font-semibold">
-                        <Calendar className="h-4 w-4" />
-                        {moment(data?.data?.releaseDate).format('YYYY/MM/DD')}
-                      </p>
-                      <p className="text-md flex flex-row items-center gap-1 font-semibold">
-                        <Clock className="h-4 w-4" />
-                        {data?.data?.runTime ?? '???'} min
-                      </p>
-                      <Badge className="bg-ui-700 hover:bg-ui-600 rounded-full border-0 px-2">
-                        {data?.data.ageRating}+
-                      </Badge>
-                    </div>
-                  </LoadingWrapper>
-                </div>
-              </div>
-            </div>
-          </div>
+          <BackdropCard
+            title={data?.data?.title ?? ''}
+            backdropSrc={data?.data?.backdropUrl}
+            posterSrc={data?.data?.posterUrl}
+            infoData={
+              [
+                {
+                  label: 'Release Date',
+                  value: moment(data?.data?.releaseDate).format('YYYY/MM/DD'),
+                  Icon: Calendar,
+                },
+                {
+                  label: 'Rating',
+                  value: data?.data?.averageRating?.toString() ?? '???',
+                  Icon: Star,
+                  iconColor: AppColors.feedback.warning,
+                },
+                {
+                  label: 'Runtime',
+                  value: data?.data?.runTime
+                    ? `${data?.data?.runTime} min`
+                    : '???',
+                  Icon: Clock,
+                },
+                {
+                  label: 'age Rating',
+                  value:
+                    data?.data?.ageRating !== undefined
+                      ? `${data?.data?.ageRating}+`
+                      : '???',
+
+                  type: 'badge',
+                },
+              ] as InfoItem[]
+            }
+          />
           {/*  Inner cards  */}
           <CardContent className="grid w-full grid-cols-1 gap-3 px-5 md:grid-cols-10">
             {/* movie information  */}
@@ -124,7 +102,7 @@ const MovieDetails = () => {
                 <Card className="from-brand-600/30 to-base-black border-brand-500/50 bg-gradient-to-r transition">
                   <CardHeader>
                     <div className="text-base-white flex flex-row justify-between gap-5">
-                      <p className="flex flex-row items-center gap-3">
+                      <p className="flex flex-row flex-wrap items-center gap-1 sm:gap-3">
                         <Play className="text-brand-600 h-7 w-7" />
                         <span>
                           {!data?.data?.youtubeVideoId
@@ -149,14 +127,13 @@ const MovieDetails = () => {
                   </CardHeader>
                   {trailerVisible && data?.data?.youtubeVideoId && (
                     <CardContent>
-                      {/* @TODO */}
                       <YoutubePlayer videoId={data?.data?.youtubeVideoId} />
                     </CardContent>
                   )}
                 </Card>
               </CardHeader>
               <CardContent className="flex flex-col gap-3 p-0">
-                <div className="flex flex-row justify-between gap-2">
+                <div className="flex flex-col-reverse justify-between gap-2 sm:flex-row">
                   <LoadingWrapper
                     fallback={
                       <ListLoader noOfItems={2} vertical itemClassName="w-39" />
@@ -173,11 +150,24 @@ const MovieDetails = () => {
                       }}
                     />
                   </LoadingWrapper>
-                  {/* Edit button */}
-                  <Button variant={'blue'} disabled={isLoading}>
-                    <PenSquare />
-                    Edit Movie
-                  </Button>
+                  {/* Edit  and Delete button */}
+                  <div className="flex flex-row gap-2 sm:flex-col sm:gap-3">
+                    <Button
+                      variant={'blue'}
+                      disabled={isLoading}
+                      className="flex-1 sm:flex-none"
+                    >
+                      <PenSquare />
+                      Edit Movie
+                    </Button>
+                    <Button
+                      variant={'red'}
+                      className="text-base-white flex-1 sm:flex-none"
+                    >
+                      <Trash2 />
+                      Delete Movie
+                    </Button>
+                  </div>
                 </div>
                 {/* genre badges */}
                 <div className="flex flex-col gap-2">

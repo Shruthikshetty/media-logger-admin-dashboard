@@ -3,8 +3,8 @@ import React, { useMemo, useState } from 'react';
 import Image from 'next/image';
 import { LucideIcon, Image as LucideImage } from 'lucide-react';
 import { getRandomColor } from '~/lib/color';
+import { cn } from '~/lib/utils';
 
-//@TODO make the image max , min height and width configurable so as to make it reusable in other areas
 /** this is a custom image component
  * its a wrapper on next/image
  * it handles any broken link and replaces it with a default image
@@ -19,6 +19,7 @@ const CustomImage = ({
   maxWidth,
   minHeight,
   minWidth,
+  placeHolderClassname,
   src = '',
   ...restProps
 }: Omit<
@@ -33,6 +34,7 @@ const CustomImage = ({
   width: number;
   height: number;
   src?: string;
+  placeHolderClassname?: string;
 }) => {
   // hold the error state
   const [error, setError] = useState(false);
@@ -53,10 +55,13 @@ const CustomImage = ({
   if (!src || error)
     return (
       <div
-        className="bg-ui-600 flex h-full w-full flex-col items-center justify-center rounded-lg p-2"
+        className={cn(
+          'bg-ui-600 flex h-full w-full flex-col items-center justify-center rounded-lg p-2',
+          placeHolderClassname,
+        )}
         style={heightWidthStyle}
       >
-        <Icon className="h-full w-full" />
+        <Icon className="h-full w-full" data-slot="icon" />
       </div>
     );
   // render the image

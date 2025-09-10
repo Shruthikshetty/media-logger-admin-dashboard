@@ -2,7 +2,7 @@
  * @file contains all the movies related services
  */
 
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, keepPreviousData } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import {
   FetchAllMoviesStaleTime,
@@ -12,7 +12,6 @@ import { Endpoints } from '~/constants/endpoints.constants';
 import { QueryKeys } from '~/constants/query-key.constants';
 import apiClient from '~/lib/api-client';
 import { ApiError, FilterLimits, Pagination } from '~/types/global.types';
-import { keepPreviousData } from '@tanstack/react-query';
 
 export type MovieStatus = 'released' | 'upcoming';
 
@@ -65,6 +64,14 @@ type MoviesFilterRequest = {
   limit?: number;
 };
 
+type BulkDeleteMoviesResponse = {
+  success: boolean;
+  message: string;
+  data: {
+    deletedCount: number;
+  };
+};
+
 //get all the movies from the api with pagination
 export const useFetchMovies = ({
   limit = 20,
@@ -77,13 +84,14 @@ export const useFetchMovies = ({
     queryKey: [QueryKeys.fetchMovies, limit, page],
     staleTime: FetchAllMoviesStaleTime,
     placeholderData: keepPreviousData,
-    queryFn: () =>
+    queryFn: ({ signal }) =>
       apiClient
-        .get<GetAllMoviesResponse>(Endpoints.fetchMovies, {
+        .get<GetAllMoviesResponse>(Endpoints.baseMovie, {
           params: {
             limit,
             page,
           },
+          signal,
         })
         .then((res) => res.data),
   });
@@ -124,8 +132,34 @@ export const useGetMovieDetails = (movieId: string) => {
     enabled: Boolean(movieId),
     queryFn: ({ signal }) =>
       apiClient
-        .get<GetMovieDetailsResponse>(Endpoints.fetchMovies + `/${movieId}`, {
+        .get<GetMovieDetailsResponse>(Endpoints.baseMovie + `/${movieId}`, {
           signal,
+        })
+        .then((res) => res.data),
+  });
+};
+
+//delete movie by id
+export const useDeleteMovie = () => {
+  return useMutation<GetMovieDetailsResponse, AxiosError<ApiError>, string>({
+    mutationKey: [QueryKeys.deleteMovie],
+    mutationFn: (movieId: string) =>
+      apiClient
+        .delete<GetMovieDetailsResponse>(Endpoints.baseMovie + `/${movieId}`)
+        .then((res) => res.data),
+  });
+};
+
+//bulk movies deletion
+export const useBulkDeleteMovie = () => {
+  return useMutation<BulkDeleteMoviesResponse, AxiosError<ApiError>, string[]>({
+    mutationKey: [QueryKeys.bulkDeleteMovies],
+    mutationFn: (movieIds: string[]) =>
+      apiClient
+        .delete<BulkDeleteMoviesResponse>(Endpoints.moviesBulk, {
+          data: {
+            movieIds,
+          },
         })
         .then((res) => res.data),
   });

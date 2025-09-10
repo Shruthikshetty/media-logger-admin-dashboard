@@ -1,3 +1,4 @@
+"use client";
 import React, { useDeferredValue } from 'react';
 import type { RangeConfig, RangeState } from './media-filters';
 import { Popover, PopoverTrigger, PopoverContent } from './ui/popover';

@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import React, { useState } from 'react';
 import {
   DropdownMenuGroup,
@@ -12,6 +12,7 @@ import {
 import { Button } from './ui/button';
 import { LucideIcon, X } from 'lucide-react';
 import scrollBarStyles from '../css-modules/scrollbar.module.css';
+import { cn } from '~/lib/utils';
 
 type DropdownFilterProps = {
   options: string[];
@@ -19,11 +20,19 @@ type DropdownFilterProps = {
   multiselect: boolean;
   setSelected: (selected: string[] | string) => void;
   label: string;
+  dropDownLabel?: string;
   Icon?: LucideIcon;
+  RightButtonComponent?: React.ReactNode;
+  customStyle?: {
+    triggerButton?: string;
+    scrollBar?: string;
+    dropdownContent?: string;
+  };
 };
 
 /**
  * This component is used in Media filter
+ * if requiring to use in other places than Media filter then refer MultiSelectWithBadge component
  * provides a dropdown with provided options
  */
 const DropdownFilter = ({
@@ -32,7 +41,10 @@ const DropdownFilter = ({
   multiselect,
   setSelected,
   label,
+  dropDownLabel,
   Icon,
+  customStyle,
+  RightButtonComponent,
 }: DropdownFilterProps) => {
   //state to store open state of the dropdown
   const [open, setOpen] = useState(false);
@@ -58,21 +70,32 @@ const DropdownFilter = ({
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
-        <Button variant={'outline'} type="button" className="border-ui-600">
+        <Button
+          variant={'outline'}
+          type="button"
+          className={cn('border-ui-600', customStyle?.triggerButton)}
+        >
           {Icon && <Icon className="mr-2 h-4 w-4" />}
           {label}
+          {RightButtonComponent}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        className="bg-base-black border-ui-600 text-base-white z-60 my-2 rounded-lg border p-1 pb-1"
+        className={cn(
+          'bg-base-black border-ui-600 text-base-white z-60 my-2 rounded-lg border p-1 pb-1',
+          customStyle?.dropdownContent,
+        )}
         align="center"
       >
         <DropdownMenuLabel className="text-md font-semibold">
-          {label}
+          {dropDownLabel ?? label}
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup
-          className={scrollBarStyles.scrollContainerFilterDropdown}
+          className={
+            customStyle?.scrollBar ??
+            scrollBarStyles.scrollContainerFilterDropdown
+          }
         >
           {options.map((option) => (
             <DropdownMenuItem

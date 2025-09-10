@@ -11,4 +11,6 @@ export const QueryKeys = {
   fetchMovies: 'fetch-movies',
   filterMovies: 'filter-movies',
   movieDetails: 'movie-details',
+  deleteMovie: 'delete-movie',
+  bulkDeleteMovies: 'bulk-delete-movies',
 };
