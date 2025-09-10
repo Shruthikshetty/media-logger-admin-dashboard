@@ -47,9 +47,9 @@ export const addMovieSchema = z.object({
           : 'Run time must be number',
     })
     .positive('Run time must be positive'),
-  //   languages: z.array(z.string({ error: 'Languages must be string' }), {
-  //     error: 'Languages must be an array of strings',
-  //   }),
+  languages: z.array(z.string({ error: 'Languages must be string' }), {
+    error: 'Languages must be an array of strings',
+  }),
   posterUrl: z
     .string({
       error: 'Poster url must be string',
@@ -79,16 +79,16 @@ export const addMovieSchema = z.object({
         ? 'Age rating is required'
         : 'Age rating must be number',
   }),
-  //   tags: z.array(
-  //     z
-  //       .string({ error: 'Tags must be string' })
-  //       .refine((val) => TAGS.includes(val), {
-  //         error: `Tags must be one of the following: ${TAGS.join(', ')}`,
-  //       }),
-  //     {
-  //       error: 'Tags must be an array of strings',
-  //     },
-  //   ),
+  tags: z.array(
+    z
+      .string({ error: 'Tags must be string' })
+      .refine((val) => TAGS.includes(val), {
+        error: `Tags must be one of the following: ${TAGS.join(', ')}`,
+      }),
+    {
+      error: 'Tags must be an array of strings',
+    },
+  ),
   youtubeVideoId: z
     .string({
       error: 'Youtube video id must be string',
@@ -100,18 +100,18 @@ export const addMovieSchema = z.object({
   //         ? 'Release date is required'
   //         : 'Release date must be date',
   //   }),
-  //   genre: z.array(
-  //     z
-  //       .string({ error: 'Genre must be string' })
-  //       .refine((val) => GENRE_MOVIE_TV.includes(val), {
-  //         error: `Genre must be one of the following: ${GENRE_MOVIE_TV.join(
-  //           ', ',
-  //         )}`,
-  //       }),
-  //     {
-  //       error: 'Genre must be an array of strings',
-  //     },
-  //   ),
+  genre: z.array(
+    z
+      .string({ error: 'Genre must be string' })
+      .refine((val) => GENRE_MOVIE_TV.includes(val), {
+        error: `Genre must be one of the following: ${GENRE_MOVIE_TV.join(
+          ', ',
+        )}`,
+      }),
+    {
+      error: 'Genre must be an array of strings',
+    },
+  ),
 });
 
 //export type

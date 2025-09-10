@@ -30,10 +30,16 @@ import { Button } from './ui/button';
 import { Plus } from 'lucide-react';
 import NumberInput from './number-input';
 import CustomSelect from './custom-select';
-import { MEDIA_STATUS } from '~/constants/config.constants';
+import {
+  GENRE_MOVIE_TV,
+  LANGUAGES,
+  MEDIA_STATUS,
+  TAGS,
+} from '~/constants/config.constants';
 import { Checkbox } from './ui/checkbox';
 import { ScrollArea } from './ui/scroll-area';
 import ListInput from './list-input';
+import MultiSelect from './multi-select';
 
 /**
  * This is a form to Add a new movie
@@ -329,6 +335,62 @@ const AddMovieDialog = ({ children }: { children: React.ReactNode }) => {
                   )}
                 />
               </div>
+              <div className="flex flex-col gap-4 md:flex-row md:items-baseline">
+                <FormField
+                  name="languages"
+                  control={addMovieForm.control}
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <Label className="text-base">Language&apos;s</Label>
+                      <FormControl>
+                        <MultiSelect
+                          {...field}
+                          options={LANGUAGES}
+                          placeHolder="Select required language's"
+                          dropDownLabel="Select language's"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  name="genre"
+                  control={addMovieForm.control}
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <Label className="text-base">Genre&apos;s</Label>
+                      <FormControl>
+                        <MultiSelect
+                          {...field}
+                          options={GENRE_MOVIE_TV}
+                          placeHolder="Select required genre's"
+                          dropDownLabel="Select genre's"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <FormField
+                name="tags"
+                control={addMovieForm.control}
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <Label className="text-base">Tag&apos;s</Label>
+                    <FormControl>
+                      <MultiSelect
+                        {...field}
+                        options={TAGS}
+                        placeHolder="Select required tag's"
+                        dropDownLabel="Select tag's"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               {/* Checkbox for is active */}
               <FormField
                 name="isActive"

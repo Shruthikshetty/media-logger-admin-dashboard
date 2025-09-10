@@ -8,3 +8,10 @@
   scrollbar-width: thin;
   scrollbar-color: #6366f1 transparent;
 }
+
+.scrollContainerNormalDropdown {
+  max-height: 25rem;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #4b5563 transparent;
+}
