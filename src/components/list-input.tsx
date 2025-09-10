@@ -61,7 +61,7 @@ const ListInput = ({
         </Button>
       </div>
       {children && <div>{children}</div>}
-      <div data-slot="list" className="grid-clos1 grid gap-1">
+      <div data-slot="list" className="grid grid-cols-1 gap-1">
         {value.map((item, index) => (
           <div
             key={index}

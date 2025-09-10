@@ -65,7 +65,7 @@ export const movieColumns: ColumnDef<
           className="data-[state=checked]:bg-base-white data-[state=checked]:text-base-black"
           checked={props.row.getIsSelected()}
           aria-label="select row"
-          onCheckedChange={(e) => {
+          onCheckedChange={() => {
             props.row.toggleSelected();
           }}
         />

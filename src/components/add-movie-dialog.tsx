@@ -210,7 +210,7 @@ const AddMovieDialog = ({ children }: { children: React.ReactNode }) => {
                       </FormControl>
                       <FormMessage />
                       <FormDescription className="text-ui-400 text-sm">
-                        Age rating in years .
+                        Age rating in years
                       </FormDescription>
                     </FormItem>
                   )}
@@ -298,7 +298,7 @@ const AddMovieDialog = ({ children }: { children: React.ReactNode }) => {
                   render={({ field }) => (
                     <FormItem className="flex-1">
                       <Label htmlFor="cast" className="text-base">
-                        Cast&apos;s
+                        Cast Members
                       </Label>
                       <FormControl>
                         <ListInput {...field} id="cast" placeholder="Cast name">
@@ -317,7 +317,7 @@ const AddMovieDialog = ({ children }: { children: React.ReactNode }) => {
                   render={({ field }) => (
                     <FormItem className="flex-1">
                       <Label htmlFor="directors" className="text-base">
-                        Director&apos;s
+                        Directors
                       </Label>
                       <FormControl>
                         <ListInput
@@ -341,13 +341,13 @@ const AddMovieDialog = ({ children }: { children: React.ReactNode }) => {
                   control={addMovieForm.control}
                   render={({ field }) => (
                     <FormItem className="flex-1">
-                      <Label className="text-base">Language&apos;s</Label>
+                      <Label className="text-base">Languages</Label>
                       <FormControl>
                         <MultiSelect
                           {...field}
                           options={LANGUAGES}
-                          placeHolder="Select required language's"
-                          dropDownLabel="Select language's"
+                          placeHolder="Select required languages"
+                          dropDownLabel="Select languages"
                         />
                       </FormControl>
                       <FormMessage />
@@ -359,13 +359,13 @@ const AddMovieDialog = ({ children }: { children: React.ReactNode }) => {
                   control={addMovieForm.control}
                   render={({ field }) => (
                     <FormItem className="flex-1">
-                      <Label className="text-base">Genre&apos;s</Label>
+                      <Label className="text-base">Genres</Label>
                       <FormControl>
                         <MultiSelect
                           {...field}
                           options={GENRE_MOVIE_TV}
-                          placeHolder="Select required genre's"
-                          dropDownLabel="Select genre's"
+                          placeHolder="Select required genres"
+                          dropDownLabel="Select genres"
                         />
                       </FormControl>
                       <FormMessage />
@@ -378,13 +378,13 @@ const AddMovieDialog = ({ children }: { children: React.ReactNode }) => {
                 control={addMovieForm.control}
                 render={({ field }) => (
                   <FormItem className="flex-1">
-                    <Label className="text-base">Tag&apos;s</Label>
+                    <Label className="text-base">Tags</Label>
                     <FormControl>
                       <MultiSelect
                         {...field}
                         options={TAGS}
-                        placeHolder="Select required tag's"
-                        dropDownLabel="Select tag's"
+                        placeHolder="Select required tags"
+                        dropDownLabel="Select tags"
                       />
                     </FormControl>
                     <FormMessage />

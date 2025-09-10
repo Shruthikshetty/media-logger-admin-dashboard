@@ -66,9 +66,10 @@ const MoviesTab = () => {
   // stores row selection state
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   //get spinner state
-  const toggleSpinner = useSpinnerStore((s) => s.toggleSpinner);
+  const setShowSpinner = useSpinnerStore((s) => s.setShowSpinner);
   // hook used for bulk deletion of movies
-  const { mutateAsync: bulkDeleteMovies } = useBulkDeleteMovie();
+  const { mutateAsync: bulkDeleteMovies, isPending: isBulkDeleting } =
+    useBulkDeleteMovie();
   // get the query client
   const queryClient = useQueryClient();
   // memoizes the movies filter query
@@ -158,7 +159,7 @@ const MoviesTab = () => {
       .getSelectedRowModel()
       .rows.map((row) => row.original._id);
     // start spinner
-    toggleSpinner();
+    setShowSpinner(true);
     //delete the selected movies
     bulkDeleteMovies(getSelectedMovieIds, {
       onSuccess: (data) => {
@@ -176,7 +177,7 @@ const MoviesTab = () => {
         });
       },
       onSettled: () => {
-        toggleSpinner();
+        setShowSpinner(false);
         //invalidate filter data
         queryClient.invalidateQueries({
           queryKey: [QueryKeys.filterMovies],
@@ -242,6 +243,7 @@ const MoviesTab = () => {
                   aria-label={`delete selected movies (${selectedRowLength})`}
                   onClick={handleBulkDelete}
                   className="ml-auto"
+                  disabled={isBulkDeleting}
                 >
                   <Trash2 className="size-4" />
                   selected ({selectedRowLength})
