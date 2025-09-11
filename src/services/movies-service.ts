@@ -35,6 +35,25 @@ export interface Movie {
   youtubeVideoId?: string;
 }
 
+type AddMovieRequest = {
+  title: string;
+  description: string;
+  averageRating?: number;
+  genre?: string[];
+  releaseDate: string;
+  cast?: string[];
+  directors?: string[];
+  runTime: number;
+  languages: string[];
+  posterUrl?: string;
+  backdropUrl?: string;
+  isActive?: boolean;
+  status?: string;
+  tags?: string[];
+  ageRating?: number;
+  youtubeVideoId?: string;
+};
+
 type GetAllMoviesResponse = {
   success: boolean;
   data: {
@@ -162,5 +181,17 @@ export const useBulkDeleteMovie = () => {
           },
         })
         .then((res) => res.data),
+  });
+};
+
+export const useAddMovie = () => {
+  return useMutation<
+    GetMovieDetailsResponse,
+    AxiosError<ApiError>,
+    AddMovieRequest
+  >({
+    mutationKey: [QueryKeys.addMovie],
+    mutationFn: (movie: AddMovieRequest) =>
+      apiClient.post(Endpoints.baseMovie, movie).then((res) => res.data),
   });
 };

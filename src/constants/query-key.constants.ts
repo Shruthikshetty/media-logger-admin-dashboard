@@ -13,4 +13,5 @@ export const QueryKeys = {
   movieDetails: 'movie-details',
   deleteMovie: 'delete-movie',
   bulkDeleteMovies: 'bulk-delete-movies',
+  addMovie: 'add-movie',
 };

@@ -42,6 +42,9 @@ import ListInput from './list-input';
 import MultiSelect from './multi-select';
 import CustomAlert from './custom-alert';
 import CalenderInput from './calender-input';
+import { useAddMovie } from '~/services/movies-service';
+import { toast } from 'sonner';
+import { useSpinnerStore } from '~/state-management/spinner-store';
 
 /**
  * This is a form to Add a new movie
@@ -50,6 +53,10 @@ import CalenderInput from './calender-input';
 const AddMovieDialog = ({ children }: { children: React.ReactNode }) => {
   //open and close state for dialog
   const [open, setOpen] = useState(false);
+  // get spinner state from the store
+  const setSpinner = useSpinnerStore((state) => state.setShowSpinner);
+  // initialize custom add movie hook
+  const { mutate } = useAddMovie();
   //create add movie form
   const addMovieForm = useForm<AddMovieSchemaType>({
     mode: 'onChange',
@@ -59,8 +66,35 @@ const AddMovieDialog = ({ children }: { children: React.ReactNode }) => {
 
   // handle Form submit
   const onSubmit = (data: AddMovieSchemaType) => {
-    //@TODO
-    console.log(data);
+    setSpinner(true);
+    mutate(
+      {
+        ...data,
+        releaseDate: data.releaseDate?.toISOString(), //convert date to string
+      },
+      {
+        onSuccess: () => {
+          addMovieForm.reset(addMovieDefaultValues);
+          setOpen(false);
+          // @TODO invalidate filter data
+          toast.success('Movie added successfully', {
+            classNames: {
+              toast: '!bg-feedback-success',
+            },
+          });
+        },
+        onError: (error) => {
+          toast.error(error?.response?.data.message ?? 'Something went wrong', {
+            classNames: {
+              toast: '!bg-feedback-error',
+            },
+          });
+        },
+        onSettled: () => {
+          setSpinner(false);
+        },
+      },
+    );
   };
 
   return (
