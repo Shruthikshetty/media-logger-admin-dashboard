@@ -1,5 +1,6 @@
 /**
  * This file contains the zod schema for the add movies
+ * same can be used for update movies as well
  */
 
 import { z } from 'zod';
@@ -21,7 +22,7 @@ export const addMovieSchema = z.object({
       error: 'Description must be string',
     })
     .min(1, 'Description is required')
-    .max(300, 'Description should be at most 300 characters long'),
+    .max(1000, 'Description should be at most 1000 characters long'),
 
   averageRating: z
     .number({

@@ -31,7 +31,7 @@ export interface Movie {
   isActive: boolean;
   status: string;
   tags?: string[];
-  ageRating?: number;
+  ageRating: number;
   youtubeVideoId?: string;
 }
 
@@ -54,19 +54,9 @@ type AddMovieRequest = {
   youtubeVideoId?: string;
 };
 
-type GetAllMoviesResponse = {
-  success: boolean;
-  data: {
-    movies: Movie[];
-    pagination: Pagination;
-  };
-  message?: string;
-};
-
-type GetMovieDetailsResponse = {
-  success: boolean;
-  data: Movie;
-  message?: string;
+export type UpdateMovieRequest = {
+  movie: Partial<AddMovieRequest>;
+  movieId: string;
 };
 
 type MoviesFilterRequest = {
@@ -81,6 +71,21 @@ type MoviesFilterRequest = {
   averageRating?: number;
   page?: number;
   limit?: number;
+};
+
+type GetAllMoviesResponse = {
+  success: boolean;
+  data: {
+    movies: Movie[];
+    pagination: Pagination;
+  };
+  message?: string;
+};
+
+type GetMovieDetailsResponse = {
+  success: boolean;
+  data: Movie;
+  message?: string;
 };
 
 type BulkDeleteMoviesResponse = {
@@ -184,6 +189,7 @@ export const useBulkDeleteMovie = () => {
   });
 };
 
+// custom hook to add a new movie
 export const useAddMovie = () => {
   return useMutation<
     GetMovieDetailsResponse,
@@ -193,5 +199,20 @@ export const useAddMovie = () => {
     mutationKey: [QueryKeys.addMovie],
     mutationFn: (movie: AddMovieRequest) =>
       apiClient.post(Endpoints.baseMovie, movie).then((res) => res.data),
+  });
+};
+
+// custom hook to update a existing movie
+export const useUpdateMovie = () => {
+  return useMutation<
+    GetMovieDetailsResponse,
+    AxiosError<ApiError>,
+    UpdateMovieRequest
+  >({
+    mutationKey: [QueryKeys.updateMovie],
+    mutationFn: ({ movie, movieId }: UpdateMovieRequest) =>
+      apiClient
+        .patch(Endpoints.baseMovie + `/${movieId}`, movie)
+        .then((res) => res.data),
   });
 };
