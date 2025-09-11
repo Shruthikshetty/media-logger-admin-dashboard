@@ -29,12 +29,14 @@ export const metadata: Metadata = {
     'games',
   ],
   authors: [{ name: 'shruthik shetty' }],
+  // prevent search engines from indexing the page
   robots: {
-    index: true,
-    follow: true,
+    index: false,
+    follow: false,
     googleBot: {
-      index: true,
-      follow: true,
+      index: false,
+      follow: false,
+      noimageindex: true,
     },
   },
 };

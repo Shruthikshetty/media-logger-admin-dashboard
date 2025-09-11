@@ -1,15 +1,14 @@
 'use client';
 import React, { useState } from 'react';
 import { Calendar } from './ui/calendar';
-import { Popover } from '@radix-ui/react-popover';
-import { PopoverContent, PopoverTrigger } from './ui/popover';
+import { PopoverContent, PopoverTrigger, Popover } from './ui/popover';
 import { Button } from './ui/button';
 import moment from 'moment';
 import { ChevronDown } from 'lucide-react';
 
 type CalenderInputProps = {
   value: Date | undefined;
-  onChange: React.Dispatch<React.SetStateAction<Date | undefined>>;
+  onChange: (value: Date | undefined) => void;
   showChevron?: boolean;
 };
 
@@ -17,7 +16,7 @@ type CalenderInputProps = {
  * CalenderInput is a component that provides a input with a calendar dropdown.
  * It's mainly used in forms to select a date.
  * @param {Date | undefined} value The current value of the input.
- * @param {React.Dispatch<React.SetStateAction<Date | undefined>>} onChange setter to change the date.
+ * @param {(value: Date | undefined) => void} onChange Change handler to update the date.
  * @returns {JSX.Element}
  */
 const CalenderInput = ({
@@ -35,7 +34,7 @@ const CalenderInput = ({
           variant={'outline'}
           className="text-ui-400 h-11 justify-between text-base font-normal"
         >
-          {value ? moment(value).format('DD MMM yyyy') : 'dd-mm-yyyy'}
+          {value ? moment(value).format('DD MMM YYYY') : 'dd-mm-yyyy'}
           {showChevron && <ChevronDown className="size-5" />}
         </Button>
       </PopoverTrigger>

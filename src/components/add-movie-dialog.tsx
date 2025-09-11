@@ -38,7 +38,7 @@ const AddMovieDialog = ({ children }: { children: React.ReactNode }) => {
   // get the query client
   const queryClient = useQueryClient();
   // initialize custom add movie hook
-  const { mutate } = useAddMovie();
+  const { mutate, isPending } = useAddMovie();
   //create add movie form
   const addMovieForm = useForm<AddMovieSchemaType>({
     mode: 'onChange',
@@ -99,13 +99,25 @@ const AddMovieDialog = ({ children }: { children: React.ReactNode }) => {
               <CustomAlert
                 onConfirm={() => addMovieForm.reset()}
                 title={'Are you sure?'}
-                description="This will reset the form , All data entered will be lost."
+                description="This will reset the form. All entered data will be lost."
               >
-                <Button variant={'red'} type="button" className="md:min-w-50">
+                <Button
+                  variant={'red'}
+                  type="button"
+                  className="md:min-w-50"
+                  disabled={isPending}
+                  aria-disabled={isPending}
+                >
                   Reset
                 </Button>
               </CustomAlert>
-              <Button type="submit" variant={'blue'} className="md:min-w-50">
+              <Button
+                type="submit"
+                variant={'blue'}
+                className="md:min-w-50"
+                disabled={isPending}
+                aria-disabled={isPending}
+              >
                 Add Movie <Plus strokeWidth={3} />
               </Button>
             </div>

@@ -70,13 +70,15 @@ const ListInput = ({
             <p className="truncate">
               {index + 1}. {item}
             </p>
-            <X
+            <button
+              type="button"
               aria-label="remove item"
-              className="text-ui-400 hover:text-base-white h-5 w-5"
               onClick={() => {
                 onChange(value.filter((_, i) => i !== index));
               }}
-            />
+            >
+              <X className="text-ui-400 hover:text-base-white h-5 w-5" />
+            </button>
           </div>
         ))}
       </div>

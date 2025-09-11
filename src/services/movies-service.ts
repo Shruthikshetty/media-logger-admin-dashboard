@@ -50,7 +50,7 @@ type AddMovieRequest = {
   isActive?: boolean;
   status?: string;
   tags?: string[];
-  ageRating?: number;
+  ageRating: number;
   youtubeVideoId?: string;
 };
 
