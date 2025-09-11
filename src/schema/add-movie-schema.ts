@@ -31,13 +31,17 @@ export const addMovieSchema = z.object({
     .max(10, 'Average rating can be at most 10')
     .optional(),
 
-  cast: z.array(z.string({ error: 'Cast must be string' }), {
-    error: 'Cast must be an array of strings',
-  }),
+  cast: z
+    .array(z.string({ error: 'Cast must be string' }), {
+      error: 'Cast must be an array of strings',
+    })
+    .optional(),
 
-  directors: z.array(z.string({ error: 'Directors must be string' }), {
-    error: 'Directors must be an array of strings',
-  }),
+  directors: z
+    .array(z.string({ error: 'Directors must be string' }), {
+      error: 'Directors must be an array of strings',
+    })
+    .optional(),
 
   runTime: z
     .number({
@@ -79,16 +83,18 @@ export const addMovieSchema = z.object({
         ? 'Age rating is required'
         : 'Age rating must be number',
   }),
-  tags: z.array(
-    z
-      .string({ error: 'Tags must be string' })
-      .refine((val) => TAGS.includes(val), {
-        error: `Tags must be one of the following: ${TAGS.join(', ')}`,
-      }),
-    {
-      error: 'Tags must be an array of strings',
-    },
-  ),
+  tags: z
+    .array(
+      z
+        .string({ error: 'Tags must be string' })
+        .refine((val) => TAGS.includes(val), {
+          error: `Tags must be one of the following: ${TAGS.join(', ')}`,
+        }),
+      {
+        error: 'Tags must be an array of strings',
+      },
+    )
+    .optional(),
   youtubeVideoId: z
     .string({
       error: 'Youtube video id must be string',
@@ -100,18 +106,20 @@ export const addMovieSchema = z.object({
         ? 'Release date is required'
         : 'Release date must be date',
   }),
-  genre: z.array(
-    z
-      .string({ error: 'Genre must be string' })
-      .refine((val) => GENRE_MOVIE_TV.includes(val), {
-        error: `Genre must be one of the following: ${GENRE_MOVIE_TV.join(
-          ', ',
-        )}`,
-      }),
-    {
-      error: 'Genre must be an array of strings',
-    },
-  ),
+  genre: z
+    .array(
+      z
+        .string({ error: 'Genre must be string' })
+        .refine((val) => GENRE_MOVIE_TV.includes(val), {
+          error: `Genre must be one of the following: ${GENRE_MOVIE_TV.join(
+            ', ',
+          )}`,
+        }),
+      {
+        error: 'Genre must be an array of strings',
+      },
+    )
+    .optional(),
 });
 
 //export type
