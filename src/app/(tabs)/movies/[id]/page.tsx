@@ -21,8 +21,8 @@ import { Badge } from '~/components/ui/badge';
 import { cn } from '~/lib/utils';
 import { capitalizeFirstLetter } from '~/lib/formatting';
 import YoutubePlayer from '~/components/youtube-player';
-import { useGetMovieDetails } from '~/services/movies-service';
-import { useParams } from 'next/navigation';
+import { useDeleteMovie, useGetMovieDetails } from '~/services/movies-service';
+import { useParams, useRouter } from 'next/navigation';
 import { Skeleton } from '~/components/ui/skeleton';
 import {
   LoadingWrapper,
@@ -32,14 +32,30 @@ import {
 import moment from 'moment';
 import BackdropCard, { InfoItem } from '~/components/backdrop-card';
 import { AppColors } from '~/constants/colors.constants';
+import { useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
+import { QueryKeys } from '~/constants/query-key.constants';
+import { useSpinnerStore } from '~/state-management/spinner-store';
+import EditMovieDialog from '~/components/edit-movie-dialog';
 const MovieDetails = () => {
   // hold the trailer visibility state
   const [trailerVisible, setTrailerVisible] = useState(false);
   //get the movie id from params
   const movieId = (useParams()?.id as string) ?? '';
   //fetch the movie details
-  const { data, isLoading } = useGetMovieDetails(movieId);
-
+  const {
+    data,
+    isLoading,
+    refetch: refetchMovieDetails,
+  } = useGetMovieDetails(movieId);
+  // initialize delete movie custom hook
+  const { mutate: deleteMovieMutate } = useDeleteMovie();
+  // get the query client
+  const queryClient = useQueryClient();
+  //initialize router
+  const router = useRouter();
+  // get show spinner
+  const setSpinner = useSpinnerStore((s) => s.setShowSpinner);
   // returns the styled title with icon
   const renderMovieInfoTitle = useCallback(
     (title: string, Icon?: LucideIcon) => (
@@ -50,6 +66,34 @@ const MovieDetails = () => {
     ),
     [],
   );
+  //handle delete movie
+  const handleDelete = () => {
+    // start loading
+    setSpinner(true);
+    // make delete movie request
+    deleteMovieMutate(movieId, {
+      onSuccess: () => {
+        toast.success('Movie deleted successfully', {
+          className: '!bg-feedback-success text-base-white',
+        });
+        //invalidate filter data
+        queryClient.invalidateQueries({
+          queryKey: [QueryKeys.filterMovies],
+        });
+        //navigate back
+        router.back();
+      },
+      onError: (error) => {
+        toast.error(error?.response?.data.message ?? 'Something went wrong', {
+          className: '!bg-feedback-error text-base-white',
+        });
+      },
+      onSettled: () => {
+        // stop loading
+        setSpinner(false);
+      },
+    });
+  };
 
   return (
     <div className="flex h-full w-full flex-col gap-5 p-5">
@@ -152,17 +196,28 @@ const MovieDetails = () => {
                   </LoadingWrapper>
                   {/* Edit  and Delete button */}
                   <div className="flex flex-row gap-2 sm:flex-col sm:gap-3">
-                    <Button
-                      variant={'blue'}
-                      disabled={isLoading}
-                      className="flex-1 sm:flex-none"
+                    <EditMovieDialog
+                      existingData={data?.data}
+                      onSuccess={refetchMovieDetails}
                     >
-                      <PenSquare />
-                      Edit Movie
-                    </Button>
+                      <Button
+                        variant={'blue'}
+                        disabled={isLoading}
+                        className="flex-1 sm:flex-none"
+                        type="button"
+                        aria-label="Edit Movie"
+                      >
+                        <PenSquare />
+                        Edit Movie
+                      </Button>
+                    </EditMovieDialog>
                     <Button
                       variant={'red'}
                       className="text-base-white flex-1 sm:flex-none"
+                      type="button"
+                      aria-label="Delete Movie"
+                      onClick={handleDelete}
+                      disabled={isLoading}
                     >
                       <Trash2 />
                       Delete Movie

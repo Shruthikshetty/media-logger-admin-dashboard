@@ -19,6 +19,26 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: 'Media Logger Admin Dashboard',
   description: 'Media Logger Admin Dashboard',
+  keywords: [
+    'media',
+    'logger',
+    'admin',
+    'dashboard',
+    'movies',
+    'tv shows',
+    'games',
+  ],
+  authors: [{ name: 'shruthik shetty' }],
+  // prevent search engines from indexing the page
+  robots: {
+    index: false,
+    follow: false,
+    googleBot: {
+      index: false,
+      follow: false,
+      noimageindex: true,
+    },
+  },
 };
 
 export default function RootLayout({

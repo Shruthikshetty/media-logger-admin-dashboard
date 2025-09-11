@@ -54,7 +54,7 @@ export const LoadingContext = createContext<
  * It also has a fallback loader to display while content is loading.
  */
 export const LoadingProvider = ({
-  defaultFallback = <Skeleton className="h-7 w-30 rounded-md my-1" />,
+  defaultFallback = <Skeleton className="my-1 h-7 w-30 rounded-md" />,
   isLoading,
   children,
 }: {

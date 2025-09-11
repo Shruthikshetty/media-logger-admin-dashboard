@@ -31,23 +31,32 @@ export interface Movie {
   isActive: boolean;
   status: string;
   tags?: string[];
-  ageRating?: number;
+  ageRating: number;
   youtubeVideoId?: string;
 }
 
-type GetAllMoviesResponse = {
-  success: boolean;
-  data: {
-    movies: Movie[];
-    pagination: Pagination;
-  };
-  message?: string;
+type AddMovieRequest = {
+  title: string;
+  description: string;
+  averageRating?: number;
+  genre?: string[];
+  releaseDate: string;
+  cast?: string[];
+  directors?: string[];
+  runTime: number;
+  languages: string[];
+  posterUrl?: string;
+  backdropUrl?: string;
+  isActive?: boolean;
+  status?: string;
+  tags?: string[];
+  ageRating: number;
+  youtubeVideoId?: string;
 };
 
-type GetMovieDetailsResponse = {
-  success: boolean;
-  data: Movie;
-  message?: string;
+export type UpdateMovieRequest = {
+  movie: Partial<AddMovieRequest>;
+  movieId: string;
 };
 
 type MoviesFilterRequest = {
@@ -62,6 +71,21 @@ type MoviesFilterRequest = {
   averageRating?: number;
   page?: number;
   limit?: number;
+};
+
+type GetAllMoviesResponse = {
+  success: boolean;
+  data: {
+    movies: Movie[];
+    pagination: Pagination;
+  };
+  message?: string;
+};
+
+type GetMovieDetailsResponse = {
+  success: boolean;
+  data: Movie;
+  message?: string;
 };
 
 type BulkDeleteMoviesResponse = {
@@ -161,6 +185,34 @@ export const useBulkDeleteMovie = () => {
             movieIds,
           },
         })
+        .then((res) => res.data),
+  });
+};
+
+// custom hook to add a new movie
+export const useAddMovie = () => {
+  return useMutation<
+    GetMovieDetailsResponse,
+    AxiosError<ApiError>,
+    AddMovieRequest
+  >({
+    mutationKey: [QueryKeys.addMovie],
+    mutationFn: (movie: AddMovieRequest) =>
+      apiClient.post(Endpoints.baseMovie, movie).then((res) => res.data),
+  });
+};
+
+// custom hook to update a existing movie
+export const useUpdateMovie = () => {
+  return useMutation<
+    GetMovieDetailsResponse,
+    AxiosError<ApiError>,
+    UpdateMovieRequest
+  >({
+    mutationKey: [QueryKeys.updateMovie],
+    mutationFn: ({ movie, movieId }: UpdateMovieRequest) =>
+      apiClient
+        .patch(Endpoints.baseMovie + `/${movieId}`, movie)
         .then((res) => res.data),
   });
 };

@@ -1,5 +1,6 @@
 /**
  * This file contains the zod schema for the add movies
+ * same can be used for update movies as well
  */
 
 import { z } from 'zod';
@@ -21,7 +22,7 @@ export const addMovieSchema = z.object({
       error: 'Description must be string',
     })
     .min(1, 'Description is required')
-    .max(300, 'Description should be at most 300 characters long'),
+    .max(1000, 'Description should be at most 1000 characters long'),
 
   averageRating: z
     .number({
@@ -31,13 +32,17 @@ export const addMovieSchema = z.object({
     .max(10, 'Average rating can be at most 10')
     .optional(),
 
-  cast: z.array(z.string({ error: 'Cast must be string' }), {
-    error: 'Cast must be an array of strings',
-  }),
+  cast: z
+    .array(z.string({ error: 'Cast must be string' }), {
+      error: 'Cast must be an array of strings',
+    })
+    .optional(),
 
-  directors: z.array(z.string({ error: 'Directors must be string' }), {
-    error: 'Directors must be an array of strings',
-  }),
+  directors: z
+    .array(z.string({ error: 'Directors must be string' }), {
+      error: 'Directors must be an array of strings',
+    })
+    .optional(),
 
   runTime: z
     .number({
@@ -79,39 +84,43 @@ export const addMovieSchema = z.object({
         ? 'Age rating is required'
         : 'Age rating must be number',
   }),
-  tags: z.array(
-    z
-      .string({ error: 'Tags must be string' })
-      .refine((val) => TAGS.includes(val), {
-        error: `Tags must be one of the following: ${TAGS.join(', ')}`,
-      }),
-    {
-      error: 'Tags must be an array of strings',
-    },
-  ),
+  tags: z
+    .array(
+      z
+        .string({ error: 'Tags must be string' })
+        .refine((val) => TAGS.includes(val), {
+          error: `Tags must be one of the following: ${TAGS.join(', ')}`,
+        }),
+      {
+        error: 'Tags must be an array of strings',
+      },
+    )
+    .optional(),
   youtubeVideoId: z
     .string({
       error: 'Youtube video id must be string',
     })
     .optional(),
-  //   releaseDate: z.date({
-  //     error: (issue) =>
-  //       issue.input === undefined
-  //         ? 'Release date is required'
-  //         : 'Release date must be date',
-  //   }),
-  genre: z.array(
-    z
-      .string({ error: 'Genre must be string' })
-      .refine((val) => GENRE_MOVIE_TV.includes(val), {
-        error: `Genre must be one of the following: ${GENRE_MOVIE_TV.join(
-          ', ',
-        )}`,
-      }),
-    {
-      error: 'Genre must be an array of strings',
-    },
-  ),
+  releaseDate: z.date({
+    error: (issue) =>
+      issue.input === undefined
+        ? 'Release date is required'
+        : 'Release date must be date',
+  }),
+  genre: z
+    .array(
+      z
+        .string({ error: 'Genre must be string' })
+        .refine((val) => GENRE_MOVIE_TV.includes(val), {
+          error: `Genre must be one of the following: ${GENRE_MOVIE_TV.join(
+            ', ',
+          )}`,
+        }),
+      {
+        error: 'Genre must be an array of strings',
+      },
+    )
+    .optional(),
 });
 
 //export type
