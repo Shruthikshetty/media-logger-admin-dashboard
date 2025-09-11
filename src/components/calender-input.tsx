@@ -33,7 +33,7 @@ const CalenderInput = ({
         <Button
           type="button"
           variant={'outline'}
-          className="text-ui-400 h-10 justify-between text-base font-normal"
+          className="text-ui-400 h-11 justify-between text-base font-normal"
         >
           {value ? moment(value).format('DD MMM yyyy') : 'dd-mm-yyyy'}
           {showChevron && <ChevronDown className="size-5" />}

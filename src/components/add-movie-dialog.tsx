@@ -218,6 +218,49 @@ const AddMovieDialog = ({ children }: { children: React.ReactNode }) => {
                   )}
                 />
               </div>
+              <div className="flex flex-col gap-4 md:flex-row md:items-baseline">
+                <FormField
+                  name="releaseDate"
+                  control={addMovieForm.control}
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <Label className="text-base">Release Date *</Label>
+                      <FormControl>
+                        <CalenderInput {...field} />
+                      </FormControl>
+                      <FormMessage />
+                      <FormDescription className="text-ui-400 text-sm">
+                        select the release date of the movie
+                      </FormDescription>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  name="youtubeVideoId"
+                  control={addMovieForm.control}
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <Label htmlFor="youtubeVideoId" className="text-base">
+                        Youtube Video trailer
+                      </Label>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          value={field.value ?? ''}
+                          type="text"
+                          id="youtubeVideoId"
+                          placeholder="Video ID"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                      <FormDescription className="text-ui-400 text-sm">
+                        Enter the Youtube embed code only{' '}
+                        <b>(Do not provide full url)</b>
+                      </FormDescription>
+                    </FormItem>
+                  )}
+                />
+              </div>
               <FormField
                 name="posterUrl"
                 control={addMovieForm.control}
@@ -263,31 +306,6 @@ const AddMovieDialog = ({ children }: { children: React.ReactNode }) => {
                     <FormMessage />
                     <FormDescription className="text-ui-400 text-sm">
                       Enter the complete URL of the movie backdrop
-                    </FormDescription>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="youtubeVideoId"
-                control={addMovieForm.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <Label htmlFor="youtubeVideoId" className="text-base">
-                      Youtube Video trailer
-                    </Label>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        value={field.value ?? ''}
-                        type="text"
-                        id="youtubeVideoId"
-                        placeholder="Video ID"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                    <FormDescription className="text-ui-400 text-sm">
-                      Enter the Youtube embed code only{' '}
-                      <b>(Do not provide full url)</b>
                     </FormDescription>
                   </FormItem>
                 )}
@@ -390,22 +408,6 @@ const AddMovieDialog = ({ children }: { children: React.ReactNode }) => {
                       />
                     </FormControl>
                     <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="releaseDate"
-                control={addMovieForm.control}
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <Label className="text-base">Release Date *</Label>
-                    <FormControl>
-                      <CalenderInput {...field} />
-                    </FormControl>
-                    <FormMessage />
-                    <FormDescription className="text-ui-400 text-sm">
-                      select the release date of the movie
-                    </FormDescription>
                   </FormItem>
                 )}
               />
