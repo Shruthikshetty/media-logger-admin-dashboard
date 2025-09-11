@@ -98,7 +98,7 @@ export function SpinnerOverlay() {
       <div
         aria-hidden={!showSpinner}
         className={cn(
-          'bg-ui-700 fixed inset-0 z-50 flex h-screen w-screen items-center justify-center',
+          'bg-ui-700 fixed inset-0 z-60 flex h-screen w-screen items-center justify-center',
           `opacity-${spinnerOptions.opacity}`,
         )}
       >
