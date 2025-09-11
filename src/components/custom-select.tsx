@@ -23,6 +23,20 @@ type CustomSelectProps = {
   className?: string;
 };
 
+/**
+ * A custom dropdown select component.
+ *
+ * @param {string | undefined} value The currently selected value.
+ * @param {(value: string) => void} onChange Called whenever the value changes.
+ * @param {string} [label] An optional label to display above the select.
+ * @param {string} [placeholder] An optional placeholder string to display in the input field.
+ * @param {string} [dropDownLabel] An optional label to display at the top of the dropdown.
+ * @param {string} [id] An optional id to assign to the input field.
+ * @param {string[]} [options] Array of options to display in the dropdown.
+ * @param {(value: string) => string} [customOptionLabels] An optional function to call to generate the label for each option in the dropdown.
+ * @param {string} [className] An optional class name to assign to the outermost element.
+ * @returns {JSX.Element} The custom select component.
+ */
 const CustomSelect = ({
   value,
   onChange,

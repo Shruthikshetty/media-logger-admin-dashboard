@@ -40,6 +40,8 @@ import { Checkbox } from './ui/checkbox';
 import { ScrollArea } from './ui/scroll-area';
 import ListInput from './list-input';
 import MultiSelect from './multi-select';
+import CustomAlert from './custom-alert';
+import CalenderInput from './calender-input';
 
 /**
  * This is a form to Add a new movie
@@ -391,6 +393,22 @@ const AddMovieDialog = ({ children }: { children: React.ReactNode }) => {
                   </FormItem>
                 )}
               />
+              <FormField
+                name="releaseDate"
+                control={addMovieForm.control}
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <Label className="text-base">Release Date *</Label>
+                    <FormControl>
+                      <CalenderInput {...field} />
+                    </FormControl>
+                    <FormMessage />
+                    <FormDescription className="text-ui-400 text-sm">
+                      select the release date of the movie
+                    </FormDescription>
+                  </FormItem>
+                )}
+              />
               {/* Checkbox for is active */}
               <FormField
                 name="isActive"
@@ -416,14 +434,15 @@ const AddMovieDialog = ({ children }: { children: React.ReactNode }) => {
               />
               {/* Buttons */}
               <div className="flex flex-row justify-end gap-2 md:items-center md:justify-center">
-                <Button
-                  variant={'red'}
-                  type="button"
-                  onClick={() => addMovieForm.reset()}
-                  className="md:min-w-50"
+                <CustomAlert
+                  onConfirm={() => addMovieForm.reset()}
+                  title={'Are you sure?'}
+                  description="This will reset the form , All data entered will be lost."
                 >
-                  Reset
-                </Button>
+                  <Button variant={'red'} type="button" className="md:min-w-50">
+                    Reset
+                  </Button>
+                </CustomAlert>
                 <Button type="submit" variant={'blue'} className="md:min-w-50">
                   Add Movie <Plus strokeWidth={3} />
                 </Button>

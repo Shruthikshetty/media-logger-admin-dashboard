@@ -94,12 +94,12 @@ export const addMovieSchema = z.object({
       error: 'Youtube video id must be string',
     })
     .optional(),
-  //   releaseDate: z.date({
-  //     error: (issue) =>
-  //       issue.input === undefined
-  //         ? 'Release date is required'
-  //         : 'Release date must be date',
-  //   }),
+  releaseDate: z.date({
+    error: (issue) =>
+      issue.input === undefined
+        ? 'Release date is required'
+        : 'Release date must be date',
+  }),
   genre: z.array(
     z
       .string({ error: 'Genre must be string' })
