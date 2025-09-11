@@ -28,7 +28,7 @@ type MultiSelectProps = {
 const MultiSelectWithBadge = ({
   value = [],
   onChange,
-  placeHolder = "Select values",
+  placeHolder = 'Select values',
   showBadges = true,
   options = [],
   dropDownLabel,
