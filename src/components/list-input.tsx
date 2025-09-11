@@ -6,7 +6,7 @@ import { Plus, X } from 'lucide-react';
 import { cn } from '~/lib/utils';
 
 type ListInputProps = {
-  value: string[];
+  value?: string[];
   onChange: (value: string[]) => void;
   placeholder?: string;
   id?: string;

@@ -8,7 +8,7 @@ type MultiSelectProps = {
   id?: string;
   placeHolder?: string;
   dropDownLabel?: string;
-  value: string[];
+  value?: string[];
   onChange: (value: string[]) => void;
   showBadges?: boolean;
   options: string[];

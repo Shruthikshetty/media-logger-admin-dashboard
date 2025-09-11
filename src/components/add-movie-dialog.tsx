@@ -45,6 +45,8 @@ import CalenderInput from './calender-input';
 import { useAddMovie } from '~/services/movies-service';
 import { toast } from 'sonner';
 import { useSpinnerStore } from '~/state-management/spinner-store';
+import { useQueryClient } from '@tanstack/react-query';
+import { QueryKeys } from '~/constants/query-key.constants';
 
 /**
  * This is a form to Add a new movie
@@ -53,8 +55,10 @@ import { useSpinnerStore } from '~/state-management/spinner-store';
 const AddMovieDialog = ({ children }: { children: React.ReactNode }) => {
   //open and close state for dialog
   const [open, setOpen] = useState(false);
-  // get spinner state from the store
+  //@TODO fix get spinner state from the store
   const setSpinner = useSpinnerStore((state) => state.setShowSpinner);
+  // get the query client
+  const queryClient = useQueryClient();
   // initialize custom add movie hook
   const { mutate } = useAddMovie();
   //create add movie form
@@ -76,7 +80,10 @@ const AddMovieDialog = ({ children }: { children: React.ReactNode }) => {
         onSuccess: () => {
           addMovieForm.reset(addMovieDefaultValues);
           setOpen(false);
-          // @TODO invalidate filter data
+          //  invalidate filter data
+          queryClient.invalidateQueries({
+            queryKey: [QueryKeys.filterMovies],
+          });
           toast.success('Movie added successfully', {
             classNames: {
               toast: '!bg-feedback-success',
