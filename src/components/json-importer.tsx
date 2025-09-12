@@ -9,18 +9,23 @@ import scrollStyles from '~/css-modules/scrollbar.module.css';
 import { cn } from '~/lib/utils';
 import { CODE_AREA_PLACEHOLDER_EXAMPLE } from '~/constants/screen.constants';
 import { toast } from 'sonner';
+import { ZodSchema } from 'zod/v3';
 
 const JsonImporter = ({
   onSuccess,
   fileName = 'imported.json',
+  schema,
 }: {
   onSuccess: (file: File) => void;
   fileName?: string;
+  schema: ZodSchema;
 }) => {
   // store json text
   const [jsonString, setJsonString] = useState('');
   //store the input ref
   const inputRef = useRef<HTMLInputElement>(null);
+  // state to store validation errors
+  const [errors, setErrors] = useState<string[]>([]);
 
   /**
    * Handles file change event on input element.
@@ -39,20 +44,45 @@ const JsonImporter = ({
   };
 
   /**
+   * Validates the given json string to match the given schema.
+   * If the json string is invalid or the schema is not provided, it returns false.
+   * Otherwise, it returns true.
+   * If the validation fails, it sets the errors state with the validation errors.
+   */
+  const validateJsonSchema = () => {
+    if (!jsonString || !schema) return false;
+    // parse json
+    const data = JSON.parse(jsonString);
+    //validate json to match the schema
+    const result = schema.safeParse(data);
+    if (!result.success) {
+      //filter out duplicate errors
+      const validationErrors = [
+        ...new Set(result.error.issues.map((issue) => issue.message)),
+      ];
+      //set the errors
+      setErrors(validationErrors);
+      return false;
+    } else {
+      setErrors([]);
+      return true;
+    }
+  };
+
+  /**
    * This function is called when the user confirms the import.
    * this will convert the json string to a json file and return the file as a callback
    */
   const handleConfirm = () => {
     try {
-      // parse json
-      const data = JSON.parse(jsonString);
-      //@todo  validate json to match the schema
+      // in case validation fails
+      if (!validateJsonSchema()) return;
+      // in case validation passes
       const blob = new Blob([jsonString], { type: 'application/json' });
       const jsonFile = new File([blob], fileName, { type: 'application/json' });
       // return the file on success
       onSuccess(jsonFile);
-    } catch (e) {
-      console.log(e);
+    } catch {
       toast.error('Failed to import json , check your json format', {
         classNames: {
           toast: '!bg-feedback-error',
@@ -102,14 +132,34 @@ const JsonImporter = ({
           placeholder={CODE_AREA_PLACEHOLDER_EXAMPLE}
         />
       </div>
-      <Button
-        variant={'blue'}
-        type="button"
-        onClick={handleConfirm}
-        disabled={!jsonString}
-      >
-        Confirm Import
-      </Button>
+      {errors.length > 0 && (
+        <div>
+          <p className="text-base font-semibold">Validation errors :</p>
+          <p className="text-ui-400 mb-2 text-sm font-normal">
+            please validate before import
+          </p>
+          <p className="text-feedback-error text-sm">{errors.join(', ')}</p>
+        </div>
+      )}
+      <div className="flex flex-row items-center gap-3">
+        <Button
+          variant={'outline'}
+          className="flex-1"
+          type="button"
+          onClick={validateJsonSchema}
+        >
+          Validate
+        </Button>
+        <Button
+          className="flex-1"
+          variant={'blue'}
+          type="button"
+          onClick={handleConfirm}
+          disabled={!jsonString}
+        >
+          Confirm Import
+        </Button>
+      </div>
     </div>
   );
 };
