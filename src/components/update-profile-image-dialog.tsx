@@ -213,7 +213,7 @@ const UpdateProfileImage = ({ children }: { children: React.ReactNode }) => {
       }}
     >
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="bg-brand-900 border-ui-600 max-w-[95%] min-w-[50%] lg:min-w-[40%]">
+      <DialogContent className="bg-brand-900 border-ui-600 max-h-[95%] max-w-[95%] min-w-[50%] lg:min-w-[40%]">
         <DialogHeader>
           <DialogTitle className="text-xl">Upload Profile Image</DialogTitle>
           <DialogDescription hidden>

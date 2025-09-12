@@ -5,6 +5,9 @@ import CodeMirror from '@uiw/react-codemirror';
 import { json } from '@codemirror/lang-json';
 import { lintGutter } from '@codemirror/lint';
 import { Button } from './ui/button';
+import scrollStyles from '~/css-modules/scrollbar.module.css';
+import { cn } from '~/lib/utils';
+import { CODE_AREA_PLACEHOLDER_EXAMPLE } from '~/constants/screen.constants';
 
 const JsonImporter = () => {
   const [jsonString, setJsonString] = useState('');
@@ -24,17 +27,21 @@ const JsonImporter = () => {
           Upload Json
         </Button>
       </div>
-      <div className="flex flex-col gap-2">
+      <div className="flex max-h-[60svh] flex-1 flex-grow flex-col gap-2 sm:max-h-[70svh]">
         <Label htmlFor="code-editor">Or Paste JSON</Label>
         {/* code area */}
+
         <CodeMirror
           id="code-editor"
           value={jsonString}
           onChange={setJsonString}
           extensions={[json(), lintGutter()]}
           theme={'dark'}
-          className="flex-1 overflow-auto text-sm"
-          placeholder={`[\n\t{\n\t\t\"title\": \"The Shawshank ..\",\n\t\t\"description\": \"Two imprisoned ...\"\n\t},\n]`}
+          className={cn(
+            'h-full w-full overflow-auto text-sm',
+            scrollStyles.scrollContainer,
+          )}
+          placeholder={CODE_AREA_PLACEHOLDER_EXAMPLE}
         />
       </div>
       <Button variant={'blue'} type="button">

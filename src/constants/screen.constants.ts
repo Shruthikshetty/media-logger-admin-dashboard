@@ -72,3 +72,6 @@ export const ROLE_COLOR_MAPPING: Record<
   admin: 'destructive',
   user: 'secondary',
 };
+
+//Code are example placeholder
+export const CODE_AREA_PLACEHOLDER_EXAMPLE = `[\n\t{\n\t\t\"title\": \"The Shawshank ..\",\n\t\t\"description\": \"Two imprisoned ...\"\n\t},\n]`;
