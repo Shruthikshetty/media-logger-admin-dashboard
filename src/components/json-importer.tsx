@@ -115,20 +115,19 @@ const JsonImporter = ({
           Upload Json
         </Button>
       </div>
-      <div className="flex max-h-[60svh] flex-1 flex-grow flex-col gap-2 sm:max-h-[70svh]">
+      <div className="flex flex-col gap-2">
         <Label htmlFor="code-editor">Or Paste JSON</Label>
         {/* code area */}
-
         <CodeMirror
           id="code-editor"
+          width="full"
+          minHeight="25vh"
+          maxHeight="65vh"
           value={jsonString}
           onChange={setJsonString}
           extensions={[json(), lintGutter()]}
           theme={'dark'}
-          className={cn(
-            'h-full w-full overflow-auto text-sm',
-            scrollStyles.scrollContainer,
-          )}
+          className={cn('text-sm', scrollStyles.scrollContainer)}
           placeholder={CODE_AREA_PLACEHOLDER_EXAMPLE}
         />
       </div>

@@ -4,7 +4,6 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -12,8 +11,6 @@ import {
 import { Paperclip } from 'lucide-react';
 import JsonImporter from './json-importer';
 import { addMovieSchema } from '~/schema/add-movie-schema';
-import scrollStyles from '~/css-modules/scrollbar.module.css';
-import { cn } from '~/lib/utils';
 
 type ImportMoviesJsonProps = {
   children: React.ReactNode;
