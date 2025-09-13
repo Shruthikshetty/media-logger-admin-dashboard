@@ -92,7 +92,7 @@ const JsonImporter = ({
   };
 
   return (
-    <div className="text-base-white flex flex-col gap-3">
+    <div className="text-base-white flex min-w-0 flex-1 flex-col gap-3">
       <div className="flex flex-col gap-2">
         <Label className="text-base">Upload JSON File</Label>
         {/* hidden file input */}
