@@ -9,7 +9,7 @@ import scrollStyles from '~/css-modules/scrollbar.module.css';
 import { cn } from '~/lib/utils';
 import { CODE_AREA_PLACEHOLDER_EXAMPLE } from '~/constants/screen.constants';
 import { toast } from 'sonner';
-import { ZodSchema } from 'zod/v3';
+import { ZodType } from 'zod';
 
 const JsonImporter = ({
   onSuccess,
@@ -18,7 +18,7 @@ const JsonImporter = ({
 }: {
   onSuccess: (file: File) => void;
   fileName?: string;
-  schema: ZodSchema;
+  schema: ZodType;
 }) => {
   // store json text
   const [jsonString, setJsonString] = useState('');
@@ -122,7 +122,7 @@ const JsonImporter = ({
           id="code-editor"
           width="full"
           minHeight="25vh"
-          maxHeight="65vh"
+          maxHeight="60vh"
           value={jsonString}
           onChange={setJsonString}
           extensions={[json(), lintGutter()]}
@@ -133,9 +133,8 @@ const JsonImporter = ({
       </div>
       {errors.length > 0 && (
         <div>
-          <p className="text-base font-semibold">Validation errors :</p>
-          <p className="text-ui-400 mb-2 text-sm font-normal">
-            please validate before import
+          <p className="text-ui-400 text-sm font-normal">
+            Validation errors found , please validate before import : -
           </p>
           <p className="text-feedback-error text-sm">{errors.join(', ')}</p>
         </div>

@@ -11,6 +11,8 @@ import {
 import { Paperclip } from 'lucide-react';
 import JsonImporter from './json-importer';
 import { addMovieSchema } from '~/schema/add-movie-schema';
+import scrollStyles from '~/css-modules/scrollbar.module.css';
+import { cn } from '~/lib/utils';
 
 type ImportMoviesJsonProps = {
   children: React.ReactNode;
@@ -20,7 +22,12 @@ const ImportMoviesJson = ({ children }: ImportMoviesJsonProps) => {
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="bg-brand-900 max-h-[95vh] max-w-[95%] min-w-[80%]">
+      <DialogContent
+        className={cn(
+          'bg-brand-900 max-h-[95vh] max-w-[95%] min-w-[80%] overflow-auto',
+          scrollStyles.scrollContainer,
+        )}
+      >
         <DialogHeader>
           <DialogTitle className="flex flex-row items-center gap-2">
             <Paperclip />
