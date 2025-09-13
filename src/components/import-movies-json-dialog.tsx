@@ -29,7 +29,7 @@ const ImportMoviesJson = ({ children }: ImportMoviesJsonProps) => {
         )}
       >
         <DialogHeader>
-          <DialogTitle className="flex flex-row items-center gap-2">
+          <DialogTitle className="flex flex-row items-center gap-2 justify-center sm:justify-start">
             <Paperclip />
             Import Movies from JSON
           </DialogTitle>
