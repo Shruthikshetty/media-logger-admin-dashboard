@@ -3,13 +3,14 @@ import React, { useRef, useState } from 'react';
 import { Label } from './ui/label';
 import CodeMirror from '@uiw/react-codemirror';
 import { json } from '@codemirror/lang-json';
-import { lintGutter } from '@codemirror/lint';
+import { linter, lintGutter } from '@codemirror/lint';
 import { Button } from './ui/button';
 import scrollStyles from '~/css-modules/scrollbar.module.css';
 import { cn } from '~/lib/utils';
 import { CODE_AREA_PLACEHOLDER_EXAMPLE } from '~/constants/screen.constants';
 import { toast } from 'sonner';
 import { ZodType } from 'zod';
+import { emptyOrJsonLinter } from '~/lib/code-mirror';
 
 const JsonImporter = ({
   onSuccess,
@@ -133,8 +134,13 @@ const JsonImporter = ({
           minHeight="25vh"
           maxHeight="60vh"
           value={jsonString}
-          onChange={setJsonString}
-          extensions={[json(), lintGutter()]}
+          onChange={(value) => {
+            setJsonString(value);
+            // Clear validation status when user types
+            if (isValidated) setIsValidated(false);
+            if (errors.length > 0) setErrors([]);
+          }}
+          extensions={[json(), lintGutter(), linter(emptyOrJsonLinter)]}
           theme={'dark'}
           className={cn(
             'flex-1 text-sm [&_.cm-scroller]:flex-1',
