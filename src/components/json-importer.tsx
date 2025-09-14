@@ -26,6 +26,8 @@ const JsonImporter = ({
   const inputRef = useRef<HTMLInputElement>(null);
   // state to store validation errors
   const [errors, setErrors] = useState<string[]>([]);
+  // state to store the file name
+  const [isValidated, setIsValidated] = useState(false);
 
   /**
    * Handles file change event on input element.
@@ -62,9 +64,11 @@ const JsonImporter = ({
       ];
       //set the errors
       setErrors(validationErrors);
+      setIsValidated(false);
       return false;
     } else {
       setErrors([]);
+      setIsValidated(true);
       return true;
     }
   };
@@ -126,7 +130,10 @@ const JsonImporter = ({
           onChange={setJsonString}
           extensions={[json(), lintGutter()]}
           theme={'dark'}
-          className={cn('text-sm', scrollStyles.scrollContainer)}
+          className={cn(
+            'flex-1 text-sm [&_.cm-scroller]:flex-1',
+            scrollStyles.scrollContainer,
+          )}
           placeholder={CODE_AREA_PLACEHOLDER_EXAMPLE}
         />
       </div>
@@ -138,11 +145,17 @@ const JsonImporter = ({
           <p className="text-feedback-error text-sm">{errors.join(', ')}</p>
         </div>
       )}
+      {isValidated && !(errors.length > 0) && (
+        <p className="text-feedback-success text-sm">
+          Validated successfully✔️
+        </p>
+      )}
       <div className="flex flex-row items-center gap-3">
         <Button
           variant={'outline'}
           className="flex-1"
           type="button"
+          disabled={!jsonString}
           onClick={validateJsonSchema}
         >
           Validate

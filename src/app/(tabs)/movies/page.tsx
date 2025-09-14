@@ -197,7 +197,11 @@ const MoviesTab = () => {
         />
         <div className="flex flex-col gap-3 md:flex-row">
           <ImportMoviesJson>
-            <Button variant={'outline'} type="button">
+            <Button
+              variant={'outline'}
+              type="button"
+              aria-label="import movies json button"
+            >
               <Upload className="mr-1 size-4" />
               Import json
             </Button>
