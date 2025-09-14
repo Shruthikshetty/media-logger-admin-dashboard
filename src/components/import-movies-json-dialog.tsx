@@ -46,7 +46,7 @@ const ImportMoviesJson = ({ children }: ImportMoviesJsonProps) => {
   const { mutate } = useBulkAddMoviesJson();
 
   const handleUpload = (file: File) => {
-    console.log(typeof file)
+    console.log(typeof file);
     // in case no file
     if (!file) return;
     // start loading
