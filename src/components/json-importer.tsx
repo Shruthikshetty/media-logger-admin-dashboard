@@ -53,9 +53,15 @@ const JsonImporter = ({
    */
   const validateJsonSchema = () => {
     if (!jsonString || !schema) return false;
-    // parse json
-    const data = JSON.parse(jsonString);
-    //validate json to match the schema
+    let data: unknown;
+    try {
+      data = JSON.parse(jsonString);
+    } catch (err) {
+      setErrors(['Invalid JSON: ' + (err as Error).message]);
+      setIsValidated(false);
+      return false;
+    }
+    // validate json to match the schema
     const result = schema.safeParse(data);
     if (!result.success) {
       //filter out duplicate errors

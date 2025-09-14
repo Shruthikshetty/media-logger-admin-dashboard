@@ -20,9 +20,8 @@ import { useQueryClient } from '@tanstack/react-query';
 import { QueryKeys } from '~/constants/query-key.constants';
 
 type ImportMoviesJsonProps = {
-  children: React.ReactNode;
+  children: React.ReactElement;
 };
-
 /**
  * A dialog component to import movies from a JSON file or paste JSON data
  * containing an array of movie objects.

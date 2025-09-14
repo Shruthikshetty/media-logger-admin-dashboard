@@ -73,5 +73,10 @@ export const ROLE_COLOR_MAPPING: Record<
   user: 'secondary',
 };
 
-//Code are example placeholder
-export const CODE_AREA_PLACEHOLDER_EXAMPLE = `[\n\t{\n\t\t\"title\": \"The Shawshank ..\",\n\t\t\"description\": \"Two imprisoned ...\"\n\t},\n]`;
+// Code area example placeholder
+export const CODE_AREA_PLACEHOLDER_EXAMPLE = `[
+\t{
+\t\t"title": "The Shawshank Redemption",
+\t\t"description": "Two imprisoned men bond over a number of years..."
+\t}
+]`;
