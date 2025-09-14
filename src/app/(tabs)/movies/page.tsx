@@ -10,6 +10,7 @@ import moment from 'moment';
 import React, { useDeferredValue, useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import AddMovieDialog from '~/components/add-movie-dialog';
+import ImportMoviesJson from '~/components/import-movies-json-dialog';
 import MediaFilters, {
   DateState,
   FiltersState,
@@ -195,10 +196,16 @@ const MoviesTab = () => {
           subtitle="Manage your movie collection"
         />
         <div className="flex flex-col gap-3 md:flex-row">
-          <Button variant={'outline'}>
-            <Upload className="mr-1 size-4" />
-            Import json
-          </Button>
+          <ImportMoviesJson>
+            <Button
+              variant={'outline'}
+              type="button"
+              aria-label="import movies json button"
+            >
+              <Upload className="mr-1 size-4" />
+              Import json
+            </Button>
+          </ImportMoviesJson>
           <AddMovieDialog>
             <Button
               aria-label="add movie"

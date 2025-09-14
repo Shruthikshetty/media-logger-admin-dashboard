@@ -56,7 +56,7 @@ const ProfileImageCropper = ({
 
   return (
     <>
-      <div className="relative h-[700px] max-h-[1000px] min-h-[500px] w-[90%] overflow-clip rounded-xl">
+      <div className="relative max-h-[1000px] min-h-[500px] w-[90%] overflow-clip rounded-xl">
         <Cropper
           image={imageSrc}
           crop={crop}

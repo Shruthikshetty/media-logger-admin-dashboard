@@ -96,6 +96,15 @@ type BulkDeleteMoviesResponse = {
   };
 };
 
+type BulkAddMoviesResponse = {
+  success: boolean;
+  message: string;
+  data: {
+    added: Movie[];
+    notAdded: Movie[];
+  };
+};
+
 //get all the movies from the api with pagination
 export const useFetchMovies = ({
   limit = 20,
@@ -214,5 +223,24 @@ export const useUpdateMovie = () => {
       apiClient
         .patch(Endpoints.baseMovie + `/${movieId}`, movie)
         .then((res) => res.data),
+  });
+};
+
+//custom hook to bulk add movies by sending json .
+export const useBulkAddMoviesJson = () => {
+  return useMutation<BulkAddMoviesResponse, AxiosError<ApiError>, File>({
+    mutationKey: [QueryKeys.bulkAddMovies],
+    mutationFn: (file: File) => {
+      // create form data
+      const formData = new FormData();
+      formData.append('movieDataFile', file);
+      return apiClient
+        .post<BulkAddMoviesResponse>(Endpoints.moviesBulk, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then((res) => res.data);
+    },
   });
 };
