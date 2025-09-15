@@ -99,8 +99,6 @@ export const GENRE_MOVIE_TV = [
   'Cooking',
   'Kids',
   'Indie',
-  'RPG',
-  'Shooter',
   'Strategy',
   'Puzzle',
   'Simulation',
@@ -108,6 +106,7 @@ export const GENRE_MOVIE_TV = [
   'Racing',
   'Survival',
   'Sandbox',
+  'Science Fiction',
 ];
 
 export const MEDIA_STATUS = ['released', 'upcoming'];
@@ -195,6 +194,14 @@ export const TAGS = [
   'Serialized',
   'Minimalist',
   'Dialogue-heavy',
+  'Shounen',
+  'Sequel',
+  'Demon',
+  'Surveillance',
+  'Cybersecurity',
+  'Attack',
+  'Privacy',
+  'Government',
 ];
 
 // movie filter config
