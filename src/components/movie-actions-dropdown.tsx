@@ -47,7 +47,7 @@ const MovieActionDropdown = ({
       color: 'text-base-white',
       onClick: () => {
         router.push(`/movies/${movieId}`);
-      }, // propagate event to parent
+      },
     },
     {
       title: 'Edit Movie',

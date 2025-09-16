@@ -28,11 +28,11 @@ const TablePagination = ({
 
     const totalPages = pagination.totalPages;
 
-    // calculate the total number of pages to display (2 is added for the dots at the start and end)
-    const totalDisplayedPages = siblingCount * 2 + 2;
-
-    // in case length of pages is less than totalPageNumbers display all pages
-    if (totalDisplayedPages >= totalPages) {
+    // total slots without ellipses: first + last + current + 2*siblings
+    const totalPageNumbers = siblingCount * 2 + 5;
+    
+    // if pages fit within the slots, show all without dots
+    if (totalPages <= totalPageNumbers) {
       return arrayRange(1, totalPages);
     }
 
@@ -42,7 +42,7 @@ const TablePagination = ({
 
     // check if the left or right side needs dots
     const shouldShowLeftDots = leftSiblingIndex > 2; // A left-side ellipsis is needed if the range doesn't start near the first page
-    const shouldShowRightDots = rightSiblingIndex < totalPages - 2;
+    const shouldShowRightDots = rightSiblingIndex < totalPages - 1;
 
     //define first and last index
     const firstPageIndex = 1;
