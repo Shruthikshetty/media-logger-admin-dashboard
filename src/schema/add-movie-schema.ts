@@ -89,7 +89,7 @@ export const addMovieSchema = z.object({
       z
         .string({ error: 'Tags must be string' })
         .refine((val) => TAGS.includes(val), {
-          error: `Tags must be one of the following: ${TAGS.join(', ')}`,
+          error: (val) => `${val.input} dose not belong to predefined tags`,
         }),
       {
         error: 'Tags must be an array of strings',
@@ -112,9 +112,7 @@ export const addMovieSchema = z.object({
       z
         .string({ error: 'Genre must be string' })
         .refine((val) => GENRE_MOVIE_TV.includes(val), {
-          error: `Genre must be one of the following: ${GENRE_MOVIE_TV.join(
-            ', ',
-          )}`,
+          error: (val) => `${val.input} must be one of the Predefined genres`,
         }),
       {
         error: 'Genre must be an array of strings',
