@@ -209,8 +209,11 @@ export const movieColumns: ColumnDef<
     id: 'action',
     header: 'Actions',
     cell: (props) => (
-      <TableCell>
-        <MovieActionDropdown movieId={props.row.original._id} />
+      <TableCell onClick={(e) => e.stopPropagation()}>
+        <MovieActionDropdown
+          movieId={props.row.original._id}
+          data={props.row.original}
+        />
       </TableCell>
     ),
     size: 50,
