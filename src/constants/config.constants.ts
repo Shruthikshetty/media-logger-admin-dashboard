@@ -159,7 +159,7 @@ export const LANGUAGES = [
 
 //movie , Tv show tags
 export const TAGS = [
-  'Based on True Story',
+  'Based on true Story',
   'Cult Classic',
   'Binge-worthy',
   'Award-winning',
@@ -170,7 +170,7 @@ export const TAGS = [
   'Dark',
   'Slow Burn',
   'Fast-paced',
-  'Character-driven',
+  'Character-Driven',
   'Plot Twist',
   'Underrated',
   'Critically Acclaimed',
@@ -216,6 +216,22 @@ export const TAGS = [
   'Wedding',
   'Spirit',
   'Ghost',
+  'Martial arts',
+  'Kung fu',
+  'Detective',
+  'Kidnapping',
+  'Heist',
+  'Cars',
+  'Orphan',
+  'Thief',
+  'Revenge',
+  'Dark comedy',
+  'Assassin',
+  'Reboot',
+  'Friendship',
+  'Politics',
+  'History',
+  'Suspense',
 ];
 
 // movie filter config
