@@ -8,7 +8,7 @@ import {
   DropdownMenuContent,
   DropdownMenuPortal,
 } from './ui/dropdown-menu';
-import { Edit, Ellipsis, Eye, SquarePen, Trash2 } from 'lucide-react';
+import { Ellipsis, Eye, SquarePen, Trash2 } from 'lucide-react';
 import { cn } from '~/lib/utils';
 import { Movie, useDeleteMovie } from '~/services/movies-service';
 import { toast } from 'sonner';
