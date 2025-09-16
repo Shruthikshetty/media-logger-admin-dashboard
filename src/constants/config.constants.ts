@@ -202,6 +202,20 @@ export const TAGS = [
   'Attack',
   'Privacy',
   'Government',
+  'Cop',
+  'Teacher',
+  'Trance',
+  'Witchcraft',
+  'Multiple storylines',
+  'Spell',
+  'Aggressive',
+  'Antagonistic',
+  'Exorcism',
+  'Haunted house',
+  'Religion',
+  'Wedding',
+  'Spirit',
+  'Ghost',
 ];
 
 // movie filter config
