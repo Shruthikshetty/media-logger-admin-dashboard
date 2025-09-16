@@ -8,14 +8,6 @@ import {
   TableHeader,
   TableRow,
 } from './ui/table';
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from './ui/pagination';
 import { Skeleton } from './ui/skeleton';
 import {
   ColumnDef,
@@ -35,6 +27,7 @@ import type { Pagination as PaginationType } from '~/types/global.types';
 import MovieActionDropdown from './movie-actions-dropdown';
 import { Checkbox } from './ui/checkbox';
 import { useRouter } from 'next/navigation';
+import TablePagination from './table-pagination';
 
 type MoviesTableType = {
   loading: boolean;
@@ -209,8 +202,11 @@ export const movieColumns: ColumnDef<
     id: 'action',
     header: 'Actions',
     cell: (props) => (
-      <TableCell>
-        <MovieActionDropdown movieId={props.row.original._id} />
+      <TableCell onClick={(e) => e.stopPropagation()}>
+        <MovieActionDropdown
+          movieId={props.row.original._id}
+          data={props.row.original}
+        />
       </TableCell>
     ),
     size: 50,
@@ -295,50 +291,7 @@ const MoviesTable = ({
           barClassName="hover:bg-ui-400 bg-ui-600"
         />
       </ScrollArea>
-      <Pagination className="text-base-white mt-2">
-        <PaginationContent>
-          <PaginationPrevious
-            className={
-              pagination?.hasPrevious
-                ? 'cursor-pointer'
-                : 'hover:bg-ui-600 hover:text-base-white cursor-not-allowed'
-            }
-            onClick={() => {
-              if (pagination?.hasPrevious) {
-                setPage((s) => s - 1);
-              }
-            }}
-          >
-            Previous
-          </PaginationPrevious>
-          {[...Array(pagination?.totalPages ?? 0)].map((_, i) => (
-            <PaginationItem key={i}>
-              <PaginationLink
-                isActive={page === i + 1}
-                onClick={() => {
-                  setPage(i + 1);
-                }}
-              >
-                {i + 1}
-              </PaginationLink>
-            </PaginationItem>
-          ))}
-          <PaginationNext
-            className={
-              pagination?.hasMore
-                ? 'cursor-pointer'
-                : 'hover:bg-ui-600 hover:text-base-white cursor-not-allowed'
-            }
-            onClick={() => {
-              if (pagination?.hasMore) {
-                setPage((s) => s + 1);
-              }
-            }}
-          >
-            Next
-          </PaginationNext>
-        </PaginationContent>
-      </Pagination>
+      <TablePagination pagination={pagination} page={page} setPage={setPage} />
     </>
   );
 };
