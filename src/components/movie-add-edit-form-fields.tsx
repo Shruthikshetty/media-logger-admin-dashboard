@@ -362,6 +362,7 @@ const AddEditMovieFormFields = ({
                   options={TAGS}
                   placeHolder="Select required tags"
                   dropDownLabel="Select tags"
+                  search
                 />
               </FormControl>
               <FormMessage />

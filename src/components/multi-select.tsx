@@ -3,6 +3,8 @@ import DropdownFilter from './dropdown-filter';
 import BadgeWithCross from './badge-with-cross';
 import { ChevronDown } from 'lucide-react';
 import scrollBarStyles from '../css-modules/scrollbar.module.css';
+import SearchDropdown from './search-dropdown';
+import { Button } from './ui/button';
 
 type MultiSelectProps = {
   id?: string;
@@ -12,6 +14,7 @@ type MultiSelectProps = {
   onChange: (value: string[]) => void;
   showBadges?: boolean;
   options: string[];
+  search?: boolean;
 };
 
 /**
@@ -23,6 +26,7 @@ type MultiSelectProps = {
  * @param {boolean} [showBadges] Whether to show the selected values as badges.
  * @param {string[]} [options] The options to be shown in the dropdown.
  * @param {string} [dropDownLabel] The label to show above the dropdown.
+ * @param {boolean} [search] Whether to show a search bar in the dropdown.
  * @returns {JSX.Element} The component.
  */
 const MultiSelectWithBadge = ({
@@ -32,26 +36,45 @@ const MultiSelectWithBadge = ({
   showBadges = true,
   options = [],
   dropDownLabel,
+  search = false,
 }: MultiSelectProps) => {
   return (
     <div className="flex w-full flex-col gap-2">
-      <DropdownFilter
-        options={options}
-        selected={value}
-        dropDownLabel={dropDownLabel}
-        multiselect={true}
-        setSelected={(selected) => {
-          onChange(selected as string[]);
-        }}
-        RightButtonComponent={<ChevronDown className="size-5" />}
-        label={placeHolder ?? ''}
-        customStyle={{
-          triggerButton:
-            'border-ui-400 hover:border-base-white justify-between h-11 text-md font-normal text-ui-400',
-          dropdownContent: 'w-[var(--radix-dropdown-menu-trigger-width)]',
-          scrollBar: scrollBarStyles.scrollContainerNormalDropdown,
-        }}
-      />
+      {search ? (
+        <SearchDropdown
+          label="Select required tags"
+          options={options}
+          multiselect={true}
+          selected={value}
+          setSelected={onChange}
+        >
+          <Button
+            type="button"
+            variant={'outline'}
+            className="border-ui-400 hover:border-base-white text-md text-ui-400 h-11 justify-between font-normal"
+          >
+            {placeHolder ?? ''}
+          </Button>
+        </SearchDropdown>
+      ) : (
+        <DropdownFilter
+          options={options}
+          selected={value}
+          dropDownLabel={dropDownLabel}
+          multiselect={true}
+          setSelected={(selected) => {
+            onChange(selected as string[]);
+          }}
+          RightButtonComponent={<ChevronDown className="size-5" />}
+          label={placeHolder ?? ''}
+          customStyle={{
+            triggerButton:
+              'border-ui-400 hover:border-base-white justify-between h-11 text-md font-normal text-ui-400',
+            dropdownContent: 'w-[var(--radix-dropdown-menu-trigger-width)]',
+            scrollBar: scrollBarStyles.scrollContainerNormalDropdown,
+          }}
+        />
+      )}
       <div className="flex flex-row flex-wrap gap-2">
         {showBadges &&
           value.map((item, index) => (

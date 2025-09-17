@@ -30,7 +30,7 @@ const TablePagination = ({
 
     // total slots without ellipses: first + last + current + 2*siblings
     const totalPageNumbers = siblingCount * 2 + 5;
-    
+
     // if pages fit within the slots, show all without dots
     if (totalPages <= totalPageNumbers) {
       return arrayRange(1, totalPages);
