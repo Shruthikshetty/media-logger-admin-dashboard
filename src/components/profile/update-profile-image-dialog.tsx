@@ -6,14 +6,14 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from './ui/dialog';
-import { Card } from './ui/card';
+} from '../ui/dialog';
+import { Card } from '../ui/card';
 import { ImageIcon, UploadIcon } from 'lucide-react';
-import { Button } from './ui/button';
-import { Progress } from './ui/progress';
+import { Button } from '../ui/button';
+import { Progress } from '../ui/progress';
 import { dataURLToFile, resizeImageKeepAspect } from '~/lib/image-resize';
 import { MaxImageSize } from '~/constants/config.constants';
-import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { useUploadImage } from '~/services/uploads-service';
 import {
   useGetUserDetails,
@@ -22,7 +22,7 @@ import {
 import { toast } from 'sonner';
 import { useSpinnerStore } from '~/state-management/spinner-store';
 import { cn } from '~/lib/utils';
-import ProfileImageCropper from './profile-image-crop';
+import ProfileImageCropper from '../profile-image-crop';
 
 const UpdateProfileImage = ({ children }: { children: React.ReactNode }) => {
   //dialog open state

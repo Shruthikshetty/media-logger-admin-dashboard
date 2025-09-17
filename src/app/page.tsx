@@ -1,6 +1,6 @@
 'use client';
 import { Film, Gamepad2, Plus, Tv, Users } from 'lucide-react';
-import DashboardCharts from '~/components/dashboard-charts';
+import DashboardCharts from '~/components/dashboard/dashboard-charts';
 import ManageCard from '~/components/manage-card';
 import StatCard from '~/components/stat-card';
 import TitleSubtitle from '~/components/title-subtitle';

@@ -7,9 +7,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from './ui/dialog';
+} from '../ui/dialog';
 import { Paperclip } from 'lucide-react';
-import JsonImporter from './json-importer';
+import JsonImporter from '../json-importer';
 import scrollStyles from '~/css-modules/scrollbar.module.css';
 import { cn } from '~/lib/utils';
 import { bulkAddMovieSchema } from '~/schema/bulk-add-movie-schema';

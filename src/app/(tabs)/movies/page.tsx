@@ -9,13 +9,13 @@ import { Plus, Search, Trash2, Upload } from 'lucide-react';
 import moment from 'moment';
 import React, { useDeferredValue, useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
-import AddMovieDialog from '~/components/add-movie-dialog';
-import ImportMoviesJson from '~/components/import-movies-json-dialog';
+import AddMovieDialog from '~/components/movies/add-movie-dialog';
+import ImportMoviesJson from '~/components/movies/import-movies-json-dialog';
 import MediaFilters, {
   DateState,
   FiltersState,
 } from '~/components/media-filters';
-import MoviesTable, { movieColumns } from '~/components/movies-table';
+import MoviesTable, { movieColumns } from '~/components/movies/movies-table';
 import TitleSubtitle from '~/components/title-subtitle';
 import { Button } from '~/components/ui/button';
 import {

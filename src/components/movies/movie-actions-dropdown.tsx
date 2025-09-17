@@ -7,7 +7,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuPortal,
-} from './ui/dropdown-menu';
+} from '../ui/dropdown-menu';
 import { Ellipsis, Eye, SquarePen, Trash2 } from 'lucide-react';
 import { cn } from '~/lib/utils';
 import { Movie, useDeleteMovie } from '~/services/movies-service';

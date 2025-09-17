@@ -6,22 +6,22 @@ import {
   FormControl,
   FormMessage,
   FormDescription,
-} from './ui/form';
-import { Label } from './ui/label';
-import { Input } from './ui/input';
-import { Textarea } from './ui/textarea';
-import NumberInput from './number-input';
-import CustomSelect from './custom-select';
+} from '../ui/form';
+import { Label } from '../ui/label';
+import { Input } from '../ui/input';
+import { Textarea } from '../ui/textarea';
+import NumberInput from '../number-input';
+import CustomSelect from '../custom-select';
 import {
   GENRE_MOVIE_TV,
   LANGUAGES,
   MEDIA_STATUS,
   TAGS,
 } from '~/constants/config.constants';
-import CalenderInput from './calender-input';
-import ListInput from './list-input';
-import MultiSelect from './multi-select';
-import { Checkbox } from './ui/checkbox';
+import CalenderInput from '../calender-input';
+import ListInput from '../list-input';
+import MultiSelect from '../multi-select';
+import { Checkbox } from '../ui/checkbox';
 import { UseFormReturn } from 'react-hook-form';
 import { AddMovieSchemaType } from '~/schema/add-movie-schema';
 
