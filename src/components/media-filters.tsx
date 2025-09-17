@@ -8,6 +8,7 @@ import RangeFilter from './range-filter';
 import { FilterLimits } from '~/types/global.types';
 import DateFilter from './date-filter';
 import moment from 'moment';
+import SearchDropDownFilter from './search-drop-down-filter';
 
 export type RangeState = FilterLimits<number | undefined>;
 
@@ -63,12 +64,20 @@ export interface DateConfig extends BaseFilterConfig {
   icon?: LucideIcon;
 }
 
+export interface SelectDropDownConfig extends BaseFilterConfig {
+  type: 'search-dropdown';
+  multiselect: boolean;
+  options: string[];
+  icon?: LucideIcon;
+}
+
 // Union of all configurations
 export type FilterConfig =
   | DropdownConfig
   | NumberInputConfig
   | RangeConfig
-  | DateConfig;
+  | DateConfig
+  | SelectDropDownConfig;
 
 type MediaFiltersProps = {
   config: FilterConfig[];
@@ -92,6 +101,8 @@ const generateInitialFilters = (config: FilterConfig[]) => () => {
       case 'date':
         initialFilters[filter.key] = undefined;
         break;
+      case 'search-dropdown':
+        initialFilters[filter.key] = filter.multiselect ? [] : undefined;
     }
   });
   return initialFilters;
@@ -119,11 +130,10 @@ const MediaFilters = ({ config, onFilterChange }: MediaFiltersProps) => {
       // Reset the value based on the filter type
       switch (cfg.type) {
         case 'dropdown':
+        case 'search-dropdown':
           resetValue = cfg.multiselect ? [] : undefined;
           break;
         case 'number-input':
-          resetValue = undefined;
-          break;
         case 'range':
           resetValue = undefined;
           break;
@@ -204,6 +214,17 @@ const MediaFilters = ({ config, onFilterChange }: MediaFiltersProps) => {
                   }
                 />
               );
+            case 'search-dropdown':
+              return (
+                <SearchDropDownFilter
+                  key={filter.key}
+                  filters={filter}
+                  value={filters[filter.key] as string[] | string | undefined}
+                  setValue={(selected) =>
+                    setFilters((prev) => ({ ...prev, [filter.key]: selected }))
+                  }
+                />
+              );
           }
         })}
       </div>
@@ -215,6 +236,7 @@ const MediaFilters = ({ config, onFilterChange }: MediaFiltersProps) => {
           // render badges based on filter type
           switch (filterConfig?.type) {
             case 'dropdown':
+            case 'search-dropdown':
               if (typeof selectedItems === 'string') {
                 return (
                   <BadgeWithCross

@@ -292,7 +292,7 @@ export const MovieFilterConfig: FilterConfig[] = [
   {
     key: 'tags',
     label: 'Tags',
-    type: 'dropdown',
+    type: 'search-dropdown',
     multiselect: true,
     options: TAGS,
     icon: Tag,

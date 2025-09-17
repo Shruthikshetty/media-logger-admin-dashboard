@@ -42,7 +42,7 @@ type SearchDropdownMulti = {
   setSelected: (selected: string[]) => void;
 } & SearchDropdownBase;
 
-type SearchDropdownProps = SearchDropdownSingle | SearchDropdownMulti;
+export type SearchDropdownProps = SearchDropdownSingle | SearchDropdownMulti;
 
 /**
  * A dropdown menu component for searching and selecting values.
