@@ -53,12 +53,15 @@ const EditMovieDialog = ({
   const { mutate } = useUpdateMovie();
   // modify the existing movie to required format
   const modifiedExistingData = useMemo(
-    () => ({
-      ...existingData,
-      releaseDate: existingData?.releaseDate
-        ? new Date(existingData?.releaseDate)
+    () =>
+      existingData
+        ? {
+            ...existingData,
+            releaseDate: existingData.releaseDate
+              ? new Date(existingData.releaseDate)
+              : undefined,
+          }
         : undefined,
-    }),
     [existingData],
   );
 
