@@ -70,6 +70,7 @@ const ImportMoviesJson = ({ children }: ImportMoviesJsonProps) => {
         toast.error(error?.response?.data.message ?? 'Something went wrong', {
           classNames: {
             toast: '!bg-feedback-error',
+            title: '!line-clamp-3',
           },
         });
       },
