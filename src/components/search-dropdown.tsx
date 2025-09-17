@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,31 +19,57 @@ import { cn } from '~/lib/utils';
 import { X } from 'lucide-react';
 import scrollBarStyles from '../css-modules/scrollbar.module.css';
 
-type SearchDropdownProps = {
+type SearchDropdownBase = {
   children: React.ReactNode;
   label?: string;
   options: string[];
   theme?: 'normal' | 'purple';
-  selected: string;
-  setSelected: (selected: string) => void;
   customStyle?: {
     dropdownContent?: string;
     commandItem?: string;
   };
 };
 
+type SearchDropdownSingle = {
+  multiselect?: false;
+  selected: string;
+  setSelected: (selected: string) => void;
+} & SearchDropdownBase;
+
+type SearchDropdownMulti = {
+  multiselect: true;
+  selected: string[];
+  setSelected: (selected: string[]) => void;
+} & SearchDropdownBase;
+
+type SearchDropdownProps = SearchDropdownSingle | SearchDropdownMulti;
+
+/**
+ * A dropdown menu component for searching and selecting values.
+ * can be used as multiple select or single select
+ *
+ * @param {React.ReactNode} children The content of the dropdown menu trigger.
+ * @param {object} customStyle Optional custom CSS styles for the dropdown content and command item.
+ * @param {string[]} options The list of options to display in the dropdown.
+ * @param {'normal'|'purple'} theme The theme of the dropdown, either normal or purple.
+ * @param {string} label The label to display above the dropdown.
+ * @param {boolean} multiselect Whether the dropdown allows multiple selections.
+ * @param {string|string[]} selected The currently selected value(s) of the dropdown.
+ * @param {(selected: string|string[]) => void} setSelected The function to call when the selected value(s) change.
+ */
 const SearchDropdown = ({
   children,
   customStyle,
   options = [],
-  selected,
-  setSelected,
   theme = 'normal',
   label,
+  ...restProps //done to maintain type safety
 }: SearchDropdownProps) => {
-  console.log(selected);
+  //store the dropdown open state
+  const [open, setOpen] = useState(false);
+
   return (
-    <DropdownMenu>
+    <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
       <DropdownMenuContent
         className={cn(
@@ -79,25 +105,52 @@ const SearchDropdown = ({
                   )}
                   key={index}
                   value={option}
-                  onSelect={() => setSelected(option)}
+                  onSelect={() => {
+                    if (restProps.multiselect) {
+                      //in case the option is already selected
+                      if (restProps.selected.includes(option)) {
+                        restProps.setSelected(
+                          restProps.selected.filter((item) => item !== option),
+                        );
+                      } else {
+                        //in case the option is not selected
+                        restProps.setSelected([...restProps.selected, option]);
+                      }
+                    } else if (!restProps.multiselect) {
+                      //in single select directly set the option
+                      restProps.setSelected(option);
+                      setOpen(false);
+                    }
+                  }}
                 >
                   {option}
-                  {selected === option && (
+                  {!restProps.multiselect && restProps.selected === option && (
                     <p className="bg-brand-600 rounded-full p-1" />
                   )}
+                  {
+                    //in case the option is already selected
+                    restProps.multiselect &&
+                      restProps.selected.includes(option) && (
+                        <p className="bg-brand-600 rounded-full p-1" />
+                      )
+                  }
                 </CommandItem>
               ))}
             </CommandGroup>
           </CommandList>
         </Command>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem
-          className="hover:bg-ui-800 focus:bg-ui-800 focus:text-base-white text-md justify-between pr-3"
-          aria-label="close dropdown or done"
-        >
-          Done
-          <X />
-        </DropdownMenuItem>
+        {restProps.multiselect && (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              className="hover:bg-ui-800 focus:bg-ui-800 focus:text-base-white text-md justify-between pr-3"
+              aria-label="close dropdown or done"
+            >
+              Done
+              <X />
+            </DropdownMenuItem>
+          </>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );
