@@ -25,7 +25,7 @@ const SearchDropDownFilter = ({
       options={filters.options}
       theme="purple"
     >
-      <Button type="button" variant={'outline'}>
+      <Button type="button" variant={'outline'} className="border-ui-600">
         {filters.label}
         {filters.icon && <filters.icon className="ml-2 h-4 w-4" />}
       </Button>
