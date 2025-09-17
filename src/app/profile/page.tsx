@@ -27,8 +27,8 @@ import {
   formatName,
   formatToIndianNumber,
 } from '~/lib/formatting';
-import EditProfileDialog from '~/components/edit-profile-dialog';
-import UpdateProfileImage from '~/components/update-profile-image-dialog';
+import EditProfileDialog from '~/components/profile/edit-profile-dialog';
+import UpdateProfileImage from '~/components/profile/update-profile-image-dialog';
 
 /**
  * @description This is the profile page with all the user details with edit option to update user details

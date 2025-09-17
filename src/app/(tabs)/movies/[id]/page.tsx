@@ -36,7 +36,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { QueryKeys } from '~/constants/query-key.constants';
 import { useSpinnerStore } from '~/state-management/spinner-store';
-import EditMovieDialog from '~/components/edit-movie-dialog';
+import EditMovieDialog from '~/components/movies/edit-movie-dialog';
 const MovieDetails = () => {
   // hold the trailer visibility state
   const [trailerVisible, setTrailerVisible] = useState(false);

@@ -7,7 +7,7 @@ import {
   DialogTitle,
   DialogTrigger,
   DialogContent,
-} from './ui/dialog';
+} from '../ui/dialog';
 import {
   addMovieDefaultValues,
   addMovieSchema,
@@ -15,10 +15,10 @@ import {
 } from '~/schema/add-movie-schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { Button } from './ui/button';
+import { Button } from '../ui/button';
 import { Plus } from 'lucide-react';
-import { ScrollArea } from './ui/scroll-area';
-import CustomAlert from './custom-alert';
+import { ScrollArea } from '../ui/scroll-area';
+import CustomAlert from '../custom-alert';
 import { useAddMovie } from '~/services/movies-service';
 import { toast } from 'sonner';
 import { useSpinnerStore } from '~/state-management/spinner-store';

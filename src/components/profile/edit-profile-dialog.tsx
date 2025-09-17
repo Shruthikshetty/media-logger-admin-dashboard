@@ -7,7 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from './ui/dialog';
+} from '../ui/dialog';
 import { useForm } from 'react-hook-form';
 import {
   updateProfileDefaultValues,
@@ -22,11 +22,11 @@ import {
   FormField,
   FormItem,
   FormMessage,
-} from './ui/form';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
-import { Button } from './ui/button';
-import { Textarea } from './ui/textarea';
+} from '../ui/form';
+import { Input } from '../ui/input';
+import { Label } from '../ui/label';
+import { Button } from '../ui/button';
+import { Textarea } from '../ui/textarea';
 import {
   useGetUserDetails,
   useUpdateUserDetails,

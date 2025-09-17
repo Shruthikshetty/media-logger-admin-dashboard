@@ -7,27 +7,27 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from './ui/table';
-import { Skeleton } from './ui/skeleton';
+} from '../ui/table';
+import { Skeleton } from '../ui/skeleton';
 import {
   ColumnDef,
   flexRender,
   Table as ReactTable,
 } from '@tanstack/react-table';
 import { Movie } from '~/services/movies-service';
-import { ScrollArea, ScrollBar } from './ui/scroll-area';
-import CustomImage from './custom-image';
-import { Badge } from './ui/badge';
+import { ScrollArea, ScrollBar } from '../ui/scroll-area';
+import CustomImage from '../custom-image';
+import { Badge } from '../ui/badge';
 import { Calendar, Plus, Star } from 'lucide-react';
 import moment from 'moment';
-import CollapsableBadgeList from './collapsable-badge-list';
+import CollapsableBadgeList from '../collapsable-badge-list';
 import { cn } from '~/lib/utils';
 import { capitalizeFirstLetter } from '~/lib/formatting';
 import type { Pagination as PaginationType } from '~/types/global.types';
 import MovieActionDropdown from './movie-actions-dropdown';
-import { Checkbox } from './ui/checkbox';
+import { Checkbox } from '../ui/checkbox';
 import { useRouter } from 'next/navigation';
-import TablePagination from './table-pagination';
+import TablePagination from '../table-pagination';
 
 type MoviesTableType = {
   loading: boolean;

@@ -20,11 +20,11 @@ import {
   PieChartMediaDistributionConfig,
   WeeklyAdditionsConfig,
 } from '~/constants/config.constants';
-import { Card, CardHeader } from './ui/card';
+import { Card, CardHeader } from '../ui/card';
 import { AppColors } from '~/constants/colors.constants';
 import { AnalyticsData } from '~/services/analytics-service';
-import { Skeleton } from './ui/skeleton';
-import TitleSubtitle from './title-subtitle';
+import { Skeleton } from '../ui/skeleton';
+import TitleSubtitle from '../title-subtitle';
 
 /**
  * This component displays the dashboard charts containing the pie chart and the bar chart
