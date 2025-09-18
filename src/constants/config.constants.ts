@@ -324,3 +324,18 @@ export const MovieFilterConfig: FilterConfig[] = [
     icon: CalendarDays,
   },
 ];
+
+// user roles array
+export const UserRoles = ['user', 'admin'];
+
+// user filter config
+export const UsersFilterConfig: FilterConfig[] = [
+  {
+    key: 'role',
+    label: 'Role',
+    type: 'dropdown',
+    multiselect: false,
+    options: UserRoles,
+    icon: UserRound,
+  },
+];
