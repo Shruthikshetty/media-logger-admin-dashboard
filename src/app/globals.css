@@ -148,4 +148,18 @@
   body {
     @apply bg-background text-foreground;
   }
+  /* over write browser autofill */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    /* Set the text color to match the text color of the input field */
+    -webkit-box-shadow: 0 0 0px 1000px var(--color-base-black) inset !important;
+    /* Optionally, change the text color */
+    -webkit-text-fill-color: var(--color-base-white) !important;
+    /* Add a long transition to prevent a brief flicker of the browser's default style */
+    transition: background-color 5000s ease-in-out 0s;
+    /* Set the caret color to the text color */
+    caret-color: var(--color-base-white);
+  }
 }
