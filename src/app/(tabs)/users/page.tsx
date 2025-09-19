@@ -1,6 +1,7 @@
 'use client';
+import { getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import { Plus, Search } from 'lucide-react';
-import React from 'react';
+import React, { useMemo } from 'react';
 import MediaFilters from '~/components/media-filters';
 import TitleSubtitle from '~/components/title-subtitle';
 import { Button } from '~/components/ui/button';
@@ -12,16 +13,28 @@ import {
   CardTitle,
 } from '~/components/ui/card';
 import { Input } from '~/components/ui/input';
-import UserTable from '~/components/users/users-table';
+import UserTable, { UsersColumn } from '~/components/users/users-table';
 import { UsersFilterConfig } from '~/constants/config.constants';
 import { useFetchAllUsers } from '~/services/user-service';
-
-//@todo screen in progress
+/**
+ * This is the main tab containing all the registered users table with filters
+ * @returns {JSX.Element}
+ */
 const UsersTab = () => {
-  //const fetch all users
+  //custom hook to fetch all users
   const { data } = useFetchAllUsers();
-  //@TODO temp
-  console.log(data?.data);
+  // Create a stable empty array reference for the data prop
+  const defaultData = useMemo(
+    () => data?.data?.users ?? [],
+    [data?.data?.users],
+  );
+  // create a table with all the user data
+  const usersTable = useReactTable({
+    data: defaultData,
+    columns: UsersColumn,
+    getCoreRowModel: getCoreRowModel(),
+  });
+
   return (
     <div className="flex flex-col gap-5 p-5">
       {/* Header */}
@@ -81,7 +94,7 @@ const UsersTab = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <UserTable />
+          <UserTable table={usersTable} />
         </CardContent>
       </Card>
     </div>
