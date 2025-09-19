@@ -28,6 +28,7 @@ import MovieActionDropdown from './movie-actions-dropdown';
 import { Checkbox } from '../ui/checkbox';
 import { useRouter } from 'next/navigation';
 import TablePagination from '../table-pagination';
+import { TableSkeleton } from '../custom-loaders';
 
 type MoviesTableType = {
   loading: boolean;
@@ -225,22 +226,7 @@ const MoviesTable = ({
 }: MoviesTableType) => {
   const router = useRouter();
   //if loading return a skeleton table
-  if (loading)
-    return (
-      <Table>
-        <TableBody>
-          {[...Array(4)].map((_, i) => (
-            <TableRow key={i}>
-              {[...Array(4)].map((_, i) => (
-                <TableCell key={i}>
-                  <Skeleton className="h-8 w-full rounded-md" />
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    );
+  if (loading) return <TableSkeleton />;
   //if not loading return the table
   return (
     <>

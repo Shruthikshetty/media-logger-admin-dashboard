@@ -1,6 +1,7 @@
 import React, { createContext, use } from 'react';
 import { Skeleton } from './ui/skeleton';
 import { cn } from '~/lib/utils';
+import { Table, TableBody, TableCell, TableRow } from './ui/table';
 
 /**
  * A simple component to display a loading animation for lists.
@@ -37,6 +38,33 @@ export const ListLoader = ({
         />
       ))}
     </div>
+  );
+};
+
+/**
+ * A component to display a table skeleton for loading states.
+ *
+ * @param {{ noOfRows: number, noOfColumns: number }} props
+ * @param {number} [props.noOfRows=4] The number of rows to display in the table.
+ * @param {number} [props.noOfColumns=4] The number of columns to display in the table.
+ * @returns {JSX.Element} A JSX element representing the table skeleton.
+ */
+
+export const TableSkeleton = ({ noOfRows = 4, noOfColumns = 4 }) => {
+  return (
+    <Table>
+      <TableBody>
+        {[...Array(noOfRows)].map((_, i) => (
+          <TableRow key={i}>
+            {[...Array(noOfColumns)].map((_, i) => (
+              <TableCell key={i}>
+                <Skeleton className="h-8 w-full rounded-md" />
+              </TableCell>
+            ))}
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
   );
 };
 

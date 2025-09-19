@@ -14,6 +14,9 @@ import {
   TableRow,
 } from '../ui/table';
 import { ScrollArea, ScrollBar } from '../ui/scroll-area';
+import TablePagination from '../table-pagination';
+import { Pagination } from '~/types/global.types';
+import { TableSkeleton } from '../custom-loaders';
 
 /**
  * This is the columns of the users table
@@ -27,52 +30,68 @@ export const UsersColumn: ColumnDef<User, string | number>[] = [
 ];
 type UserTableProps = {
   table: ReactTable<User>;
+  pagination?: Pagination;
+  page: number;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
+  loading: boolean;
 };
 
 /**
  * This is the table containing all the users data
  * @returns {JSX.Element}
  */
-const UserTable = ({ table }: UserTableProps) => {
+const UserTable = ({
+  table,
+  pagination,
+  page,
+  setPage,
+  loading,
+}: UserTableProps) => {
+  //if loading return a skeleton table
+  if (loading) return <TableSkeleton />;
+  //if not loading return the table
   return (
-    <ScrollArea className="rounded-md pb-3 whitespace-nowrap">
-      <Table className="min-w-full">
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id} className="hover:bg-ui-800">
-              {headerGroup.headers.map((header) => (
-                <TableHead
-                  key={header.id}
-                  className="text-ui-200 text-base font-bold"
-                >
-                  {flexRender(
-                    header.column.columnDef?.header,
-                    header.getContext(),
-                  )}
-                </TableHead>
-              ))}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {table.getRowModel().rows.map((row) => (
-            <TableRow key={row.id} className="hover:bg-ui-800">
-              {row.getVisibleCells().map((cell) => (
-                <TableCell key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      {/* custom scroll bar styles */}
-      <ScrollBar
-        orientation="horizontal"
-        className="bg-ui-800 rounded-xl"
-        barClassName="hover:bg-ui-400 bg-ui-600"
-      />
-    </ScrollArea>
+    <>
+      <ScrollArea className="rounded-md pb-3 whitespace-nowrap">
+        <Table className="min-w-full">
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id} className="hover:bg-ui-800">
+                {headerGroup.headers.map((header) => (
+                  <TableHead
+                    key={header.id}
+                    className="text-ui-200 text-base font-bold"
+                  >
+                    {flexRender(
+                      header.column.columnDef?.header,
+                      header.getContext(),
+                    )}
+                  </TableHead>
+                ))}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows.map((row) => (
+              <TableRow key={row.id} className="hover:bg-ui-800">
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+        {/* custom scroll bar styles */}
+        <ScrollBar
+          orientation="horizontal"
+          className="bg-ui-800 rounded-xl"
+          barClassName="hover:bg-ui-400 bg-ui-600"
+        />
+      </ScrollArea>
+      <TablePagination pagination={pagination} page={page} setPage={setPage} />
+    </>
   );
 };
 

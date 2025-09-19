@@ -1,7 +1,8 @@
 'use client';
 import { getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import { Plus, Search } from 'lucide-react';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { toast } from 'sonner';
 import MediaFilters from '~/components/media-filters';
 import TitleSubtitle from '~/components/title-subtitle';
 import { Button } from '~/components/ui/button';
@@ -15,14 +16,19 @@ import {
 import { Input } from '~/components/ui/input';
 import UserTable, { UsersColumn } from '~/components/users/users-table';
 import { UsersFilterConfig } from '~/constants/config.constants';
+import useDelayedLoading from '~/hooks/use-delayed-loading';
 import { useFetchAllUsers } from '~/services/user-service';
 /**
  * This is the main tab containing all the registered users table with filters
  * @returns {JSX.Element}
  */
 const UsersTab = () => {
+  // stores the current pagination page
+  const [page, setPage] = useState(1);
   //custom hook to fetch all users
-  const { data } = useFetchAllUsers();
+  const { data, isFetching, isError, error } = useFetchAllUsers({ page });
+  //extracting delayed loading
+  const loading = useDelayedLoading(isFetching);
   // Create a stable empty array reference for the data prop
   const defaultData = useMemo(
     () => data?.data?.users ?? [],
@@ -34,6 +40,16 @@ const UsersTab = () => {
     columns: UsersColumn,
     getCoreRowModel: getCoreRowModel(),
   });
+
+  //catch any unexpected errors
+  useEffect(() => {
+    if (isError)
+      toast.error(error?.response?.data?.message ?? error.message, {
+        classNames: {
+          toast: '!bg-feedback-error',
+        },
+      });
+  }, [isError, error]);
 
   return (
     <div className="flex flex-col gap-5 p-5">
@@ -94,7 +110,13 @@ const UsersTab = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <UserTable table={usersTable} />
+          <UserTable
+            table={usersTable}
+            pagination={data?.data?.pagination}
+            page={page}
+            setPage={setPage}
+            loading={loading}
+          />
         </CardContent>
       </Card>
     </div>
