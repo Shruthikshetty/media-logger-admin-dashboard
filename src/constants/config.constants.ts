@@ -59,6 +59,9 @@ export const AnalyticsDataStaleTime = 1 * 60 * 1000; //1 min
 //slate time for user data
 export const UserDataStaleTime = 5 * 60 * 1000; //5 min
 
+//slate time for all users data
+export const AllUsersDataStaleTime = 1 * 60 * 1000; //1 min
+
 // image upload max size
 export const MaxImageSize = 2 * 1024 * 1024; // 2mb
 

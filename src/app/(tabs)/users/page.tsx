@@ -14,9 +14,14 @@ import {
 import { Input } from '~/components/ui/input';
 import UserTable from '~/components/users/users-table';
 import { UsersFilterConfig } from '~/constants/config.constants';
+import { useFetchAllUsers } from '~/services/user-service';
 
 //@todo screen in progress
 const UsersTab = () => {
+  //const fetch all users
+  const { data } = useFetchAllUsers();
+  //@TODO temp
+  console.log(data?.data);
   return (
     <div className="flex flex-col gap-5 p-5">
       {/* Header */}

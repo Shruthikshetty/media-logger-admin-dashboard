@@ -4,7 +4,10 @@
 
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { UserDataStaleTime } from '~/constants/config.constants';
+import {
+  AllUsersDataStaleTime,
+  UserDataStaleTime,
+} from '~/constants/config.constants';
 import { Endpoints } from '~/constants/endpoints.constants';
 import { QueryKeys } from '~/constants/query-key.constants';
 import { useAuthStore, User } from '~/state-management/auth-store';
@@ -71,13 +74,25 @@ export const useUpdateUserDetails = () => {
 };
 
 //get all users
-export const useFetchAllUsers = () => {
+export const useFetchAllUsers = ({
+  limit = 20,
+  page = 1,
+}: {
+  limit?: number;
+  page?: number;
+} = {}) => {
   return useQuery<ResponseAllUsers, AxiosError<ApiError>>({
-    queryKey: [QueryKeys.allUsers],
-    staleTime: UserDataStaleTime,
-    queryFn: async () =>
+    queryKey: [QueryKeys.allUsers, limit, page],
+    staleTime: AllUsersDataStaleTime,
+    queryFn: ({ signal }) =>
       apiClient
-        .get<ResponseAllUsers>(Endpoints.allUsers)
+        .get<ResponseAllUsers>(Endpoints.allUsers, {
+          params: {
+            limit,
+            page,
+          },
+          signal,
+        })
         .then((res) => res.data),
   });
 };
