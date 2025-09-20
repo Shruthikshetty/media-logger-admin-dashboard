@@ -8,7 +8,6 @@ import {
   TableHeader,
   TableRow,
 } from '../ui/table';
-import { Skeleton } from '../ui/skeleton';
 import {
   ColumnDef,
   flexRender,

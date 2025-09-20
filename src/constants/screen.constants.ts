@@ -10,6 +10,7 @@ import {
   User,
   Users,
 } from 'lucide-react';
+import { RoleKey } from './config.constants';
 
 // sidebar icons
 export const NAVIGATION_ICONS = [
@@ -76,7 +77,7 @@ export const ROLE_COLOR_MAPPING: Record<
 };
 
 // role icon mapping
-export const ROLE_ICON_MAPPING: Record<string, LucideIcon> = {
+export const ROLE_ICON_MAPPING: Record<RoleKey, LucideIcon> = {
   admin: Crown,
   user: User,
 };

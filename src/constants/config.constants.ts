@@ -329,7 +329,8 @@ export const MovieFilterConfig: FilterConfig[] = [
 ];
 
 // user roles array
-export const UserRoles = ['user', 'admin'];
+export const UserRoles = ['user', 'admin'] as const;
+export type RoleKey = (typeof UserRoles)[number];
 
 // user filter config
 export const UsersFilterConfig: FilterConfig[] = [
@@ -338,7 +339,7 @@ export const UsersFilterConfig: FilterConfig[] = [
     label: 'Role',
     type: 'dropdown',
     multiselect: false,
-    options: UserRoles,
+    options: [...UserRoles],
     icon: UserRound,
   },
 ];
