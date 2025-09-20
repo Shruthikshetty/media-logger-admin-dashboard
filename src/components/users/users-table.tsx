@@ -18,8 +18,9 @@ import TablePagination from '../table-pagination';
 import { Pagination } from '~/types/global.types';
 import { TableSkeleton } from '../custom-loaders';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
-import { Ellipsis, MapPin, User as UserIcon } from 'lucide-react';
+import { MapPin, User as UserIcon } from 'lucide-react';
 import RoleBadge from '../role-badge';
+import UserActionsDropdown from './user-action-dropdown';
 
 /**
  * This is the columns of the users table
@@ -87,12 +88,13 @@ export const UsersColumn: ColumnDef<User, string | number>[] = [
     header: 'Actions',
     cell: (props) => (
       <div onClick={(e) => e.stopPropagation()}>
-        <Ellipsis />
+        <UserActionsDropdown userId={props.row.original?._id} />
       </div>
     ),
-    size: 50,
   },
 ];
+
+// user table prop types
 type UserTableProps = {
   table: ReactTable<User>;
   pagination?: Pagination;
