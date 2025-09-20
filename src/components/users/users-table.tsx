@@ -22,6 +22,7 @@ import { MapPin, Trophy, User as UserIcon } from 'lucide-react';
 import RoleBadge from '../role-badge';
 import UserActionsDropdown from './user-action-dropdown';
 import { formatToIndianNumber } from '~/lib/formatting';
+import { useRouter } from 'next/navigation';
 
 /**
  * This is the columns of the users table
@@ -41,6 +42,7 @@ export const UsersColumn: ColumnDef<User, string | number>[] = [
         </AvatarFallback>
       </Avatar>
     ),
+    size: 70,
   },
   {
     accessorKey: 'name',
@@ -97,6 +99,7 @@ export const UsersColumn: ColumnDef<User, string | number>[] = [
         <UserActionsDropdown userId={props.row.original?._id} />
       </div>
     ),
+    size: 50
   },
 ];
 
@@ -120,6 +123,8 @@ const UserTable = ({
   setPage,
   loading,
 }: UserTableProps) => {
+  // initialize router
+  const router = useRouter();
   //if loading return a skeleton table
   if (loading) return <TableSkeleton />;
   //if not loading return the table
@@ -132,6 +137,9 @@ const UserTable = ({
               <TableRow key={headerGroup.id} className="hover:bg-ui-800">
                 {headerGroup.headers.map((header) => (
                   <TableHead
+                    style={{
+                      width: header.column.columnDef.size,
+                    }}
                     key={header.id}
                     className="text-ui-200 text-base font-bold"
                   >
@@ -146,7 +154,11 @@ const UserTable = ({
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows.map((row) => (
-              <TableRow key={row.id} className="hover:bg-ui-800">
+              <TableRow
+                key={row.id}
+                className="hover:bg-ui-800"
+                onClick={() => router.push(`/users/${row.original._id}`)}
+              >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
