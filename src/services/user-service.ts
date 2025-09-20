@@ -2,7 +2,7 @@
  * user related services
  */
 
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import {
   AllUsersDataStaleTime,
@@ -17,6 +17,12 @@ import apiClient from '~/lib/api-client';
 type ResponseUserDetails = {
   success: boolean;
   data: User;
+};
+
+type AddUserResponse = {
+  success: boolean;
+  data: User;
+  message: string;
 };
 
 type ResponseUpdateUserDetails = {
@@ -53,6 +59,16 @@ type UserFiltersRequest = {
 type ChangeUserRoleRequest = {
   userId: string;
   role: string;
+};
+
+type AddUserRequest = {
+  name: string;
+  email: string;
+  password: string;
+  bio?: string;
+  location?: string;
+  profileImg?: string;
+  xp?: number;
 };
 
 //custom hook to fetch the user details
@@ -96,6 +112,7 @@ export const useFetchAllUsers = ({
   return useQuery<ResponseAllUsers, AxiosError<ApiError>>({
     queryKey: [QueryKeys.allUsers, limit, page],
     staleTime: AllUsersDataStaleTime,
+    placeholderData: keepPreviousData,
     queryFn: ({ signal }) =>
       apiClient
         .get<ResponseAllUsers>(Endpoints.allUsers, {
@@ -114,6 +131,7 @@ export const useFilterUsers = (filters?: UserFiltersRequest) => {
   return useQuery<ResponseAllUsers, AxiosError<ApiError>>({
     queryKey: [QueryKeys.filterUsers, filters],
     staleTime: AllUsersDataStaleTime,
+    placeholderData: keepPreviousData,
     queryFn: ({ signal }) =>
       apiClient
         .post<ResponseAllUsers>(Endpoints.filterUsers, filters, {
@@ -140,5 +158,11 @@ export const useChangeUserRole = () => {
   });
 };
 
-
-// custom hook to add a new user 
+// custom hook to add a new user
+export const useAddUser = () => {
+  return useMutation<AddUserResponse, AxiosError<ApiError>, AddUserRequest>({
+    mutationKey: [QueryKeys.addUser],
+    mutationFn: (user: AddUserRequest) =>
+      apiClient.post(Endpoints.baseUser, user).then((res) => res.data),
+  });
+};
