@@ -1,4 +1,4 @@
-import { Crown, Ellipsis, Eye, SquarePen, Trash2 } from 'lucide-react';
+import { Crown, Ellipsis, Eye, Trash2 } from 'lucide-react';
 import React from 'react';
 import {
   DropdownMenu,
@@ -23,12 +23,13 @@ const UserActionsDropdown = ({ userId }: { userId: string }) => {
       color: 'text-base-white',
       onClick: () => {}, //@TODO
     },
-    {
-      title: 'Edit User',
-      icon: SquarePen,
-      color: 'text-base-white',
-      onClick: () => {}, //@TODO
-    },
+    //@TODO to be added in the future when api is available
+    // {
+    //   title: 'Edit User',
+    //   icon: SquarePen,
+    //   color: 'text-base-white',
+    //   onClick: () => {},
+    // },
     {
       title: 'Change Role',
       icon: Crown,

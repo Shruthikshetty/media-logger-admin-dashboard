@@ -50,6 +50,11 @@ type UserFiltersRequest = {
   role?: string;
 };
 
+type ChangeUserRoleRequest = {
+  userId: string;
+  role: string;
+};
+
 //custom hook to fetch the user details
 export const useGetUserDetails = () => {
   //check if token is set
@@ -117,3 +122,23 @@ export const useFilterUsers = (filters?: UserFiltersRequest) => {
         .then((res) => res.data),
   });
 };
+
+//custom hook to change user role
+export const useChangeUserRole = () => {
+  return useMutation<
+    ResponseUpdateUserDetails,
+    AxiosError<ApiError>,
+    ChangeUserRoleRequest
+  >({
+    mutationKey: [QueryKeys.updateUserRole],
+    mutationFn: ({ userId, role }: ChangeUserRoleRequest) =>
+      apiClient
+        .put<ResponseUpdateUserDetails>(Endpoints.userRole + `/${userId}`, {
+          role,
+        })
+        .then((res) => res.data),
+  });
+};
+
+
+// custom hook to add a new user 

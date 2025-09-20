@@ -8,6 +8,7 @@ export const QueryKeys = {
   userDetails: 'user-details',
   allUsers: 'all-users',
   filterUsers: 'filter-users',
+  updateUserRole: 'update-user-role',
   updateUserDetails: 'update-user-details',
   uploadImage: 'upload-image',
   fetchMovies: 'fetch-movies',
