@@ -10,6 +10,7 @@ export const Endpoints = {
   analyticsDashboard: `/api/analytic/dashboard-admin`,
   baseUser: `/api/user`,
   allUsers: `/api/user/all`,
+  filterUsers: `/api/user/filter`,
   uploadImage: `/api/upload/image`,
   baseMovie: `/api/movie`,
   filterMovies: `/api/movie/filter`,

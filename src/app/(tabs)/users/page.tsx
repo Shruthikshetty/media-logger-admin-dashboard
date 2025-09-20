@@ -17,7 +17,7 @@ import { Input } from '~/components/ui/input';
 import UserTable, { UsersColumn } from '~/components/users/users-table';
 import { UsersFilterConfig } from '~/constants/config.constants';
 import useDelayedLoading from '~/hooks/use-delayed-loading';
-import { useFetchAllUsers } from '~/services/user-service';
+import { useFilterUsers } from '~/services/user-service';
 /**
  * This is the main tab containing all the registered users table with filters
  * @returns {JSX.Element}
@@ -26,7 +26,9 @@ const UsersTab = () => {
   // stores the current pagination page
   const [page, setPage] = useState(1);
   //custom hook to fetch all users
-  const { data, isFetching, isError, error } = useFetchAllUsers({ page });
+  const { data, isFetching, isError, error } = useFilterUsers({
+    page,
+  });
   //extracting delayed loading
   const loading = useDelayedLoading(isFetching);
   // Create a stable empty array reference for the data prop

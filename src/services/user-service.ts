@@ -43,6 +43,13 @@ type ResponseAllUsers = {
   };
 };
 
+type UserFiltersRequest = {
+  page?: number;
+  limit?: number;
+  searchText?: string;
+  role?: string;
+};
+
 //custom hook to fetch the user details
 export const useGetUserDetails = () => {
   //check if token is set
@@ -91,6 +98,20 @@ export const useFetchAllUsers = ({
             limit,
             page,
           },
+          signal,
+        })
+        .then((res) => res.data),
+  });
+};
+
+//get users by filter
+export const useFilterUsers = (filters?: UserFiltersRequest) => {
+  return useQuery<ResponseAllUsers, AxiosError<ApiError>>({
+    queryKey: [QueryKeys.filterUsers, filters],
+    staleTime: AllUsersDataStaleTime,
+    queryFn: ({ signal }) =>
+      apiClient
+        .post<ResponseAllUsers>(Endpoints.filterUsers, filters, {
           signal,
         })
         .then((res) => res.data),
