@@ -18,7 +18,7 @@ import TablePagination from '../table-pagination';
 import { Pagination } from '~/types/global.types';
 import { TableSkeleton } from '../custom-loaders';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
-import { Ellipsis, Locate, MapPin, User as UserIcon } from 'lucide-react';
+import { Ellipsis, MapPin, User as UserIcon } from 'lucide-react';
 import RoleBadge from '../role-badge';
 
 /**
@@ -58,7 +58,7 @@ export const UsersColumn: ColumnDef<User, string | number>[] = [
     cell: (props) => (
       <RoleBadge
         role={props.getValue() as string}
-        className='text-sm [&_[data-slot="icon"]]:h-3 [&_[data-slot="icon"]]:w-3 py-0'
+        className='py-0 text-sm [&_[data-slot="icon"]]:h-3 [&_[data-slot="icon"]]:w-3'
       />
     ),
   },

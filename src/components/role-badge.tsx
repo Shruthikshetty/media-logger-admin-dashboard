@@ -2,7 +2,10 @@ import { Shield } from 'lucide-react';
 import React from 'react';
 import { Badge } from './ui/badge';
 import { Skeleton } from './ui/skeleton';
-import { ROLE_COLOR_MAPPING } from '~/constants/screen.constants';
+import {
+  ROLE_COLOR_MAPPING,
+  ROLE_ICON_MAPPING,
+} from '~/constants/screen.constants';
 import { capitalizeFirstLetter } from '~/lib/formatting';
 import { cn } from '~/lib/utils';
 
@@ -19,6 +22,8 @@ const RoleBadge = ({
   // in case of loading return skeleton
   if (!role)
     return <Skeleton className="bg-ui-600 h-6 w-20 rounded-full md:w-25" />;
+  // get role icon
+  const RoleIcon = ROLE_ICON_MAPPING[role.toLowerCase()];
   // return badge
   return (
     <Badge
@@ -29,7 +34,7 @@ const RoleBadge = ({
       )}
     >
       <p>
-        <Shield strokeWidth={3} className="h-4 w-4" data-slot="icon" />
+        <RoleIcon strokeWidth={3} className="h-4 w-4" data-slot="icon" />
       </p>
       <p>{capitalizeFirstLetter(role)}</p>
     </Badge>

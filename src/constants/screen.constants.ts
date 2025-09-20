@@ -1,8 +1,10 @@
 import {
   Bell,
+  Crown,
   Film,
   Gamepad2,
   LayoutDashboard,
+  LucideIcon,
   Settings,
   Tv,
   User,
@@ -71,6 +73,12 @@ export const ROLE_COLOR_MAPPING: Record<
 > = {
   admin: 'destructive',
   user: 'secondary',
+};
+
+// role icon mapping
+export const ROLE_ICON_MAPPING: Record<string, LucideIcon> = {
+  admin: Crown,
+  user: User,
 };
 
 // Code area example placeholder
