@@ -72,6 +72,9 @@ export const FetchAllMoviesStaleTime = 1 * 60 * 1000; //1 min
 //fetch single movie details
 export const FetchMovieDetailsStaleTime = 1 * 60 * 1000; //1 min
 
+// user table page item limit
+export const UserTablePageItemLimit = 20;
+
 // movie and Tv genres
 export const GENRE_MOVIE_TV = [
   'Action',

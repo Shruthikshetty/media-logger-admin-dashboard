@@ -3,6 +3,7 @@ import { getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import { Plus, Search } from 'lucide-react';
 import React, { useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
+import { LoadingWrapper } from '~/components/custom-loaders';
 import MediaFilters from '~/components/media-filters';
 import TitleSubtitle from '~/components/title-subtitle';
 import { Button } from '~/components/ui/button';
@@ -14,10 +15,20 @@ import {
   CardTitle,
 } from '~/components/ui/card';
 import { Input } from '~/components/ui/input';
+import { Skeleton } from '~/components/ui/skeleton';
 import UserTable, { UsersColumn } from '~/components/users/users-table';
-import { UsersFilterConfig } from '~/constants/config.constants';
+import {
+  UsersFilterConfig,
+  UserTablePageItemLimit,
+} from '~/constants/config.constants';
 import useDelayedLoading from '~/hooks/use-delayed-loading';
 import { useFilterUsers } from '~/services/user-service';
+
+type UserFilterDataType = {
+  search?: string;
+  role?: string;
+};
+
 /**
  * This is the main tab containing all the registered users table with filters
  * @returns {JSX.Element}
@@ -25,10 +36,19 @@ import { useFilterUsers } from '~/services/user-service';
 const UsersTab = () => {
   // stores the current pagination page
   const [page, setPage] = useState(1);
+  // store filters data for users
+  const [filters, setFilters] = useState<UserFilterDataType>(null!);
+  // memorize can create user filter query
+  const usersFilterQuery = useMemo(
+    () => ({
+      page,
+      limit: UserTablePageItemLimit,
+      ...filters
+    }),
+    [filters, page],
+  );
   //custom hook to fetch all users
-  const { data, isFetching, isError, error } = useFilterUsers({
-    page,
-  });
+  const { data, isFetching, isError, error } = useFilterUsers(usersFilterQuery);
   //extracting delayed loading
   const loading = useDelayedLoading(isFetching);
   // Create a stable empty array reference for the data prop
@@ -94,8 +114,11 @@ const UsersTab = () => {
             </div>
             <MediaFilters
               config={UsersFilterConfig}
-              onFilterChange={() => {
-                //handle filters
+              onFilterChange={(filter) => {
+                // reset the page on filter change
+                setPage(1);
+                // set the filters
+                setFilters(filter as UserFilterDataType);
               }}
             />
           </div>
@@ -104,9 +127,14 @@ const UsersTab = () => {
       {/* users data Table */}
       <Card className="border-ui-600 text-base-white from-base-black to-ui-900 bg-gradient-to-r">
         <CardHeader>
-          <CardTitle className="text-xl font-semibold">
-            User Directory (4 users)
-          </CardTitle>
+          <LoadingWrapper
+            isLoading={loading}
+            fallback={<Skeleton className="h-5 w-30 rounded-full" />}
+          >
+            <CardTitle className="text-xl font-semibold">
+              User Directory ({data?.data?.pagination.total} users)
+            </CardTitle>
+          </LoadingWrapper>
           <CardDescription className="text-ui-400 text-sm">
             Complete list of platform users with admin controls
           </CardDescription>

@@ -18,9 +18,10 @@ import TablePagination from '../table-pagination';
 import { Pagination } from '~/types/global.types';
 import { TableSkeleton } from '../custom-loaders';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
-import { MapPin, User as UserIcon } from 'lucide-react';
+import { MapPin, Trophy, User as UserIcon } from 'lucide-react';
 import RoleBadge from '../role-badge';
 import UserActionsDropdown from './user-action-dropdown';
+import { formatToIndianNumber } from '~/lib/formatting';
 
 /**
  * This is the columns of the users table
@@ -67,7 +68,12 @@ export const UsersColumn: ColumnDef<User, string | number>[] = [
     accessorKey: 'xp',
     header: 'XP',
     cell: (props) => (
-      <p className="text-base font-semibold">{props.getValue()}</p>
+      <div className="flex flex-row items-center gap-1">
+        <Trophy className="text-feedback-warning h-4 w-4" />
+        <p className="text-base font-semibold">
+          {formatToIndianNumber(props?.getValue() as number)}
+        </p>
+      </div>
     ),
   },
   {
