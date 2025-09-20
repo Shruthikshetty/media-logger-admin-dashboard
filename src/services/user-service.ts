@@ -4,11 +4,14 @@
 
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { UserDataStaleTime } from '~/constants/config.constants';
+import {
+  AllUsersDataStaleTime,
+  UserDataStaleTime,
+} from '~/constants/config.constants';
 import { Endpoints } from '~/constants/endpoints.constants';
 import { QueryKeys } from '~/constants/query-key.constants';
 import { useAuthStore, User } from '~/state-management/auth-store';
-import { ApiError } from '~/types/global.types';
+import { ApiError, Pagination } from '~/types/global.types';
 import apiClient from '~/lib/api-client';
 
 type ResponseUserDetails = {
@@ -32,6 +35,14 @@ type RequestUpdateUserDetails = Partial<{
   xp: number;
 }>;
 
+type ResponseAllUsers = {
+  success: boolean;
+  data: {
+    users: User[];
+    pagination: Pagination;
+  };
+};
+
 //custom hook to fetch the user details
 export const useGetUserDetails = () => {
   //check if token is set
@@ -42,7 +53,7 @@ export const useGetUserDetails = () => {
     staleTime: UserDataStaleTime,
     queryFn: async () =>
       apiClient
-        .get<ResponseUserDetails>(Endpoints.userDetails)
+        .get<ResponseUserDetails>(Endpoints.baseUser)
         .then((res) => res.data),
   });
 };
@@ -57,7 +68,31 @@ export const useUpdateUserDetails = () => {
     mutationKey: [QueryKeys.updateUserDetails],
     mutationFn: (details: RequestUpdateUserDetails) =>
       apiClient
-        .patch<ResponseUpdateUserDetails>(Endpoints.userDetails, details)
+        .patch<ResponseUpdateUserDetails>(Endpoints.baseUser, details)
+        .then((res) => res.data),
+  });
+};
+
+//get all users
+export const useFetchAllUsers = ({
+  limit = 20,
+  page = 1,
+}: {
+  limit?: number;
+  page?: number;
+} = {}) => {
+  return useQuery<ResponseAllUsers, AxiosError<ApiError>>({
+    queryKey: [QueryKeys.allUsers, limit, page],
+    staleTime: AllUsersDataStaleTime,
+    queryFn: ({ signal }) =>
+      apiClient
+        .get<ResponseAllUsers>(Endpoints.allUsers, {
+          params: {
+            limit,
+            page,
+          },
+          signal,
+        })
         .then((res) => res.data),
   });
 };

@@ -14,6 +14,7 @@ import {
   Tag,
   UserRound,
 } from 'lucide-react';
+import { UserRoles } from './screen.constants';
 
 export const CookieNames = {
   token: 'token',
@@ -58,6 +59,9 @@ export const AnalyticsDataStaleTime = 1 * 60 * 1000; //1 min
 
 //slate time for user data
 export const UserDataStaleTime = 5 * 60 * 1000; //5 min
+
+//slate time for all users data
+export const AllUsersDataStaleTime = 1 * 60 * 1000; //1 min
 
 // image upload max size
 export const MaxImageSize = 2 * 1024 * 1024; // 2mb
@@ -322,5 +326,20 @@ export const MovieFilterConfig: FilterConfig[] = [
     label: 'Release Date',
     type: 'date',
     icon: CalendarDays,
+  },
+];
+
+// user roles array
+export const UserRolesArray = Object.values(UserRoles);
+
+// user filter config
+export const UsersFilterConfig: FilterConfig[] = [
+  {
+    key: 'role',
+    label: 'Role',
+    type: 'dropdown',
+    multiselect: false,
+    options: UserRolesArray,
+    icon: UserRound,
   },
 ];

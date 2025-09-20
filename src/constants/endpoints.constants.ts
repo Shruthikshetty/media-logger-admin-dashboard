@@ -8,7 +8,8 @@ export const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? '';
 export const Endpoints = {
   login: `/api/auth/login`,
   analyticsDashboard: `/api/analytic/dashboard-admin`,
-  userDetails: `/api/user`,
+  baseUser: `/api/user`,
+  allUsers: `/api/user/all`,
   uploadImage: `/api/upload/image`,
   baseMovie: `/api/movie`,
   filterMovies: `/api/movie/filter`,
