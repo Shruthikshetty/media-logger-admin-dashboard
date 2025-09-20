@@ -16,6 +16,7 @@ import {
 } from '~/components/ui/card';
 import { Input } from '~/components/ui/input';
 import { Skeleton } from '~/components/ui/skeleton';
+import AddUserDialog from '~/components/users/add-user-dialog';
 import UserTable, { UsersColumn } from '~/components/users/users-table';
 import {
   UsersFilterConfig,
@@ -85,14 +86,17 @@ const UsersTab = () => {
           title="Users Management"
           subtitle="Manage your platform users and permissions"
         />
-        <Button
-          className="border-0 bg-gradient-to-r from-orange-400 to-orange-600 hover:opacity-80"
-          aria-label="add user"
-          variant={'outline'}
-        >
-          <Plus className="mr-1 size-4" />
-          Add User
-        </Button>
+        <AddUserDialog>
+          <Button
+            className="border-0 bg-gradient-to-r from-orange-400 to-orange-600 hover:opacity-80"
+            aria-label="add user"
+            variant={'outline'}
+            type="button"
+          >
+            <Plus className="mr-1 size-4" />
+            Add User
+          </Button>
+        </AddUserDialog>
       </div>
       {/* Search bar  and filter*/}
       <Card className="border-ui-600 text-base-white from-base-black to-ui-900 bg-gradient-to-r">
