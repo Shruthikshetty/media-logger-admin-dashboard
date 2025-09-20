@@ -1,7 +1,7 @@
 'use client';
 import { getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import { Plus, Search } from 'lucide-react';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useDeferredValue, useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { LoadingWrapper } from '~/components/custom-loaders';
 import MediaFilters from '~/components/media-filters';
@@ -25,7 +25,6 @@ import useDelayedLoading from '~/hooks/use-delayed-loading';
 import { useFilterUsers } from '~/services/user-service';
 
 type UserFilterDataType = {
-  search?: string;
   role?: string;
 };
 
@@ -36,6 +35,10 @@ type UserFilterDataType = {
 const UsersTab = () => {
   // stores the current pagination page
   const [page, setPage] = useState(1);
+  // holds th search text for users
+  const [searchText, setSearchText] = useState<string>('');
+  // derive a differed value for search text
+  const deferredSearchText = useDeferredValue(searchText);
   // store filters data for users
   const [filters, setFilters] = useState<UserFilterDataType>(null!);
   // memorize can create user filter query
@@ -43,9 +46,10 @@ const UsersTab = () => {
     () => ({
       page,
       limit: UserTablePageItemLimit,
-      ...filters
+      searchText: deferredSearchText,
+      ...filters,
     }),
-    [filters, page],
+    [deferredSearchText, filters, page],
   );
   //custom hook to fetch all users
   const { data, isFetching, isError, error } = useFilterUsers(usersFilterQuery);
@@ -110,6 +114,8 @@ const UsersTab = () => {
                 className="border-ui-600 pl-10"
                 id="search"
                 placeholder="Search movies by title"
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
               />
             </div>
             <MediaFilters

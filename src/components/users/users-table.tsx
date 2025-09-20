@@ -34,7 +34,7 @@ export const UsersColumn: ColumnDef<User, string | number>[] = [
       <Avatar>
         <AvatarImage
           src={props.getValue() as string}
-          className="h-14 w-14 rounded-full"
+          className="h-14 w-14 min-w-12 rounded-full"
         />
         <AvatarFallback className="justify-start bg-transparent">
           <UserIcon className="bg-brand-200 text-base-white h-14 w-14 rounded-full p-3" />
