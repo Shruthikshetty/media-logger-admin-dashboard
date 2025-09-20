@@ -14,6 +14,7 @@ import {
   Tag,
   UserRound,
 } from 'lucide-react';
+import { UserRoles } from './screen.constants';
 
 export const CookieNames = {
   token: 'token',
@@ -329,8 +330,7 @@ export const MovieFilterConfig: FilterConfig[] = [
 ];
 
 // user roles array
-export const UserRoles = ['user', 'admin'] as const;
-export type RoleKey = (typeof UserRoles)[number];
+export const UserRolesArray = Object.values(UserRoles);
 
 // user filter config
 export const UsersFilterConfig: FilterConfig[] = [
@@ -339,7 +339,7 @@ export const UsersFilterConfig: FilterConfig[] = [
     label: 'Role',
     type: 'dropdown',
     multiselect: false,
-    options: [...UserRoles],
+    options: UserRolesArray,
     icon: UserRound,
   },
 ];

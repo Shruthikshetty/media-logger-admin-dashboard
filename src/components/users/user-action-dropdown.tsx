@@ -14,7 +14,7 @@ import {
  * Mainly used in user table performs actions like view details , delete , edit role
  * @param movieId
  */
-const UserActionsDropdown = ({ userId }: { userId: string }) => {
+const UserActionsDropdown = ({}: { userId: string }) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
