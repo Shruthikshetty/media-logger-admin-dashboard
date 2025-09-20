@@ -17,15 +17,80 @@ import { ScrollArea, ScrollBar } from '../ui/scroll-area';
 import TablePagination from '../table-pagination';
 import { Pagination } from '~/types/global.types';
 import { TableSkeleton } from '../custom-loaders';
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+import { Ellipsis, Locate, MapPin, User as UserIcon } from 'lucide-react';
+import RoleBadge from '../role-badge';
 
 /**
  * This is the columns of the users table
  */
 export const UsersColumn: ColumnDef<User, string | number>[] = [
   {
+    accessorKey: 'profileImg',
+    header: 'User',
+    cell: (props) => (
+      <Avatar>
+        <AvatarImage
+          src={props.getValue() as string}
+          className="h-14 w-14 rounded-full"
+        />
+        <AvatarFallback className="justify-start bg-transparent">
+          <UserIcon className="bg-brand-200 text-base-white h-14 w-14 rounded-full p-3" />
+        </AvatarFallback>
+      </Avatar>
+    ),
+  },
+  {
     accessorKey: 'name',
     header: 'Name',
-    cell: (props) => <p>{props.getValue()}</p>,
+    cell: (props) => (
+      <div>
+        <p className="text-lg font-semibold">{props.getValue()}</p>
+        <p className="text-small text-ui-400 line-clamp-2 text-wrap">
+          {props.row.original.email}
+        </p>
+      </div>
+    ),
+  },
+  {
+    accessorKey: 'role',
+    header: 'Role',
+    cell: (props) => (
+      <RoleBadge
+        role={props.getValue() as string}
+        className='text-sm [&_[data-slot="icon"]]:h-3 [&_[data-slot="icon"]]:w-3 py-0'
+      />
+    ),
+  },
+  {
+    accessorKey: 'xp',
+    header: 'XP',
+    cell: (props) => (
+      <p className="text-base font-semibold">{props.getValue()}</p>
+    ),
+  },
+  {
+    accessorKey: 'location',
+    header: 'Location',
+    cell: (props) => (
+      <p className="text-base-white flex flex-row items-center justify-start gap-1 text-base font-normal">
+        <span>
+          <MapPin className="text-ui-400 h-4 w-4" />
+        </span>
+        {props?.getValue() ? props?.getValue() : '???'}
+      </p>
+    ),
+  },
+  //@TODO add last logged in once api is added
+  {
+    id: 'action',
+    header: 'Actions',
+    cell: (props) => (
+      <div onClick={(e) => e.stopPropagation()}>
+        <Ellipsis />
+      </div>
+    ),
+    size: 50,
   },
 ];
 type UserTableProps = {
