@@ -66,7 +66,6 @@ export const addUserDefaultValues: Partial<AddUserSchemaType> = {
   email: '',
   password: '',
   location: '',
-  profileImg: '',
   xp: 0,
   bio: '',
 };

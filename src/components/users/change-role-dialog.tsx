@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import {
   updateUserRoleSchema,
@@ -66,6 +66,13 @@ const ChangeUserRoleDialog = ({
     defaultValues: defaultValues,
     resolver: zodResolver(updateUserRoleSchema),
   });
+
+  // reset form when dialog opens or when the target user/role changes
+  useEffect(() => {
+    if (open) {
+      updateUserRoleForm.reset({ role: existingRole });
+    }
+  }, [open, existingRole, updateUserRoleForm]);
 
   // handle form submit
   const handleSubmit = (data: UpdateUserRoleSchemaType) => {

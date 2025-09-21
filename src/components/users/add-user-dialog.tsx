@@ -228,6 +228,7 @@ const AddUserDialog = ({ children }: { children: React.ReactNode }) => {
                     <FormControl>
                       <Input
                         {...field}
+                        value={field.value ?? ''}
                         type="text"
                         id="profileImg"
                         placeholder="https://example.com/image.jpg"
