@@ -113,11 +113,12 @@ const UsersTab = () => {
                 aria-hidden="true"
               />
               <Input
-                aria-label="Search movies by title"
+                aria-label="Search users by name"
                 type="text"
                 className="border-ui-600 pl-10"
                 id="search"
-                placeholder="Search movies by title"
+                placeholder="Search users by name"
+                autoComplete='email'
                 value={searchText}
                 onChange={(e) => setSearchText(e.target.value)}
               />

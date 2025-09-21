@@ -111,9 +111,10 @@ const ChangeUserRoleDialog = ({
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="bg-brand-900 border-ui-600 max-w-[95%] min-w-[70%] p-5 lg:min-w-[60%]">
         <DialogHeader className="bg-brand-900 sticky top-0">
-          <DialogTitle className="text-xl">Add New User</DialogTitle>
+          <DialogTitle className="text-xl">Change User Role</DialogTitle>
           <DialogDescription>
-            Create a new user account. All fields marked with * are required.
+            Update the role. This will change their permissions and access
+            level.
           </DialogDescription>
         </DialogHeader>
         <Form {...updateUserRoleForm}>
