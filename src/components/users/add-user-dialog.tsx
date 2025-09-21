@@ -33,21 +33,63 @@ import { Button } from '../ui/button';
 import { MapPin, PenBox, Plus, Star } from 'lucide-react';
 import NumberInput from '../number-input';
 import { Textarea } from '../ui/textarea';
+import { useAddUser } from '~/services/user-service';
+import { toast } from 'sonner';
+import { useSpinnerStore } from '~/state-management/spinner-store';
+import { useQueryClient } from '@tanstack/react-query';
+import { QueryKeys } from '~/constants/query-key.constants';
 
 const AddUserDialog = ({ children }: { children: React.ReactNode }) => {
+  //store dialog open state
+  const [open, setOpen] = React.useState(false);
   //create a add user form
   const addUserForm = useForm<AddUserSchemaType>({
     mode: 'onChange',
     defaultValues: addUserDefaultValues,
     resolver: zodResolver(addUserSchema),
   });
+  // get the query client
+  const queryClient = useQueryClient();
+  //import add user custom hook
+  const { mutate } = useAddUser();
+  //extract screen loader state
+  const setSpinner = useSpinnerStore((state) => state.setShowSpinner);
 
   // handle form submit
   const handleSubmit = (data: AddUserSchemaType) => {
-    console.log(data);
+    // set loading
+    setSpinner(true);
+    // make api call
+    mutate(data, {
+      onSuccess: () => {
+        toast.success('User added successfully', {
+          classNames: {
+            toast: '!bg-feedback-success',
+          },
+        });
+        //  invalidate filter data
+        queryClient.invalidateQueries({
+          queryKey: [QueryKeys.filterUsers],
+        });
+        // close dialog
+        setOpen(false);
+      },
+      onError: (error) => {
+        toast.error(error?.response?.data.message ?? 'Something went wrong', {
+          classNames: {
+            toast: '!bg-feedback-error',
+          },
+        });
+      },
+      onSettled: () => {
+        addUserForm.reset(addUserDefaultValues);
+        // stop loading
+        setSpinner(false);
+      },
+    });
   };
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="bg-brand-900 border-ui-600 max-w-[95%] min-w-[70%] p-0 pb-1 lg:min-w-[60%]">
         <ScrollArea className="[&_[data-slot=scroll-area-thumb]]:hover:bg-ui-400 max-h-[90vh] p-4">
