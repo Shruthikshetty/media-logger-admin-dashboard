@@ -18,9 +18,11 @@ import TablePagination from '../table-pagination';
 import { Pagination } from '~/types/global.types';
 import { TableSkeleton } from '../custom-loaders';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
-import { MapPin, User as UserIcon } from 'lucide-react';
+import { MapPin, Trophy, User as UserIcon } from 'lucide-react';
 import RoleBadge from '../role-badge';
 import UserActionsDropdown from './user-action-dropdown';
+import { formatToIndianNumber } from '~/lib/formatting';
+import { useRouter } from 'next/navigation';
 
 /**
  * This is the columns of the users table
@@ -32,14 +34,15 @@ export const UsersColumn: ColumnDef<User, string | number>[] = [
     cell: (props) => (
       <Avatar>
         <AvatarImage
-          src={props.getValue() as string}
-          className="h-14 w-14 rounded-full"
+          src={(props?.getValue() as string) || undefined}
+          className="h-14 w-14 min-w-12 rounded-full"
         />
         <AvatarFallback className="justify-start bg-transparent">
           <UserIcon className="bg-brand-200 text-base-white h-14 w-14 rounded-full p-3" />
         </AvatarFallback>
       </Avatar>
     ),
+    size: 70,
   },
   {
     accessorKey: 'name',
@@ -67,7 +70,12 @@ export const UsersColumn: ColumnDef<User, string | number>[] = [
     accessorKey: 'xp',
     header: 'XP',
     cell: (props) => (
-      <p className="text-base font-semibold">{props.getValue()}</p>
+      <div className="flex flex-row items-center gap-1">
+        <Trophy className="text-feedback-warning h-4 w-4" />
+        <p className="text-base font-semibold">
+          {formatToIndianNumber(props?.getValue() as number)}
+        </p>
+      </div>
     ),
   },
   {
@@ -88,9 +96,10 @@ export const UsersColumn: ColumnDef<User, string | number>[] = [
     header: 'Actions',
     cell: (props) => (
       <div onClick={(e) => e.stopPropagation()}>
-        <UserActionsDropdown userId={props.row.original?._id} />
+        <UserActionsDropdown user={props.row.original} />
       </div>
     ),
+    size: 50,
   },
 ];
 
@@ -114,6 +123,8 @@ const UserTable = ({
   setPage,
   loading,
 }: UserTableProps) => {
+  // initialize router
+  const router = useRouter();
   //if loading return a skeleton table
   if (loading) return <TableSkeleton />;
   //if not loading return the table
@@ -126,6 +137,9 @@ const UserTable = ({
               <TableRow key={headerGroup.id} className="hover:bg-ui-800">
                 {headerGroup.headers.map((header) => (
                   <TableHead
+                    style={{
+                      width: header.column.columnDef.size,
+                    }}
                     key={header.id}
                     className="text-ui-200 text-base font-bold"
                   >
@@ -140,7 +154,11 @@ const UserTable = ({
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows.map((row) => (
-              <TableRow key={row.id} className="hover:bg-ui-800">
+              <TableRow
+                key={row.id}
+                className="hover:bg-ui-800"
+                onClick={() => router.push(`/users/${row.original._id}`)}
+              >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}

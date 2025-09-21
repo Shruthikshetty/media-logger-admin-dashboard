@@ -2,7 +2,7 @@
  * user related services
  */
 
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import {
   AllUsersDataStaleTime,
@@ -17,6 +17,18 @@ import apiClient from '~/lib/api-client';
 type ResponseUserDetails = {
   success: boolean;
   data: User;
+};
+
+type DeleteUserResponse = {
+  success: boolean;
+  message: string;
+  data: User;
+};
+
+type AddUserResponse = {
+  success: boolean;
+  data: User;
+  message: string;
 };
 
 type ResponseUpdateUserDetails = {
@@ -41,6 +53,28 @@ type ResponseAllUsers = {
     users: User[];
     pagination: Pagination;
   };
+};
+
+type UserFiltersRequest = {
+  page?: number;
+  limit?: number;
+  searchText?: string;
+  role?: string;
+};
+
+type ChangeUserRoleRequest = {
+  userId: string;
+  role: string;
+};
+
+type AddUserRequest = {
+  name: string;
+  email: string;
+  password: string;
+  bio?: string;
+  location?: string;
+  profileImg?: string;
+  xp?: number;
 };
 
 //custom hook to fetch the user details
@@ -84,6 +118,7 @@ export const useFetchAllUsers = ({
   return useQuery<ResponseAllUsers, AxiosError<ApiError>>({
     queryKey: [QueryKeys.allUsers, limit, page],
     staleTime: AllUsersDataStaleTime,
+    placeholderData: keepPreviousData,
     queryFn: ({ signal }) =>
       apiClient
         .get<ResponseAllUsers>(Endpoints.allUsers, {
@@ -93,6 +128,58 @@ export const useFetchAllUsers = ({
           },
           signal,
         })
+        .then((res) => res.data),
+  });
+};
+
+//get users by filter
+export const useFilterUsers = (filters?: UserFiltersRequest) => {
+  return useQuery<ResponseAllUsers, AxiosError<ApiError>>({
+    queryKey: [QueryKeys.filterUsers, filters],
+    staleTime: AllUsersDataStaleTime,
+    placeholderData: keepPreviousData,
+    queryFn: ({ signal }) =>
+      apiClient
+        .post<ResponseAllUsers>(Endpoints.filterUsers, filters, {
+          signal,
+        })
+        .then((res) => res.data),
+  });
+};
+
+//custom hook to change user role
+export const useChangeUserRole = () => {
+  return useMutation<
+    ResponseUpdateUserDetails,
+    AxiosError<ApiError>,
+    ChangeUserRoleRequest
+  >({
+    mutationKey: [QueryKeys.updateUserRole],
+    mutationFn: ({ userId, role }: ChangeUserRoleRequest) =>
+      apiClient
+        .put<ResponseUpdateUserDetails>(Endpoints.userRole + `/${userId}`, {
+          role,
+        })
+        .then((res) => res.data),
+  });
+};
+
+// custom hook to add a new user
+export const useAddUser = () => {
+  return useMutation<AddUserResponse, AxiosError<ApiError>, AddUserRequest>({
+    mutationKey: [QueryKeys.addUser],
+    mutationFn: (user: AddUserRequest) =>
+      apiClient.post(Endpoints.baseUser, user).then((res) => res.data),
+  });
+};
+
+//custom hook to delete a user by id
+export const useDeleteUserById = () => {
+  return useMutation<DeleteUserResponse, AxiosError<ApiError>, string>({
+    mutationKey: [QueryKeys.deleteUser],
+    mutationFn: (userId: string) =>
+      apiClient
+        .delete(Endpoints.baseUser + `/${userId}`)
         .then((res) => res.data),
   });
 };

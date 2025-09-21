@@ -28,7 +28,7 @@ const RoleBadge = ({
   // return badge
   return (
     <Badge
-      variant={ROLE_COLOR_MAPPING[key] ?? "secondary"}
+      variant={ROLE_COLOR_MAPPING[key] ?? 'secondary'}
       className={cn(
         'flex flex-row items-center justify-center rounded-full px-2.5 text-sm hover:opacity-80',
         className,

@@ -114,7 +114,7 @@ const MovieActionDropdown = ({
                   disabled={!movieId}
                   key={item.title}
                   className={cn(
-                    'hover:bg-ui-800 focus:bg-ui-800 focus:text-base-white text-md flex flex-row gap-2 rounded-md p-2',
+                    `hover:bg-ui-800 focus:bg-ui-800 focus:${item.color} text-md flex flex-row gap-2 rounded-md p-2`,
                     item.color,
                   )}
                   onClick={item.onClick}
