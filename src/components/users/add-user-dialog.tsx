@@ -36,6 +36,14 @@ import { useSpinnerStore } from '~/state-management/spinner-store';
 import { useQueryClient } from '@tanstack/react-query';
 import { QueryKeys } from '~/constants/query-key.constants';
 
+/**
+ * A dialog to add a new user to the system.
+ * It accepts children as a trigger to open the dialog.
+ * The dialog contains a form with fields to enter the user's details.
+ * The form is validated according to the `addUserSchema`.
+ * The dialog also contains a submit button to create a new user.
+ * The dialog is closed when the user is created successfully.
+ */
 const AddUserDialog = ({ children }: { children: React.ReactNode }) => {
   //store dialog open state
   const [open, setOpen] = React.useState(false);

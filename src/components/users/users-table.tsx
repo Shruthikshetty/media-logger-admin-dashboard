@@ -96,7 +96,7 @@ export const UsersColumn: ColumnDef<User, string | number>[] = [
     header: 'Actions',
     cell: (props) => (
       <div onClick={(e) => e.stopPropagation()}>
-        <UserActionsDropdown userId={props.row.original?._id} />
+        <UserActionsDropdown user={props.row.original} />
       </div>
     ),
     size: 50,
