@@ -25,9 +25,6 @@ import {
 } from '~/schema/add-user-schema';
 import { Label } from '../ui/label';
 import { Input } from '../ui/input';
-import CustomSelect from '../custom-select';
-import { UserRolesArray } from '~/constants/config.constants';
-import { capitalize } from 'lodash';
 import CustomAlert from '../custom-alert';
 import { Button } from '../ui/button';
 import { MapPin, PenBox, Plus, Star } from 'lucide-react';

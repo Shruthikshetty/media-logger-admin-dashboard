@@ -166,3 +166,12 @@ export const useAddUser = () => {
       apiClient.post(Endpoints.baseUser, user).then((res) => res.data),
   });
 };
+
+//custom hook to delete a user by id
+export const useDeleteUserById = () => {
+  return useMutation<AddUserResponse, AxiosError<ApiError>, string>({
+    mutationKey: [QueryKeys.deleteUser],
+    mutationFn: (userId: string) =>
+      apiClient.delete(Endpoints.baseUser + `/${userId}`),
+  });
+};

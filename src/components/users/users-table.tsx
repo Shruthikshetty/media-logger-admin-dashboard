@@ -34,7 +34,7 @@ export const UsersColumn: ColumnDef<User, string | number>[] = [
     cell: (props) => (
       <Avatar>
         <AvatarImage
-          src={props.getValue() as string}
+          src={(props?.getValue() as string) || undefined}
           className="h-14 w-14 min-w-12 rounded-full"
         />
         <AvatarFallback className="justify-start bg-transparent">
@@ -99,7 +99,7 @@ export const UsersColumn: ColumnDef<User, string | number>[] = [
         <UserActionsDropdown userId={props.row.original?._id} />
       </div>
     ),
-    size: 50
+    size: 50,
   },
 ];
 

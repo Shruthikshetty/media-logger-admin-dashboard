@@ -1,5 +1,5 @@
 import { Crown, Ellipsis, Eye, Trash2 } from 'lucide-react';
-import React from 'react';
+import React, { useState } from 'react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,6 +8,12 @@ import {
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
 import { cn } from '~/lib/utils';
+import { useRouter } from 'next/navigation';
+import { useDeleteUserById } from '~/services/user-service';
+import { toast } from 'sonner';
+import { useSpinnerStore } from '~/state-management/spinner-store';
+import { useQueryClient } from '@tanstack/react-query';
+import { QueryKeys } from '~/constants/query-key.constants';
 
 /**
  * This component is used to display the actions for a user
@@ -15,13 +21,25 @@ import { cn } from '~/lib/utils';
  * @param movieId
  */
 const UserActionsDropdown = ({ userId }: { userId: string }) => {
+  //initialize router
+  const router = useRouter();
+  // initialize custom hook to delete a user by id
+  const { mutate: deleteUserMutate } = useDeleteUserById();
+  //get the spinner state
+  const setSpinner = useSpinnerStore((state) => state.setShowSpinner);
+  // store the dialog open state
+  const [open, setOpen] = useState(false);
+  // initialize the query client
+  const queryClient = useQueryClient();
   //user action items
   const userActionItems = [
     {
       title: 'View profile',
       icon: Eye,
       color: 'text-base-white',
-      onClick: () => {}, //@TODO
+      onClick: () => {
+        router.push(`/users/${userId}`);
+      },
     },
     //@TODO to be added in the future when api is available
     // {
@@ -40,11 +58,41 @@ const UserActionsDropdown = ({ userId }: { userId: string }) => {
       title: 'Delete User',
       icon: Trash2,
       color: 'text-feedback-error',
-      onClick: () => {}, //@TODO
+      onClick: () => {
+        // start loading
+        setSpinner(true);
+        // make api call
+        deleteUserMutate(userId, {
+          onSuccess: () => {
+            toast.success('User deleted successfully', {
+              className: '!bg-feedback-success',
+            });
+            // close dialog
+            setOpen(false);
+            //  invalidate filter data
+            queryClient.invalidateQueries({
+              queryKey: [QueryKeys.filterUsers],
+            });
+          },
+          onError: (error) => {
+            // set error message in case of any error
+            toast.error(
+              error?.response?.data.message ?? 'Something went wrong',
+              {
+                className: '!bg-feedback-error',
+              },
+            );
+          },
+          onSettled: () => {
+            // stop loading
+            setSpinner(false);
+          },
+        });
+      },
     },
   ];
   return (
-    <DropdownMenu>
+    <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger
         disabled={!userId}
         aria-label="Open user actions"
