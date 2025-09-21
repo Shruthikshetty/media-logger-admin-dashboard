@@ -171,25 +171,6 @@ const AddUserDialog = ({ children }: { children: React.ReactNode }) => {
               />
               <FormField
                 control={addUserForm.control}
-                name="role"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <CustomSelect
-                        {...field}
-                        options={UserRolesArray}
-                        placeholder="Select Role"
-                        customOptionLabels={(value) => capitalize(value)}
-                        dropDownLabel="Select Role"
-                        label="Role *"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={addUserForm.control}
                 name="location"
                 render={({ field }) => (
                   <FormItem>

@@ -3,9 +3,7 @@
  */
 
 import { z } from 'zod';
-import { UserRolesArray } from '~/constants/config.constants';
 import { Regex } from '~/constants/patterns.constants';
-import { UserRoles } from '~/constants/screen.constants';
 
 export const addUserSchema = z.object({
   name: z
@@ -28,15 +26,6 @@ export const addUserSchema = z.object({
       error: 'Password must be string',
     })
     .min(1, 'Password is required'),
-
-  role: z
-    .string({
-      error: 'Role must be string',
-    })
-    .refine((val) => UserRolesArray.includes(val), {
-      error: `Invalid Role entered.`,
-    })
-    .optional(),
 
   location: z
     .string({
@@ -77,7 +66,6 @@ export const addUserDefaultValues: Partial<AddUserSchemaType> = {
   email: '',
   password: '',
   location: '',
-  role: UserRoles.user,
   profileImg: '',
   xp: 0,
   bio: '',
