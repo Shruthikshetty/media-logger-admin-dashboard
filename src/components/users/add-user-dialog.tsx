@@ -145,8 +145,9 @@ const AddUserDialog = ({ children }: { children: React.ReactNode }) => {
                     <FormControl>
                       <Input
                         {...field}
-                        type="text"
+                        type="email"
                         id="email"
+                        autoComplete="email"
                         placeholder="Enter email address"
                       />
                     </FormControl>

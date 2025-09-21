@@ -19,6 +19,12 @@ type ResponseUserDetails = {
   data: User;
 };
 
+type DeleteUserResponse = {
+  success: boolean;
+  message: string;
+  data: User;
+};
+
 type AddUserResponse = {
   success: boolean;
   data: User;
@@ -169,9 +175,11 @@ export const useAddUser = () => {
 
 //custom hook to delete a user by id
 export const useDeleteUserById = () => {
-  return useMutation<AddUserResponse, AxiosError<ApiError>, string>({
+  return useMutation<DeleteUserResponse, AxiosError<ApiError>, string>({
     mutationKey: [QueryKeys.deleteUser],
     mutationFn: (userId: string) =>
-      apiClient.delete(Endpoints.baseUser + `/${userId}`),
+      apiClient
+        .delete(Endpoints.baseUser + `/${userId}`)
+        .then((res) => res.data),
   });
 };
