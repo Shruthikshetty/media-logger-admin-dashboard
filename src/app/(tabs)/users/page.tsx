@@ -41,7 +41,7 @@ const UsersTab = () => {
   // derive a differed value for search text
   const deferredSearchText = useDeferredValue(searchText);
   // store filters data for users
-  const [filters, setFilters] = useState<UserFilterDataType>(null!);
+  const [filters, setFilters] = useState<UserFilterDataType>({});
   // memorize can create user filter query
   const usersFilterQuery = useMemo(
     () => ({
