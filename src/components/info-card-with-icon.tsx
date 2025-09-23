@@ -27,7 +27,7 @@ const InfoCardWithIcon = ({
 }: {
   label: string;
   value: string;
-  theme?: 'blue' | 'red' | "gray";
+  theme?: 'blue' | 'red' | 'gray';
   Icon: LucideIcon;
   className?: string;
 }) => {

@@ -118,7 +118,7 @@ const UsersTab = () => {
                 className="border-ui-600 pl-10"
                 id="search"
                 placeholder="Search users by name"
-                autoComplete='email'
+                autoComplete="email"
                 value={searchText}
                 onChange={(e) => setSearchText(e.target.value)}
               />

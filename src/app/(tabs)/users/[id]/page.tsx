@@ -3,7 +3,6 @@ import { Clock, Crown, Mail, Trophy, User } from 'lucide-react';
 import moment from 'moment';
 import { useParams } from 'next/navigation';
 import React from 'react';
-import { L } from 'vitest/dist/chunks/reporters.d.BFLkQcL6.js';
 import BackButton from '~/components/back-button';
 import {
   ListLoader,
