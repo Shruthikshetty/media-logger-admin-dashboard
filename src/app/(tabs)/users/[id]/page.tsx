@@ -23,6 +23,7 @@ import {
 } from '~/components/ui/card';
 import { Separator } from '~/components/ui/separator';
 import { Skeleton } from '~/components/ui/skeleton';
+import ChangeUserRoleDialog from '~/components/users/change-role-dialog';
 import { formatToIndianNumber } from '~/lib/formatting';
 import { isUserActive } from '~/lib/user-utils';
 import { cn } from '~/lib/utils';
@@ -33,7 +34,7 @@ const UserDetails = () => {
   //get user if from params
   const userId = (useParams()?.id as string) ?? '';
   // fetch user details
-  const { data, isLoading } = useGetUserDetailsById(userId);
+  const { data, isLoading, refetch } = useGetUserDetailsById(userId);
 
   // info data displayed in cards
   const infoData = [
@@ -69,9 +70,16 @@ const UserDetails = () => {
               title="User Profile"
               subtitle="View and manage user details"
             />
-            <Button variant={'blue'} disabled={isLoading}>
-              <Crown className="text- size-4" /> Change Role
-            </Button>
+            <ChangeUserRoleDialog
+              //it wont be triggered with empty values
+              existingRole={data?.data.role ?? ''}
+              userId={data?.data._id ?? ''}
+              onSuccess={() => refetch()}
+            >
+              <Button variant={'blue'} disabled={isLoading}>
+                <Crown className="text- size-4" /> Change Role
+              </Button>
+            </ChangeUserRoleDialog>
           </div>
         </div>
         {/* details card */}
@@ -112,7 +120,7 @@ const UserDetails = () => {
                 </LoadingWrapper>
                 <div className="flex flex-row items-center gap-2">
                   <LoadingWrapper fallback={<ListLoader noOfItems={2} />}>
-                    <RoleBadge role="user" />
+                    <RoleBadge role={data?.data.role} />
                     <Badge
                       className={cn(
                         'rounded-full px-4 text-sm hover:opacity-80',
