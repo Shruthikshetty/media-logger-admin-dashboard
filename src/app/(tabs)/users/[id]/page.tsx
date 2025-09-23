@@ -40,7 +40,7 @@ const UserDetails = () => {
   const infoData = [
     {
       title: 'Experience Points',
-      value: data?.data.xp ? formatToIndianNumber(data?.data.xp) : '???',
+      value: data?.data?.xp ? formatToIndianNumber(data?.data.xp) : '???',
       icon: Trophy,
     },
     {
@@ -50,7 +50,7 @@ const UserDetails = () => {
     },
     {
       title: 'Member Since',
-      value: moment(data?.data.createdAt).format('MMMM YYYY'),
+      value: moment(data?.data?.createdAt).format('MMMM YYYY'),
       icon: Trophy,
     },
   ];
@@ -72,7 +72,7 @@ const UserDetails = () => {
             />
             <ChangeUserRoleDialog
               //it wont be triggered with empty values
-              existingRole={data?.data.role ?? ''}
+              existingRole={data?.data?.role ?? ''}
               userId={data?.data._id ?? ''}
               onSuccess={() => refetch()}
             >
@@ -85,7 +85,7 @@ const UserDetails = () => {
         {/* details card */}
         <Card className="border-ui-600 text-base-white from-base-black to-ui-900 bg-gradient-to-r">
           <CardHeader>
-            <CardDescription hidden>User profile details card</CardDescription>
+            <CardDescription className='sr-only'>User profile details card</CardDescription>
             <div className="flex flex-row items-center justify-start gap-5">
               <Avatar className="border-ui-600 border-1">
                 <LoadingWrapper
