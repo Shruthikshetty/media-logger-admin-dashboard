@@ -94,6 +94,7 @@ const UserDetails = () => {
                   <AvatarImage
                     className="h-30 w-30 rounded-full"
                     src={data?.data?.profileImg}
+                    alt='user profile image'
                   />
                   <AvatarFallback>
                     <User className="bg-brand-200 text-base-white h-30 w-30 rounded-full p-3" />
