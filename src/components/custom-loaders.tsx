@@ -106,7 +106,7 @@ type LoadingWrapperProps = {
   /**
    * The component or element to render while content is loading.
    */
-  fallback: React.ReactNode;
+  fallback?: React.ReactNode;
   /**
    * The content to render when loading is complete.
    */
