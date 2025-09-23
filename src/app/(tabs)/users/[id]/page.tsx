@@ -45,7 +45,7 @@ const UserDetails = () => {
     },
     {
       title: 'Location',
-      value: data?.data.location ?? '???',
+      value: data?.data?.location ?? '???',
       icon: Trophy,
     },
     {
@@ -145,7 +145,7 @@ const UserDetails = () => {
             <p className="text-lg font-semibold">About</p>
             <LoadingWrapper>
               <p className="text-md text-ui-400 font-normal">
-                {data?.data.bio}
+                {data?.data?.bio}
               </p>
             </LoadingWrapper>
             <LoadingWrapper
