@@ -189,6 +189,7 @@ export const useGetUserDetailsById = (userId: string) => {
   return useQuery<ResponseUserDetails, AxiosError<ApiError>>({
     queryKey: [QueryKeys.userDetailsById, userId],
     staleTime: UserDataStaleTime,
+    enabled: !!userId,
     queryFn: ({ signal }) =>
       apiClient
         .get<ResponseUserDetails>(Endpoints.baseUser + `/${userId}`, { signal })

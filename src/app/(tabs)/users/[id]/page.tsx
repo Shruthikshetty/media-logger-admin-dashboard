@@ -77,7 +77,7 @@ const UserDetails = () => {
               onSuccess={() => refetch()}
             >
               <Button variant={'blue'} disabled={isLoading}>
-                <Crown className="text- size-4" /> Change Role
+                <Crown className="size-4" /> Change Role
               </Button>
             </ChangeUserRoleDialog>
           </div>
