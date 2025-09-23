@@ -43,7 +43,7 @@ const InfoCardWithIcon = ({
       </div>
       <div className="flex flex-col">
         <p className="text-ui-400 text-md font-normal">{label}</p>
-        <p className="text-2xl font-bold">{value}</p>
+        <p className="text-xl font-bold">{value}</p>
       </div>
     </div>
   );

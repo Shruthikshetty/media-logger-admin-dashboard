@@ -185,7 +185,7 @@ export const useDeleteUserById = () => {
 };
 
 //custom hook to fetch user details by id
-export const useGetUserDetailsById = ({ userId }: { userId: string }) => {
+export const useGetUserDetailsById = (userId: string) => {
   return useQuery<ResponseUserDetails, AxiosError<ApiError>>({
     queryKey: [QueryKeys.userDetailsById, userId],
     staleTime: UserDataStaleTime,
