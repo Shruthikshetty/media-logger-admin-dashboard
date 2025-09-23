@@ -12,6 +12,7 @@ export interface User {
   bio: string;
   createdAt: string;
   updatedAt: string;
+  lastLogin?: string;
 }
 
 //type for auth store

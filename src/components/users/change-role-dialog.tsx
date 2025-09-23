@@ -34,6 +34,7 @@ type ChangeUserRoleDialogProps = {
   children: React.ReactNode;
   existingRole: string;
   userId: string;
+  onSuccess?: () => void;
 };
 
 /**
@@ -41,12 +42,14 @@ type ChangeUserRoleDialogProps = {
  * @param {React.ReactNode} children - The content of the dialog trigger.
  * @param {string} existingRole - The current role of the user.
  * @param {string} userId - The user ID to update.
+ * @param {() => void} [onSuccess] - Optional callback function to run on success.
  * @returns {React.ReactNode} - A dialog component.
  */
 const ChangeUserRoleDialog = ({
   children,
   existingRole,
   userId,
+  onSuccess
 }: ChangeUserRoleDialogProps) => {
   //store dialog open state
   const [open, setOpen] = useState(false);
@@ -97,6 +100,7 @@ const ChangeUserRoleDialog = ({
           });
           //close dialog
           setOpen(false);
+          onSuccess?.();
         },
         onError: (error) => {
           toast.error(error?.response?.data.message ?? 'Something went wrong', {

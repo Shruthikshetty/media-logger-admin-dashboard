@@ -10,6 +10,7 @@ export const QueryKeys = {
   filterUsers: 'filter-users',
   updateUserRole: 'update-user-role',
   addUser: 'add-user',
+  userDetailsById: 'user-details-by-id',
   updateUserDetails: 'update-user-details',
   deleteUser: 'delete-user',
   uploadImage: 'upload-image',
