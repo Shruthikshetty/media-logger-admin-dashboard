@@ -1,9 +1,10 @@
 'use client';
-import { Plus, Search, Upload } from 'lucide-react';
+import { Plus, Search, Tv, Upload } from 'lucide-react';
 import React from 'react';
 import GamesTable from '~/components/games/games-table';
 import MediaFilters from '~/components/media-filters';
 import TitleSubtitle from '~/components/title-subtitle';
+import TvShowTable from '~/components/tv-show/tv-show-table';
 import { Button } from '~/components/ui/button';
 import {
   Card,
@@ -91,7 +92,7 @@ const TvShowTab = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <GamesTable />
+          <TvShowTable />
         </CardContent>
       </Card>
     </div>
