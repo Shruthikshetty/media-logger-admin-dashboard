@@ -83,10 +83,12 @@ const UserDetails = () => {
           </div>
         </div>
         {/* details card */}
-        <Card className="border-ui-600 text-base-white from-base-black to-ui-900 bg-gradient-to-r">
+        <Card className="border-ui-600 text-base-white from-base-black to-ui-900 overflow-hidden bg-gradient-to-r">
           <CardHeader>
-            <CardDescription className='sr-only'>User profile details card</CardDescription>
-            <div className="flex flex-row items-center justify-start gap-5">
+            <CardDescription className="sr-only">
+              User profile details card
+            </CardDescription>
+            <div className="flex flex-col items-center justify-start gap-5 sm:flex-row">
               <Avatar className="border-ui-600 border-1">
                 <LoadingWrapper
                   fallback={<Skeleton className="h-30 w-30 rounded-full" />}
@@ -94,6 +96,7 @@ const UserDetails = () => {
                   <AvatarImage
                     className="h-30 w-30 rounded-full"
                     src={data?.data?.profileImg}
+                    alt="user profile image"
                   />
                   <AvatarFallback>
                     <User className="bg-brand-200 text-base-white h-30 w-30 rounded-full p-3" />
@@ -110,7 +113,7 @@ const UserDetails = () => {
                     />
                   }
                 >
-                  <div>
+                  <div className="text-center sm:text-left">
                     <p className="text-2xl font-bold">{data?.data?.name}</p>
                     <p className="text-md text-ui-400 flex flex-row items-center justify-center gap-1">
                       <Mail className="text-ui-400 h-4 w-4" />
@@ -118,7 +121,7 @@ const UserDetails = () => {
                     </p>
                   </div>
                 </LoadingWrapper>
-                <div className="flex flex-row items-center gap-2">
+                <div className="flex flex-row items-center justify-center gap-2 sm:justify-start">
                   <LoadingWrapper fallback={<ListLoader noOfItems={2} />}>
                     <RoleBadge role={data?.data.role} />
                     <Badge
