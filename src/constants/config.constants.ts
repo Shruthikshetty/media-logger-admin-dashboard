@@ -15,7 +15,13 @@ import {
   UserRound,
 } from 'lucide-react';
 import { UserRoles } from './screen.constants';
-import { GENRE_MOVIE_TV, LANGUAGES, TAGS } from './data.constants';
+import {
+  GENRE_MOVIE_TV,
+  LANGUAGES,
+  TAGS,
+  GAME_GENRES,
+  GAME_PLATFORMS,
+} from './data.constants';
 
 export const CookieNames = {
   token: 'token',
@@ -165,5 +171,68 @@ export const UsersFilterConfig: FilterConfig[] = [
   },
 ];
 
+//games filter config
+export const GamesFilterConfig: FilterConfig[] = [
+  {
+    key: 'genre',
+    label: 'Genres',
+    type: 'dropdown',
+    multiselect: true,
+    options: GAME_GENRES,
+    icon: FunnelPlus,
+  },
+  {
+    key: 'averageRating',
+    label: 'Average Rating',
+    type: 'number-input',
+    min: 0,
+    max: 10,
+    icon: Star,
+    iconClassName: 'text-yellow-500',
+    helperText: 'Average rating between 0 to 10',
+  },
+  {
+    key: 'ageRating',
+    label: 'Age Rating',
+    type: 'range',
+    max: 22,
+    min: 0,
+    step: 1,
+    icon: UserRound,
+    unitLabel: 'years',
+  },
+  {
+    key: 'releaseDate',
+    label: 'Release Date',
+    type: 'date',
+    icon: CalendarDays,
+  },
+  {
+    key: 'status',
+    label: 'Status',
+    type: 'dropdown',
+    multiselect: false,
+    options: MEDIA_STATUS,
+    icon: FunnelPlus,
+  },
+  {
+    key: 'avgPlaytime',
+    label: 'Average Playtime',
+    type: 'number-input',
+    max: 10000 * 60 * 60, //10000 hours
+    min: 0,
+    helperText: 'Average playtime in minutes',
+    icon: Clock,
+  },
+  {
+    key: 'platforms',
+    label: 'Platforms',
+    type: 'dropdown',
+    multiselect: true,
+    options: GAME_PLATFORMS,
+    icon: FunnelPlus,
+  },
+];
+
 // export data constants
-export { GENRE_MOVIE_TV, LANGUAGES, TAGS };
+export { GENRE_MOVIE_TV, LANGUAGES, TAGS, GAME_GENRES, GAME_PLATFORMS };
