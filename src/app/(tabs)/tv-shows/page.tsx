@@ -34,7 +34,7 @@ const TvShowTab = () => {
           <Button
             variant={'outline'}
             type="button"
-            aria-label="import games json button"
+            aria-label="import TV shows JSON"
           >
             <Upload className="mr-1 size-4" />
             Import json
@@ -42,11 +42,11 @@ const TvShowTab = () => {
           <Button
             type="button"
             variant={'outline'}
-            aria-label="add game"
+            aria-label="add TV show"
             className="to-accent-purple border-0 bg-gradient-to-r from-purple-700 hover:opacity-80"
           >
             <Plus className="mr-1 size-4" />
-            Add Tv Show
+            Add TV Show
           </Button>
         </div>
       </div>

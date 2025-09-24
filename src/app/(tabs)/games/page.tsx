@@ -67,7 +67,7 @@ const GamesTab = () => {
                 type="text"
                 className="border-ui-600 pl-10"
                 id="search"
-                placeholder="Search movies by title"
+                placeholder="Search games by title"
               />
             </div>
             {/* filters */}
