@@ -20,7 +20,7 @@ import { TvShowsFilterConfig } from '~/constants/config.constants';
  * contains all the list of tv shows with filters , add Tv show functionality
  * @returns a JSX.Element
  */
-const GamesTab = () => {
+const TvShowTab = () => {
   return (
     <div className="flex flex-col gap-5 p-5">
       {/* Header */}
@@ -98,4 +98,4 @@ const GamesTab = () => {
   );
 };
 
-export default GamesTab;
+export default TvShowTab;
