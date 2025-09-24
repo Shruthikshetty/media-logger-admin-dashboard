@@ -16,7 +16,7 @@ import { Input } from '~/components/ui/input';
 import { GamesFilterConfig } from '~/constants/config.constants';
 
 /**
- * This is the mai landing page for the games tab
+ * This is the main landing page for the games tab
  * contains all the list of games with filters , add games functionality
  * @returns a JSX.Element
  */
@@ -26,8 +26,8 @@ const GamesTab = () => {
       {/* Header */}
       <div className="flex flex-row items-center justify-between">
         <TitleSubtitle
-          title="Users Management"
-          subtitle="Manage your platform users and permissions"
+          title="Games Management"
+          subtitle="Manage your game collection"
         />
         <div className="flex flex-col gap-3 md:flex-row">
           <Button
