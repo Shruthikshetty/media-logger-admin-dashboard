@@ -82,6 +82,9 @@ export const FetchMovieDetailsStaleTime = 1 * 60 * 1000; //1 min
 // user table page item limit
 export const UserTablePageItemLimit = 20;
 
+//all games data slate time
+export const FetchAllGamesSlateTime = 1 * 60 * 1000; //1 min
+
 export const MEDIA_STATUS = ['released', 'upcoming'];
 
 // movie filter config
