@@ -1,7 +1,9 @@
 'use client';
+import { getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import { Plus, Search, Upload } from 'lucide-react';
-import React from 'react';
-import GamesTable from '~/components/games/games-table';
+import React, { useEffect, useMemo, useState } from 'react';
+import { toast } from 'sonner';
+import GamesTable, { gameColumns } from '~/components/games/games-table';
 import MediaFilters from '~/components/media-filters';
 import TitleSubtitle from '~/components/title-subtitle';
 import { Button } from '~/components/ui/button';
@@ -14,6 +16,7 @@ import {
 } from '~/components/ui/card';
 import { Input } from '~/components/ui/input';
 import { GamesFilterConfig } from '~/constants/config.constants';
+import { useGetAllGames } from '~/services/game-service';
 
 /**
  * This is the main landing page for the games tab
@@ -21,6 +24,35 @@ import { GamesFilterConfig } from '~/constants/config.constants';
  * @returns a JSX.Element
  */
 const GamesTab = () => {
+  // store page state
+  const [page, setPage] = useState(1);
+  // fetch all the games data
+  const { data, isFetching, isError, error } = useGetAllGames();
+
+  //catch any unexpected errors
+  useEffect(() => {
+    if (isError)
+      toast.error(error?.response?.data?.message ?? error.message, {
+        classNames: {
+          toast: '!bg-feedback-error',
+        },
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isError]);
+
+  // Create a stable empty array reference for the data prop
+  const defaultData = useMemo(
+    () => data?.data?.games ?? [],
+    [data?.data?.games],
+  );
+
+  //create a table for games data
+  const gamesTable = useReactTable({
+    data: defaultData,
+    columns: gameColumns,
+    getCoreRowModel: getCoreRowModel(),
+  });
+
   return (
     <div className="flex flex-col gap-5 p-5">
       {/* Header */}
@@ -91,7 +123,13 @@ const GamesTab = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <GamesTable />
+          <GamesTable
+            table={gamesTable}
+            loading={isFetching}
+            pagination={data?.data.pagination}
+            page={page}
+            setPage={setPage}
+          />
         </CardContent>
       </Card>
     </div>

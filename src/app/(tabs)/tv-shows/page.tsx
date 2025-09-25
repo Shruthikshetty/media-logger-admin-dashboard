@@ -1,7 +1,6 @@
 'use client';
-import { Plus, Search, Tv, Upload } from 'lucide-react';
+import { Plus, Search, Upload } from 'lucide-react';
 import React from 'react';
-import GamesTable from '~/components/games/games-table';
 import MediaFilters from '~/components/media-filters';
 import TitleSubtitle from '~/components/title-subtitle';
 import TvShowTable from '~/components/tv-show/tv-show-table';
