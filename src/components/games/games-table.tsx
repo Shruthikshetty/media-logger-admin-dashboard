@@ -25,6 +25,7 @@ import { Badge } from '../ui/badge';
 import moment from 'moment';
 import { capitalizeFirstLetter } from '~/lib/formatting';
 import { cn } from '~/lib/utils';
+import { Checkbox } from '../ui/checkbox';
 
 type GamesTableProps = {
   table: ReactTable<Game>;
@@ -36,6 +37,30 @@ type GamesTableProps = {
 
 //creating columns for the games table
 export const gameColumns: ColumnDef<Game, string | string[] | number>[] = [
+  {
+    id: 'select',
+    header: (props) => (
+      <Checkbox
+        className="data-[state=checked]:bg-base-white data-[state=checked]:text-base-black"
+        checked={props.table.getIsAllRowsSelected()}
+        aria-label="select all"
+        onCheckedChange={() => props.table.toggleAllRowsSelected()}
+      />
+    ),
+    cell: (props) => (
+      <div onClick={(e) => e.stopPropagation()}>
+        <Checkbox
+          className="data-[state=checked]:bg-base-white data-[state=checked]:text-base-black"
+          checked={props.row.getIsSelected()}
+          aria-label="select row"
+          onCheckedChange={() => {
+            props.row.toggleSelected();
+          }}
+        />
+      </div>
+    ),
+    size: 50,
+  },
   {
     accessorKey: 'posterUrl',
     header: 'Game',
