@@ -131,7 +131,7 @@ const GamesTab = () => {
               {selectedRowLength > 0 && (
                 <Button
                   variant={'red'}
-                  aria-label={`delete selected movies (${selectedRowLength})`}
+                  aria-label={`delete selected games (${selectedRowLength})`}
                   onClick={() => {
                     /* @TODO */
                   }}
