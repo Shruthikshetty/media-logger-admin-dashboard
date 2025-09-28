@@ -49,7 +49,7 @@ const ChangeUserRoleDialog = ({
   children,
   existingRole,
   userId,
-  onSuccess
+  onSuccess,
 }: ChangeUserRoleDialogProps) => {
   //store dialog open state
   const [open, setOpen] = useState(false);

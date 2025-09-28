@@ -20,7 +20,7 @@ import {
 import TablePagination from '../table-pagination';
 import CustomImage from '../custom-image';
 import CollapsableBadgeList from '../collapsable-badge-list';
-import { Calendar, EllipsisVertical, Plus, Star } from 'lucide-react';
+import { Calendar, Plus, Star } from 'lucide-react';
 import { Badge } from '../ui/badge';
 import moment from 'moment';
 import { capitalizeFirstLetter } from '~/lib/formatting';

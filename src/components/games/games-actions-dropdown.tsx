@@ -10,7 +10,6 @@ import {
 import { Ellipsis, Eye, SquarePen, Trash2 } from 'lucide-react';
 import { cn } from '~/lib/utils';
 import { Game } from '~/services/game-service';
-import { on } from 'events';
 
 //@TODO component in progress
 /**
