@@ -18,6 +18,13 @@ import {
   TableRow,
 } from '../ui/table';
 import TablePagination from '../table-pagination';
+import CustomImage from '../custom-image';
+import CollapsableBadgeList from '../collapsable-badge-list';
+import { Calendar, Plus, Star } from 'lucide-react';
+import { Badge } from '../ui/badge';
+import moment from 'moment';
+import { capitalizeFirstLetter } from '~/lib/formatting';
+import { cn } from '~/lib/utils';
 
 type GamesTableProps = {
   table: ReactTable<Game>;
@@ -28,14 +35,117 @@ type GamesTableProps = {
 };
 
 //creating columns for the games table
-export const gameColumns: ColumnDef<Game, string>[] = [
+export const gameColumns: ColumnDef<Game, string | string[] | number>[] = [
   {
-    id: 'posterUrl',
+    accessorKey: 'posterUrl',
     header: 'Game',
-    //@TODO change to next images
     cell: (props) => (
-      <img src={props.getValue() as string} alt="poster image" />
+      <CustomImage
+        alt="game poster"
+        src={props.getValue() as string}
+        width={80}
+        height={150}
+        className="aspect-[2/3] rounded-lg"
+        maxHeight={150}
+        maxWidth={100}
+        minHeight={100}
+        minWidth={60}
+        placeHolderClassname="aspect-[2/3] px-4 [&_[data-slot='icon']]:text-ui-400"
+      />
     ),
+  },
+  {
+    accessorKey: 'title',
+    header: 'Title',
+    cell: (props) => (
+      <div>
+        <p className="text-lg font-semibold">{props.getValue()}</p>
+        <p className="text-small text-ui-400 line-clamp-3 text-wrap">
+          {props.row.original.description}
+        </p>
+      </div>
+    ),
+  },
+  {
+    accessorKey: 'developer',
+    header: 'Developer',
+    cell: (props) => (
+      <p className="text-base-white line-clamp-2 text-base">
+        {(props?.getValue() as string) ?? '???'}
+      </p>
+    ),
+  },
+  {
+    accessorKey: 'genre',
+    header: 'Genre',
+    cell: (props) => (
+      <CollapsableBadgeList
+        list={props.getValue() as string[]}
+        style={{
+          itemBadge: 'bg-ui-700 border-0',
+          buttonBadge: 'bg-ui-700 border-0',
+        }}
+      />
+    ),
+  },
+  {
+    accessorKey: 'averageRating',
+    header: 'Rating',
+    cell: (props) => (
+      <div className="flex flex-row items-center gap-2">
+        <p className="text-base-white text-lg">
+          {Boolean(props.getValue()) ? props.getValue() : '???'}
+        </p>
+        {!!props.getValue() && <Star className="h-4 w-4 text-yellow-300" />}
+      </div>
+    ),
+  },
+  {
+    accessorKey: 'ageRating',
+    header: 'Age Rating',
+    cell: (props) => (
+      <Badge className="text-base-white border-ui-600 text-md flex flex-row items-center justify-center rounded-full border">
+        <p>{props.getValue() ?? 'Un'}</p>
+        {props.getValue() && (
+          <p>
+            <Plus className="size-3" strokeWidth={3} />
+          </p>
+        )}
+      </Badge>
+    ),
+  },
+  {
+    accessorKey: 'releaseDate',
+    header: 'Release Date',
+    cell: (props) => (
+      <div className="text-base-white">
+        <div className="flex flex-row items-center gap-2 text-base">
+          <Calendar className="h-5 w-5" />
+          {!!props.getValue()
+            ? moment(props.getValue() as string).format('DD/MM/YYYY')
+            : '???'}
+        </div>
+      </div>
+    ),
+  },
+  {
+    accessorKey: 'status',
+    header: 'Status',
+    cell: (props) => (
+      <div className="text-base-white text-base">
+        <Badge
+          className={cn(
+            'text-base-white rounded-full px-2',
+            (props.getValue() as string) === 'released'
+              ? 'bg-brand-600'
+              : 'bg-ui-600',
+          )}
+        >
+          {capitalizeFirstLetter(props.getValue() as string)}
+        </Badge>
+      </div>
+    ),
+    size: 100,
   },
 ];
 
@@ -44,7 +154,13 @@ export const gameColumns: ColumnDef<Game, string>[] = [
  * all the games data will be displayed here in table format
  * to be used in games tab
  */
-const GamesTable = ({ table, loading ,page , setPage, pagination }: GamesTableProps) => {
+const GamesTable = ({
+  table,
+  loading,
+  page,
+  setPage,
+  pagination,
+}: GamesTableProps) => {
   //if loading return a skeleton table
   if (loading) return <TableSkeleton />;
   //in case not loading return the table

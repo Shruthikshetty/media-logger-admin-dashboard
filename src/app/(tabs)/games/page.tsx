@@ -116,7 +116,7 @@ const GamesTab = () => {
       <Card className="border-ui-600 text-base-white from-base-black to-ui-900 bg-gradient-to-r">
         <CardHeader>
           <CardTitle className="text-xl font-semibold">
-            Game Directory (100 games)
+            Game Directory ({data?.data.pagination.total ?? '???'} games)
           </CardTitle>
           <CardDescription className="text-ui-400 text-sm">
             Complete list of games in your collection
