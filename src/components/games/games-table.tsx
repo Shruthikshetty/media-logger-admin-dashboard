@@ -128,6 +128,13 @@ export const gameColumns: ColumnDef<Game, string | string[] | number>[] = [
     ),
   },
   {
+    accessorKey: 'platforms',
+    header: 'Platforms',
+    cell: (props) => {
+      return <CollapsableBadgeList list={props.getValue() as string[]} />;
+    },
+  },
+  {
     accessorKey: 'ageRating',
     header: 'Age Rating',
     cell: (props) => (
