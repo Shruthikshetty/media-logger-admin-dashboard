@@ -8,7 +8,7 @@ import { FetchAllGamesSlateTime } from '~/constants/config.constants';
 import { Endpoints } from '~/constants/endpoints.constants';
 import { QueryKeys } from '~/constants/query-key.constants';
 import apiClient from '~/lib/api-client';
-import { ApiError, Pagination } from '~/types/global.types';
+import { ApiError, FilterLimits, Pagination } from '~/types/global.types';
 
 // service to get all the games data
 export type Game = {
@@ -29,6 +29,19 @@ export type Game = {
   trailerYoutubeUrl?: number;
   createdAt: string;
   updatedAt: string;
+};
+
+type GamesFilterRequest = {
+  searchText?: string;
+  averageRating?: number;
+  genre?: string[];
+  ageRating?: FilterLimits<number>;
+  releaseDate?: FilterLimits<string | undefined>;
+  platforms?: string[];
+  avgPlaytime?: FilterLimits<number | undefined>;
+  status?: string;
+  page?: number;
+  limit?: number;
 };
 
 type GetAllGamesResponse = {
@@ -60,6 +73,33 @@ export const useGetAllGames = ({
           },
           signal,
         })
+        .then((res) => res.data),
+  });
+};
+
+// custom hook to get all the games with filter , search text
+export const useFilterGames = ({
+  limit = 20,
+  page = 1,
+  ...restFilters
+}: GamesFilterRequest = {}) => {
+  return useQuery<GetAllGamesResponse, AxiosError<ApiError>>({
+    queryKey: [QueryKeys.filterGames, limit, page, restFilters],
+    staleTime: FetchAllGamesSlateTime,
+    placeholderData: keepPreviousData,
+    queryFn: ({ signal }) =>
+      apiClient
+        .post<GetAllGamesResponse>(
+          Endpoints.filterGames,
+          {
+            limit,
+            page,
+            ...restFilters,
+          },
+          {
+            signal,
+          },
+        )
         .then((res) => res.data),
   });
 };

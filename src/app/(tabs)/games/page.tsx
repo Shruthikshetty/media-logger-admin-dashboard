@@ -23,7 +23,7 @@ import { Input } from '~/components/ui/input';
 import { Skeleton } from '~/components/ui/skeleton';
 import { GamesFilterConfig } from '~/constants/config.constants';
 import useDelayedLoading from '~/hooks/use-delayed-loading';
-import { useGetAllGames } from '~/services/game-service';
+import { useFilterGames, useGetAllGames } from '~/services/game-service';
 
 /**
  * This is the main landing page for the games tab
@@ -34,7 +34,7 @@ const GamesTab = () => {
   // store page state
   const [page, setPage] = useState(1);
   // fetch all the games data
-  const { data, isFetching, isError, error } = useGetAllGames();
+  const { data, isFetching, isError, error } = useFilterGames();
   //extracting delayed loading
   const loading = useDelayedLoading(isFetching);
   // stores row selection state
