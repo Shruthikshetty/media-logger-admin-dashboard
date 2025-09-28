@@ -20,12 +20,13 @@ import {
 import TablePagination from '../table-pagination';
 import CustomImage from '../custom-image';
 import CollapsableBadgeList from '../collapsable-badge-list';
-import { Calendar, Plus, Star } from 'lucide-react';
+import { Calendar, EllipsisVertical, Plus, Star } from 'lucide-react';
 import { Badge } from '../ui/badge';
 import moment from 'moment';
 import { capitalizeFirstLetter } from '~/lib/formatting';
 import { cn } from '~/lib/utils';
 import { Checkbox } from '../ui/checkbox';
+import GamesActionsDropdown from './games-actions-dropdown';
 
 type GamesTableProps = {
   table: ReactTable<Game>;
@@ -90,6 +91,7 @@ export const gameColumns: ColumnDef<Game, string | string[] | number>[] = [
         </p>
       </div>
     ),
+    size: 500,
   },
   {
     accessorKey: 'developer',
@@ -171,6 +173,16 @@ export const gameColumns: ColumnDef<Game, string | string[] | number>[] = [
       </div>
     ),
     size: 100,
+  },
+  {
+    id: 'action',
+    header: 'Actions',
+    cell: (props) => (
+      <div onClick={(e) => e.stopPropagation()}>
+        <GamesActionsDropdown game={props.row.original} />
+      </div>
+    ),
+    size: 50,
   },
 ];
 

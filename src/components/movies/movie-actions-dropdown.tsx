@@ -21,6 +21,7 @@ import { useRouter } from 'next/navigation';
  * This component is used to display the actions for a movie
  * Mainly used in movie table performs actions like view details , edit , delete
  * @param movieId
+ * @param data [Movie data]
  */
 const MovieActionDropdown = ({
   movieId,
