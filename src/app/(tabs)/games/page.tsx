@@ -5,11 +5,15 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { Plus, Search, Trash2, Upload } from 'lucide-react';
+import moment from 'moment';
 import React, { useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { LoadingWrapper } from '~/components/custom-loaders';
 import GamesTable, { gameColumns } from '~/components/games/games-table';
-import MediaFilters from '~/components/media-filters';
+import MediaFilters, {
+  DateState,
+  FiltersState,
+} from '~/components/media-filters';
 import TitleSubtitle from '~/components/title-subtitle';
 import { Button } from '~/components/ui/button';
 import {
@@ -23,7 +27,18 @@ import { Input } from '~/components/ui/input';
 import { Skeleton } from '~/components/ui/skeleton';
 import { GamesFilterConfig } from '~/constants/config.constants';
 import useDelayedLoading from '~/hooks/use-delayed-loading';
-import { useFilterGames, useGetAllGames } from '~/services/game-service';
+import { gameStatus, useFilterGames } from '~/services/game-service';
+import { FilterLimits } from '~/types/global.types';
+
+//filter data type
+interface FiltersType extends FiltersState {
+  genre: string[];
+  averageRating: number;
+  ageRating: FilterLimits<number>;
+  releaseDate: DateState;
+  status: gameStatus;
+  platforms: string[];
+}
 
 /**
  * This is the main landing page for the games tab
@@ -33,8 +48,35 @@ import { useFilterGames, useGetAllGames } from '~/services/game-service';
 const GamesTab = () => {
   // store page state
   const [page, setPage] = useState(1);
+  // store filters data for games
+  const [filters, setFilters] = useState<FiltersType>(null!);
+  //memorize filter query
+  const gamesFilterQuery = useMemo(
+    () => ({
+      page,
+      limit: 20, // set to 20 by default
+      genre: filters?.genre?.length > 0 ? filters?.genre : undefined,
+      releaseDate: filters?.releaseDate
+        ? {
+            gte: filters.releaseDate?.gte
+              ? moment(filters.releaseDate?.gte).toISOString()
+              : undefined,
+            lte: filters.releaseDate?.lte
+              ? moment(filters.releaseDate?.lte).toISOString()
+              : undefined,
+          }
+        : undefined,
+      ageRating: filters?.ageRating,
+      averageRating: filters?.averageRating,
+      status: filters?.status,
+      platforms:
+        filters?.platforms?.length > 0 ? filters?.platforms : undefined,
+    }),
+    [page, filters],
+  );
+
   // fetch all the games data
-  const { data, isFetching, isError, error } = useFilterGames();
+  const { data, isFetching, isError, error } = useFilterGames(gamesFilterQuery);
   //extracting delayed loading
   const loading = useDelayedLoading(isFetching);
   // stores row selection state
@@ -145,8 +187,11 @@ const GamesTab = () => {
             {/* filters */}
             <MediaFilters
               config={GamesFilterConfig}
-              onFilterChange={() => {
-                /* @TODO */
+              onFilterChange={(newFilters) => {
+                // reset page
+                setPage(1);
+                // set new filters
+                setFilters(newFilters as FiltersType);
               }}
             />
           </div>

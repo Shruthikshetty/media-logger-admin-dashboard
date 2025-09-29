@@ -10,6 +10,9 @@ import { QueryKeys } from '~/constants/query-key.constants';
 import apiClient from '~/lib/api-client';
 import { ApiError, FilterLimits, Pagination } from '~/types/global.types';
 
+// game Status
+export type gameStatus = 'released' | 'upcoming';
+
 // service to get all the games data
 export type Game = {
   _id: string;
@@ -21,7 +24,7 @@ export type Game = {
   posterUrl?: string;
   backdropUrl?: string;
   isActive: boolean;
-  status: string;
+  status: gameStatus;
   platforms: string[];
   avgPlaytime?: number;
   developer?: string;
@@ -39,7 +42,7 @@ type GamesFilterRequest = {
   releaseDate?: FilterLimits<string | undefined>;
   platforms?: string[];
   avgPlaytime?: FilterLimits<number | undefined>;
-  status?: string;
+  status?: gameStatus;
   page?: number;
   limit?: number;
 };

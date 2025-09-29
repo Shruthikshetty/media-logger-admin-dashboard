@@ -219,15 +219,6 @@ export const GamesFilterConfig: FilterConfig[] = [
     icon: FunnelPlus,
   },
   {
-    key: 'avgPlaytime',
-    label: 'Average Playtime',
-    type: 'number-input',
-    max: 10000 * 60, //10000 hours
-    min: 0,
-    helperText: 'Average playtime in minutes',
-    icon: Clock,
-  },
-  {
     key: 'platforms',
     label: 'Platforms',
     type: 'dropdown',
