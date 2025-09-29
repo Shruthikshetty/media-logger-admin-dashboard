@@ -5,11 +5,15 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { Plus, Search, Trash2, Upload } from 'lucide-react';
-import React, { useEffect, useMemo, useState } from 'react';
+import moment from 'moment';
+import React, { useDeferredValue, useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { LoadingWrapper } from '~/components/custom-loaders';
 import GamesTable, { gameColumns } from '~/components/games/games-table';
-import MediaFilters from '~/components/media-filters';
+import MediaFilters, {
+  DateState,
+  FiltersState,
+} from '~/components/media-filters';
 import TitleSubtitle from '~/components/title-subtitle';
 import { Button } from '~/components/ui/button';
 import {
@@ -23,7 +27,18 @@ import { Input } from '~/components/ui/input';
 import { Skeleton } from '~/components/ui/skeleton';
 import { GamesFilterConfig } from '~/constants/config.constants';
 import useDelayedLoading from '~/hooks/use-delayed-loading';
-import { useGetAllGames } from '~/services/game-service';
+import { gameStatus, useFilterGames } from '~/services/game-service';
+import { FilterLimits } from '~/types/global.types';
+
+//filter data type
+interface FiltersType extends FiltersState {
+  genre: string[];
+  averageRating: number;
+  ageRating: FilterLimits<number>;
+  releaseDate: DateState;
+  status: gameStatus;
+  platforms: string[];
+}
 
 /**
  * This is the main landing page for the games tab
@@ -33,8 +48,41 @@ import { useGetAllGames } from '~/services/game-service';
 const GamesTab = () => {
   // store page state
   const [page, setPage] = useState(1);
+  // holds th search text for games
+  const [searchText, setSearchText] = useState<string>('');
+  // derive a differed value
+  const deferredSearchText = useDeferredValue(searchText);
+  // store filters data for games
+  const [filters, setFilters] = useState<FiltersType>(null!);
+  //memorize filter query
+  const gamesFilterQuery = useMemo(
+    () => ({
+      page,
+      limit: 20, // set to 20 by default
+      genre: filters?.genre?.length > 0 ? filters?.genre : undefined,
+      releaseDate: filters?.releaseDate
+        ? {
+            gte: filters.releaseDate?.gte
+              ? moment(filters.releaseDate?.gte).toISOString()
+              : undefined,
+            lte: filters.releaseDate?.lte
+              ? moment(filters.releaseDate?.lte).toISOString()
+              : undefined,
+          }
+        : undefined,
+      ageRating: filters?.ageRating,
+      averageRating: filters?.averageRating,
+      status: filters?.status,
+      platforms:
+        filters?.platforms?.length > 0 ? filters?.platforms : undefined,
+      searchText: deferredSearchText,
+    }),
+    [page, filters, deferredSearchText],
+  );
+
   // fetch all the games data
-  const { data, isFetching, isError, error } = useGetAllGames();
+  const { data, isFetching, isError, error, isLoading } =
+    useFilterGames(gamesFilterQuery);
   //extracting delayed loading
   const loading = useDelayedLoading(isFetching);
   // stores row selection state
@@ -77,6 +125,15 @@ const GamesTab = () => {
 
   //derived selected row length
   const selectedRowLength = gamesTable.getSelectedRowModel().rows?.length ?? 0;
+  const rows = gamesTable.getRowModel().rows;
+  // ion case the page is empty and it's not the first page, go back one page
+  useEffect(() => {
+    // This effect runs only when the number of rows or the page changes
+    if (!isLoading && rows.length === 0 && page > 1) {
+      // If the current page is empty and it's not the first page, go back one page.
+      setPage(page - 1);
+    }
+  }, [rows.length, page, isLoading, setPage]);
 
   return (
     <div className="flex flex-col gap-5 p-5">
@@ -126,6 +183,10 @@ const GamesTab = () => {
                   className="border-ui-600 pl-10"
                   id="search"
                   placeholder="Search games by title"
+                  value={searchText}
+                  onChange={(e) => {
+                    setSearchText(e.target.value);
+                  }}
                 />
               </div>
               {selectedRowLength > 0 && (
@@ -145,8 +206,11 @@ const GamesTab = () => {
             {/* filters */}
             <MediaFilters
               config={GamesFilterConfig}
-              onFilterChange={() => {
-                /* @TODO */
+              onFilterChange={(newFilters) => {
+                // reset page
+                setPage(1);
+                // set new filters
+                setFilters(newFilters as FiltersType);
               }}
             />
           </div>

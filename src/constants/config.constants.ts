@@ -85,6 +85,9 @@ export const UserTablePageItemLimit = 20;
 //all games data slate time
 export const FetchAllGamesSlateTime = 1 * 60 * 1000; //1 min
 
+//fetch game details slate time 
+export const FetchGameDetailsSlateTime = 1 * 60 * 1000; //1 min
+
 export const MEDIA_STATUS = ['released', 'upcoming'];
 
 // movie filter config
@@ -217,15 +220,6 @@ export const GamesFilterConfig: FilterConfig[] = [
     multiselect: false,
     options: MEDIA_STATUS,
     icon: FunnelPlus,
-  },
-  {
-    key: 'avgPlaytime',
-    label: 'Average Playtime',
-    type: 'number-input',
-    max: 10000 * 60, //10000 hours
-    min: 0,
-    helperText: 'Average playtime in minutes',
-    icon: Clock,
   },
   {
     key: 'platforms',

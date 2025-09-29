@@ -17,4 +17,5 @@ export const Endpoints = {
   filterMovies: `/api/movie/filter`,
   moviesBulk: `/api/movie/bulk`,
   baseGame: `/api/game`,
+  filterGames: `/api/game/filter`,
 };
