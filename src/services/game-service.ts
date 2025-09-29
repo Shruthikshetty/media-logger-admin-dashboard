@@ -2,7 +2,12 @@
  * @file contains the game related services
  */
 
-import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query';
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { FetchAllGamesSlateTime } from '~/constants/config.constants';
 import { Endpoints } from '~/constants/endpoints.constants';
@@ -152,9 +157,16 @@ export const useGetGameDetailsById = (gameId: string) => {
 
 // custom hook to add a game
 export const useAddGame = () => {
+  const queryClient = useQueryClient();
   return useMutation<AddGameResponse, AxiosError<ApiError>, AddGameRequest>({
     mutationKey: [QueryKeys.addGame],
     mutationFn: (game: AddGameRequest) =>
       apiClient.post(Endpoints.baseGame, game).then((res) => res.data),
+    onSuccess: () => {
+      // invalidate the query after adding a game
+      queryClient.invalidateQueries({
+        queryKey: [QueryKeys.filterGames],
+      });
+    },
   });
 };
