@@ -6,7 +6,7 @@ import {
 } from '@tanstack/react-table';
 import { Plus, Search, Trash2, Upload } from 'lucide-react';
 import moment from 'moment';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useDeferredValue, useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { LoadingWrapper } from '~/components/custom-loaders';
 import GamesTable, { gameColumns } from '~/components/games/games-table';
@@ -48,6 +48,10 @@ interface FiltersType extends FiltersState {
 const GamesTab = () => {
   // store page state
   const [page, setPage] = useState(1);
+  // holds th search text for games
+  const [searchText, setSearchText] = useState<string>('');
+  // derive a differed value
+  const deferredSearchText = useDeferredValue(searchText);
   // store filters data for games
   const [filters, setFilters] = useState<FiltersType>(null!);
   //memorize filter query
@@ -71,8 +75,9 @@ const GamesTab = () => {
       status: filters?.status,
       platforms:
         filters?.platforms?.length > 0 ? filters?.platforms : undefined,
+      searchText: deferredSearchText,
     }),
-    [page, filters],
+    [page, filters, deferredSearchText],
   );
 
   // fetch all the games data
@@ -168,6 +173,10 @@ const GamesTab = () => {
                   className="border-ui-600 pl-10"
                   id="search"
                   placeholder="Search games by title"
+                  value={searchText}
+                  onChange={(e) => {
+                    setSearchText(e.target.value);
+                  }}
                 />
               </div>
               {selectedRowLength > 0 && (
