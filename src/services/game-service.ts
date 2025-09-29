@@ -34,7 +34,7 @@ export type Game = {
   avgPlaytime?: number;
   developer?: string;
   ageRating?: number;
-  trailerYoutubeUrl?: string;
+  youtubeVideoId?: string;
   createdAt: string;
   updatedAt: string;
 };
@@ -85,7 +85,7 @@ type AddGameRequest = {
   avgPlaytime?: number;
   developer?: string;
   ageRating?: number;
-  trailerYoutubeUrl?: string;
+  youtubeVideoId?: string;
 };
 
 //custom query hook to get all the games

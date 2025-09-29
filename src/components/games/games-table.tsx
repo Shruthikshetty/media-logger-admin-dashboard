@@ -27,6 +27,7 @@ import { capitalizeFirstLetter } from '~/lib/formatting';
 import { cn } from '~/lib/utils';
 import { Checkbox } from '../ui/checkbox';
 import GamesActionsDropdown from './games-actions-dropdown';
+import { useRouter } from 'next/navigation';
 
 type GamesTableProps = {
   table: ReactTable<Game>;
@@ -205,8 +206,10 @@ const GamesTable = ({
   setPage,
   pagination,
 }: GamesTableProps) => {
+  const router = useRouter();
   //if loading return a skeleton table
   if (loading) return <TableSkeleton />;
+  //initialize router
   //in case not loading return the table
   return (
     <>
@@ -234,7 +237,11 @@ const GamesTable = ({
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows.map((row) => (
-              <TableRow key={row.id} className="hover:bg-ui-800">
+              <TableRow
+                key={row.id}
+                className="hover:bg-ui-800"
+                onClick={() => router.push(`/games/${row.original._id}`)} // navigate to game details
+              >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
