@@ -2,7 +2,7 @@
  * @file contains the game related services
  */
 
-import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { FetchAllGamesSlateTime } from '~/constants/config.constants';
 import { Endpoints } from '~/constants/endpoints.constants';
@@ -34,6 +34,25 @@ export type Game = {
   updatedAt: string;
 };
 
+type GetGameDetailsResponse = {
+  success: boolean;
+  data: Game;
+};
+
+type AddGameResponse = {
+  success: boolean;
+  data: Game;
+  message: string;
+};
+
+type GetAllGamesResponse = {
+  data: {
+    games: Game[];
+    pagination: Pagination;
+  };
+  message?: string;
+};
+
 type GamesFilterRequest = {
   searchText?: string;
   averageRating?: number;
@@ -47,12 +66,21 @@ type GamesFilterRequest = {
   limit?: number;
 };
 
-type GetAllGamesResponse = {
-  data: {
-    games: Game[];
-    pagination: Pagination;
-  };
-  message?: string;
+type AddGameRequest = {
+  title: string;
+  description: string;
+  averageRating?: number;
+  genre?: string[];
+  releaseDate: string;
+  posterUrl?: string;
+  backdropUrl?: string;
+  isActive?: boolean;
+  status?: gameStatus;
+  platforms?: string[];
+  avgPlaytime?: number;
+  developer?: string;
+  ageRating?: number;
+  trailerYoutubeUrl?: number;
 };
 
 //custom query hook to get all the games
@@ -104,5 +132,29 @@ export const useFilterGames = ({
           },
         )
         .then((res) => res.data),
+  });
+};
+
+//custom hook to get game details by id
+export const useGetGameDetailsById = (gameId: string) => {
+  return useQuery<GetGameDetailsResponse, AxiosError<ApiError>>({
+    queryKey: [QueryKeys.gameDetailsById, gameId],
+    staleTime: FetchAllGamesSlateTime,
+    enabled: !!gameId,
+    queryFn: ({ signal }) =>
+      apiClient
+        .get<GetGameDetailsResponse>(Endpoints.baseGame + `/${gameId}`, {
+          signal,
+        })
+        .then((res) => res.data),
+  });
+};
+
+// custom hook to add a game
+export const useAddGame = () => {
+  return useMutation<AddGameResponse, AxiosError<ApiError>, AddGameRequest>({
+    mutationKey: [QueryKeys.addGame],
+    mutationFn: (game: AddGameRequest) =>
+      apiClient.post(Endpoints.baseGame, game).then((res) => res.data),
   });
 };

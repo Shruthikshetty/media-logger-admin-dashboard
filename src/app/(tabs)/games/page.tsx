@@ -81,7 +81,8 @@ const GamesTab = () => {
   );
 
   // fetch all the games data
-  const { data, isFetching, isError, error } = useFilterGames(gamesFilterQuery);
+  const { data, isFetching, isError, error, isLoading } =
+    useFilterGames(gamesFilterQuery);
   //extracting delayed loading
   const loading = useDelayedLoading(isFetching);
   // stores row selection state
@@ -124,6 +125,15 @@ const GamesTab = () => {
 
   //derived selected row length
   const selectedRowLength = gamesTable.getSelectedRowModel().rows?.length ?? 0;
+  const rows = gamesTable.getRowModel().rows;
+  // ion case the page is empty and it's not the first page, go back one page
+  useEffect(() => {
+    // This effect runs only when the number of rows or the page changes
+    if (!isLoading && rows.length === 0 && page > 1) {
+      // If the current page is empty and it's not the first page, go back one page.
+      setPage(page - 1);
+    }
+  }, [rows.length, page, isLoading, setPage]);
 
   return (
     <div className="flex flex-col gap-5 p-5">

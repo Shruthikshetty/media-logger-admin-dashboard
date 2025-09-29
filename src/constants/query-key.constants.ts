@@ -24,4 +24,6 @@ export const QueryKeys = {
   bulkAddMovies: 'bulk-add-movies',
   fetchAllGames: 'fetch-all-games',
   filterGames: 'filter-games',
+  gameDetailsById: 'game-details-by-id',
+  addGame: 'add-game',
 };
