@@ -197,7 +197,9 @@ const GameDetails = () => {
                 <div className="flex flex-col gap-2">
                   {data?.data?.platforms &&
                     data?.data?.platforms.length > 0 && (
-                      <p className="text-base-white font-semi text-lg">Tags</p>
+                      <p className="text-base-white font-semi text-lg">
+                        Platforms
+                      </p>
                     )}
                   <LoadingWrapper
                     fallback={<ListLoader noOfItems={3} itemClassName="w-15" />}

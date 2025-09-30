@@ -58,6 +58,20 @@ type GetAllGamesResponse = {
   message?: string;
 };
 
+type DeleteGameResponse = {
+  success: boolean;
+  message: string;
+  data: Game;
+};
+
+type BulkDeleteGamesResponse = {
+  success: boolean;
+  message: string;
+  data: {
+    deletedCount: number;
+  };
+};
+
 type GamesFilterRequest = {
   searchText?: string;
   averageRating?: number;
@@ -164,6 +178,44 @@ export const useAddGame = () => {
       apiClient.post(Endpoints.baseGame, game).then((res) => res.data),
     onSuccess: () => {
       // invalidate the query after adding a game
+      queryClient.invalidateQueries({
+        queryKey: [QueryKeys.filterGames],
+      });
+    },
+  });
+};
+
+//custom hook to delete a game by id
+export const useDeleteGameById = () => {
+  const queryClient = useQueryClient();
+  return useMutation<DeleteGameResponse, AxiosError<ApiError>, string>({
+    mutationKey: [QueryKeys.deleteGame],
+    mutationFn: (gameId: string) =>
+      apiClient
+        .delete(Endpoints.baseGame + `/${gameId}`)
+        .then((res) => res.data),
+    onSuccess: () => {
+      // invalidate the query after deleting a game
+      queryClient.invalidateQueries({
+        queryKey: [QueryKeys.filterGames],
+      });
+    },
+  });
+};
+
+//bulk delete games by id's
+export const useBulkDeleteGames = () => {
+  const queryClient = useQueryClient();
+  return useMutation<BulkDeleteGamesResponse, AxiosError<ApiError>, string[]>({
+    mutationKey: [QueryKeys.bulkDeleteGames],
+    mutationFn: (gameIds: string[]) =>
+      apiClient.delete(Endpoints.bulkDeleteGames, {
+        data: {
+          gameIds,
+        },
+      }),
+    onSuccess: () => {
+      // invalidate the query after deleting a game
       queryClient.invalidateQueries({
         queryKey: [QueryKeys.filterGames],
       });
