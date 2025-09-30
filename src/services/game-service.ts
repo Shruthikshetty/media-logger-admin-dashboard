@@ -102,6 +102,11 @@ type AddGameRequest = {
   youtubeVideoId?: string;
 };
 
+type UpdateGameRequest = {
+  game: Partial<AddGameRequest>;
+  gameId: string;
+};
+
 //custom query hook to get all the games
 export const useGetAllGames = ({
   limit = 20,
@@ -203,7 +208,7 @@ export const useDeleteGameById = () => {
   });
 };
 
-//bulk delete games by id's
+//custom hook to bulk delete games by id's
 export const useBulkDeleteGames = () => {
   const queryClient = useQueryClient();
   return useMutation<BulkDeleteGamesResponse, AxiosError<ApiError>, string[]>({
@@ -220,5 +225,16 @@ export const useBulkDeleteGames = () => {
         queryKey: [QueryKeys.filterGames],
       });
     },
+  });
+};
+
+// custom hook to update a game
+export const useUpdateGame = () => {
+  return useMutation<AddGameResponse, AxiosError<ApiError>, UpdateGameRequest>({
+    mutationKey: [QueryKeys.updateGame],
+    mutationFn: ({ game, gameId }: UpdateGameRequest) =>
+      apiClient
+        .patch(Endpoints.baseGame + `/${gameId}`, game)
+        .then((res) => res.data),
   });
 };
