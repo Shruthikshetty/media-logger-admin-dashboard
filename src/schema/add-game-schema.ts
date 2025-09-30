@@ -66,8 +66,7 @@ export const addGameSchema = z.object({
     })
     .refine((val) => MEDIA_STATUS.includes(val), {
       error: `Status must be one of the following: ${MEDIA_STATUS.join(', ')}`,
-    })
-    .optional(),
+    }),
 
   platforms: z
     .array(

@@ -100,7 +100,7 @@ const AddEditGameFormFields = ({
                 </FormControl>
                 <FormMessage />
                 <FormDescription className="text-ui-400 text-sm">
-                  Rating must be between 0 and 10
+                  Rating must be between 1 and 10
                 </FormDescription>
               </FormItem>
             )}
@@ -225,7 +225,7 @@ const AddEditGameFormFields = ({
               </FormControl>
               <FormMessage />
               <FormDescription className="text-ui-400 text-sm">
-                Enter the complete URL of the movie poster
+                Enter the complete URL of the game poster
               </FormDescription>
             </FormItem>
           )}
@@ -249,7 +249,7 @@ const AddEditGameFormFields = ({
               </FormControl>
               <FormMessage />
               <FormDescription className="text-ui-400 text-sm">
-                Enter the complete URL of the movie backdrop
+                Enter the complete URL of the game backdrop
               </FormDescription>
             </FormItem>
           )}

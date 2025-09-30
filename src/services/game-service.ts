@@ -218,7 +218,7 @@ export const useBulkDeleteGames = () => {
         data: {
           gameIds,
         },
-      }),
+      }).then((res) => res.data),
     onSuccess: () => {
       // invalidate the query after deleting a game
       queryClient.invalidateQueries({

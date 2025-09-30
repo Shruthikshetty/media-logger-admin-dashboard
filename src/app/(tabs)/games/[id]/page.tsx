@@ -37,11 +37,11 @@ import { useGetGameDetailsById } from '~/services/game-service';
  */
 const GameDetails = () => {
   //get the game id from params
-  const movieId = (useParams()?.id as string) ?? '';
+  const gameId = (useParams()?.id as string) ?? '';
   // hold the trailer visibility state
   const [trailerVisible, setTrailerVisible] = useState(false);
   //fetch the game details
-  const { data, isLoading } = useGetGameDetailsById(movieId);
+  const { data, isLoading } = useGetGameDetailsById(gameId);
   // returns the styled title with icon
   const renderMovieInfoTitle = useCallback(
     (title: string, Icon?: LucideIcon) => (
@@ -76,7 +76,7 @@ const GameDetails = () => {
                   Icon: Calendar,
                 },
                 {
-                  label: 'Runtime',
+                  label: 'Average Playtime',
                   value: data?.data?.avgPlaytime
                     ? `${data?.data?.avgPlaytime} min`
                     : '???',
@@ -248,7 +248,7 @@ const GameDetails = () => {
                     </LoadingWrapper>
                   </div>
                   <div>
-                    {renderMovieInfoTitle('Release Date', Clock)}
+                    {renderMovieInfoTitle('Average Playtime', Clock)}
                     <LoadingWrapper
                       fallback={<Skeleton className="h-5 w-20 rounded-2xl" />}
                     >
