@@ -94,7 +94,7 @@ type AddGameRequest = {
   posterUrl?: string;
   backdropUrl?: string;
   isActive?: boolean;
-  status?: gameStatus;
+  status?: string;
   platforms?: string[];
   avgPlaytime?: number;
   developer?: string;
