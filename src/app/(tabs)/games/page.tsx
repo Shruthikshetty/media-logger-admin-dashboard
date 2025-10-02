@@ -9,6 +9,7 @@ import moment from 'moment';
 import React, { useDeferredValue, useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { LoadingWrapper } from '~/components/custom-loaders';
+import AddGameDialog from '~/components/games/add-game-dialog';
 import GamesTable, { gameColumns } from '~/components/games/games-table';
 import MediaFilters, {
   DateState,
@@ -152,15 +153,17 @@ const GamesTab = () => {
             <Upload className="mr-1 size-4" />
             Import json
           </Button>
-          <Button
-            type="button"
-            variant={'outline'}
-            aria-label="add game"
-            className="to-feedback-success-light border-0 bg-gradient-to-r from-green-600 hover:opacity-80"
-          >
-            <Plus className="mr-1 size-4" />
-            Add Game
-          </Button>
+          <AddGameDialog>
+            <Button
+              type="button"
+              variant={'outline'}
+              aria-label="add game"
+              className="to-feedback-success-light border-0 bg-gradient-to-r from-green-600 hover:opacity-80"
+            >
+              <Plus className="mr-1 size-4" />
+              Add Game
+            </Button>
+          </AddGameDialog>
         </div>
       </div>
       {/* Search bar  and filter*/}
