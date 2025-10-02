@@ -110,7 +110,7 @@ type AddGameRequest = {
   youtubeVideoId?: string;
 };
 
-type UpdateGameRequest = {
+export type UpdateGameRequest = {
   game: Partial<AddGameRequest>;
   gameId: string;
 };

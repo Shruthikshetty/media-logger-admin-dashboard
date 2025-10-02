@@ -88,12 +88,11 @@ export const addGameSchema = z.object({
     })
     .optional(),
 
-  ageRating: z.number({
-    error: (issue) =>
-      issue.input === undefined
-        ? 'Age rating is required'
-        : 'Age rating must be number',
-  }),
+  ageRating: z
+    .number({
+      error: 'Age rating must be number',
+    })
+    .optional(),
 
   developer: z
     .string({

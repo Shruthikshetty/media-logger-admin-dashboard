@@ -22,6 +22,7 @@ import {
   LoadingProvider,
   LoadingWrapper,
 } from '~/components/custom-loaders';
+import EditGameDialog from '~/components/games/edit-game-dialog';
 import TitleSubtitle from '~/components/title-subtitle';
 import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
@@ -52,7 +53,7 @@ const GameDetails = () => {
   // get show spinner
   const setSpinner = useSpinnerStore((s) => s.setShowSpinner);
   //fetch the game details
-  const { data, isLoading } = useGetGameDetailsById(gameId);
+  const { data, isLoading, refetch } = useGetGameDetailsById(gameId);
   // returns the styled title with icon
   const renderMovieInfoTitle = useCallback(
     (title: string, Icon?: LucideIcon) => (
@@ -191,16 +192,21 @@ const GameDetails = () => {
                   </LoadingWrapper>
                   {/* Edit  and Delete button */}
                   <div className="flex flex-row gap-2 sm:flex-col sm:gap-3">
-                    <Button
-                      variant={'blue'}
-                      disabled={isLoading}
-                      className="flex-1 sm:flex-none"
-                      type="button"
-                      aria-label="Edit Game"
+                    <EditGameDialog
+                      existingData={data?.data}
+                      onSuccess={refetch}
                     >
-                      <PenSquare />
-                      Edit Game
-                    </Button>
+                      <Button
+                        variant={'blue'}
+                        disabled={isLoading}
+                        className="flex-1 sm:flex-none"
+                        type="button"
+                        aria-label="Edit Game"
+                      >
+                        <PenSquare />
+                        Edit Game
+                      </Button>
+                    </EditGameDialog>
                     <Button
                       variant={'red'}
                       className="text-base-white flex-1 sm:flex-none"
