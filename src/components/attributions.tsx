@@ -44,9 +44,9 @@ const Attributions = () => {
             height={24}
           />
         </a>
-        {/* RAWG "Logo" (as bold text or use your own SVG/Png) */}
+        {/* RAWG "Logo"*/}
         <a
-          href="https://www.igdb.com/"
+          href="https://rawg.io/"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="IGDB"
