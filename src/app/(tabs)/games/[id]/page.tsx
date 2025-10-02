@@ -83,7 +83,7 @@ const GameDetails = () => {
                   Icon: Clock,
                 },
                 {
-                  label: 'age Rating',
+                  label: 'Age Rating',
                   value:
                     data?.data?.ageRating !== undefined
                       ? `${data?.data?.ageRating}+`
@@ -178,7 +178,7 @@ const GameDetails = () => {
                 {/* genre badges */}
                 <div className="flex flex-col gap-2">
                   {data?.data?.genre && data?.data?.genre.length > 0 && (
-                    <p className="text-base-white font-semi text-lg">Genres</p>
+                    <p className="text-base-white font-semibold text-lg">Genres</p>
                   )}
                   <LoadingWrapper
                     fallback={<ListLoader noOfItems={4} itemClassName="w-15" />}
@@ -197,7 +197,7 @@ const GameDetails = () => {
                 <div className="flex flex-col gap-2">
                   {data?.data?.platforms &&
                     data?.data?.platforms.length > 0 && (
-                      <p className="text-base-white font-semi text-lg">
+                      <p className="text-base-white font-semibold text-lg">
                         Platforms
                       </p>
                     )}

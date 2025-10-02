@@ -54,7 +54,7 @@ const AddGameDialog = ({ children }: { children: React.ReactNode }) => {
     mutate(
       {
         ...data,
-        releaseDate: data.releaseDate?.toISOString(), //convert date to string
+        releaseDate: data.releaseDate.toISOString(), //convert date to ISO string
       },
       {
         onSuccess: () => {
