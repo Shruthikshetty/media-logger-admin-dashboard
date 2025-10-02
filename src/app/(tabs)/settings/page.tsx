@@ -1,12 +1,10 @@
-import { Bell, Key, Shield, TriangleAlert } from 'lucide-react';
+import { Bell, Database, Key, Shield, TriangleAlert } from 'lucide-react';
 import React from 'react';
-import { T } from 'vitest/dist/chunks/reporters.d.BFLkQcL6.js';
 import SwitchItem from '~/components/switch-item';
 import TitleSubtitle from '~/components/title-subtitle';
 import { Button } from '~/components/ui/button';
 import { Card, CardContent, CardHeader } from '~/components/ui/card';
 import { Separator } from '~/components/ui/separator';
-import { Switch } from '~/components/ui/switch';
 
 //@TODO screen in progress
 const SettingsTab = () => {
@@ -86,8 +84,8 @@ const SettingsTab = () => {
               Change password
             </Button>
             <Button variant={'outline'} className="border-ui-600">
-              <Key />
-              export data
+              <Database />
+            Export data
             </Button>
           </CardContent>
         </Card>
