@@ -6,7 +6,7 @@ import { Button } from '~/components/ui/button';
 import { Card, CardContent, CardHeader } from '~/components/ui/card';
 import { Separator } from '~/components/ui/separator';
 
-//@TODO screen in progress
+//@TODO Connect to backend API
 const SettingsTab = () => {
   return (
     <div className="flex flex-col gap-5 p-5">
@@ -85,7 +85,7 @@ const SettingsTab = () => {
             </Button>
             <Button variant={'outline'} className="border-ui-600">
               <Database />
-            Export data
+              Export data
             </Button>
           </CardContent>
         </Card>
