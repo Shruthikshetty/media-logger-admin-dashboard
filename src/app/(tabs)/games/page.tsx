@@ -29,7 +29,12 @@ import { Input } from '~/components/ui/input';
 import { Skeleton } from '~/components/ui/skeleton';
 import { GamesFilterConfig } from '~/constants/config.constants';
 import useDelayedLoading from '~/hooks/use-delayed-loading';
-import { gameStatus, useFilterGames } from '~/services/game-service';
+import {
+  gameStatus,
+  useBulkDeleteGames,
+  useFilterGames,
+} from '~/services/game-service';
+import { useSpinnerStore } from '~/state-management/spinner-store';
 import { FilterLimits } from '~/types/global.types';
 
 //filter data type
@@ -56,6 +61,10 @@ const GamesTab = () => {
   const deferredSearchText = useDeferredValue(searchText);
   // store filters data for games
   const [filters, setFilters] = useState<FiltersType>(null!);
+  // stores row selection state
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+  //get spinner state
+  const setShowSpinner = useSpinnerStore((s) => s.setShowSpinner);
   //memorize filter query
   const gamesFilterQuery = useMemo(
     () => ({
@@ -87,8 +96,8 @@ const GamesTab = () => {
     useFilterGames(gamesFilterQuery);
   //extracting delayed loading
   const loading = useDelayedLoading(isFetching);
-  // stores row selection state
-  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+  //initialize bulk delete custom hook
+  const { mutate: bulkDeleteGamesMutation } = useBulkDeleteGames();
 
   //catch any unexpected errors
   useEffect(() => {
@@ -136,6 +145,35 @@ const GamesTab = () => {
       setPage(page - 1);
     }
   }, [rows.length, page, isLoading, setPage]);
+  // handle delete selected games
+  const handleDeleteSelectedGames = () => {
+    if (selectedRowLength > 0) {
+      const GetSelectedGameIds = gamesTable
+        .getSelectedRowModel()
+        .rows.map((row) => row.original._id);
+      // start spinner
+      setShowSpinner(true);
+      bulkDeleteGamesMutation(GetSelectedGameIds, {
+        onSuccess: (data) => {
+          toast.success(data.message ?? 'Games deleted successfully', {
+            classNames: {
+              toast: '!bg-feedback-success',
+            },
+          });
+        },
+        onError: (error) => {
+          toast.error(error.response?.data?.message ?? 'Something went wrong', {
+            classNames: {
+              toast: '!bg-feedback-error',
+            },
+          });
+        },
+        onSettled: () => {
+          setShowSpinner(false);
+        },
+      });
+    }
+  };
 
   return (
     <div className="flex flex-col gap-5 p-5">
@@ -199,9 +237,7 @@ const GamesTab = () => {
                 <Button
                   variant={'red'}
                   aria-label={`delete selected games (${selectedRowLength})`}
-                  onClick={() => {
-                    /* @TODO */
-                  }}
+                  onClick={handleDeleteSelectedGames}
                   className="ml-auto"
                 >
                   <Trash2 className="size-4" />
