@@ -29,7 +29,7 @@ type AddEditGameFormFieldsProps = {
 };
 
 /**
- * This components all the fields used in add / edit game form
+ * This component contains all the fields used in add/edit game forms.
  * this is only meant to be used for add / edit game dialog's
  */
 const AddEditGameFormFields = ({
@@ -175,7 +175,7 @@ const AddEditGameFormFields = ({
                 </FormControl>
                 <FormMessage />
                 <FormDescription className="text-ui-400 text-sm">
-                  select the release date of the game
+                  Select the release date of the game
                 </FormDescription>
               </FormItem>
             )}
