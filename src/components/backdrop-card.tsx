@@ -47,7 +47,7 @@ const BackdropCard = ({
           src={backdropSrc}
           quality={75}
           sizes="100vw"
-          className="absolute inset-0 object-cover object-center"
+          className="absolute inset-0 object-cover object-top"
         />
       )}
       {/* poster */}
