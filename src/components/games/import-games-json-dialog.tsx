@@ -1,5 +1,5 @@
-'use client';
 import React, { useState } from 'react';
+import { useSpinnerStore } from '~/state-management/spinner-store';
 import {
   Dialog,
   DialogContent,
@@ -8,62 +8,44 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '../ui/dialog';
+import scrollStyles from '~/css-modules/scrollbar.module.css';
 import { Paperclip } from 'lucide-react';
 import JsonImporter from '../json-importer';
-import scrollStyles from '~/css-modules/scrollbar.module.css';
 import { cn } from '~/lib/utils';
-import { bulkAddMovieSchema } from '~/schema/bulk-add-movie-schema';
-import { useBulkAddMoviesJson } from '~/services/movies-service';
+import { bulkAddGameSchema } from '~/schema/bulk-add-game-schema';
 import { toast } from 'sonner';
-import { useSpinnerStore } from '~/state-management/spinner-store';
-import { useQueryClient } from '@tanstack/react-query';
-import { QueryKeys } from '~/constants/query-key.constants';
+import { useBulkAddGames } from '~/services/game-service';
+import { BULK_ADD_GAMES_PLACEHOLDER_EXAMPLE } from '~/constants/screen.constants';
 
-type ImportMoviesJsonProps = {
-  children: React.ReactElement;
-};
 /**
- * A dialog component to import movies from a JSON file or paste JSON data
- * containing an array of movie objects.
+ * A dialog component to import games from a JSON file or paste JSON data
+ * containing an array of game objects.
  *
- * @param {React.ReactNode} children - The trigger element to open the dialog.
- *
- * @returns {JSX.Element} The dialog component.
- * @example
- * <ImportMoviesJson>
- *   <Button>Import Movies from JSON</Button>
- * </ImportMoviesJson>
+ * @returns {JSX.Element}
  */
-const ImportMoviesJson = ({ children }: ImportMoviesJsonProps) => {
+const ImportGamesJson = ({ children }: { children: React.ReactNode }) => {
   // manage dialog open state
   const [open, setOpen] = useState(false);
   //get spinner state from the store
   const setSpinner = useSpinnerStore((state) => state.setShowSpinner);
-  // get the query client
-  const queryClient = useQueryClient();
-  //initialize custom hook for bulk upload
-  const { mutate } = useBulkAddMoviesJson();
-
+  //initialize custom hook for bulk upload of games
+  const { mutate } = useBulkAddGames();
+  // function to handle file upload
   const handleUpload = (file: File) => {
     // in case no file
     if (!file) return;
     // start loading
     setSpinner(true);
-    // execute mutation
     mutate(file, {
       onSuccess: (data) => {
         // pop success toast
-        toast.success(data.message ?? 'Movies imported successfully', {
+        toast.success(data.message ?? 'Games imported successfully', {
           classNames: {
             toast: '!bg-feedback-success',
           },
         });
         // close dialog
         setOpen(false);
-        //  invalidate filter data
-        queryClient.invalidateQueries({
-          queryKey: [QueryKeys.filterMovies],
-        });
       },
       onError: (error) => {
         toast.error(error?.response?.data.message ?? 'Something went wrong', {
@@ -79,6 +61,7 @@ const ImportMoviesJson = ({ children }: ImportMoviesJsonProps) => {
       },
     });
   };
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
@@ -91,17 +74,21 @@ const ImportMoviesJson = ({ children }: ImportMoviesJsonProps) => {
         <DialogHeader>
           <DialogTitle className="flex flex-row items-center justify-center gap-2 sm:justify-start">
             <Paperclip />
-            Import Movies from JSON
+            Import Games from JSON
           </DialogTitle>
           <DialogDescription>
-            Upload a JSON file or paste JSON data containing an array of movie
+            Upload a JSON file or paste JSON data containing an array of game
             objects
           </DialogDescription>
         </DialogHeader>
-        <JsonImporter onSuccess={handleUpload} schema={bulkAddMovieSchema} />
+        <JsonImporter
+          onSuccess={handleUpload}
+          schema={bulkAddGameSchema}
+          customPlaceholder={BULK_ADD_GAMES_PLACEHOLDER_EXAMPLE}
+        />
       </DialogContent>
     </Dialog>
   );
 };
 
-export default ImportMoviesJson;
+export default ImportGamesJson;

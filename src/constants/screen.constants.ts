@@ -88,3 +88,22 @@ export const CODE_AREA_PLACEHOLDER_EXAMPLE = `[
 \t\t"description": "Two imprisoned men bond over a number of years..."
 \t}
 ]`;
+
+// bulk add games placeholder
+export const BULK_ADD_GAMES_PLACEHOLDER_EXAMPLE = `[
+  {
+    "title": "God of War Ragnarök",
+    "description": "Embark on an epic journey across the Nine Realms.",
+    "averageRating": 9.5,
+    "genre": ["Action", "Adventure"],
+    "releaseDate": "2022-11-09",
+    "posterUrl": "https://example.com/poster.jpg",
+    "backdropUrl": "https://example.com/backdrop.jpg",
+    "status": "released",
+    "platforms": ["PlayStation 5", "PlayStation 4"],
+    "avgPlaytime": 25,
+    "developer": "Santa Monica Studio",
+    "ageRating": 18,
+    "youtubeVideoId": "dIQGI36HxZE"
+  }
+]`;

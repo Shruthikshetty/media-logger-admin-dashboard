@@ -11,8 +11,9 @@ import {
   X,
 } from 'lucide-react';
 import moment from 'moment';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import React, { useCallback, useState } from 'react';
+import { toast } from 'sonner';
 import BackButton from '~/components/back-button';
 import BackdropCard, { InfoItem } from '~/components/backdrop-card';
 import CollapsableBadgeList from '~/components/collapsable-badge-list';
@@ -21,6 +22,7 @@ import {
   LoadingProvider,
   LoadingWrapper,
 } from '~/components/custom-loaders';
+import EditGameDialog from '~/components/games/edit-game-dialog';
 import TitleSubtitle from '~/components/title-subtitle';
 import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
@@ -30,7 +32,11 @@ import YoutubePlayer from '~/components/youtube-player';
 import { AppColors } from '~/constants/colors.constants';
 import { capitalizeFirstLetter } from '~/lib/formatting';
 import { cn } from '~/lib/utils';
-import { useGetGameDetailsById } from '~/services/game-service';
+import {
+  useDeleteGameById,
+  useGetGameDetailsById,
+} from '~/services/game-service';
+import { useSpinnerStore } from '~/state-management/spinner-store';
 
 /**
  * This is the main page containing the details of a single game
@@ -40,8 +46,14 @@ const GameDetails = () => {
   const gameId = (useParams()?.id as string) ?? '';
   // hold the trailer visibility state
   const [trailerVisible, setTrailerVisible] = useState(false);
+  // initialize router
+  const router = useRouter();
+  //initialize delete custom hook
+  const { mutate: deleteGameMutate } = useDeleteGameById();
+  // get show spinner
+  const setSpinner = useSpinnerStore((s) => s.setShowSpinner);
   //fetch the game details
-  const { data, isLoading } = useGetGameDetailsById(gameId);
+  const { data, isLoading, refetch } = useGetGameDetailsById(gameId);
   // returns the styled title with icon
   const renderMovieInfoTitle = useCallback(
     (title: string, Icon?: LucideIcon) => (
@@ -52,6 +64,33 @@ const GameDetails = () => {
     ),
     [],
   );
+
+  // function to handle delete game
+  const handleDelete = () => {
+    // start loading
+    setSpinner(true);
+    //call api
+    deleteGameMutate(gameId, {
+      onSuccess: () => {
+        //send toast
+        toast.success('Game deleted successfully', {
+          className: '!bg-feedback-success',
+        });
+        // navigate back
+        router.back();
+      },
+      onError: (error) => {
+        toast.error(error?.response?.data.message ?? 'Something went wrong', {
+          className: '!bg-feedback-error',
+        });
+      },
+      onSettled: () => {
+        // stop loading
+        setSpinner(false);
+      },
+    });
+  };
+
   return (
     <div className="flex h-full w-full flex-col gap-5 p-5">
       <BackButton className="min-w-40" />
@@ -153,22 +192,28 @@ const GameDetails = () => {
                   </LoadingWrapper>
                   {/* Edit  and Delete button */}
                   <div className="flex flex-row gap-2 sm:flex-col sm:gap-3">
-                    <Button
-                      variant={'blue'}
-                      disabled={isLoading}
-                      className="flex-1 sm:flex-none"
-                      type="button"
-                      aria-label="Edit Game"
+                    <EditGameDialog
+                      existingData={data?.data}
+                      onSuccess={refetch}
                     >
-                      <PenSquare />
-                      Edit Game
-                    </Button>
+                      <Button
+                        variant={'blue'}
+                        disabled={isLoading}
+                        className="flex-1 sm:flex-none"
+                        type="button"
+                        aria-label="Edit Game"
+                      >
+                        <PenSquare />
+                        Edit Game
+                      </Button>
+                    </EditGameDialog>
                     <Button
                       variant={'red'}
                       className="text-base-white flex-1 sm:flex-none"
                       type="button"
                       aria-label="Delete Game"
                       disabled={isLoading}
+                      onClick={handleDelete}
                     >
                       <Trash2 />
                       Delete Game

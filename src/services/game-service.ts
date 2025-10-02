@@ -71,6 +71,14 @@ type BulkDeleteGamesResponse = {
     deletedCount: number;
   };
 };
+type BulkAddGamesResponse = {
+  success: boolean;
+  message: string;
+  data: {
+    added: Game[];
+    notAdded: Game[];
+  };
+};
 
 type GamesFilterRequest = {
   searchText?: string;
@@ -102,7 +110,7 @@ type AddGameRequest = {
   youtubeVideoId?: string;
 };
 
-type UpdateGameRequest = {
+export type UpdateGameRequest = {
   game: Partial<AddGameRequest>;
   gameId: string;
 };
@@ -214,11 +222,13 @@ export const useBulkDeleteGames = () => {
   return useMutation<BulkDeleteGamesResponse, AxiosError<ApiError>, string[]>({
     mutationKey: [QueryKeys.bulkDeleteGames],
     mutationFn: (gameIds: string[]) =>
-      apiClient.delete(Endpoints.bulkDeleteGames, {
-        data: {
-          gameIds,
-        },
-      }).then((res) => res.data),
+      apiClient
+        .delete(Endpoints.bulkGamesBase, {
+          data: {
+            gameIds,
+          },
+        })
+        .then((res) => res.data),
     onSuccess: () => {
       // invalidate the query after deleting a game
       queryClient.invalidateQueries({
@@ -236,5 +246,31 @@ export const useUpdateGame = () => {
       apiClient
         .patch(Endpoints.baseGame + `/${gameId}`, game)
         .then((res) => res.data),
+  });
+};
+
+//custom hook to bulk add games
+export const useBulkAddGames = () => {
+  const queryClient = useQueryClient();
+  return useMutation<BulkAddGamesResponse, AxiosError<ApiError>, File>({
+    mutationKey: [QueryKeys.bulkAddGames],
+    mutationFn: (file: File) => {
+      // create form data
+      const formData = new FormData();
+      formData.append('gameDataFile', file);
+      return apiClient
+        .post<BulkAddGamesResponse>(Endpoints.bulkGamesBase, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then((res) => res.data);
+    },
+    onSuccess: () => {
+      // invalidate the query after adding games
+      queryClient.invalidateQueries({
+        queryKey: [QueryKeys.filterGames],
+      });
+    },
   });
 };
