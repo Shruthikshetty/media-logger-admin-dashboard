@@ -95,7 +95,7 @@ const AddEditGameFormFields = ({
                   <NumberInput
                     {...field}
                     id="averageRating"
-                    placeholder="Rating (0-10)"
+                    placeholder="Rating (1-10)"
                   />
                 </FormControl>
                 <FormMessage />
