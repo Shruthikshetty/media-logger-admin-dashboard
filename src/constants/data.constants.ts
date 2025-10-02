@@ -216,7 +216,7 @@ export const GAME_GENRES = [
   "Platformer",
   "Real Time Strategy (RTS)",
   "MOBA",
-  'Turn-based strategy'
+  'Turn-based Strategy'
 ];
 
 //game platforms
