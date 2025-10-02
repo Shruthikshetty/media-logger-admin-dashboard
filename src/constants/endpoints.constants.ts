@@ -18,5 +18,5 @@ export const Endpoints = {
   moviesBulk: `/api/movie/bulk`,
   baseGame: `/api/game`,
   filterGames: `/api/game/filter`,
-  bulkDeleteGames: `/api/game/bulk`,
+  bulkGamesBase: `/api/game/bulk`,
 };

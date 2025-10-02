@@ -16,10 +16,12 @@ const JsonImporter = ({
   onSuccess,
   fileName = 'imported.json',
   schema,
+  customPlaceholder,
 }: {
   onSuccess: (file: File) => void;
   fileName?: string;
   schema: ZodType;
+  customPlaceholder?: string;
 }) => {
   // store json text
   const [jsonString, setJsonString] = useState('');
@@ -146,7 +148,7 @@ const JsonImporter = ({
             'flex-1 text-sm [&_.cm-scroller]:flex-1',
             scrollStyles.scrollContainer,
           )}
-          placeholder={CODE_AREA_PLACEHOLDER_EXAMPLE}
+          placeholder={customPlaceholder ?? CODE_AREA_PLACEHOLDER_EXAMPLE}
         />
       </div>
       {errors.length > 0 && (

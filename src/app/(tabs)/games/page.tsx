@@ -11,6 +11,7 @@ import { toast } from 'sonner';
 import { LoadingWrapper } from '~/components/custom-loaders';
 import AddGameDialog from '~/components/games/add-game-dialog';
 import GamesTable, { gameColumns } from '~/components/games/games-table';
+import ImportGamesJson from '~/components/games/import-games-json-dialog';
 import MediaFilters, {
   DateState,
   FiltersState,
@@ -145,14 +146,16 @@ const GamesTab = () => {
           subtitle="Manage your game collection"
         />
         <div className="flex flex-col gap-3 md:flex-row">
-          <Button
-            variant={'outline'}
-            type="button"
-            aria-label="import games json button"
-          >
-            <Upload className="mr-1 size-4" />
-            Import json
-          </Button>
+          <ImportGamesJson>
+            <Button
+              variant={'outline'}
+              type="button"
+              aria-label="import games json button"
+            >
+              <Upload className="mr-1 size-4" />
+              Import json
+            </Button>
+          </ImportGamesJson>
           <AddGameDialog>
             <Button
               type="button"

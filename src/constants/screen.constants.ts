@@ -88,3 +88,23 @@ export const CODE_AREA_PLACEHOLDER_EXAMPLE = `[
 \t\t"description": "Two imprisoned men bond over a number of years..."
 \t}
 ]`;
+
+// bulk add games placeholder
+export const BULK_ADD_GAMES_PLACEHOLDER_EXAMPLE = `[
+  {
+    "title": string,
+    "description": string,
+    "averageRating": number | undefined,
+    "genre": string[],
+    "releaseDate": string,
+    "posterUrl": string | undefined,
+    "backdropUrl": string | undefined,
+    "isActive": boolean,
+    "status": string,
+    "platforms": string[],
+    "avgPlaytime": number | undefined,
+    "developer": string | undefined,
+    "ageRating": number | undefined,
+    "youtubeVideoId": string | undefined
+  }
+]`;

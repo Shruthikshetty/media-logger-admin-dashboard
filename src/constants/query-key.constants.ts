@@ -29,4 +29,5 @@ export const QueryKeys = {
   deleteGame: 'delete-game',
   bulkDeleteGames: 'bulk-delete-games',
   updateGame: 'update-game',
+  bulkAddGames: 'bulk-add-games',
 };
