@@ -92,19 +92,18 @@ export const CODE_AREA_PLACEHOLDER_EXAMPLE = `[
 // bulk add games placeholder
 export const BULK_ADD_GAMES_PLACEHOLDER_EXAMPLE = `[
   {
-    "title": string,
-    "description": string,
-    "averageRating": number | undefined,
-    "genre": string[],
-    "releaseDate": string,
-    "posterUrl": string | undefined,
-    "backdropUrl": string | undefined,
-    "isActive": boolean,
-    "status": string,
-    "platforms": string[],
-    "avgPlaytime": number | undefined,
-    "developer": string | undefined,
-    "ageRating": number | undefined,
-    "youtubeVideoId": string | undefined
+    "title": "God of War Ragnarök",
+    "description": "Embark on an epic journey across the Nine Realms.",
+    "averageRating": 9.5,
+    "genre": ["Action", "Adventure"],
+    "releaseDate": "2022-11-09",
+    "posterUrl": "https://example.com/poster.jpg",
+    "backdropUrl": "https://example.com/backdrop.jpg",
+    "status": "released",
+    "platforms": ["PlayStation 5", "PlayStation 4"],
+    "avgPlaytime": 25,
+    "developer": "Santa Monica Studio",
+    "ageRating": 18,
+    "youtubeVideoId": "dIQGI36HxZE"
   }
 ]`;

@@ -1,3 +1,4 @@
+"use client";
 import React, { ComponentProps } from 'react';
 import { Input } from './ui/input';
 
