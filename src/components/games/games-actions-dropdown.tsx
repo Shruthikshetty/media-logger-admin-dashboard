@@ -9,7 +9,10 @@ import {
 } from '../ui/dropdown-menu';
 import { Ellipsis, Eye, SquarePen, Trash2 } from 'lucide-react';
 import { cn } from '~/lib/utils';
-import { Game } from '~/services/game-service';
+import { Game, useDeleteGameById } from '~/services/game-service';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
+import { useSpinnerStore } from '~/state-management/spinner-store';
 
 //@TODO component in progress
 /**
@@ -18,6 +21,12 @@ import { Game } from '~/services/game-service';
  * mainly used in games table
  */
 const GamesActionsDropdown = ({ game }: { game: Game }) => {
+  // initialize router
+  const router = useRouter();
+  //initialize delete custom hook
+  const { mutate: deleteGameMutate } = useDeleteGameById();
+  // get show spinner
+  const setSpinner = useSpinnerStore((s) => s.setShowSpinner);
   // game action items
   const GameActionItems = [
     {
@@ -25,7 +34,8 @@ const GamesActionsDropdown = ({ game }: { game: Game }) => {
       icon: Eye,
       color: 'text-base-white',
       onClick: () => {
-        //@TODO
+        //navigate to details screen
+        router.push(`/games/${game._id}`);
       },
     },
     {
@@ -41,7 +51,29 @@ const GamesActionsDropdown = ({ game }: { game: Game }) => {
       icon: Trash2,
       color: 'text-feedback-error',
       onClick: () => {
-        // @TODO
+        // start loading
+        setSpinner(true);
+        //call api
+        deleteGameMutate(game._id, {
+          onSuccess: () => {
+            //send toast
+            toast.success('Game deleted successfully', {
+              className: '!bg-feedback-success',
+            });
+          },
+          onError: (error) => {
+            toast.error(
+              error?.response?.data.message ?? 'Something went wrong',
+              {
+                className: '!bg-feedback-error',
+              },
+            );
+          },
+          onSettled: () => {
+            // stop loading
+            setSpinner(false);
+          },
+        });
       },
     },
   ];
