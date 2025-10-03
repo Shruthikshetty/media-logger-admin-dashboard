@@ -116,4 +116,5 @@ export const addGameDefaultValues: Partial<AddGameSchemaType> = {
   title: '',
   description: '',
   status: MEDIA_STATUS[0],
+  platforms: [],
 };
