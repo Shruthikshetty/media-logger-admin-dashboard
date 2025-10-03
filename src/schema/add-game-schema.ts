@@ -24,7 +24,7 @@ export const addGameSchema = z.object({
     .number({
       error: 'Average rating must be number',
     })
-    .positive('Average rating must be positive')
+    .min(0, 'Average rating can not be negative')
     .max(10, 'Average rating can be at most 10')
     .optional(),
 
@@ -92,6 +92,7 @@ export const addGameSchema = z.object({
     .number({
       error: 'Age rating must be number',
     })
+    .min(0, 'Age rating can not be negative')
     .optional(),
 
   developer: z
@@ -104,7 +105,7 @@ export const addGameSchema = z.object({
     .number({
       error: 'Avg playtime must be number',
     })
-    .positive('Avg playtime must be positive')
+    .min(0, 'Avg playtime can not be negative')
     .optional(),
 });
 

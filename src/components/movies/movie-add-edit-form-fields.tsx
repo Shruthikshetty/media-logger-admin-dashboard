@@ -108,12 +108,12 @@ const AddEditMovieFormFields = ({
                   <NumberInput
                     {...field}
                     id="averageRating"
-                    placeholder="Rating (0-10)"
+                    placeholder="Rating (1-10)"
                   />
                 </FormControl>
                 <FormMessage />
                 <FormDescription className="text-ui-400 text-sm">
-                  Rating must be between 0 and 10
+                  Rating must be between 1 and 10
                 </FormDescription>
               </FormItem>
             )}
@@ -124,7 +124,7 @@ const AddEditMovieFormFields = ({
             render={({ field }) => (
               <FormItem className="flex-1">
                 <Label htmlFor="runTime" className="text-base">
-                  Run Time
+                  Run Time *
                 </Label>
                 <FormControl>
                   <NumberInput {...field} id="runTime" placeholder="Minutes" />
