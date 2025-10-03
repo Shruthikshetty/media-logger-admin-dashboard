@@ -4,8 +4,7 @@ import { Input } from './ui/input';
 
 /**
  * A wrapper around the `Input` component that allows only numbers.
- * If the user clears the input, `onChange` is called with `undefined` as the value.
- * Otherwise, the value passed to `onChange` is a number.
+ * onChanges the value to a number and passes it to the `onChange` prop. 
  * @param {number | undefined} value The current value of the input.
  * @param {(val: number | undefined) => void} onChange Called whenever the value changes.
  * @param {Omit<ComponentProps<typeof Input>, 'type' | 'onChange'>} [rest] Any other props to be passed to `Input`.
