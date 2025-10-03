@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import React, { ComponentProps } from 'react';
 import { Input } from './ui/input';
 
@@ -20,10 +20,8 @@ const NumberInput = ({
 }) => {
   return (
     <Input
-      value={value === undefined ? '' : value}
-      onChange={(e) =>
-        onChange(e.target.value === '' ? undefined : Number(e.target.value))
-      }
+      value={value === undefined || value === 0 ? '' : value}
+      onChange={(e) => onChange(Number(e.target.value))}
       type="number"
       {...rest}
     />

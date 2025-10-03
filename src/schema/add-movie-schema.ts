@@ -28,7 +28,7 @@ export const addMovieSchema = z.object({
     .number({
       error: 'Average rating must be number',
     })
-    .positive('Average rating must be positive')
+    .min(0, 'Average rating can not be negative')
     .max(10, 'Average rating can be at most 10')
     .optional(),
 
@@ -51,7 +51,7 @@ export const addMovieSchema = z.object({
           ? 'Run time is required'
           : 'Run time must be number',
     })
-    .positive('Run time must be positive'),
+    .min(1, 'Run time is required'),
   languages: z.array(z.string({ error: 'Languages must be string' }), {
     error: 'Languages must be an array of strings',
   }),
@@ -78,12 +78,14 @@ export const addMovieSchema = z.object({
       error: `Status must be one of the following: ${MEDIA_STATUS.join(', ')}`,
     })
     .optional(),
-  ageRating: z.number({
-    error: (issue) =>
-      issue.input === undefined
-        ? 'Age rating is required'
-        : 'Age rating must be number',
-  }),
+  ageRating: z
+    .number({
+      error: (issue) =>
+        issue.input === undefined
+          ? 'Age rating is required'
+          : 'Age rating must be number',
+    })
+    .min(1, 'Age rating is required'),
   tags: z
     .array(
       z
@@ -129,4 +131,5 @@ export const addMovieDefaultValues: Partial<AddMovieSchemaType> = {
   description: '',
   isActive: true,
   status: MEDIA_STATUS[0],
+  languages: [],
 };

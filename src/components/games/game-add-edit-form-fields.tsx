@@ -150,7 +150,7 @@ const AddEditGameFormFields = ({
             render={({ field }) => (
               <FormItem className="flex-1">
                 <Label htmlFor="ageRating" className="text-base">
-                  Age Rating *
+                  Age Rating
                 </Label>
                 <FormControl>
                   <NumberInput {...field} id="ageRating" placeholder="Years" />

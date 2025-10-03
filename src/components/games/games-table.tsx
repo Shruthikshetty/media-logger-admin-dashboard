@@ -138,16 +138,19 @@ export const gameColumns: ColumnDef<Game, string | string[] | number>[] = [
   {
     accessorKey: 'ageRating',
     header: 'Age Rating',
-    cell: (props) => (
-      <Badge className="text-base-white border-ui-600 text-md flex flex-row items-center justify-center rounded-full border">
-        <p>{props.getValue() ?? 'Un'}</p>
-        {props.getValue() && (
-          <p>
-            <Plus className="size-3" strokeWidth={3} />
-          </p>
-        )}
-      </Badge>
-    ),
+    cell: (props) => {
+      console.log(props.getValue());
+      return (
+        <Badge className="text-base-white border-ui-600 text-md flex flex-row items-center justify-center rounded-full border">
+          <p>{props.getValue() ? props.getValue() : 'Un'}</p>
+          {props.getValue() ? (
+            <p>
+              <Plus className="size-3" strokeWidth={3} />
+            </p>
+          ) : null}
+        </Badge>
+      );
+    },
   },
   {
     accessorKey: 'releaseDate',
