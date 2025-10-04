@@ -2,6 +2,9 @@
  * @file contains the tv episode related services
  */
 
+import { SeasonBase } from './tv-season-service';
+import { TvShowBase } from './tv-show-service';
+
 export type EpisodeBase = {
   _id: string;
   title: string;
@@ -23,5 +26,5 @@ export type EpisodeFull = {
   runTime: number;
   createdAt: string;
   updatedAt: string;
-  season: object;
+  season: (Omit<SeasonBase, 'tvShow'> & { tvShow: TvShowBase })[];
 };
