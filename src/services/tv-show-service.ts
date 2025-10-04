@@ -46,7 +46,16 @@ export type TvShowGetAllResponse<T> = {
   message?: string;
 };
 
-// Custom hook to fetch all the tv shows
+
+/**
+ * Fetches all the tv shows from the api with pagination
+ * @template T boolean value to determine whether to fetch full details of the tv show or not
+ * @param {Object} options - options to pass to the api
+ * @param {number} options.limit - number of items to fetch per page
+ * @param {number} options.page - page number to fetch
+ * @param {boolean} options.fullDetails - whether to fetch full details of the tv show or not
+ * @returns {UseQueryResult<TvShowGetAllResponse<T>, AxiosError<ApiError>>}
+ */
 export const useFetchAllTvShows = <T extends boolean = false>({
   limit = 20,
   page = 1,
