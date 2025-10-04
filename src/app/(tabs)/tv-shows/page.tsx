@@ -14,6 +14,7 @@ import {
 } from '~/components/ui/card';
 import { Input } from '~/components/ui/input';
 import { TvShowsFilterConfig } from '~/constants/config.constants';
+import { useFetchAllTvShows } from '~/services/tv-show-service';
 
 /**
  * This is the main landing page for the Tv shows tab
@@ -21,6 +22,11 @@ import { TvShowsFilterConfig } from '~/constants/config.constants';
  * @returns a JSX.Element
  */
 const TvShowTab = () => {
+  // fetch all tv shows using custom hook
+  const { data } = useFetchAllTvShows({fullDetails:true});
+  // @TODO remove
+  console.log(data?.data.tvShows[0]);
+
   return (
     <div className="flex flex-col gap-5 p-5">
       {/* Header */}

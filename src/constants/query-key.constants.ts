@@ -30,4 +30,5 @@ export const QueryKeys = {
   bulkDeleteGames: 'bulk-delete-games',
   updateGame: 'update-game',
   bulkAddGames: 'bulk-add-games',
+  fetchAllTvShows: 'fetch-all-tv-shows',
 };
