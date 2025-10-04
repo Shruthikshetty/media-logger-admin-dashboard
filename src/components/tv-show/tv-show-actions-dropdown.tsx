@@ -35,7 +35,7 @@ const TvShowActionDropdown = ({ data }: { data: TvShowBase }) => {
       },
     },
     {
-      title: 'Delete Movie',
+      title: 'Delete TV Show',
       icon: Trash2,
       color: 'text-feedback-error',
       onClick: () => {
@@ -46,7 +46,7 @@ const TvShowActionDropdown = ({ data }: { data: TvShowBase }) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
-        aria-label="Open movie actions"
+        aria-label="Open TV show actions"
         type="button"
         className="hover:bg-ui-600 rounded-md p-1"
         onClick={(e) => e.stopPropagation()}
