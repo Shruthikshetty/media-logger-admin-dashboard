@@ -19,4 +19,5 @@ export const Endpoints = {
   baseGame: `/api/game`,
   filterGames: `/api/game/filter`,
   bulkGamesBase: `/api/game/bulk`,
+  baseTvShow: `/api/tv-show`,
 };

@@ -113,7 +113,7 @@ const AddEditMovieFormFields = ({
                 </FormControl>
                 <FormMessage />
                 <FormDescription className="text-ui-400 text-sm">
-                  Rating must be between 1 and 10
+                  Rating must be between 1 and 10 (0 is same as no rating)
                 </FormDescription>
               </FormItem>
             )}

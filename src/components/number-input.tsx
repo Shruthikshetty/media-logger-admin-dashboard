@@ -4,9 +4,11 @@ import { Input } from './ui/input';
 
 /**
  * A wrapper around the `Input` component that allows only numbers.
- * onChanges the value to a number and passes it to the `onChange` prop.
- * @param {number | undefined} value The current value of the input.
- * @param {(val: number | undefined) => void} onChange Called whenever the value changes.
+ * When the value is changed, the onChange prop is called with the value converted to a number.
+ * If the value is empty, onChange is called with null.
+ * If the value is invalid (e.g. text), onChange is called with undefined.
+ * @param {number | null | undefined} value The current value of the input.
+ * @param {(val: number | null | undefined) => void} onChange Called whenever the value changes.
  * @param {Omit<ComponentProps<typeof Input>, 'type' | 'onChange'>} [rest] Any other props to be passed to `Input`.
  * @returns {JSX.Element} The wrapped `Input` component.
  */

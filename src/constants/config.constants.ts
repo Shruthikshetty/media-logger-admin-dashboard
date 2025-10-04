@@ -88,6 +88,9 @@ export const FetchAllGamesSlateTime = 1 * 60 * 1000; //1 min
 //fetch game details slate time
 export const FetchGameDetailsSlateTime = 1 * 60 * 1000; //1 min
 
+//fetch all tv shows slate time
+export const FetchAllTvShowsSlateTime = 1 * 60 * 1000; //1 min
+
 export const MEDIA_STATUS = ['released', 'upcoming'];
 
 // movie filter config
