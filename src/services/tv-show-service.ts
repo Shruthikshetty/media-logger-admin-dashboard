@@ -12,6 +12,7 @@ import apiClient from '~/lib/api-client';
 import { Endpoints } from '~/constants/endpoints.constants';
 
 export type TvShowBase = {
+  _id: string;
   title: string;
   description: string;
   releaseDate: string;
