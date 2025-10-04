@@ -1,9 +1,10 @@
 'use client';
+import { getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import { Plus, Search, Upload } from 'lucide-react';
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import MediaFilters from '~/components/media-filters';
 import TitleSubtitle from '~/components/title-subtitle';
-import TvShowTable from '~/components/tv-show/tv-show-table';
+import TvShowTable, { tvShowColumns } from '~/components/tv-show/tv-show-table';
 import { Button } from '~/components/ui/button';
 import {
   Card,
@@ -14,6 +15,7 @@ import {
 } from '~/components/ui/card';
 import { Input } from '~/components/ui/input';
 import { TvShowsFilterConfig } from '~/constants/config.constants';
+import useDelayedLoading from '~/hooks/use-delayed-loading';
 import { useFetchAllTvShows } from '~/services/tv-show-service';
 
 /**
@@ -22,10 +24,28 @@ import { useFetchAllTvShows } from '~/services/tv-show-service';
  * @returns a JSX.Element
  */
 const TvShowTab = () => {
+  // stores the current pagination page
+  const [page, setPage] = useState(1);
+  // memorize the games filter query
+  const memorizedFilterQuery = useMemo(
+    () => ({ page, limit: 20, fullDetails: false }),
+    [page],
+  );
   // fetch all tv shows using custom hook
-  const { data } = useFetchAllTvShows({fullDetails:true});
-  // @TODO remove
-  console.log(data?.data.tvShows[0]);
+  const { data, isFetching } = useFetchAllTvShows(memorizedFilterQuery);
+  //extracting delayed loading
+  const loading = useDelayedLoading(isFetching);
+  // Create a stable empty array reference for the data prop
+  const defaultData = useMemo(
+    () => data?.data?.tvShows ?? [],
+    [data?.data?.tvShows],
+  );
+  //create a table with all the tv shows data
+  const tvShowTable = useReactTable({
+    data: defaultData,
+    columns: tvShowColumns,
+    getCoreRowModel: getCoreRowModel(),
+  });
 
   return (
     <div className="flex flex-col gap-5 p-5">
@@ -97,7 +117,13 @@ const TvShowTab = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <TvShowTable />
+          <TvShowTable
+            loading={loading}
+            table={tvShowTable}
+            page={page}
+            setPage={setPage}
+            pagination={data?.data.pagination}
+          />
         </CardContent>
       </Card>
     </div>
