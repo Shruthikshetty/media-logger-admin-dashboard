@@ -1,7 +1,11 @@
 'use client';
-import { getCoreRowModel, useReactTable } from '@tanstack/react-table';
-import { Plus, Search, Upload } from 'lucide-react';
-import React, { useMemo, useState } from 'react';
+import {
+  getCoreRowModel,
+  RowSelectionState,
+  useReactTable,
+} from '@tanstack/react-table';
+import { Plus, Search, Trash2, Upload } from 'lucide-react';
+import React, { useEffect, useMemo, useState } from 'react';
 import MediaFilters from '~/components/media-filters';
 import TitleSubtitle from '~/components/title-subtitle';
 import TvShowTable, { tvShowColumns } from '~/components/tv-show/tv-show-table';
@@ -26,13 +30,16 @@ import { useFetchAllTvShows } from '~/services/tv-show-service';
 const TvShowTab = () => {
   // stores the current pagination page
   const [page, setPage] = useState(1);
+  // stores row selection state
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   // memorize the games filter query
   const memorizedFilterQuery = useMemo(
     () => ({ page, limit: 20, fullDetails: false }),
     [page],
   );
   // fetch all tv shows using custom hook
-  const { data, isFetching } = useFetchAllTvShows(memorizedFilterQuery);
+  const { data, isFetching, isLoading } =
+    useFetchAllTvShows(memorizedFilterQuery);
   //extracting delayed loading
   const loading = useDelayedLoading(isFetching);
   // Create a stable empty array reference for the data prop
@@ -40,12 +47,35 @@ const TvShowTab = () => {
     () => data?.data?.tvShows ?? [],
     [data?.data?.tvShows],
   );
+  // Memoize the table state object
+  const tableState = useMemo(
+    () => ({
+      rowSelection,
+    }),
+    [rowSelection],
+  );
   //create a table with all the tv shows data
   const tvShowTable = useReactTable({
     data: defaultData,
     columns: tvShowColumns,
+    state: tableState,
+    onRowSelectionChange: setRowSelection,
+    enableRowSelection: true,
+    getRowId: (row) => row._id,
     getCoreRowModel: getCoreRowModel(),
   });
+
+  //derived selected row length
+  const selectedRowLength = tvShowTable.getSelectedRowModel().rows?.length ?? 0;
+  const rows = tvShowTable.getRowModel().rows;
+  // ion case the page is empty and it's not the first page, go back one page
+  useEffect(() => {
+    // This effect runs only when the number of rows or the page changes
+    if (!isLoading && rows.length === 0 && page > 1) {
+      // If the current page is empty and it's not the first page, go back one page.
+      setPage(page - 1);
+    }
+  }, [rows.length, page, isLoading, setPage]);
 
   return (
     <div className="flex flex-col gap-5 p-5">
@@ -83,18 +113,30 @@ const TvShowTab = () => {
           </CardDescription>
           <div className="flex flex-col gap-4">
             {/* search bar*/}
-            <div className="relative max-w-[500px] grow">
-              <Search
-                className="absolute top-1/2 ml-2 h-5 w-5 -translate-y-1/2 transform"
-                aria-hidden="true"
-              />
-              <Input
-                aria-label="Search Tv show by title"
-                type="text"
-                className="border-ui-600 pl-10"
-                id="search"
-                placeholder="Search Tv show by title"
-              />
+            <div className="flex flex-row items-center justify-between gap-2">
+              <div className="relative max-w-[500px] grow">
+                <Search
+                  className="absolute top-1/2 ml-2 h-5 w-5 -translate-y-1/2 transform"
+                  aria-hidden="true"
+                />
+                <Input
+                  aria-label="Search Tv show by title"
+                  type="text"
+                  className="border-ui-600 pl-10"
+                  id="search"
+                  placeholder="Search Tv show by title"
+                />
+              </div>
+              {selectedRowLength > 0 && (
+                <Button
+                  variant={'red'}
+                  aria-label={`delete selected tv shows (${selectedRowLength})`}
+                  className="ml-auto"
+                >
+                  <Trash2 className="size-4" />
+                  selected ({selectedRowLength})
+                </Button>
+              )}
             </div>
             {/* filters */}
             <MediaFilters

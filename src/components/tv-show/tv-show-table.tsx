@@ -19,13 +19,14 @@ import {
 } from '../ui/table';
 import TablePagination from '../table-pagination';
 import CollapsableBadgeList from '../collapsable-badge-list';
-import { Calendar, Ellipsis, Plus, Star } from 'lucide-react';
+import { Calendar, Plus, Star } from 'lucide-react';
 
 import moment from 'moment';
 import { capitalizeFirstLetter } from '~/lib/formatting';
 import { cn } from '~/lib/utils';
 import { Badge } from '../ui/badge';
 import TvShowActionDropdown from './tv-show-actions-dropdown';
+import { Checkbox } from '../ui/checkbox';
 
 //define a type for the tv shows table
 type TvShowTableProps = {
@@ -41,6 +42,30 @@ export const tvShowColumns: ColumnDef<
   TvShowBase,
   string | number | undefined | string[]
 >[] = [
+  {
+    id: 'select',
+    header: (props) => (
+      <Checkbox
+        className="data-[state=checked]:bg-base-white data-[state=checked]:text-base-black"
+        checked={props.table.getIsAllRowsSelected()}
+        aria-label="select all"
+        onCheckedChange={() => props.table.toggleAllRowsSelected()}
+      />
+    ),
+    cell: (props) => (
+      <div onClick={(e) => e.stopPropagation()}>
+        <Checkbox
+          className="data-[state=checked]:bg-base-white data-[state=checked]:text-base-black"
+          checked={props.row.getIsSelected()}
+          aria-label="select row"
+          onCheckedChange={() => {
+            props.row.toggleSelected();
+          }}
+        />
+      </div>
+    ),
+    size: 50,
+  },
   {
     accessorKey: 'posterUrl',
     header: 'Tv Show',
