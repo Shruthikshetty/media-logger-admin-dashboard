@@ -26,5 +26,5 @@ export type EpisodeFull = {
   runTime: number;
   createdAt: string;
   updatedAt: string;
-  season: (Omit<SeasonBase, 'tvShow'> & { tvShow: TvShowBase })[];
+  season: Omit<SeasonBase, 'tvShow'> & { tvShow: TvShowBase };
 };
