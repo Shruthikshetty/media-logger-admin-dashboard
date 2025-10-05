@@ -12,6 +12,8 @@ export type EpisodeBase = {
   episodeNumber: number;
   releaseDate?: string;
   runTime: number;
+  stillUrl?: string;
+  averageRating?: number;
   createdAt: string;
   updatedAt: string;
   season: string;

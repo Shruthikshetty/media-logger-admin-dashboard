@@ -12,10 +12,12 @@ export type SeasonBase = {
   releaseDate: string;
   seasonRating?: number;
   status: string;
-  trailerYoutubeUrl?: string;
+  youtubeVideoId?: string;
+  noOfEpisodes: number;
+  tvShow: string;
+  averageRating?: number;
   createdAt: string;
   updatedAt: string;
-  tvShow: string;
 };
 
 export type SeasonFull = SeasonBase & {
