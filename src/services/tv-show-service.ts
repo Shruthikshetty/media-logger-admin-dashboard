@@ -20,7 +20,7 @@ export type TvShowBase = {
   genre: string[];
   cast?: string[];
   directors?: string[];
-  runTime: number;
+  avgRunTime?: number;
   languages?: string[];
   posterUrl?: string;
   backdropUrl?: string;
@@ -30,6 +30,9 @@ export type TvShowBase = {
   ageRating?: number;
   totalSeasons: number;
   totalEpisodes: number;
+  youtubeVideoId?: string;
+  tmdbId?: string;
+  imdbId?: string;
   createdAt: string;
   updatedAt: string;
 };

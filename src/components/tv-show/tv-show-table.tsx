@@ -123,7 +123,7 @@ export const tvShowColumns: ColumnDef<
     ),
   },
   {
-    accessorKey: 'runTime',
+    accessorKey: 'avgRunTime',
     header: 'Runtime',
     cell: (props) => (
       <p className="text-base-white text-base">
