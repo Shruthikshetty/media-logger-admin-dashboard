@@ -5,8 +5,12 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { Plus, Search, Trash2, Upload } from 'lucide-react';
-import React, { useEffect, useMemo, useState } from 'react';
-import MediaFilters from '~/components/media-filters';
+import moment from 'moment';
+import React, { useDeferredValue, useEffect, useMemo, useState } from 'react';
+import MediaFilters, {
+  DateState,
+  FiltersState,
+} from '~/components/media-filters';
 import TitleSubtitle from '~/components/title-subtitle';
 import TvShowTable, { tvShowColumns } from '~/components/tv-show/tv-show-table';
 import { Button } from '~/components/ui/button';
@@ -20,7 +24,23 @@ import {
 import { Input } from '~/components/ui/input';
 import { TvShowsFilterConfig } from '~/constants/config.constants';
 import useDelayedLoading from '~/hooks/use-delayed-loading';
+import { MovieStatus } from '~/services/movies-service';
 import { useFetchTvShowByFilter } from '~/services/tv-show-service';
+import { FilterLimits } from '~/types/global.types';
+
+//filter data type
+interface FiltersType extends FiltersState {
+  searchText?: string;
+  genre: string[];
+  status: string;
+  languages: string[];
+  averageRating: number;
+  releaseDate: DateState;
+  tags: string[];
+  ageRating: FilterLimits<number>;
+  avgRunTime: FilterLimits<number>;
+  totalSeasons: FilterLimits<number>;
+}
 
 /**
  * This is the main landing page for the Tv shows tab
@@ -30,12 +50,41 @@ import { useFetchTvShowByFilter } from '~/services/tv-show-service';
 const TvShowTab = () => {
   // stores the current pagination page
   const [page, setPage] = useState(1);
+  // store filters data for tv shows
+  const [filters, setFilters] = useState<FiltersType>(null!);
+  // holds th search text for tv show
+  const [searchText, setSearchText] = useState<string>('');
+  // derive a differed value
+  const deferredSearchText = useDeferredValue(searchText);
   // stores row selection state
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   // memorize the games filter query
   const memorizedFilterQuery = useMemo(
-    () => ({ page, limit: 20, fullDetails: false }),
-    [page],
+    () => ({
+      page,
+      limit: 20,
+      ageRating: filters?.ageRating,
+      averageRating: filters?.averageRating,
+      status: filters?.status,
+      avgRunTime: filters?.avgRunTime,
+      releaseDate: filters?.releaseDate
+        ? {
+            gte: filters.releaseDate?.gte
+              ? moment(filters.releaseDate?.gte).toISOString()
+              : undefined,
+            lte: filters.releaseDate?.lte
+              ? moment(filters.releaseDate?.lte).toISOString()
+              : undefined,
+          }
+        : undefined,
+      totalSeasons: filters?.totalSeasons,
+      tags: filters?.tags?.length > 0 ? filters?.tags : undefined,
+      genre: filters?.genre?.length > 0 ? filters?.genre : undefined,
+      languages:
+        filters?.languages?.length > 0 ? filters?.languages : undefined,
+      searchText: deferredSearchText,
+    }),
+    [page, filters, deferredSearchText],
   );
   // fetch all tv shows using custom hook
   const { data, isFetching, isLoading } =
@@ -125,6 +174,10 @@ const TvShowTab = () => {
                   className="border-ui-600 pl-10"
                   id="search"
                   placeholder="Search Tv show by title"
+                  value={searchText}
+                  onChange={(e) => {
+                    setSearchText(e.target.value);
+                  }}
                 />
               </div>
               {selectedRowLength > 0 && (
@@ -141,8 +194,11 @@ const TvShowTab = () => {
             {/* filters */}
             <MediaFilters
               config={TvShowsFilterConfig}
-              onFilterChange={() => {
-                /* @TODO */
+              onFilterChange={(newFilters) => {
+                // reset page
+                setPage(1);
+                // set new filters
+                setFilters(newFilters as FiltersType);
               }}
             />
           </div>

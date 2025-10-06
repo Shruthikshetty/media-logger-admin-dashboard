@@ -295,8 +295,8 @@ export const TvShowsFilterConfig: FilterConfig[] = [
     unitLabel: 'years',
   },
   {
-    key: 'runTime',
-    label: 'Runtime',
+    key: 'avgRunTime',
+    label: 'Avg Runtime',
     type: 'range',
     max: 600, // 10 hours
     min: 0,
