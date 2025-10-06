@@ -32,4 +32,5 @@ export const QueryKeys = {
   bulkAddGames: 'bulk-add-games',
   fetchAllTvShows: 'fetch-all-tv-shows',
   fetchTvShowByFilter: 'fetch-tv-show-by-filter',
+  fetchTvShowById: 'fetch-tv-show-by-id',
 };

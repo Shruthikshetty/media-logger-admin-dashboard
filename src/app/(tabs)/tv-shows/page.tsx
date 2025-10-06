@@ -24,7 +24,6 @@ import {
 import { Input } from '~/components/ui/input';
 import { TvShowsFilterConfig } from '~/constants/config.constants';
 import useDelayedLoading from '~/hooks/use-delayed-loading';
-import { MovieStatus } from '~/services/movies-service';
 import { useFetchTvShowByFilter } from '~/services/tv-show-service';
 import { FilterLimits } from '~/types/global.types';
 

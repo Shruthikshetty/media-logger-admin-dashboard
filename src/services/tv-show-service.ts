@@ -7,7 +7,10 @@ import { SeasonFull } from './tv-season-service';
 import { AxiosError } from 'axios';
 import { ApiError, FilterLimits, Pagination } from '~/types/global.types';
 import { QueryKeys } from '~/constants/query-key.constants';
-import { FetchAllTvShowsSlateTime } from '~/constants/config.constants';
+import {
+  FetchAllTvShowsSlateTime,
+  FetchSingleTvDetailsStaleTime,
+} from '~/constants/config.constants';
 import apiClient from '~/lib/api-client';
 import { Endpoints } from '~/constants/endpoints.constants';
 
@@ -56,6 +59,12 @@ export type TvShowByFilterResponse = {
     tvShows: TvShowBase[];
     pagination: Pagination;
   };
+};
+
+export type TvShowByIdResponse<T> = {
+  success: boolean;
+  data: T extends true ? TvShowFull : TvShowBase;
+  message?: string;
 };
 
 export type TvShowFilterRequest = Partial<{
@@ -115,7 +124,7 @@ export const useFetchTvShowByFilter = ({
   ...restFilters
 }: TvShowFilterRequest = {}) => {
   return useQuery<TvShowByFilterResponse, AxiosError<ApiError>>({
-    queryKey: [QueryKeys.fetchTvShowByFilter , limit, page, restFilters],
+    queryKey: [QueryKeys.fetchTvShowByFilter, limit, page, restFilters],
     placeholderData: keepPreviousData,
     staleTime: FetchAllTvShowsSlateTime,
     queryFn: ({ signal }) =>
@@ -131,6 +140,33 @@ export const useFetchTvShowByFilter = ({
             signal,
           },
         )
+        .then((res) => res.data),
+  });
+};
+
+/**
+ * Custom hook to fetch a tv show by its id
+ * @param {string} tvShowId - the id of the tv show
+ * @param {boolean} fullDetails - whether to fetch full details of the tv show or not
+ * T - boolean value to determine whether to fetch full details of the tv show or not
+ * @returns {UseQueryResult<TvShowByIdResponse<T>, AxiosError<ApiError>>}
+ */
+export const useFetchTvShowById = <T extends boolean = false>(
+  tvShowId: string,
+  fullDetails = false,
+) => {
+  return useQuery<TvShowByIdResponse<T>, AxiosError<ApiError>>({
+    queryKey: [QueryKeys.fetchTvShowById, tvShowId],
+    enabled: Boolean(tvShowId),
+    staleTime: FetchSingleTvDetailsStaleTime,
+    queryFn: ({ signal }) =>
+      apiClient
+        .get<TvShowByIdResponse<T>>(Endpoints.baseTvShow + `/${tvShowId}`, {
+          params: {
+            fullDetails,
+          },
+          signal,
+        })
         .then((res) => res.data),
   });
 };

@@ -9,6 +9,7 @@ import {
 } from '../ui/dropdown-menu';
 import { Ellipsis, Eye, SquarePen, Trash2 } from 'lucide-react';
 import { cn } from '~/lib/utils';
+import { useRouter } from 'next/navigation';
 
 /**
  * This component is used to display the actions for a Tv show
@@ -16,6 +17,8 @@ import { cn } from '~/lib/utils';
  * @param data [TvShowBase data]
  */
 const TvShowActionDropdown = ({ data }: { data: TvShowBase }) => {
+  // initialize router
+  const router = useRouter();
   // tv show dropdown action items
   const tvShowActionItems = [
     {
@@ -23,7 +26,8 @@ const TvShowActionDropdown = ({ data }: { data: TvShowBase }) => {
       icon: Eye,
       color: 'text-base-white',
       onClick: () => {
-        // @TODO
+        // navigate to tv show details
+        router.push(`/tv-shows/${data._id}`);
       },
     },
     {
