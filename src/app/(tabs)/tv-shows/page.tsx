@@ -20,7 +20,7 @@ import {
 import { Input } from '~/components/ui/input';
 import { TvShowsFilterConfig } from '~/constants/config.constants';
 import useDelayedLoading from '~/hooks/use-delayed-loading';
-import { useFetchAllTvShows } from '~/services/tv-show-service';
+import { useFetchTvShowByFilter } from '~/services/tv-show-service';
 
 /**
  * This is the main landing page for the Tv shows tab
@@ -39,7 +39,7 @@ const TvShowTab = () => {
   );
   // fetch all tv shows using custom hook
   const { data, isFetching, isLoading } =
-    useFetchAllTvShows(memorizedFilterQuery);
+    useFetchTvShowByFilter(memorizedFilterQuery);
   //extracting delayed loading
   const loading = useDelayedLoading(isFetching);
   // Create a stable empty array reference for the data prop

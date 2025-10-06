@@ -5,7 +5,7 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { SeasonFull } from './tv-season-service';
 import { AxiosError } from 'axios';
-import { ApiError, Pagination } from '~/types/global.types';
+import { ApiError, FilterLimits, Pagination } from '~/types/global.types';
 import { QueryKeys } from '~/constants/query-key.constants';
 import { FetchAllTvShowsSlateTime } from '~/constants/config.constants';
 import apiClient from '~/lib/api-client';
@@ -50,6 +50,27 @@ export type TvShowGetAllResponse<T> = {
   message?: string;
 };
 
+export type TvShowByFilterResponse = {
+  success: boolean;
+  data: {
+    tvShows: TvShowBase[];
+    pagination: Pagination;
+  };
+};
+
+export type TvShowFilterRequest = Partial<{
+  searchText: string;
+  averageRating: number;
+  releaseDate: FilterLimits<string | undefined>;
+  totalEpisodes: FilterLimits<number | undefined>;
+  avgRunTime: FilterLimits<number | undefined>;
+  status: string;
+  languages: string[];
+  tags: string[];
+  totalSeasons: FilterLimits<number | undefined>;
+  limit: number;
+  page: number;
+}>;
 
 /**
  * Fetches all the tv shows from the api with pagination
@@ -83,6 +104,33 @@ export const useFetchAllTvShows = <T extends boolean = false>({
           },
           signal,
         })
+        .then((res) => res.data),
+  });
+};
+
+// custom hook to fetch Tv show by filter , search text
+export const useFetchTvShowByFilter = ({
+  limit = 20,
+  page = 1,
+  ...restFilters
+}: TvShowFilterRequest = {}) => {
+  return useQuery<TvShowByFilterResponse, AxiosError<ApiError>>({
+    queryKey: [QueryKeys.fetchTvShowByFilter , limit, page, restFilters],
+    placeholderData: keepPreviousData,
+    staleTime: FetchAllTvShowsSlateTime,
+    queryFn: ({ signal }) =>
+      apiClient
+        .post<TvShowByFilterResponse>(
+          Endpoints.filterTvShows,
+          {
+            limit,
+            page,
+            ...restFilters,
+          },
+          {
+            signal,
+          },
+        )
         .then((res) => res.data),
   });
 };
