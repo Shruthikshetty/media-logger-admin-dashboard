@@ -151,6 +151,13 @@ export const tvShowColumns: ColumnDef<
     ),
   },
   {
+    accessorKey: 'totalSeasons',
+    header: 'Seasons',
+    cell: (props) => (
+      <p className="text-base-white text-lg font-semibold">{props.getValue()}</p>
+    ),
+  },
+  {
     accessorKey: 'releaseDate',
     header: 'Release Date',
     cell: (props) => (
