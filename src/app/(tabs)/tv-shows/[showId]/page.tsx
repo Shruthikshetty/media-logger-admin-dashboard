@@ -14,6 +14,7 @@ import {
 import moment from 'moment';
 import { useParams } from 'next/navigation';
 import React, { useCallback, useState } from 'react';
+import BackButton from '~/components/back-button';
 
 import BackdropCard, { InfoItem } from '~/components/backdrop-card';
 import CollapsableBadgeList from '~/components/collapsable-badge-list';
@@ -57,8 +58,9 @@ const TvShowDetails = () => {
   );
   return (
     <div className="flex h-full w-full flex-col gap-5 p-5">
-      {/* All tv show  details */}
+      <BackButton className="min-w-40" />
       <LoadingProvider isLoading={isLoading}>
+        {/* All tv show  details */}
         <Card className="border-ui-600 text-base-white from-base-black to-ui-900 bg-gradient-to-r pt-0">
           <BackdropCard
             title={data?.data?.title ?? ''}
@@ -339,23 +341,34 @@ const TvShowDetails = () => {
             </Card>
           </CardContent>
         </Card>
+
+        {/* Seasons and episode card */}
+        <Card className="border-ui-600 text-base-white from-base-black to-ui-900 bg-gradient-to-r">
+          <CardHeader>
+            <TitleSubtitle
+              title="Seasons & Episodes"
+              subtitle="Browse all seasons and episodes"
+              customStyles={{
+                title: 'text-2xl font-bold',
+                subtitle: 'text-md',
+              }}
+            />
+          </CardHeader>
+          <CardContent>
+            <LoadingWrapper
+              fallback={
+                <ListLoader
+                  noOfItems={3}
+                  itemClassName="w-[70%] h-10 rounded-sm"
+                  className="flex-col gap-3"
+                />
+              }
+            >
+              <SeasonAccordion seasons={data?.data.seasons} />
+            </LoadingWrapper>
+          </CardContent>
+        </Card>
       </LoadingProvider>
-      {/* Seasons and episode card */}
-      <Card className="border-ui-600 text-base-white from-base-black to-ui-900 bg-gradient-to-r">
-        <CardHeader>
-          <TitleSubtitle
-            title="Seasons & Episodes"
-            subtitle="Browse all seasons and episodes"
-            customStyles={{
-              title: 'text-2xl font-bold',
-              subtitle: 'text-md',
-            }}
-          />
-        </CardHeader>
-        <CardContent>
-          <SeasonAccordion  seasons={data?.data.seasons}/>
-        </CardContent>
-      </Card>
     </div>
   );
 };
