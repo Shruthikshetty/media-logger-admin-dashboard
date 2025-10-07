@@ -91,6 +91,9 @@ export const FetchGameDetailsSlateTime = 1 * 60 * 1000; //1 min
 //fetch all tv shows slate time
 export const FetchAllTvShowsSlateTime = 1 * 60 * 1000; //1 min
 
+//Tv details slate time
+export const FetchSingleTvDetailsStaleTime = 1 * 60 * 1000; //1 min
+
 export const MEDIA_STATUS = ['released', 'upcoming'];
 
 // movie filter config
@@ -295,8 +298,8 @@ export const TvShowsFilterConfig: FilterConfig[] = [
     unitLabel: 'years',
   },
   {
-    key: 'runTime',
-    label: 'Runtime',
+    key: 'avgRunTime',
+    label: 'Avg Runtime',
     type: 'range',
     max: 600, // 10 hours
     min: 0,

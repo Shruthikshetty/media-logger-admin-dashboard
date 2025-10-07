@@ -16,6 +16,7 @@ export type SeasonBase = {
   noOfEpisodes: number;
   tvShow: string;
   averageRating?: number;
+  posterUrl?: string;
   createdAt: string;
   updatedAt: string;
 };

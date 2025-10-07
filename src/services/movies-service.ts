@@ -137,7 +137,7 @@ export const useFilterMovies = ({
   ...restFilters
 }: MoviesFilterRequest = {}) => {
   return useQuery<GetAllMoviesResponse, AxiosError<ApiError>>({
-    queryKey: [QueryKeys.filterMovies, limit, page, restFilters],
+    queryKey: [QueryKeys.filterMovies, limit, page, JSON.stringify(restFilters)],
     staleTime: FetchAllMoviesStaleTime,
     placeholderData: keepPreviousData,
     queryFn: ({ signal }) =>

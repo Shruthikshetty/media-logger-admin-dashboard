@@ -147,7 +147,7 @@ export const useFilterGames = ({
   ...restFilters
 }: GamesFilterRequest = {}) => {
   return useQuery<GetAllGamesResponse, AxiosError<ApiError>>({
-    queryKey: [QueryKeys.filterGames, limit, page, restFilters],
+    queryKey: [QueryKeys.filterGames, limit, page, JSON.stringify(restFilters)],
     staleTime: FetchAllGamesSlateTime,
     placeholderData: keepPreviousData,
     queryFn: ({ signal }) =>
