@@ -23,6 +23,7 @@ import {
   LoadingWrapper,
 } from '~/components/custom-loaders';
 import TitleSubtitle from '~/components/title-subtitle';
+import SeasonAccordion from '~/components/tv-show/season-accordion';
 import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
 import { Card, CardContent, CardHeader } from '~/components/ui/card';
@@ -220,7 +221,7 @@ const TvShowDetails = () => {
             {/* Additional information  */}
             <Card className="border-ui-600 gap-2 bg-transparent md:col-span-4">
               <CardHeader className="text-base-white text-2xl font-bold">
-                Movie Info
+                Tv Show Info
               </CardHeader>
               <CardContent className="text-base-white">
                 <div className="flex flex-col gap-4">
@@ -339,6 +340,22 @@ const TvShowDetails = () => {
           </CardContent>
         </Card>
       </LoadingProvider>
+      {/* Seasons and episode card */}
+      <Card className="border-ui-600 text-base-white from-base-black to-ui-900 bg-gradient-to-r">
+        <CardHeader>
+          <TitleSubtitle
+            title="Seasons & Episodes"
+            subtitle="Browse all seasons and episodes"
+            customStyles={{
+              title: 'text-2xl font-bold',
+              subtitle: 'text-md',
+            }}
+          />
+        </CardHeader>
+        <CardContent>
+          <SeasonAccordion  seasons={data?.data.seasons}/>
+        </CardContent>
+      </Card>
     </div>
   );
 };
