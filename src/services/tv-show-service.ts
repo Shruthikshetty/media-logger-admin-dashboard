@@ -125,7 +125,7 @@ export const useFetchTvShowByFilter = ({
   ...restFilters
 }: TvShowFilterRequest = {}) => {
   return useQuery<TvShowByFilterResponse, AxiosError<ApiError>>({
-    queryKey: [QueryKeys.fetchTvShowByFilter, limit, page, restFilters],
+    queryKey: [QueryKeys.fetchTvShowByFilter, limit, page, JSON.stringify(restFilters)],
     placeholderData: keepPreviousData,
     staleTime: FetchAllTvShowsSlateTime,
     queryFn: ({ signal }) =>

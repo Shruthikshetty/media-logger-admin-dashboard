@@ -27,6 +27,7 @@ import { cn } from '~/lib/utils';
 import { Badge } from '../ui/badge';
 import TvShowActionDropdown from './tv-show-actions-dropdown';
 import { Checkbox } from '../ui/checkbox';
+import { useRouter } from 'next/navigation';
 
 //define a type for the tv shows table
 type TvShowTableProps = {
@@ -154,7 +155,9 @@ export const tvShowColumns: ColumnDef<
     accessorKey: 'totalSeasons',
     header: 'Seasons',
     cell: (props) => (
-      <p className="text-base-white text-lg font-semibold">{props.getValue()}</p>
+      <p className="text-base-white text-lg font-semibold">
+        {props.getValue()}
+      </p>
     ),
   },
   {
@@ -189,7 +192,11 @@ export const tvShowColumns: ColumnDef<
   {
     id: 'action',
     header: 'Actions',
-    cell: (props) => <TvShowActionDropdown data={props.row.original} />,
+    cell: (props) => (
+      <div onClick={(e) => e.stopPropagation()}>
+        <TvShowActionDropdown data={props.row.original} />
+      </div>
+    ),
     size: 50,
   },
 ];
@@ -201,6 +208,8 @@ const TvShowTable = ({
   setPage,
   pagination,
 }: TvShowTableProps) => {
+  //initialize router
+  const router = useRouter();
   //if loading return a skeleton table
   if (loading) return <TableSkeleton />;
 
@@ -231,7 +240,14 @@ const TvShowTable = ({
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows.map((row) => (
-              <TableRow key={row.id} className="hover:bg-ui-800">
+              <TableRow
+                key={row.id}
+                className="hover:bg-ui-800"
+                onClick={() => {
+                  // navigate to tv show details screen
+                  router.push(`/movies/${row.original._id}`);
+                }}
+              >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
