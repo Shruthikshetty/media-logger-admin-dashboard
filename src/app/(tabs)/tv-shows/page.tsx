@@ -7,6 +7,7 @@ import {
 import { Plus, Search, Trash2, Upload } from 'lucide-react';
 import moment from 'moment';
 import React, { useDeferredValue, useEffect, useMemo, useState } from 'react';
+import { LoadingWrapper } from '~/components/custom-loaders';
 import MediaFilters, {
   DateState,
   FiltersState,
@@ -22,6 +23,7 @@ import {
   CardTitle,
 } from '~/components/ui/card';
 import { Input } from '~/components/ui/input';
+import { Skeleton } from '~/components/ui/skeleton';
 import { TvShowsFilterConfig } from '~/constants/config.constants';
 import useDelayedLoading from '~/hooks/use-delayed-loading';
 import { useFetchTvShowByFilter } from '~/services/tv-show-service';
@@ -128,7 +130,7 @@ const TvShowTab = () => {
   return (
     <div className="flex flex-col gap-5 p-5">
       {/* Header */}
-      <div className="flex flex-row items-center justify-between">
+      <div className="flex flex-row items-center justify-between gap-3">
         <TitleSubtitle
           title="TV Shows Management"
           subtitle="Manage your TV shows directory"
@@ -206,9 +208,14 @@ const TvShowTab = () => {
       {/* Tv show data and table */}
       <Card className="border-ui-600 text-base-white from-base-black to-ui-900 bg-gradient-to-r">
         <CardHeader>
-          <CardTitle className="text-xl font-semibold">
-            TV Shows Directory (100 shows)
-          </CardTitle>
+          <LoadingWrapper
+            isLoading={loading}
+            fallback={<Skeleton className="h-5 w-[60%] lg:w-[40%]" />}
+          >
+            <CardTitle className="text-xl font-semibold">
+              TV Shows Directory ({data?.data.pagination.total} shows)
+            </CardTitle>
+          </LoadingWrapper>
           <CardDescription className="text-ui-400 text-sm">
             Complete list of TV shows in your collection
           </CardDescription>
