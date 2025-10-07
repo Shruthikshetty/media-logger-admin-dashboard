@@ -80,7 +80,7 @@ const SeasonAccordion = ({ seasons }: { seasons?: SeasonFull[] }) => {
             </div>
           </AccordionTrigger>
           <AccordionContent>
-            <EpisodeTable />
+            <EpisodeTable episodes={season.episodes}/>
           </AccordionContent>
         </AccordionItem>
       ))}
