@@ -10,7 +10,7 @@ import { SeasonFull } from '~/services/tv-season-service';
 import CustomImage from '../custom-image';
 import { Calendar, MoveRight, Star } from 'lucide-react';
 import moment from 'moment';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 /**
  * SeasonAccordion component
@@ -22,8 +22,6 @@ import { useRouter } from 'next/navigation';
  * The user can view full details of the season by clicking on the 'View Full details' button.
  */
 const SeasonAccordion = ({ seasons }: { seasons?: SeasonFull[] }) => {
-  //initialize router
-  const router = useRouter();
   // if no seasons, return null
   if (!seasons) return null;
 
@@ -68,17 +66,16 @@ const SeasonAccordion = ({ seasons }: { seasons?: SeasonFull[] }) => {
                   </div>
                 </div>
                 <p className="text-ui-400 line-clamp-3">{season.description}</p>
-                <p
+                <Link
                   className="hover:text-accent-indigo flex flex-row items-center gap-2"
                   onClick={(e: React.MouseEvent) => {
                     e.stopPropagation();
-                    // navigate to season details screen
-                    router.push(`/tv-shows/season/${season._id}`);
                   }}
+                  href={`/tv-shows/season/${season._id}`}
                 >
                   <span>View Full details</span>
                   <MoveRight className="h-5 w-5" />
-                </p>
+                </Link>
               </div>
             </div>
           </AccordionTrigger>

@@ -76,6 +76,7 @@ export type TvShowFilterRequest = Partial<{
   status: string;
   languages: string[];
   tags: string[];
+  ageRating: FilterLimits<number | undefined>;
   totalSeasons: FilterLimits<number | undefined>;
   limit: number;
   page: number;
@@ -156,7 +157,7 @@ export const useFetchTvShowById = <T extends boolean = false>(
   fullDetails = false,
 ) => {
   return useQuery<TvShowByIdResponse<T>, AxiosError<ApiError>>({
-    queryKey: [QueryKeys.fetchTvShowById, tvShowId],
+    queryKey: [QueryKeys.fetchTvShowById, tvShowId, fullDetails],
     enabled: Boolean(tvShowId),
     staleTime: FetchSingleTvDetailsStaleTime,
     queryFn: ({ signal }) =>
