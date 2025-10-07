@@ -245,7 +245,7 @@ const TvShowTable = ({
                 className="hover:bg-ui-800"
                 onClick={() => {
                   // navigate to tv show details screen
-                  router.push(`/movies/${row.original._id}`);
+                  router.push(`/tv-shows/${row.original._id}`);
                 }}
               >
                 {row.getVisibleCells().map((cell) => (
