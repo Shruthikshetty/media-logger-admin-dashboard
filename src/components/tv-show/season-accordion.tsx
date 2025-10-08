@@ -25,7 +25,7 @@ const SeasonAccordion = ({ seasons }: { seasons?: SeasonFull[] }) => {
   // if no seasons, return null
   if (!seasons) return null;
   //ordered seasons by season number
-  const seasonsOrdered = seasons.toSorted(
+  const seasonsOrdered = [...seasons].sort(
     (a, b) => a.seasonNumber - b.seasonNumber,
   );
 
