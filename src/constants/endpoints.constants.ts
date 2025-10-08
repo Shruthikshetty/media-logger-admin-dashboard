@@ -22,4 +22,5 @@ export const Endpoints = {
   baseTvShow: `/api/tv-show`,
   filterTvShows: `/api/tv-show/filter`,
   baseSeason: `/api/tv-show/season`,
+  baseEpisode: `/api/tv-show/episode`,
 };

@@ -34,4 +34,5 @@ export const QueryKeys = {
   fetchTvShowByFilter: 'fetch-tv-show-by-filter',
   fetchTvShowById: 'fetch-tv-show-by-id',
   fetchSeasonById: 'fetch-season-by-id',
+  fetchEpisodeById: 'fetch-episode-by-id',
 };
