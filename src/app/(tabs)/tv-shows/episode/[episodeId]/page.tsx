@@ -2,7 +2,8 @@
 import { PenSquare, Star, Trash2 } from 'lucide-react';
 import moment from 'moment';
 import { useParams } from 'next/navigation';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { toast } from 'sonner';
 import BackButton from '~/components/back-button';
 import CustomImage from '~/components/custom-image';
 import {
@@ -25,7 +26,24 @@ const EpisodeDetails = () => {
   // get episode id from params
   const episodeId = useParams().episodeId as string;
   // fetch episode details
-  const { data, isLoading } = useFetchEpisodeDetailsById(episodeId);
+  const { data, isLoading, isError, error } =
+    useFetchEpisodeDetailsById(episodeId);
+
+  //catch any unexpected error while fetching
+  useEffect(() => {
+    if (isError) {
+      toast.error(
+        error?.response?.data.message ??
+          error.message ??
+          'Something went wrong',
+        {
+          classNames: {
+            toast: '!bg-feedback-error',
+          },
+        },
+      );
+    }
+  }, [isError, error]);
 
   return (
     <div className="flex h-full w-full flex-col gap-5 p-5">

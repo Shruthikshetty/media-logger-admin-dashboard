@@ -3,7 +3,8 @@ import { capitalize } from 'lodash';
 import { Calendar, PenSquare, Star, Trash2 } from 'lucide-react';
 import moment from 'moment';
 import { useParams } from 'next/navigation';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { toast } from 'sonner';
 import BackButton from '~/components/back-button';
 import CustomImage from '~/components/custom-image';
 import {
@@ -31,7 +32,25 @@ const SeasonDetails = () => {
   // get season id from params
   const seasonId = useParams().seasonId as string;
   //fetch season details
-  const { data, isLoading } = useFetchSeasonById<true>(seasonId, true);
+  const { data, isLoading, isError, error } = useFetchSeasonById<true>(
+    seasonId,
+    true,
+  );
+  //catch any unexpected error while fetching season
+  useEffect(() => {
+    if (isError) {
+      toast.error(
+        error?.response?.data.message ??
+          error.message ??
+          'Something went wrong',
+        {
+          classNames: {
+            toast: '!bg-feedback-error',
+          },
+        },
+      );
+    }
+  }, [isError, error]);
   return (
     <div className="flex h-full w-full flex-col gap-5 p-5">
       <BackButton className="min-w-40" />
