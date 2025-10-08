@@ -51,9 +51,9 @@ const EpisodeDetails = () => {
               </p>
               <p className="flex flex-row gap-1">
                 <span className="text-ui-400">Rating:</span>{' '}
-                {data?.data.averageRating ? (
+                {data?.data?.averageRating ? (
                   <span className="flex items-center gap-1">
-                    {data?.data.averageRating}{' '}
+                    {data?.data?.averageRating}{' '}
                     <Star className="text-feedback-warning h-4 w-4" />
                   </span>
                 ) : (
