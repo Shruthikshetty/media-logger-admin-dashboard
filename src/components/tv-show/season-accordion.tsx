@@ -39,12 +39,12 @@ const SeasonAccordion = ({ seasons }: { seasons?: SeasonFull[] }) => {
                 className="aspect-[2/3] rounded-lg"
                 maxHeight={150}
                 maxWidth={100}
-                minHeight={100}
-                minWidth={80}
+                minHeight={150}
+                minWidth={100}
                 placeHolderClassname="aspect-[2/3] px-4 [&_[data-slot='icon']]:text-ui-400"
               />
               <div className="flex flex-col justify-between gap-2">
-                <div className="flex flex-row items-center gap-3">
+                <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-3">
                   <div>
                     <h3 className="text-lg font-semibold">{season.title}</h3>
                     <p className="text-ui-400 text-sm">
@@ -80,7 +80,7 @@ const SeasonAccordion = ({ seasons }: { seasons?: SeasonFull[] }) => {
             </div>
           </AccordionTrigger>
           <AccordionContent>
-            <EpisodeTable episodes={season.episodes}/>
+            <EpisodeTable episodes={season.episodes} />
           </AccordionContent>
         </AccordionItem>
       ))}

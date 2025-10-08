@@ -27,14 +27,16 @@ const episodeColumns: ColumnDef<EpisodeBase, string | number | undefined>[] = [
         alt="tv show poster"
         src={props.getValue() as string}
         width={170}
-        height={70}
+        height={110}
         className="aspect-[3/2] rounded-lg"
         minHeight={60}
         minWidth={150}
+        maxHeight={110}
+        maxWidth={170}
         placeHolderClassname="aspect-[3/2] px-4 [&_[data-slot='icon']]:text-ui-400"
       />
     ),
-    size: 200
+    size: 200,
   },
   {
     accessorKey: 'title',

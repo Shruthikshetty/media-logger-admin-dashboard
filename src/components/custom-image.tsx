@@ -45,6 +45,7 @@ const CustomImage = ({
 
   // construct the min and max height and width
   const heightWidthStyle = {
+    height:"auto", // used to maintain aspect ratio
     maxHeight: maxHeight ? `${maxHeight}px` : undefined,
     maxWidth: maxWidth ? `${maxWidth}px` : undefined,
     minHeight: minHeight ? `${minHeight}px` : undefined,
