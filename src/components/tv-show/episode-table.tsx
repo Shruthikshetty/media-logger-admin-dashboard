@@ -19,6 +19,7 @@ import CustomImage from '../custom-image';
 import { Calendar, Star } from 'lucide-react';
 import EpisodeActionsDropdown from './episode-actions-dropdown';
 import moment from 'moment';
+import { useRouter } from 'next/navigation';
 
 //create columns for episode table
 const episodeColumns: ColumnDef<EpisodeBase, string | number | undefined>[] = [
@@ -110,11 +111,13 @@ const episodeColumns: ColumnDef<EpisodeBase, string | number | undefined>[] = [
  * @returns
  */
 const EpisodeTable = ({ episodes = [] }: { episodes?: EpisodeBase[] }) => {
+  //initialize router
+  const router = useRouter();
   //order the episodes by episode number
   const episodesOrdered = [...episodes].sort(
     (a, b) => a.episodeNumber - b.episodeNumber,
   );
-  
+
   // create a table to display all episode data of a tv season
   const table = useReactTable({
     data: episodesOrdered,
@@ -149,7 +152,14 @@ const EpisodeTable = ({ episodes = [] }: { episodes?: EpisodeBase[] }) => {
         {/* table body */}
         <TableBody>
           {table.getRowModel().rows.map((row) => (
-            <TableRow className="hover:bg-ui-800" key={row.id}>
+            <TableRow
+              className="hover:bg-ui-800"
+              key={row.id}
+              onClick={() => {
+                // navigate to episode details
+                router.push(`/tv-shows/episode/${row.original._id}`);
+              }}
+            >
               {row.getVisibleCells().map((cell) => (
                 <TableCell
                   className="text-ui-200 text-base font-bold"
