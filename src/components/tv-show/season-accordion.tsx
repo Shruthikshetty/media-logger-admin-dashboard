@@ -24,10 +24,14 @@ import Link from 'next/link';
 const SeasonAccordion = ({ seasons }: { seasons?: SeasonFull[] }) => {
   // if no seasons, return null
   if (!seasons) return null;
+  //ordered seasons by season number
+  const seasonsOrdered = seasons.sort(
+    (a, b) => a.seasonNumber - b.seasonNumber,
+  );
 
   return (
     <Accordion type="multiple">
-      {seasons.map((season) => (
+      {seasonsOrdered.map((season) => (
         <AccordionItem key={season._id} value={`item-${season._id}`}>
           <AccordionTrigger className="items-center hover:no-underline">
             <div className="flex grow flex-row items-center gap-3">

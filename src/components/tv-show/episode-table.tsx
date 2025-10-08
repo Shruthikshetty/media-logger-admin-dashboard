@@ -16,9 +16,17 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import CustomImage from '../custom-image';
+import { Calendar, Star } from 'lucide-react';
+import EpisodeActionsDropdown from './episode-actions-dropdown';
+import moment from 'moment';
 
 //create columns for episode table
 const episodeColumns: ColumnDef<EpisodeBase, string | number | undefined>[] = [
+  {
+    accessorKey: 'episodeNumber',
+    header: '#',
+    size: 50,
+  },
   {
     accessorKey: 'stillUrl',
     header: 'Episode',
@@ -51,6 +59,49 @@ const episodeColumns: ColumnDef<EpisodeBase, string | number | undefined>[] = [
     ),
     size: 500,
   },
+  {
+    accessorKey: 'averageRating',
+    header: 'Rating',
+    cell: (props) => (
+      <div className="flex flex-row items-center gap-2">
+        <p className="text-base-white text-lg">
+          {Boolean(props.getValue()) ? props.getValue() : '???'}
+        </p>
+        {!!props.getValue() && <Star className="h-4 w-4 text-yellow-300" />}
+      </div>
+    ),
+  },
+  {
+    accessorKey: 'runTime',
+    header: 'Runtime',
+    cell: (props) => (
+      <p className="text-base-white text-base">
+        {Boolean(props.getValue()) ? `${props.getValue()} min` : '???'}
+      </p>
+    ),
+  },
+  {
+    accessorKey: 'releaseDate',
+    header: 'Release Date',
+    cell: (props) => (
+      <div className="flex flex-row items-center gap-2 text-base">
+        <Calendar className="h-5 w-5" />
+        {!!props.getValue()
+          ? moment(props.getValue() as string).format('DD/MM/YYYY')
+          : '???'}
+      </div>
+    ),
+  },
+  {
+    id: 'action',
+    header: 'Actions',
+    cell: (props) => (
+      <div onClick={(e) => e.stopPropagation()}>
+        <EpisodeActionsDropdown data={props.row.original} />
+      </div>
+    ),
+    size: 50,
+  },
 ];
 
 /**
@@ -59,9 +110,13 @@ const episodeColumns: ColumnDef<EpisodeBase, string | number | undefined>[] = [
  * @returns
  */
 const EpisodeTable = ({ episodes = [] }: { episodes?: EpisodeBase[] }) => {
+  //order the episodes by episode number
+  const episodesOrdered = episodes.sort(
+    (a, b) => a.episodeNumber - b.episodeNumber,
+  );
   // create a table to display all episode data of a tv season
   const table = useReactTable({
-    data: episodes,
+    data: episodesOrdered,
     columns: episodeColumns,
     getCoreRowModel: getCoreRowModel(),
   });
