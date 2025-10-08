@@ -98,7 +98,7 @@ export const FetchSeasonDetailsStaleTime = 1 * 60 * 1000; //1 min
 export const MEDIA_STATUS = ['released', 'upcoming'];
 
 //season status
-export const SEASON_STATUS = ['upcoming', 'on-going', , 'ended'];
+export const SEASON_STATUS = ['upcoming', 'on-going', 'ended'];
 
 // movie filter config
 export const MovieFilterConfig: FilterConfig[] = [

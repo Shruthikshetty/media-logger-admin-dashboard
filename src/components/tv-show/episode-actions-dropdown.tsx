@@ -73,7 +73,7 @@ const EpisodeActionsDropdown = ({ data }: { data: EpisodeBase }) => {
                   `hover:bg-ui-800 focus:bg-ui-800 focus:${item.color} text-md flex flex-row gap-2 rounded-md p-2`,
                   item.color,
                 )}
-                onClick={item.onClick}
+                onSelect={item.onClick}
               >
                 <item.icon className={cn('h-5 w-5', item.color)} />
                 {item.title}

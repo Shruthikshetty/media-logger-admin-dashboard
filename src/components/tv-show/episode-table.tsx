@@ -111,9 +111,10 @@ const episodeColumns: ColumnDef<EpisodeBase, string | number | undefined>[] = [
  */
 const EpisodeTable = ({ episodes = [] }: { episodes?: EpisodeBase[] }) => {
   //order the episodes by episode number
-  const episodesOrdered = episodes.sort(
+  const episodesOrdered = [...episodes].sort(
     (a, b) => a.episodeNumber - b.episodeNumber,
   );
+  
   // create a table to display all episode data of a tv season
   const table = useReactTable({
     data: episodesOrdered,
