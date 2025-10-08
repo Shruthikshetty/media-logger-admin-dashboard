@@ -12,6 +12,12 @@ import {
 } from '../ui/dropdown-menu';
 import { cn } from '~/lib/utils';
 
+/**
+ * This component is used to display the actions for a episode
+ * mainly used in episode table performs actions like view details , edit , delete
+ * @param param0 data - episode data
+ * @returns 
+ */
 const EpisodeActionsDropdown = ({ data }: { data: EpisodeBase }) => {
   // initialize router
   const router = useRouter();
@@ -22,7 +28,8 @@ const EpisodeActionsDropdown = ({ data }: { data: EpisodeBase }) => {
       icon: Eye,
       color: 'text-base-white',
       onClick: () => {
-        //@TODO
+        // navigate to episode details
+        router.push(`/tv-shows/episode/${data._id}`);
       },
     },
     {
