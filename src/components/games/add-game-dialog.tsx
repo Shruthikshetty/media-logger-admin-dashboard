@@ -89,7 +89,8 @@ const AddGameDialog = ({ children }: { children: React.ReactNode }) => {
           <DialogHeader className="bg-brand-900 sticky top-[-1]">
             <DialogTitle className="text-xl">Add Game Details</DialogTitle>
             <DialogDescription className="text-ui-400">
-              Fill in the game information below. Fields marked with * are required.
+              Fill in the game information below. Fields marked with * are
+              required.
             </DialogDescription>
           </DialogHeader>
           {/* Form fields */}

@@ -183,7 +183,9 @@ const TvShowDetails = () => {
                 {/* genre badges */}
                 <div className="flex flex-col gap-2">
                   {data?.data?.genre && data?.data?.genre.length > 0 && (
-                    <p className="text-base-white font-semibold text-lg">Genres</p>
+                    <p className="text-base-white text-lg font-semibold">
+                      Genres
+                    </p>
                   )}
                   <LoadingWrapper
                     fallback={<ListLoader noOfItems={4} itemClassName="w-15" />}
@@ -201,7 +203,9 @@ const TvShowDetails = () => {
                 {/* tag badges*/}
                 <div className="flex flex-col gap-2">
                   {data?.data?.tags && data?.data?.tags.length > 0 && (
-                    <p className="text-base-white font-semibold text-lg">Tags</p>
+                    <p className="text-base-white text-lg font-semibold">
+                      Tags
+                    </p>
                   )}
                   <LoadingWrapper
                     fallback={<ListLoader noOfItems={3} itemClassName="w-15" />}

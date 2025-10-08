@@ -62,7 +62,7 @@ const BackdropCard = ({
             maxWidth={200}
             minHeight={120}
             minWidth={100}
-            className="border-ui-600 rounded-xl border-1 shadow-2xl"
+            className="border-ui-600 aspect-2/3 rounded-xl border-1 shadow-2xl"
           />
           <div className="bg-base-black/80 rounded-xl p-3 pb-10">
             {/* Title */}

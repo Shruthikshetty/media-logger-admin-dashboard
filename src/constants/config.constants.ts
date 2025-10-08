@@ -93,8 +93,12 @@ export const FetchAllTvShowsSlateTime = 1 * 60 * 1000; //1 min
 
 //Tv details slate time
 export const FetchSingleTvDetailsStaleTime = 1 * 60 * 1000; //1 min
+export const FetchSeasonDetailsStaleTime = 1 * 60 * 1000; //1 min
 
 export const MEDIA_STATUS = ['released', 'upcoming'];
+
+//season status
+export const SEASON_STATUS = ['upcoming', 'on-going', 'ended'];
 
 // movie filter config
 export const MovieFilterConfig: FilterConfig[] = [
