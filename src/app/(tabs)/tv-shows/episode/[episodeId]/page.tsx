@@ -20,7 +20,7 @@ const EpisodeDetails = () => {
   const episodeId = useParams().episodeId as string;
   // fetch episode details
   const { data, isLoading } = useFetchEpisodeDetailsById(episodeId);
-  console.log(episodeId);
+
   return (
     <div className="flex h-full w-full flex-col gap-5 p-5">
       <BackButton className="min-w-40" />
@@ -33,7 +33,7 @@ const EpisodeDetails = () => {
             <div className="flex flex-col gap-2">
               <CustomImage
                 alt="tv show poster"
-                src={data?.data.stillUrl}
+                src={data?.data?.stillUrl}
                 width={255}
                 height={170}
                 className="aspect-[3/2] rounded-lg"
