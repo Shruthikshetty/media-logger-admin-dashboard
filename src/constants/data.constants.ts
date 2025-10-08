@@ -213,10 +213,10 @@ export const GAME_GENRES = [
   'Roguelike',
   'Tactical',
   'Point-and-Click',
-  "Platformer",
-  "Real Time Strategy (RTS)",
-  "MOBA",
-  'Turn-based Strategy'
+  'Platformer',
+  'Real Time Strategy (RTS)',
+  'MOBA',
+  'Turn-based Strategy',
 ];
 
 //game platforms

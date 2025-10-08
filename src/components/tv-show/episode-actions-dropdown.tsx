@@ -16,7 +16,7 @@ import { cn } from '~/lib/utils';
  * This component is used to display the actions for a episode
  * mainly used in episode table performs actions like view details , edit , delete
  * @param param0 data - episode data
- * @returns 
+ * @returns
  */
 const EpisodeActionsDropdown = ({ data }: { data: EpisodeBase }) => {
   // initialize router

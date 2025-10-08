@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader } from './ui/card';
 import { Play, X } from 'lucide-react';
