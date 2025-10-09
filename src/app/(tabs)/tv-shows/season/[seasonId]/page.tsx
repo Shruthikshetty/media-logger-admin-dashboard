@@ -1,6 +1,6 @@
 'use client';
 import { capitalize } from 'lodash';
-import { Calendar, PenSquare, Star, Trash2 } from 'lucide-react';
+import { Calendar, PenSquare, Plus, Star, Trash2 } from 'lucide-react';
 import moment from 'moment';
 import { useParams } from 'next/navigation';
 import React, { useEffect } from 'react';
@@ -167,12 +167,17 @@ const SeasonDetails = () => {
         {/* Episodes */}
         <Card className="border-ui-600 text-base-white from-base-black to-ui-900 gap-2 bg-gradient-to-r p-3">
           <CardHeader className="p-0">
-            <LoadingWrapper>
-              <CardTitle className="text-xl font-semibold">
-                {' '}
-                {data?.data?.noOfEpisodes} Episodes
-              </CardTitle>
-            </LoadingWrapper>
+            <div className="flex flex-row justify-between gap-2">
+              <LoadingWrapper>
+                <CardTitle className="text-xl font-semibold">
+                  {' '}
+                  {data?.data?.noOfEpisodes} Episodes
+                </CardTitle>
+              </LoadingWrapper>
+              <Button variant={'blue'}>
+                <Plus /> Add Episode
+              </Button>
+            </div>
           </CardHeader>
           <LoadingWrapper fallback={<TableSkeleton />}>
             <EpisodeTable episodes={data?.data?.episodes} />
