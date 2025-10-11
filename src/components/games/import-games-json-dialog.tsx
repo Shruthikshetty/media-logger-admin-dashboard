@@ -1,3 +1,4 @@
+'use client';
 import React, { useState } from 'react';
 import { useSpinnerStore } from '~/state-management/spinner-store';
 import {

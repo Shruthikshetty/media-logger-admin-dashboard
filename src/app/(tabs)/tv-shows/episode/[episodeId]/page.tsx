@@ -1,7 +1,8 @@
 'use client';
+import { useQueryClient } from '@tanstack/react-query';
 import { PenSquare, Star, Trash2 } from 'lucide-react';
 import moment from 'moment';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 import { toast } from 'sonner';
 import BackButton from '~/components/back-button';
@@ -14,7 +15,12 @@ import {
 import { Button } from '~/components/ui/button';
 import { Card, CardContent } from '~/components/ui/card';
 import { Skeleton } from '~/components/ui/skeleton';
-import { useFetchEpisodeDetailsById } from '~/services/tv-episode-service';
+import { QueryKeys } from '~/constants/query-key.constants';
+import {
+  useDeleteEpisodeById,
+  useFetchEpisodeDetailsById,
+} from '~/services/tv-episode-service';
+import { useSpinnerStore } from '~/state-management/spinner-store';
 
 /**
  * This is the page for the episode details
@@ -25,10 +31,17 @@ import { useFetchEpisodeDetailsById } from '~/services/tv-episode-service';
 const EpisodeDetails = () => {
   // get episode id from params
   const episodeId = useParams().episodeId as string;
+  //initialize router
+  const router = useRouter();
+  //initialize query client
+  const queryClient = useQueryClient();
+  // import spinner state from store
+  const setSpinner = useSpinnerStore((state) => state.setShowSpinner);
   // fetch episode details
   const { data, isLoading, isError, error } =
     useFetchEpisodeDetailsById(episodeId);
-
+  //initialize custom delete hook
+  const { mutate: deleteEpisodeMutate } = useDeleteEpisodeById();
   //catch any unexpected error while fetching
   useEffect(() => {
     if (isError) {
@@ -44,6 +57,44 @@ const EpisodeDetails = () => {
       );
     }
   }, [isError, error]);
+
+  /**
+   * Handles the deletion of an episode.
+   */
+  const handleDelete = () => {
+    if (!data?.data._id) return;
+    //start loading
+    setSpinner(true);
+    // make api call
+    deleteEpisodeMutate(data?.data._id, {
+      onSuccess: (data) => {
+        // send message
+        toast.success(data.message ?? 'Episode deleted successfully', {
+          className: '!bg-feedback-success',
+        });
+        //invalidate query
+        queryClient.invalidateQueries({
+          queryKey: [QueryKeys.fetchSeasonById, data.data.season],
+        });
+        queryClient.invalidateQueries({
+          queryKey: [QueryKeys.fetchTvShowById],
+        });
+        // navigate back
+        router.back();
+      },
+      onError: (error) => {
+        toast.error(error.response?.data.message ?? 'Something went wrong', {
+          classNames: {
+            toast: '!bg-feedback-error',
+          },
+        });
+      },
+      onSettled: () => {
+        // stop loading
+        setSpinner(false);
+      },
+    });
+  };
 
   return (
     <div className="flex h-full w-full flex-col gap-5 p-5">
@@ -120,6 +171,7 @@ const EpisodeDetails = () => {
                   type="button"
                   aria-label="Delete Tv show"
                   disabled={isLoading}
+                  onClick={handleDelete}
                 >
                   <Trash2 />
                   Delete Episode

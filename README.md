@@ -17,6 +17,7 @@ The Media Logger Admin Dashboard is a modern, responsive web application designe
 ## ✨ Features
 
 ### Core Functionality
+
 - 🔐 **User Authentication** - Complete auth flow with JWT token management and protected routes
 - 📊 **Interactive Dashboard** - Statistical cards and charts (bar/pie) with Recharts integration
 - 🎬 **Media Management** - Comprehensive CRUD operations for Movies, TV Shows, and Games
@@ -24,6 +25,7 @@ The Media Logger Admin Dashboard is a modern, responsive web application designe
 - ⚙️ **Settings Panel** - Configurable app settings and preferences
 
 ### Recent Additions (October 2025)
+
 - 📺 **TV Show Details** - Season and episode management with accordion UI
 - 🎮 **Game Management** - Enhanced game CRUD with bulk operations
 - 📊 **Advanced Analytics** - Improved dashboard charts and statistics
@@ -31,6 +33,7 @@ The Media Logger Admin Dashboard is a modern, responsive web application designe
 - 📱 **Mobile Optimization** - Responsive design improvements for mobile devices
 
 ### Technical Features
+
 - 🎨 **Modern UI/UX** - Custom design system using Tailwind CSS and shadcn/ui
 - 📱 **Responsive Design** - Mobile-first approach with sidebar navigation
 - ⚡ **Performance** - Optimized with Turbopack and Next.js 15 features
@@ -41,16 +44,19 @@ The Media Logger Admin Dashboard is a modern, responsive web application designe
 ## 🚀 Tech Stack
 
 ### Core Framework
+
 - **[Next.js 15](https://nextjs.org/)** - React framework with App Router
 - **[React 19](https://react.dev/)** - Latest React with concurrent features
 - **[TypeScript 5](https://www.typescriptlang.org/)** - Static type checking
 
 ### State & Data Management
+
 - **[Zustand 5](https://zustand-demo.pmnd.rs/)** - Lightweight state management
 - **[TanStack Query 5](https://tanstack.com/query)** - Data fetching and caching
 - **[Axios 1.11](https://axios-http.com/)** - HTTP client for API calls
 
 ### UI & Styling
+
 - **[Tailwind CSS 4](https://tailwindcss.com/)** - Utility-first CSS framework
 - **[shadcn/ui](https://ui.shadcn.com/)** - Component library built on Radix UI
 - **[Radix UI](https://www.radix-ui.com/)** - Unstyled, accessible UI primitives
@@ -58,21 +64,25 @@ The Media Logger Admin Dashboard is a modern, responsive web application designe
 - **[next-themes](https://github.com/pacocoursey/next-themes)** - Theme management
 
 ### Forms & Validation
+
 - **[React Hook Form 7](https://react-hook-form.com/)** - Performant forms library
 - **[Zod 4](https://zod.dev/)** - TypeScript-first schema validation
 - **[@hookform/resolvers](https://react-hook-form.com/get-started#SchemaValidation)** - Schema validation integration
 
 ### Data Visualization
+
 - **[Recharts 2](https://recharts.org/)** - React charting library
 - **[TanStack Table 8](https://tanstack.com/table)** - Headless table building
 
 ### Development Tools
+
 - **[Vitest 3](https://vitest.dev/)** - Testing framework
 - **[ESLint 9](https://eslint.org/)** - JavaScript/TypeScript linting
 - **[Prettier 3](https://prettier.io/)** - Code formatting
 - **[@vercel/speed-insights](https://vercel.com/docs/speed-insights)** - Performance monitoring
 
 ### Additional Libraries
+
 - **[date-fns 4](https://date-fns.org/)** - Modern date utility library
 - **[js-cookie 3](https://github.com/js-cookie/js-cookie)** - Cookie handling
 - **[sonner 2](https://sonner.emilkowal.ski/)** - Toast notifications
@@ -82,18 +92,21 @@ The Media Logger Admin Dashboard is a modern, responsive web application designe
 ## 📦 Installation
 
 ### Prerequisites
+
 - **Node.js** 18.17 or higher
 - **npm** or **yarn** package manager
 
 ### Setup Instructions
 
 1. **Clone the repository**
+
 ```bash
 git clone https://github.com/Shruthikshetty/media-logger-admin-dashboard.git
 cd media-logger-admin-dashboard
 ```
 
 2. **Install dependencies**
+
 ```bash
 # Using npm
 npm install
@@ -103,6 +116,7 @@ yarn install
 ```
 
 3. **Environment Configuration**
+
 ```bash
 # Copy the example environment file
 cp .env.example .env
@@ -112,6 +126,7 @@ cp .env.example .env
 ```
 
 4. **Run the development server**
+
 ```bash
 # Using npm
 npm run dev
@@ -121,7 +136,7 @@ yarn dev
 ```
 
 5. **Open your browser**
-Visit [http://localhost:3000](http://localhost:3000) to see the application.
+   Visit [http://localhost:3000](http://localhost:3000) to see the application.
 
 ## 🏗️ Project Structure
 
@@ -171,6 +186,7 @@ media-logger-admin-dashboard/
 ## 🔐 Authentication Flow
 
 ### Login Process
+
 1. **Login Page** - Users authenticate with email and password
 2. **Token Management** - JWT tokens stored securely in HTTP-only cookies
 3. **State Management** - User session managed via Zustand store
@@ -178,6 +194,7 @@ media-logger-admin-dashboard/
 5. **Automatic Redirect** - Unauthenticated users redirected to login
 
 ### Security Features
+
 - HTTP-only cookies for token storage
 - Automatic token refresh handling
 - Role-based access control (Admin/User)
@@ -186,17 +203,20 @@ media-logger-admin-dashboard/
 ## 📊 Dashboard Overview
 
 ### Statistics Cards
+
 - **Movies** - Total count and recent additions
 - **TV Shows** - Show count with season/episode tracking
 - **Games** - Game library statistics
 - **Users** - User management metrics
 
 ### Interactive Charts
+
 - **Bar Charts** - Media additions over time
 - **Pie Charts** - Distribution of media types
 - **Responsive Design** - Mobile-optimized chart layouts
 
 ### Navigation
+
 - **Sidebar Navigation** - Quick access to all sections
 - **Mobile Toggle** - Collapsible sidebar for mobile devices
 - **Breadcrumb Navigation** - Clear page hierarchy
@@ -204,6 +224,7 @@ media-logger-admin-dashboard/
 ## 🎬 Media Management Features
 
 ### Movies
+
 - **CRUD Operations** - Add, edit, delete, and view movies
 - **Bulk Operations** - Import movies via JSON
 - **Advanced Filtering** - Genre, year, rating filters
@@ -211,6 +232,7 @@ media-logger-admin-dashboard/
 - **Details View** - Comprehensive movie information
 
 ### TV Shows
+
 - **Season Management** - Track seasons and episodes
 - **Episode Details** - Individual episode information
 - **Accordion UI** - Collapsible season/episode views
@@ -218,6 +240,7 @@ media-logger-admin-dashboard/
 - **Advanced Metadata** - Cast, crew, and production details
 
 ### Games
+
 - **Game Library** - Complete game management system
 - **Bulk Import** - JSON-based bulk game addition
 - **Platform Tracking** - Multi-platform game support
@@ -226,12 +249,14 @@ media-logger-admin-dashboard/
 ## 👥 User Management
 
 ### User Operations
+
 - **User CRUD** - Complete user management
 - **Role Assignment** - Admin/User role management
 - **Profile Management** - User profile editing
 - **Access Control** - Permission-based feature access
 
 ### Admin Features
+
 - **User Analytics** - User activity tracking
 - **Role Management** - Dynamic role assignment
 - **Bulk Operations** - Batch user operations
@@ -258,6 +283,7 @@ npm run test         # Run Vitest tests
 ## 🔧 Configuration Files
 
 ### Environment Variables (.env)
+
 ```bash
 # API Configuration
 NEXT_PUBLIC_API_BASE_URL=your_api_base_url
@@ -265,11 +291,13 @@ NEXT_PUBLIC_API_BASE_URL=your_api_base_url
 ```
 
 ### Next.js Configuration (next.config.ts)
+
 - Turbopack for faster development builds
 - Image optimization settings
 - API route configurations
 
 ### Tailwind Configuration
+
 - Custom color scheme
 - Component-specific utilities
 - Responsive breakpoints
@@ -277,26 +305,29 @@ NEXT_PUBLIC_API_BASE_URL=your_api_base_url
 ## 🚀 Recent Updates (October 2025)
 
 ### Version 0.1.0 Highlights
+
 - **Enhanced TV Show Management** - Complete season/episode tracking system
 - **Advanced UI Components** - New accordion components for nested data
 - **Improved Mobile Experience** - Better responsive design implementation
 - **Performance Optimizations** - Faster load times and smoother interactions
 - **Bug Fixes** - Resolved authentication and form validation issues
 
-
 ## 🔮 Upcoming Features
 
 ### Short Term (Next Release)
+
 - **Enhanced CRUD Operations** - Complete media management workflows
 - **Advanced Search** - Multimedia global search integration for powerful search
 
 ### Long Term Roadmap
+
 - **Modification history** - maintain history of all CRUD operations
-- **Notification** - Add notification system 
+- **Notification** - Add notification system
 
 ## 🤝 Contributing
 
 ### Development Workflow
+
 1. **Fork** the repository
 2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
 3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
@@ -304,6 +335,7 @@ NEXT_PUBLIC_API_BASE_URL=your_api_base_url
 5. **Open** a Pull Request
 
 ### Code Standards
+
 - **TypeScript** - All code must be properly typed
 - **ESLint** - Follow the configured linting rules
 - **Prettier** - Use consistent code formatting
@@ -311,6 +343,7 @@ NEXT_PUBLIC_API_BASE_URL=your_api_base_url
 - **Documentation** - Update README for new features / add doc string where ever required
 
 ### Pull Request Guidelines
+
 - Provide clear description of changes
 - Ensure all tests pass
 - Update documentation as needed
@@ -318,11 +351,13 @@ NEXT_PUBLIC_API_BASE_URL=your_api_base_url
 ## 📈 Performance
 
 ### Metrics
+
 - **Lighthouse Score** - 90+ performance score
 - **Bundle Size** - Optimized for fast loading
 - **Core Web Vitals** - Excellent user experience metrics
 
 ### Optimizations
+
 - **Code Splitting** - Automatic route-based splitting
 - **Image Optimization** - Next.js Image component usage
 - **Caching** - TanStack Query for efficient data caching
@@ -331,12 +366,15 @@ NEXT_PUBLIC_API_BASE_URL=your_api_base_url
 ## 🐛 Known Issues
 
 ### Current Limitations
+
 - Some Backend API integration is in development
 - Some advanced filtering features are pending
 - Mobile experience can be further improved
 
 ### Bug Reports
+
 If you encounter any issues, please [open an issue](https://github.com/Shruthikshetty/media-logger-admin-dashboard/issues) with:
+
 - Detailed description
 - Steps to reproduce
 - Screenshots (if applicable)
@@ -357,11 +395,13 @@ This project is currently under development and does not have a license assigned
 ## 📞 Support
 
 ### Documentation
+
 - **Component Library** - [shadcn/ui docs](https://ui.shadcn.com)
 - **Next.js** - [Next.js documentation](https://nextjs.org/docs)
 - **React Query** - [TanStack Query docs](https://tanstack.com/query)
 
 ### Community
+
 - **GitHub Issues** - Bug reports and feature requests
 - **GitHub Discussions** - Community discussions and questions
 
@@ -369,4 +409,4 @@ This project is currently under development and does not have a license assigned
 
 **Built with ❤️ by [Shruthik Shetty](https://github.com/Shruthikshetty)**
 
-*Last Updated: October 2025*
+_Last Updated: October 2025_

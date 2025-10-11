@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import { EpisodeBase } from '~/services/tv-episode-service';
 import { ScrollArea, ScrollBar } from '../ui/scroll-area';

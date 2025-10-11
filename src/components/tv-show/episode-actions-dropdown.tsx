@@ -1,7 +1,11 @@
+'use client';
 import { Ellipsis, Eye, SquarePen, Trash2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React from 'react';
-import { EpisodeBase } from '~/services/tv-episode-service';
+import {
+  EpisodeBase,
+  useDeleteEpisodeById,
+} from '~/services/tv-episode-service';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,6 +15,10 @@ import {
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
 import { cn } from '~/lib/utils';
+import { useSpinnerStore } from '~/state-management/spinner-store';
+import { useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
+import { QueryKeys } from '~/constants/query-key.constants';
 
 /**
  * This component is used to display the actions for a episode
@@ -21,6 +29,12 @@ import { cn } from '~/lib/utils';
 const EpisodeActionsDropdown = ({ data }: { data: EpisodeBase }) => {
   // initialize router
   const router = useRouter();
+  // initialize query client
+  const queryClient = useQueryClient();
+  //initialize custom delete hook
+  const { mutate: deleteEpisodeMutate } = useDeleteEpisodeById();
+  // import spinner state from store
+  const setSpinner = useSpinnerStore((state) => state.setShowSpinner);
   // tv episode dropdown action items
   const tvEpisodeActionItems = [
     {
@@ -45,7 +59,38 @@ const EpisodeActionsDropdown = ({ data }: { data: EpisodeBase }) => {
       icon: Trash2,
       color: 'text-feedback-error',
       onClick: () => {
-        // @TODO
+        //start loading
+        setSpinner(true);
+        // make api call
+        deleteEpisodeMutate(data._id, {
+          onSuccess: (data) => {
+            // send message
+            toast.success(data.message ?? 'Episode deleted successfully', {
+              className: '!bg-feedback-success',
+            });
+            //invalidate query
+            queryClient.invalidateQueries({
+              queryKey: [QueryKeys.fetchSeasonById, data.data.season],
+            });
+            queryClient.invalidateQueries({
+              queryKey: [QueryKeys.fetchTvShowById],
+            });
+          },
+          onError: (error) => {
+            toast.error(
+              error.response?.data.message ?? 'Something went wrong',
+              {
+                classNames: {
+                  toast: '!bg-feedback-error',
+                },
+              },
+            );
+          },
+          onSettled: () => {
+            // stop loading
+            setSpinner(false);
+          },
+        });
       },
     },
   ];

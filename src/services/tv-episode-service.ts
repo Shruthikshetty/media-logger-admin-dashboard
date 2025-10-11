@@ -64,6 +64,12 @@ export type FetchEpisodeDetailsResponse<T> = {
   data: T extends true ? EpisodeFull : EpisodeBase;
 };
 
+type DeleteEpisodeResponse = {
+  success: boolean;
+  message: string;
+  data: EpisodeBase;
+};
+
 type AddEpisodeResponse = {
   success: boolean;
   data: EpisodeBase;
@@ -129,7 +135,7 @@ export const useAddEpisode = () => {
 export const useDeleteEpisodeById = () => {
   // initialize query client
   const queryClient = useQueryClient();
-  return useMutation({
+  return useMutation<DeleteEpisodeResponse, AxiosError<ApiError>, string>({
     mutationKey: [QueryKeys.deleteEpisode],
     mutationFn: (episodeId: string) =>
       apiClient

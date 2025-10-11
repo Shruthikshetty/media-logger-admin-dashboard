@@ -35,7 +35,7 @@ export const QueryKeys = {
   fetchTvShowById: 'fetch-tv-show-by-id',
   fetchSeasonById: 'fetch-season-by-id',
   fetchEpisodeById: 'fetch-episode-by-id',
-  addEpisode: "add-episode",
-  deleteEpisode: "delete-episode",
-  editEpisode: "edit-episode"
+  addEpisode: 'add-episode',
+  deleteEpisode: 'delete-episode',
+  editEpisode: 'edit-episode',
 };
