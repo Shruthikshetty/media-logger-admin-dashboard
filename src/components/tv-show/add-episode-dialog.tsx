@@ -1,0 +1,67 @@
+import React, { useState } from 'react';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '../ui/dialog';
+import { ScrollArea } from '../ui/scroll-area';
+import { Plus } from 'lucide-react';
+import { Button } from '../ui/button';
+import AddEditEpisodeFormFields from './add-edit-episode-form-fields';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import {
+  addEpisodeDefaultValues,
+  addTvEpisodeSchema,
+  AddTvEpisodeSchemaType,
+} from '~/schema/add-tv-episode-schema';
+
+const AddEpisodeDialog = ({ children }: { children: React.ReactNode }) => {
+  //open and close state for dialog
+  const [open, setOpen] = useState(false);
+
+  // create add episode form
+  const addEpisodeForm = useForm<AddTvEpisodeSchemaType>({
+    mode: 'onChange',
+    defaultValues: addEpisodeDefaultValues,
+    resolver: zodResolver(addTvEpisodeSchema),
+  });
+
+  // handle form submit
+  const onSubmit = (data: AddTvEpisodeSchemaType) => {
+    console.log(data);
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogContent className="bg-brand-900 border-ui-600 max-w-[95%] min-w-[70%] p-0 pb-1 lg:min-w-[60%]">
+        <ScrollArea className="[&_[data-slot=scroll-area-thumb]]:hover:bg-ui-400 max-h-[90vh] p-4">
+          <DialogHeader className="bg-brand-900 sticky top-0">
+            <DialogTitle className="text-xl">Add Episode Details</DialogTitle>
+            <DialogDescription>
+              Fill in the Episode information below
+            </DialogDescription>
+          </DialogHeader>
+          {/* Add movie form fields */}
+          <AddEditEpisodeFormFields form={addEpisodeForm} onSubmit={onSubmit}>
+            {/* Buttons */}
+            <div className="flex flex-row justify-end gap-2 md:items-center md:justify-center">
+              <Button variant={'red'} type="button" className="md:min-w-50">
+                Reset
+              </Button>
+              <Button type="submit" variant={'blue'} className="md:min-w-50">
+                Add Movie <Plus strokeWidth={3} />
+              </Button>
+            </div>
+          </AddEditEpisodeFormFields>
+        </ScrollArea>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+export default AddEpisodeDialog;

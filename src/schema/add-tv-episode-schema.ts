@@ -50,3 +50,9 @@ export const addTvEpisodeSchema = z.object({
 
 //export type
 export type AddTvEpisodeSchemaType = z.infer<typeof addTvEpisodeSchema>;
+
+//export default values
+export const addEpisodeDefaultValues: Partial<AddTvEpisodeSchemaType> = {
+  title: '',
+  description: '',
+};

@@ -14,6 +14,7 @@ import {
   TableSkeleton,
 } from '~/components/custom-loaders';
 import TrailerCard from '~/components/trailer-card';
+import AddEpisodeDialog from '~/components/tv-show/add-episode-dialog';
 import EpisodeTable from '~/components/tv-show/episode-table';
 import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
@@ -174,9 +175,15 @@ const SeasonDetails = () => {
                   {data?.data?.noOfEpisodes} Episodes
                 </CardTitle>
               </LoadingWrapper>
-              <Button variant={'blue'}>
-                <Plus /> Add Episode
-              </Button>
+              <AddEpisodeDialog>
+                <Button
+                  variant={'blue'}
+                  disabled={isLoading}
+                  aria-label="add a episode"
+                >
+                  <Plus /> Add Episode
+                </Button>
+              </AddEpisodeDialog>
             </div>
           </CardHeader>
           <LoadingWrapper fallback={<TableSkeleton />}>
