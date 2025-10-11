@@ -22,6 +22,7 @@ import {
 import { useAddEpisode } from '~/services/tv-episode-service';
 import { useSpinnerStore } from '~/state-management/spinner-store';
 import { toast } from 'sonner';
+import CustomAlert from '../custom-alert';
 
 const AddEpisodeDialog = ({
   children,
@@ -103,9 +104,15 @@ const AddEpisodeDialog = ({
               <Button variant={'red'} type="button" className="md:min-w-50">
                 Reset
               </Button>
-              <Button type="submit" variant={'blue'} className="md:min-w-50">
-                Add Movie <Plus strokeWidth={3} />
-              </Button>
+              <CustomAlert
+                onConfirm={() => addEpisodeForm.reset()}
+                title={'Are you sure?'}
+                description="This will reset the form. All entered data will be lost."
+              >
+                <Button type="submit" variant={'blue'} className="md:min-w-50">
+                  Add Movie <Plus strokeWidth={3} />
+                </Button>
+              </CustomAlert>
             </div>
           </AddEditEpisodeFormFields>
         </ScrollArea>

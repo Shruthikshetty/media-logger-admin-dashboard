@@ -140,7 +140,7 @@ yarn dev
 
 ## 🏗️ Project Structure
 
-```
+```text
 media-logger-admin-dashboard/
 ├── public/                     # Static assets
 ├── src/
@@ -409,4 +409,6 @@ This project is currently under development and does not have a license assigned
 
 **Built with ❤️ by [Shruthik Shetty](https://github.com/Shruthikshetty)**
 
-_Last Updated: October 2025_
+### Last Updated
+
+October 2025
