@@ -1,4 +1,5 @@
 'use client';
+import { useQueryClient } from '@tanstack/react-query';
 import { capitalize } from 'lodash';
 import { Calendar, PenSquare, Plus, Star, Trash2 } from 'lucide-react';
 import moment from 'moment';
@@ -22,6 +23,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
 import { Skeleton } from '~/components/ui/skeleton';
 import { AppColors } from '~/constants/colors.constants';
 import { SEASON_STATUS } from '~/constants/config.constants';
+import { QueryKeys } from '~/constants/query-key.constants';
 import { cn } from '~/lib/utils';
 import { useFetchSeasonById } from '~/services/tv-season-service';
 
@@ -32,8 +34,10 @@ import { useFetchSeasonById } from '~/services/tv-season-service';
 const SeasonDetails = () => {
   // get season id from params
   const seasonId = useParams().seasonId as string;
+  //initialize query client
+  const queryClient = useQueryClient();
   //fetch season details
-  const { data, isLoading, isError, error } = useFetchSeasonById<true>(
+  const { data, isLoading, isError, error, refetch } = useFetchSeasonById<true>(
     seasonId,
     true,
   );
@@ -175,7 +179,16 @@ const SeasonDetails = () => {
                   {data?.data?.noOfEpisodes} Episodes
                 </CardTitle>
               </LoadingWrapper>
-              <AddEpisodeDialog>
+              <AddEpisodeDialog
+                seasonId={seasonId}
+                onSuccess={() => {
+                  refetch(); // refetch data on success
+                  // invalidate the related tv show data
+                  queryClient.invalidateQueries({
+                    queryKey: [QueryKeys.fetchTvShowById, data?.data.tvShow],
+                  });
+                }}
+              >
                 <Button
                   variant={'blue'}
                   disabled={isLoading}

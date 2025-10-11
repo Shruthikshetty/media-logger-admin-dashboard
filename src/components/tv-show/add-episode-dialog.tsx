@@ -18,10 +18,25 @@ import {
   addTvEpisodeSchema,
   AddTvEpisodeSchemaType,
 } from '~/schema/add-tv-episode-schema';
+import { useAddEpisode } from '~/services/tv-episode-service';
+import { useSpinnerStore } from '~/state-management/spinner-store';
+import { toast } from 'sonner';
 
-const AddEpisodeDialog = ({ children }: { children: React.ReactNode }) => {
+const AddEpisodeDialog = ({
+  children,
+  seasonId,
+  onSuccess,
+}: {
+  children: React.ReactNode;
+  seasonId: string;
+  onSuccess?: () => void;
+}) => {
   //open and close state for dialog
   const [open, setOpen] = useState(false);
+  //import spinner state from store
+  const setSpinner = useSpinnerStore((state) => state.setShowSpinner);
+  // initialize custom add episode hook
+  const { mutate } = useAddEpisode();
 
   // create add episode form
   const addEpisodeForm = useForm<AddTvEpisodeSchemaType>({
@@ -32,7 +47,41 @@ const AddEpisodeDialog = ({ children }: { children: React.ReactNode }) => {
 
   // handle form submit
   const onSubmit = (data: AddTvEpisodeSchemaType) => {
-    console.log(data);
+    // start loading
+    setSpinner(true);
+    // make api call
+    mutate(
+      {
+        ...data,
+        season: seasonId,
+        releaseDate: data?.releaseDate
+          ? data.releaseDate.toISOString()
+          : undefined,
+      },
+      {
+        onSuccess: (data) => {
+          // send toast
+          toast.success(data?.message ?? 'Episode added successfully', {
+            className: '!bg-feedback-success',
+          });
+          // run onSuccess callback
+          onSuccess?.();
+          // close dialog
+          setOpen(false);
+        },
+        onError: (error) => {
+          toast.error(error?.response?.data.message ?? 'Something went wrong', {
+            classNames: {
+              toast: '!bg-feedback-error',
+            },
+          });
+        },
+        onSettled: () => {
+          // stop loading
+          setSpinner(false);
+        },
+      },
+    );
   };
 
   return (

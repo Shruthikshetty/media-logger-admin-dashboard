@@ -40,11 +40,12 @@ export type EpisodeFull = {
 
 export type AddEpisode = {
   title: string;
-  description: string;
+  description?: string;
   episodeNumber: number;
-  releaseDate: string;
-  runTime: number;
-  stillUrl: string;
+  releaseDate?: string;
+  averageRating?: number;
+  runTime?: number;
+  stillUrl?: string;
   season: string;
 };
 
