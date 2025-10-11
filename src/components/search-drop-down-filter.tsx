@@ -1,3 +1,4 @@
+'use client';
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { SelectDropDownConfig } from './media-filters';
 import SearchDropdown from './search-dropdown';

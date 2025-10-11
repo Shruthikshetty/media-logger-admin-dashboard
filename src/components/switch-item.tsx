@@ -1,3 +1,4 @@
+"use client";
 import React from 'react';
 import TitleSubtitle from './title-subtitle';
 import { Switch } from './ui/switch';

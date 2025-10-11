@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import CustomImage from './custom-image';
 import { ListLoader, LoadingWrapper } from './custom-loaders';
