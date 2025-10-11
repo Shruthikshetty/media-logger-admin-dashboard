@@ -101,18 +101,18 @@ const AddEpisodeDialog = ({
           <AddEditEpisodeFormFields form={addEpisodeForm} onSubmit={onSubmit}>
             {/* Buttons */}
             <div className="flex flex-row justify-end gap-2 md:items-center md:justify-center">
-              <Button variant={'red'} type="button" className="md:min-w-50">
-                Reset
-              </Button>
               <CustomAlert
                 onConfirm={() => addEpisodeForm.reset()}
                 title={'Are you sure?'}
                 description="This will reset the form. All entered data will be lost."
               >
-                <Button type="submit" variant={'blue'} className="md:min-w-50">
-                  Add Movie <Plus strokeWidth={3} />
+                <Button variant={'red'} type="button" className="md:min-w-50">
+                  Reset
                 </Button>
               </CustomAlert>
+              <Button type="submit" variant={'blue'} className="md:min-w-50">
+                Add Movie <Plus strokeWidth={3} />
+              </Button>
             </div>
           </AddEditEpisodeFormFields>
         </ScrollArea>
