@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { EpisodeBase } from '~/services/tv-episode-service';
 import { ScrollArea, ScrollBar } from '../ui/scroll-area';
 import {
@@ -125,10 +125,6 @@ const EpisodeTable = ({ episodes = [] }: { episodes?: EpisodeBase[] }) => {
     data: episodesOrdered,
     columns: episodeColumns,
     getCoreRowModel: getCoreRowModel(),
-  });
-
-  useEffect(() => {
-    console.log('rerender table');
   });
 
   return (
