@@ -1,9 +1,11 @@
 'use client';
+import { useQueryClient } from '@tanstack/react-query';
 import { capitalize } from 'lodash';
-import { Calendar, PenSquare, Star, Trash2 } from 'lucide-react';
+import { Calendar, PenSquare, Plus, Star, Trash2 } from 'lucide-react';
 import moment from 'moment';
 import { useParams } from 'next/navigation';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { toast } from 'sonner';
 import BackButton from '~/components/back-button';
 import CustomImage from '~/components/custom-image';
 import {
@@ -13,6 +15,7 @@ import {
   TableSkeleton,
 } from '~/components/custom-loaders';
 import TrailerCard from '~/components/trailer-card';
+import AddEpisodeDialog from '~/components/tv-show/add-episode-dialog';
 import EpisodeTable from '~/components/tv-show/episode-table';
 import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
@@ -20,6 +23,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
 import { Skeleton } from '~/components/ui/skeleton';
 import { AppColors } from '~/constants/colors.constants';
 import { SEASON_STATUS } from '~/constants/config.constants';
+import { QueryKeys } from '~/constants/query-key.constants';
 import { cn } from '~/lib/utils';
 import { useFetchSeasonById } from '~/services/tv-season-service';
 
@@ -30,8 +34,28 @@ import { useFetchSeasonById } from '~/services/tv-season-service';
 const SeasonDetails = () => {
   // get season id from params
   const seasonId = useParams().seasonId as string;
+  //initialize query client
+  const queryClient = useQueryClient();
   //fetch season details
-  const { data, isLoading } = useFetchSeasonById<true>(seasonId, true);
+  const { data, isLoading, isError, error, refetch } = useFetchSeasonById<true>(
+    seasonId,
+    true,
+  );
+  //catch any unexpected error while fetching season
+  useEffect(() => {
+    if (isError) {
+      toast.error(
+        error?.response?.data.message ??
+          error.message ??
+          'Something went wrong',
+        {
+          classNames: {
+            toast: '!bg-feedback-error',
+          },
+        },
+      );
+    }
+  }, [isError, error]);
   return (
     <div className="flex h-full w-full flex-col gap-5 p-5">
       <BackButton className="min-w-40" />
@@ -148,12 +172,32 @@ const SeasonDetails = () => {
         {/* Episodes */}
         <Card className="border-ui-600 text-base-white from-base-black to-ui-900 gap-2 bg-gradient-to-r p-3">
           <CardHeader className="p-0">
-            <LoadingWrapper>
-              <CardTitle className="text-xl font-semibold">
-                {' '}
-                {data?.data?.noOfEpisodes} Episodes
-              </CardTitle>
-            </LoadingWrapper>
+            <div className="flex flex-row justify-between gap-2">
+              <LoadingWrapper>
+                <CardTitle className="text-xl font-semibold">
+                  {' '}
+                  {data?.data?.noOfEpisodes} Episodes
+                </CardTitle>
+              </LoadingWrapper>
+              <AddEpisodeDialog
+                seasonId={seasonId}
+                onSuccess={() => {
+                  refetch(); // refetch data on success
+                  // invalidate the related tv show data
+                  queryClient.invalidateQueries({
+                    queryKey: [QueryKeys.fetchTvShowById, data?.data.tvShow],
+                  });
+                }}
+              >
+                <Button
+                  variant={'blue'}
+                  disabled={isLoading}
+                  aria-label="add a episode"
+                >
+                  <Plus /> Add Episode
+                </Button>
+              </AddEpisodeDialog>
+            </div>
           </CardHeader>
           <LoadingWrapper fallback={<TableSkeleton />}>
             <EpisodeTable episodes={data?.data?.episodes} />

@@ -1,3 +1,4 @@
+'use client';
 import React, { useState } from 'react';
 import Cropper, { Area } from 'react-easy-crop';
 import { Button } from './ui/button';

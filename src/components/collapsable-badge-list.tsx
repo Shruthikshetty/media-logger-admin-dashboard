@@ -1,3 +1,4 @@
+'use client';
 import React, { useState } from 'react';
 import { Badge } from './ui/badge';
 import { Minus, Plus } from 'lucide-react';

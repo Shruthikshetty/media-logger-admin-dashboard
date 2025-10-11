@@ -1,3 +1,4 @@
+'use client';
 import { TvShowBase } from '~/services/tv-show-service';
 import {
   DropdownMenu,

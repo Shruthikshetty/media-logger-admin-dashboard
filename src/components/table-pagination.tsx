@@ -1,3 +1,4 @@
+"use client";
 import React, { useMemo } from 'react';
 import type { Pagination as PaginationType } from '~/types/global.types';
 import {
