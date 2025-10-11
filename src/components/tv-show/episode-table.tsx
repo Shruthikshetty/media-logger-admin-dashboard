@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { EpisodeBase } from '~/services/tv-episode-service';
 import { ScrollArea, ScrollBar } from '../ui/scroll-area';
 import {
@@ -115,8 +115,9 @@ const EpisodeTable = ({ episodes = [] }: { episodes?: EpisodeBase[] }) => {
   //initialize router
   const router = useRouter();
   //order the episodes by episode number
-  const episodesOrdered = [...episodes].sort(
-    (a, b) => a.episodeNumber - b.episodeNumber,
+  const episodesOrdered = useMemo(
+    () => [...episodes].sort((a, b) => a.episodeNumber - b.episodeNumber),
+    [episodes],
   );
 
   // create a table to display all episode data of a tv season
