@@ -286,7 +286,7 @@ export const AddSeasonEpisodeArrayFields = ({
             <p className="text-base-white text-xl font-semibold">
               Episode #{index + 1}
             </p>
-            <Button variant={'red'} onClick={() => remove(index)}>
+            <Button variant={'red'} onClick={() => remove(index)} type="button">
               <Trash2 className="h-4 w-4" />
             </Button>
           </div>
