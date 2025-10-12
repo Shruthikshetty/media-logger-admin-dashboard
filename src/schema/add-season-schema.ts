@@ -7,12 +7,14 @@ import { SEASON_STATUS } from '~/constants/config.constants';
 import { addTvEpisodeSchema } from './add-tv-episode-schema';
 
 export const addSeasonSchema = z.object({
-  seasonNumber: z.number({
-    error: (issue) =>
-      issue.input === undefined
-        ? 'Season number is required'
-        : 'Season number must be number',
-  }),
+  seasonNumber: z
+    .number({
+      error: (issue) =>
+        issue.input === undefined
+          ? 'Season number is required'
+          : 'Season number must be number',
+    })
+    .min(1, 'Season number must be at least 1'),
 
   title: z.string({
     error: (issue) =>
@@ -31,12 +33,14 @@ export const addSeasonSchema = z.object({
     })
     .optional(),
 
-  noOfEpisodes: z.number({
-    error: (issue) =>
-      issue.input === undefined
-        ? 'No of episodes is required'
-        : 'No of episodes must be number',
-  }),
+  noOfEpisodes: z
+    .number({
+      error: (issue) =>
+        issue.input === undefined
+          ? 'No of episodes is required'
+          : 'No of episodes must be number',
+    })
+    .min(0, 'No of episodes can not be negative'),
 
   posterUrl: z
     .string({
