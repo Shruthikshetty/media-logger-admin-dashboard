@@ -4,15 +4,13 @@ import {
   Clock,
   LucideIcon,
   PenSquare,
-  Play,
   Star,
   Trash2,
   Users,
-  X,
 } from 'lucide-react';
 import moment from 'moment';
 import { useParams, useRouter } from 'next/navigation';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import { toast } from 'sonner';
 import BackButton from '~/components/back-button';
 import BackdropCard, { InfoItem } from '~/components/backdrop-card';
@@ -24,11 +22,11 @@ import {
 } from '~/components/custom-loaders';
 import EditGameDialog from '~/components/games/edit-game-dialog';
 import TitleSubtitle from '~/components/title-subtitle';
+import TrailerCard from '~/components/trailer-card';
 import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
 import { Card, CardContent, CardHeader } from '~/components/ui/card';
 import { Skeleton } from '~/components/ui/skeleton';
-import YoutubePlayer from '~/components/youtube-player';
 import { AppColors } from '~/constants/colors.constants';
 import { capitalizeFirstLetter } from '~/lib/formatting';
 import { cn } from '~/lib/utils';
@@ -44,8 +42,6 @@ import { useSpinnerStore } from '~/state-management/spinner-store';
 const GameDetails = () => {
   //get the game id from params
   const gameId = (useParams()?.id as string) ?? '';
-  // hold the trailer visibility state
-  const [trailerVisible, setTrailerVisible] = useState(false);
   // initialize router
   const router = useRouter();
   //initialize delete custom hook
@@ -139,38 +135,10 @@ const GameDetails = () => {
             <Card className="border-0 bg-transparent md:col-span-6">
               <CardHeader className="p-0">
                 {/* youtube trailer */}
-                <Card className="from-brand-600/30 to-base-black border-brand-500/50 bg-gradient-to-r transition">
-                  <CardHeader>
-                    <div className="text-base-white flex flex-row justify-between gap-5">
-                      <p className="flex flex-row flex-wrap items-center gap-1 sm:gap-3">
-                        <Play className="text-brand-600 h-7 w-7" />
-                        <span>
-                          {!data?.data?.youtubeVideoId
-                            ? 'Sorry Trailer Not Available'
-                            : 'Watch Official Trailer'}
-                        </span>
-                      </p>
-                      <Button
-                        className="border-ui-600"
-                        variant={'outline'}
-                        disabled={isLoading || !data?.data?.youtubeVideoId}
-                        onClick={() => setTrailerVisible((s) => !s)}
-                      >
-                        {trailerVisible ? (
-                          <X className="h-4 w-4" />
-                        ) : (
-                          <Play className="h-4 w-4" />
-                        )}
-                        {trailerVisible ? 'Hide Trailer' : 'Show Trailer'}
-                      </Button>
-                    </div>
-                  </CardHeader>
-                  {trailerVisible && data?.data?.youtubeVideoId && (
-                    <CardContent>
-                      <YoutubePlayer videoId={data?.data?.youtubeVideoId} />
-                    </CardContent>
-                  )}
-                </Card>
+                <TrailerCard
+                  loading={isLoading}
+                  youtubeVideoId={data?.data?.youtubeVideoId}
+                />
               </CardHeader>
               <CardContent className="flex flex-col gap-3 p-0">
                 <div className="flex flex-col-reverse justify-between gap-2 sm:flex-row">
