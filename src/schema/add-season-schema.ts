@@ -5,7 +5,6 @@
 import { z } from 'zod';
 import { SEASON_STATUS } from '~/constants/config.constants';
 import { addTvEpisodeSchema } from './add-tv-episode-schema';
-import { stat } from 'fs';
 
 export const addSeasonSchema = z.object({
   seasonNumber: z.number({

@@ -295,14 +295,17 @@ export const AddSeasonEpisodeArrayFields = ({
             control={form.control}
             render={({ field }) => (
               <FormItem>
-                <Label htmlFor="title" className="text-base">
+                <Label
+                  htmlFor={`episodes.${index}.title`}
+                  className="text-base"
+                >
                   Title *
                 </Label>
                 <FormControl>
                   <Input
                     {...field}
                     type="text"
-                    id="title"
+                    id={`episodes.${index}.title`}
                     placeholder="Enter Episode title"
                   />
                 </FormControl>
@@ -315,13 +318,16 @@ export const AddSeasonEpisodeArrayFields = ({
             control={form.control}
             render={({ field }) => (
               <FormItem>
-                <Label htmlFor="description" className="text-base">
+                <Label
+                  htmlFor={`episodes.${index}.description`}
+                  className="text-base"
+                >
                   Description
                 </Label>
                 <FormControl>
                   <Textarea
                     {...field}
-                    id="description"
+                    id={`episodes.${index}.description`}
                     placeholder="Enter Episode description"
                   />
                 </FormControl>
@@ -351,13 +357,16 @@ export const AddSeasonEpisodeArrayFields = ({
               control={form.control}
               render={({ field }) => (
                 <FormItem className="flex-1">
-                  <Label htmlFor="episodeNumber" className="text-base">
+                  <Label
+                    htmlFor={`episodes.${index}.episodeNumber`}
+                    className="text-base"
+                  >
                     Episode Number *
                   </Label>
                   <FormControl>
                     <NumberInput
                       {...field}
-                      id="episodeNumber"
+                      id={`episodes.${index}.episodeNumber`}
                       placeholder="Ep #"
                     />
                   </FormControl>
@@ -373,11 +382,18 @@ export const AddSeasonEpisodeArrayFields = ({
               control={form.control}
               render={({ field }) => (
                 <FormItem className="flex-1">
-                  <Label htmlFor="runTime" className="text-base">
+                  <Label
+                    htmlFor={`episodes.${index}.runTime`}
+                    className="text-base"
+                  >
                     Runtime
                   </Label>
                   <FormControl>
-                    <NumberInput {...field} id="runTime" placeholder="min" />
+                    <NumberInput
+                      {...field}
+                      id={`episodes.${index}.runTime`}
+                      placeholder="min"
+                    />
                   </FormControl>
                   <FormMessage />
                   <FormDescription className="text-ui-400 text-sm">
@@ -392,13 +408,16 @@ export const AddSeasonEpisodeArrayFields = ({
             control={form.control}
             render={({ field }) => (
               <FormItem className="flex-1">
-                <Label htmlFor="averageRating" className="text-base">
+                <Label
+                  htmlFor={`episodes.${index}.averageRating`}
+                  className="text-base"
+                >
                   Average Rating
                 </Label>
                 <FormControl>
                   <NumberInput
                     {...field}
-                    id="averageRating"
+                    id={`episodes.${index}.averageRating`}
                     placeholder="Rating (1-10)"
                   />
                 </FormControl>
@@ -414,7 +433,10 @@ export const AddSeasonEpisodeArrayFields = ({
             control={form.control}
             render={({ field }) => (
               <FormItem>
-                <Label htmlFor="stillUrl" className="text-base">
+                <Label
+                  htmlFor={`episodes.${index}.stillUrl`}
+                  className="text-base"
+                >
                   Episode Image
                 </Label>
                 <FormControl>
@@ -422,7 +444,7 @@ export const AddSeasonEpisodeArrayFields = ({
                     {...field}
                     value={field.value ?? ''}
                     type="text"
-                    id="stillUrl"
+                    id={`episodes.${index}.stillUrl`}
                     placeholder="https://..."
                   />
                 </FormControl>
