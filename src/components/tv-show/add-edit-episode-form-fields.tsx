@@ -14,6 +14,7 @@ import { Label } from '../ui/label';
 import { Input } from '../ui/input';
 import CalenderInput from '../calender-input';
 import NumberInput from '../number-input';
+import { Textarea } from '../ui/textarea';
 
 type AddEditEpisodeFormFieldsProps = {
   form: UseFormReturn<AddTvEpisodeSchemaType>;
@@ -65,9 +66,8 @@ const AddEditEpisodeFormFields = ({
                 Description
               </Label>
               <FormControl>
-                <Input
+                <Textarea
                   {...field}
-                  type="text"
                   id="description"
                   placeholder="Enter Episode description"
                 />
@@ -101,7 +101,7 @@ const AddEditEpisodeFormFields = ({
             render={({ field }) => (
               <FormItem className="flex-1">
                 <Label htmlFor="episodeNumber" className="text-base">
-                  Episode Number
+                  Episode Number *
                 </Label>
                 <FormControl>
                   <NumberInput

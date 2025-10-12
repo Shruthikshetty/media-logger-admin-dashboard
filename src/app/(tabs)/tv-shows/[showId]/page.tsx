@@ -47,7 +47,7 @@ const TvShowDetails = () => {
   const [trailerVisible, setTrailerVisible] = useState(false);
   // get the tv show id from route params
   const showId = useParams().showId as string;
-  const { data, isLoading } = useFetchTvShowById<true>(showId, true);
+  const { data, isLoading, refetch } = useFetchTvShowById<true>(showId, true);
   // returns the styled title with icon
   const renderTvShowInfoTitle = useCallback(
     (title: string, Icon?: LucideIcon) => (
@@ -360,7 +360,12 @@ const TvShowDetails = () => {
                   subtitle: 'text-md',
                 }}
               />
-              <AddSeasonDialog>
+              <AddSeasonDialog
+                tvShowId={data?.data._id}
+                onSuccess={() => {
+                  refetch();
+                }}
+              >
                 <Button
                   variant={'blue'}
                   disabled={isLoading}
