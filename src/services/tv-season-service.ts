@@ -17,7 +17,6 @@ export type SeasonBase = {
   description?: string;
   seasonNumber: number;
   releaseDate: string;
-  seasonRating?: number;
   status: string;
   youtubeVideoId?: string;
   noOfEpisodes: number;
@@ -39,9 +38,9 @@ export type AddSeason = {
   releaseDate?: string;
   noOfEpisodes: number;
   posterUrl?: string;
-  seasonRating?: number;
   status?: string;
   youtubeVideoId?: string;
+  averageRating?: number;
   tvShow: string;
   episodes?: Omit<AddEpisode, 'season'>[];
 };

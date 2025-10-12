@@ -109,7 +109,7 @@ const AddEpisodeDialog = ({
               Fill in the Episode information below
             </DialogDescription>
           </DialogHeader>
-          {/* Add movie form fields */}
+          {/* Add episode form fields */}
           <AddEditEpisodeFormFields form={addEpisodeForm} onSubmit={onSubmit}>
             {/* Buttons */}
             <div className="flex flex-row justify-end gap-2 md:items-center md:justify-center">

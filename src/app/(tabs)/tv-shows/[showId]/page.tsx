@@ -25,6 +25,7 @@ import {
   LoadingWrapper,
 } from '~/components/custom-loaders';
 import TitleSubtitle from '~/components/title-subtitle';
+import AddSeasonDialog from '~/components/tv-show/add-tv-season-dialog';
 import SeasonAccordion from '~/components/tv-show/season-accordion';
 import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
@@ -359,13 +360,15 @@ const TvShowDetails = () => {
                   subtitle: 'text-md',
                 }}
               />
-              <Button
-                variant={'blue'}
-                disabled={isLoading}
-                aria-label="add a season"
-              >
-                <Plus /> Add Season
-              </Button>
+              <AddSeasonDialog>
+                <Button
+                  variant={'blue'}
+                  disabled={isLoading}
+                  aria-label="add a season"
+                >
+                  <Plus /> Add Season
+                </Button>
+              </AddSeasonDialog>
             </div>
           </CardHeader>
           <CardContent>
