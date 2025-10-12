@@ -56,6 +56,34 @@ type FetchSeasonByIdResponse<T> = {
   data: T extends true ? SeasonFull : SeasonBase;
 };
 
+type UpdateSeasonRequest = {
+  season: Partial<{
+    title: string;
+    description: string;
+    seasonNumber: number;
+    releaseDate: string;
+    noOfEpisodes: number;
+    posterUrl: string;
+    status: string;
+    youtubeVideoId?: string;
+    averageRating: number;
+    tvShow: string;
+  }>;
+  seasonId: string;
+};
+
+type UpdateSeasonResponse = {
+  data: SeasonBase;
+  message?: string;
+  success: boolean;
+};
+
+type DeleteSeasonResponse = {
+  data: SeasonBase;
+  message: string;
+  success: boolean;
+};
+
 //custom hook to fetch a single tv show by season id
 export const useFetchSeasonById = <T extends boolean = false>(
   seasonId: string,
@@ -91,11 +119,26 @@ export const useAddSeason = () => {
 
 //custom hook to delete a season (this will delete all the episodes as well)
 export const useDeleteSeasonById = () => {
-  return useMutation({
+  return useMutation<DeleteSeasonResponse, AxiosError<ApiError>, string>({
     mutationKey: [QueryKeys.deleteSeason],
     mutationFn: (seasonId: string) =>
       apiClient
         .delete(Endpoints.baseSeason + `/${seasonId}`)
+        .then((res) => res.data),
+  });
+};
+
+// custom hook to update a tv season
+export const useUpdateSeason = () => {
+  return useMutation<
+    UpdateSeasonResponse,
+    AxiosError<ApiError>,
+    UpdateSeasonRequest
+  >({
+    mutationKey: [QueryKeys.updateSeason],
+    mutationFn: ({ season, seasonId }: UpdateSeasonRequest) =>
+      apiClient
+        .patch(Endpoints.baseSeason + `/${seasonId}`, season)
         .then((res) => res.data),
   });
 };

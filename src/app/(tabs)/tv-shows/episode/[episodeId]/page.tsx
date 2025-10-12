@@ -3,7 +3,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { PenSquare, Star, Trash2 } from 'lucide-react';
 import moment from 'moment';
 import { useParams, useRouter } from 'next/navigation';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { toast } from 'sonner';
 import BackButton from '~/components/back-button';
 import CustomImage from '~/components/custom-image';
@@ -17,6 +17,7 @@ import { Button } from '~/components/ui/button';
 import { Card, CardContent } from '~/components/ui/card';
 import { Skeleton } from '~/components/ui/skeleton';
 import { QueryKeys } from '~/constants/query-key.constants';
+import { useUnexpectedErrorToast } from '~/hooks/use-unexpected-error-toast';
 import {
   useDeleteEpisodeById,
   useFetchEpisodeDetailsById,
@@ -44,20 +45,7 @@ const EpisodeDetails = () => {
   //initialize custom delete hook
   const { mutate: deleteEpisodeMutate } = useDeleteEpisodeById();
   //catch any unexpected error while fetching
-  useEffect(() => {
-    if (isError) {
-      toast.error(
-        error?.response?.data.message ??
-          error.message ??
-          'Something went wrong',
-        {
-          classNames: {
-            toast: '!bg-feedback-error',
-          },
-        },
-      );
-    }
-  }, [isError, error]);
+  useUnexpectedErrorToast({ isError, error });
 
   /**
    * Handles the deletion of an episode.
