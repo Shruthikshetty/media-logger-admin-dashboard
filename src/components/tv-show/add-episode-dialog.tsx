@@ -24,6 +24,16 @@ import { useSpinnerStore } from '~/state-management/spinner-store';
 import { toast } from 'sonner';
 import CustomAlert from '../custom-alert';
 
+/**
+ * A dialog component to add a new episode to a TV season.
+ * It accepts children as a trigger to open the dialog.
+ * The dialog contains a form with fields to enter the episode's details.
+ * The dialog also contains a submit button to create a new episode.
+ * The dialog is closed when the episode is created successfully.
+ * @param {React.ReactNode} children The element that will trigger the dialog when clicked.
+ * @param {string} seasonId The ID of the season to which the episode belongs.
+ * @param {() => void} onSuccess A callback function to run when the episode is created successfully.
+ */
 const AddEpisodeDialog = ({
   children,
   seasonId,
@@ -66,6 +76,8 @@ const AddEpisodeDialog = ({
           toast.success(data?.message ?? 'Episode added successfully', {
             className: '!bg-feedback-success',
           });
+          //clear form
+          addEpisodeForm.reset(addEpisodeDefaultValues);
           // run onSuccess callback
           onSuccess?.();
           // close dialog
@@ -111,7 +123,7 @@ const AddEpisodeDialog = ({
                 </Button>
               </CustomAlert>
               <Button type="submit" variant={'blue'} className="md:min-w-50">
-                Add Movie <Plus strokeWidth={3} />
+                Add Episode <Plus strokeWidth={3} />
               </Button>
             </div>
           </AddEditEpisodeFormFields>
