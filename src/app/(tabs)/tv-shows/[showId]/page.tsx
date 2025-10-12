@@ -6,6 +6,7 @@ import {
   LucideIcon,
   PenSquare,
   Play,
+  Plus,
   Star,
   Trash2,
   Users,
@@ -349,14 +350,23 @@ const TvShowDetails = () => {
         {/* Seasons and episode card */}
         <Card className="border-ui-600 text-base-white from-base-black to-ui-900 bg-gradient-to-r">
           <CardHeader>
-            <TitleSubtitle
-              title="Seasons & Episodes"
-              subtitle="Browse all seasons and episodes"
-              customStyles={{
-                title: 'text-2xl font-bold',
-                subtitle: 'text-md',
-              }}
-            />
+            <div className="flex flex-row justify-between gap-3">
+              <TitleSubtitle
+                title="Seasons & Episodes"
+                subtitle="Browse all seasons and episodes"
+                customStyles={{
+                  title: 'text-2xl font-bold',
+                  subtitle: 'text-md',
+                }}
+              />
+              <Button
+                variant={'blue'}
+                disabled={isLoading}
+                aria-label="add a season"
+              >
+                <Plus /> Add Season
+              </Button>
+            </div>
           </CardHeader>
           <CardContent>
             <LoadingWrapper

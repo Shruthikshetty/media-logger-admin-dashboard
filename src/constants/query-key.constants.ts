@@ -38,4 +38,6 @@ export const QueryKeys = {
   addEpisode: 'add-episode',
   deleteEpisode: 'delete-episode',
   editEpisode: 'edit-episode',
+  addSeason: 'add-season',
+  deleteSeason: 'delete-season',
 };
