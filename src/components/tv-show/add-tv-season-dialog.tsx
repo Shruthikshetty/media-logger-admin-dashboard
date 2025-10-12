@@ -9,112 +9,116 @@ import {
   DialogTrigger,
 } from '../ui/dialog';
 import { ScrollArea } from '../ui/scroll-area';
-import { Plus } from 'lucide-react';
+import CustomAlert from '../custom-alert';
 import { Button } from '../ui/button';
-import AddEditEpisodeFormFields from './add-edit-episode-form-fields';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { Plus } from 'lucide-react';
 import {
-  addEpisodeDefaultValues,
-  addTvEpisodeSchema,
-  AddTvEpisodeSchemaType,
-} from '~/schema/add-tv-episode-schema';
-import { useAddEpisode } from '~/services/tv-episode-service';
+  addSeasonDefaultValues,
+  addSeasonSchema,
+  AddSeasonSchemaType,
+} from '~/schema/add-season-schema';
+import { useForm } from 'react-hook-form';
+import {
+  AddSeasonEpisodeArrayFields,
+  AddEditSeasonCommonFields,
+} from './add-edit-season-fields';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useAddSeason } from '~/services/tv-season-service';
 import { useSpinnerStore } from '~/state-management/spinner-store';
 import { toast } from 'sonner';
-import CustomAlert from '../custom-alert';
 
 /**
- * A dialog component to add a new episode to a TV season.
+ * A dialog component to add a new season to a TV show.
  * It accepts children as a trigger to open the dialog.
- * The dialog contains a form with fields to enter the episode's details.
- * The dialog also contains a submit button to create a new episode.
- * The dialog is closed when the episode is created successfully.
  * @param {React.ReactNode} children The element that will trigger the dialog when clicked.
- * @param {string} seasonId The ID of the season to which the episode belongs.
- * @param {() => void} onSuccess A callback function to run when the episode is created successfully.
+ * @returns {JSX.Element} The dialog component.
  */
-const AddEpisodeDialog = ({
+const AddSeasonDialog = ({
   children,
-  seasonId,
+  tvShowId,
   onSuccess,
 }: {
   children: React.ReactNode;
-  seasonId: string;
+  tvShowId?: string;
   onSuccess?: () => void;
 }) => {
   //open and close state for dialog
   const [open, setOpen] = useState(false);
-  //import spinner state from store
+  // import custom hook to add a season
+  const { mutate } = useAddSeason();
+  // get the spinner state from the store
   const setSpinner = useSpinnerStore((state) => state.setShowSpinner);
-  // initialize custom add episode hook
-  const { mutate } = useAddEpisode();
-
-  // create add episode form
-  const addEpisodeForm = useForm<AddTvEpisodeSchemaType>({
+  //create add season form
+  const addSeasonForm = useForm<AddSeasonSchemaType>({
     mode: 'onChange',
-    defaultValues: addEpisodeDefaultValues,
-    resolver: zodResolver(addTvEpisodeSchema),
+    defaultValues: addSeasonDefaultValues,
+    resolver: zodResolver(addSeasonSchema),
   });
 
-  // handle form submit
-  const onSubmit = (data: AddTvEpisodeSchemaType) => {
-    // start loading
+  //handle on form submit
+  const onSubmit = (data: AddSeasonSchemaType) => {
+    if (!tvShowId) return;
+    // start loading spinner
     setSpinner(true);
     // make api call
     mutate(
       {
         ...data,
-        season: seasonId,
         releaseDate: data?.releaseDate
           ? data.releaseDate.toISOString()
           : undefined,
+        episodes:
+          data?.episodes?.map((episode) => ({
+            ...episode,
+            releaseDate: episode?.releaseDate
+              ? episode.releaseDate.toISOString()
+              : undefined,
+          })) ?? [],
+        tvShow: tvShowId,
       },
       {
         onSuccess: (data) => {
-          // send toast
-          toast.success(data?.message ?? 'Episode added successfully', {
+          toast.success(data?.message ?? 'Season added successfully', {
             className: '!bg-feedback-success',
           });
           //clear form
-          addEpisodeForm.reset(addEpisodeDefaultValues);
-          // run onSuccess callback
+          addSeasonForm.reset(addSeasonDefaultValues);
           onSuccess?.();
           // close dialog
           setOpen(false);
         },
-        onError: (error) => {
-          toast.error(error?.response?.data.message ?? 'Something went wrong', {
+        onError: (data) => {
+          toast.error(data?.response?.data.message ?? 'Something went wrong', {
             classNames: {
               toast: '!bg-feedback-error',
             },
           });
         },
         onSettled: () => {
-          // stop loading
+          // stop loading spinner
           setSpinner(false);
         },
       },
     );
   };
-
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="bg-brand-900 border-ui-600 max-w-[95%] min-w-[70%] p-0 pb-1 lg:min-w-[60%]">
         <ScrollArea className="[&_[data-slot=scroll-area-thumb]]:hover:bg-ui-400 max-h-[90vh] p-4">
           <DialogHeader className="bg-brand-900 sticky top-0">
-            <DialogTitle className="text-xl">Add Episode Details</DialogTitle>
+            <DialogTitle className="text-xl">Add Season Details</DialogTitle>
             <DialogDescription>
-              Fill in the Episode information below
+              Fill in the Season information below
             </DialogDescription>
           </DialogHeader>
-          {/* Add episode form fields */}
-          <AddEditEpisodeFormFields form={addEpisodeForm} onSubmit={onSubmit}>
+          {/* Add season form fields */}
+          <AddEditSeasonCommonFields form={addSeasonForm} onSubmit={onSubmit}>
+            <AddSeasonEpisodeArrayFields form={addSeasonForm} />
             {/* Buttons */}
             <div className="flex flex-row justify-end gap-2 md:items-center md:justify-center">
               <CustomAlert
-                onConfirm={() => addEpisodeForm.reset()}
+                onConfirm={() => addSeasonForm.reset(addSeasonDefaultValues)}
                 title={'Are you sure?'}
                 description="This will reset the form. All entered data will be lost."
               >
@@ -123,14 +127,14 @@ const AddEpisodeDialog = ({
                 </Button>
               </CustomAlert>
               <Button type="submit" variant={'blue'} className="md:min-w-50">
-                Add Episode <Plus strokeWidth={3} />
+                Add Season <Plus strokeWidth={3} />
               </Button>
             </div>
-          </AddEditEpisodeFormFields>
+          </AddEditSeasonCommonFields>
         </ScrollArea>
       </DialogContent>
     </Dialog>
   );
 };
 
-export default AddEpisodeDialog;
+export default AddSeasonDialog;

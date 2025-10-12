@@ -6,6 +6,7 @@ import {
   LucideIcon,
   PenSquare,
   Play,
+  Plus,
   Star,
   Trash2,
   Users,
@@ -24,6 +25,7 @@ import {
   LoadingWrapper,
 } from '~/components/custom-loaders';
 import TitleSubtitle from '~/components/title-subtitle';
+import AddSeasonDialog from '~/components/tv-show/add-tv-season-dialog';
 import SeasonAccordion from '~/components/tv-show/season-accordion';
 import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
@@ -45,7 +47,7 @@ const TvShowDetails = () => {
   const [trailerVisible, setTrailerVisible] = useState(false);
   // get the tv show id from route params
   const showId = useParams().showId as string;
-  const { data, isLoading } = useFetchTvShowById<true>(showId, true);
+  const { data, isLoading, refetch } = useFetchTvShowById<true>(showId, true);
   // returns the styled title with icon
   const renderTvShowInfoTitle = useCallback(
     (title: string, Icon?: LucideIcon) => (
@@ -349,14 +351,30 @@ const TvShowDetails = () => {
         {/* Seasons and episode card */}
         <Card className="border-ui-600 text-base-white from-base-black to-ui-900 bg-gradient-to-r">
           <CardHeader>
-            <TitleSubtitle
-              title="Seasons & Episodes"
-              subtitle="Browse all seasons and episodes"
-              customStyles={{
-                title: 'text-2xl font-bold',
-                subtitle: 'text-md',
-              }}
-            />
+            <div className="flex flex-row justify-between gap-3">
+              <TitleSubtitle
+                title="Seasons & Episodes"
+                subtitle="Browse all seasons and episodes"
+                customStyles={{
+                  title: 'text-2xl font-bold',
+                  subtitle: 'text-md',
+                }}
+              />
+              <AddSeasonDialog
+                tvShowId={data?.data._id}
+                onSuccess={() => {
+                  refetch();
+                }}
+              >
+                <Button
+                  variant={'blue'}
+                  disabled={isLoading}
+                  aria-label="add a season"
+                >
+                  <Plus /> Add Season
+                </Button>
+              </AddSeasonDialog>
+            </div>
           </CardHeader>
           <CardContent>
             <LoadingWrapper
