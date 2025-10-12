@@ -12,6 +12,7 @@ import {
   LoadingProvider,
   LoadingWrapper,
 } from '~/components/custom-loaders';
+import EditEpisodeDialog from '~/components/tv-show/edit-episode-dialog';
 import { Button } from '~/components/ui/button';
 import { Card, CardContent } from '~/components/ui/card';
 import { Skeleton } from '~/components/ui/skeleton';
@@ -38,7 +39,7 @@ const EpisodeDetails = () => {
   // import spinner state from store
   const setSpinner = useSpinnerStore((state) => state.setShowSpinner);
   // fetch episode details
-  const { data, isLoading, isError, error } =
+  const { data, isLoading, isError, error, refetch } =
     useFetchEpisodeDetailsById(episodeId);
   //initialize custom delete hook
   const { mutate: deleteEpisodeMutate } = useDeleteEpisodeById();
@@ -154,16 +155,28 @@ const EpisodeDetails = () => {
               </div>
               {/* Buttons */}
               <div className="flex flex-row gap-2 sm:flex-col sm:gap-3">
-                <Button
-                  variant={'blue'}
-                  disabled={isLoading}
-                  className="flex-1 sm:flex-none"
-                  type="button"
-                  aria-label="Edit Tv show"
+                <EditEpisodeDialog
+                  existingData={data?.data}
+                  onSuccess={() => {
+                    //refetch screen data
+                    refetch();
+                    // invalidate fetch tv show
+                    queryClient.invalidateQueries({
+                      queryKey: [QueryKeys.fetchTvShowById],
+                    });
+                  }}
                 >
-                  <PenSquare />
-                  Edit Episode
-                </Button>
+                  <Button
+                    variant={'blue'}
+                    disabled={isLoading}
+                    className="flex-1 sm:flex-none"
+                    type="button"
+                    aria-label="Edit Episode"
+                  >
+                    <PenSquare />
+                    Edit Episode
+                  </Button>
+                </EditEpisodeDialog>
 
                 <Button
                   variant={'red'}
