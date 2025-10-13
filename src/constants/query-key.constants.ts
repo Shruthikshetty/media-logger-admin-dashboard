@@ -40,4 +40,5 @@ export const QueryKeys = {
   editEpisode: 'edit-episode',
   addSeason: 'add-season',
   deleteSeason: 'delete-season',
+  updateSeason: 'update-season',
 };

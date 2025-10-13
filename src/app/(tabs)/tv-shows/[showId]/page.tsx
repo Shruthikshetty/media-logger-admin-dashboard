@@ -5,16 +5,14 @@ import {
   Globe,
   LucideIcon,
   PenSquare,
-  Play,
   Plus,
   Star,
   Trash2,
   Users,
-  X,
 } from 'lucide-react';
 import moment from 'moment';
 import { useParams } from 'next/navigation';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import BackButton from '~/components/back-button';
 
 import BackdropCard, { InfoItem } from '~/components/backdrop-card';
@@ -25,13 +23,13 @@ import {
   LoadingWrapper,
 } from '~/components/custom-loaders';
 import TitleSubtitle from '~/components/title-subtitle';
+import TrailerCard from '~/components/trailer-card';
 import AddSeasonDialog from '~/components/tv-show/add-tv-season-dialog';
 import SeasonAccordion from '~/components/tv-show/season-accordion';
 import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
 import { Card, CardContent, CardHeader } from '~/components/ui/card';
 import { Skeleton } from '~/components/ui/skeleton';
-import YoutubePlayer from '~/components/youtube-player';
 import { AppColors } from '~/constants/colors.constants';
 import { capitalizeFirstLetter } from '~/lib/formatting';
 import { cn } from '~/lib/utils';
@@ -43,8 +41,6 @@ import { useFetchTvShowById } from '~/services/tv-show-service';
  * @returns {JSX.Element}
  */
 const TvShowDetails = () => {
-  // hold the trailer visibility state
-  const [trailerVisible, setTrailerVisible] = useState(false);
   // get the tv show id from route params
   const showId = useParams().showId as string;
   const { data, isLoading, refetch } = useFetchTvShowById<true>(showId, true);
@@ -106,38 +102,10 @@ const TvShowDetails = () => {
             <Card className="border-0 bg-transparent md:col-span-6">
               <CardHeader className="p-0">
                 {/* youtube trailer */}
-                <Card className="from-brand-600/30 to-base-black border-brand-500/50 bg-gradient-to-r transition">
-                  <CardHeader>
-                    <div className="text-base-white flex flex-row justify-between gap-5">
-                      <p className="flex flex-row flex-wrap items-center gap-1 sm:gap-3">
-                        <Play className="text-brand-600 h-7 w-7" />
-                        <span>
-                          {!data?.data?.youtubeVideoId
-                            ? 'Sorry Trailer Not Available'
-                            : 'Watch Official Trailer'}
-                        </span>
-                      </p>
-                      <Button
-                        className="border-ui-600"
-                        variant={'outline'}
-                        disabled={isLoading || !data?.data?.youtubeVideoId}
-                        onClick={() => setTrailerVisible((s) => !s)}
-                      >
-                        {trailerVisible ? (
-                          <X className="h-4 w-4" />
-                        ) : (
-                          <Play className="h-4 w-4" />
-                        )}
-                        {trailerVisible ? 'Hide Trailer' : 'Show Trailer'}
-                      </Button>
-                    </div>
-                  </CardHeader>
-                  {trailerVisible && data?.data?.youtubeVideoId && (
-                    <CardContent>
-                      <YoutubePlayer videoId={data?.data?.youtubeVideoId} />
-                    </CardContent>
-                  )}
-                </Card>
+                <TrailerCard
+                  loading={isLoading}
+                  youtubeVideoId={data?.data?.youtubeVideoId}
+                />
               </CardHeader>
               <CardContent className="flex flex-col gap-3 p-0">
                 <div className="flex flex-col-reverse justify-between gap-2 sm:flex-row">

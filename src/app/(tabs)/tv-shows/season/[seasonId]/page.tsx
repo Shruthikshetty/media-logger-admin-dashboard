@@ -3,8 +3,8 @@ import { useQueryClient } from '@tanstack/react-query';
 import { capitalize } from 'lodash';
 import { Calendar, PenSquare, Plus, Star, Trash2 } from 'lucide-react';
 import moment from 'moment';
-import { useParams } from 'next/navigation';
-import React, { useEffect } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+import React from 'react';
 import { toast } from 'sonner';
 import BackButton from '~/components/back-button';
 import CustomImage from '~/components/custom-image';
@@ -24,8 +24,13 @@ import { Skeleton } from '~/components/ui/skeleton';
 import { AppColors } from '~/constants/colors.constants';
 import { SEASON_STATUS } from '~/constants/config.constants';
 import { QueryKeys } from '~/constants/query-key.constants';
+import { useUnexpectedErrorToast } from '~/hooks/use-unexpected-error-toast';
 import { cn } from '~/lib/utils';
-import { useFetchSeasonById } from '~/services/tv-season-service';
+import {
+  useDeleteSeasonById,
+  useFetchSeasonById,
+} from '~/services/tv-season-service';
+import { useSpinnerStore } from '~/state-management/spinner-store';
 
 /**
  * This component displays All the details of a TV show season.
@@ -34,28 +39,52 @@ import { useFetchSeasonById } from '~/services/tv-season-service';
 const SeasonDetails = () => {
   // get season id from params
   const seasonId = useParams().seasonId as string;
+  // initialize router
+  const router = useRouter();
   //initialize query client
   const queryClient = useQueryClient();
+  // import spinner state from store
+  const setSpinner = useSpinnerStore((state) => state.setShowSpinner);
   //fetch season details
   const { data, isLoading, isError, error, refetch } = useFetchSeasonById<true>(
     seasonId,
     true,
   );
+  // initialize the custom hook to delete a season
+  const { mutate: deleteSeasonMutate } = useDeleteSeasonById();
   //catch any unexpected error while fetching season
-  useEffect(() => {
-    if (isError) {
-      toast.error(
-        error?.response?.data.message ??
-          error.message ??
-          'Something went wrong',
-        {
-          classNames: {
-            toast: '!bg-feedback-error',
-          },
-        },
-      );
-    }
-  }, [isError, error]);
+  useUnexpectedErrorToast({ isError, error });
+
+  // handle delete season
+  const handleDeleteSeason = () => {
+    // start loading
+    setSpinner(true);
+    // make api call
+    deleteSeasonMutate(seasonId, {
+      onSuccess: () => {
+        // send toast
+        toast.success('Season deleted successfully', {
+          className: '!bg-feedback-success',
+        });
+        //invalidate query
+        queryClient.invalidateQueries({
+          queryKey: [QueryKeys.fetchTvShowById, data?.data?.tvShow],
+        });
+        // navigate back
+        router.back();
+      },
+      onError: (error) => {
+        toast.error(error?.response?.data.message ?? 'Something went wrong', {
+          className: '!bg-feedback-error',
+        });
+      },
+      onSettled: () => {
+        // stop loading
+        setSpinner(false);
+      },
+    });
+  };
+
   return (
     <div className="flex h-full w-full flex-col gap-5 p-5">
       <BackButton className="min-w-40" />
@@ -147,6 +176,7 @@ const SeasonDetails = () => {
                   type="button"
                   aria-label="Delete Tv show"
                   disabled={isLoading}
+                  onClick={handleDeleteSeason}
                 >
                   <Trash2 />
                   Delete Season
