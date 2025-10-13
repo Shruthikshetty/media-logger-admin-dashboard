@@ -20,15 +20,16 @@ import { capitalizeFirstLetter } from '~/lib/formatting';
 import { Button } from '../ui/button';
 import { Plus, Trash2 } from 'lucide-react';
 import { Textarea } from '../ui/textarea';
+import { EditSeasonSchemaType } from '~/schema/edit-tv-season-schema';
 
 type AddEditSeasonCommonFieldsProps = {
-  form: UseFormReturn<AddSeasonSchemaType>;
+  form: UseFormReturn<AddSeasonSchemaType | EditSeasonSchemaType>;
   onSubmit: (data: AddSeasonSchemaType) => void;
   children: React.ReactNode;
 };
 
 type AddSeasonEpisodeArrayFieldsProps = {
-  form: UseFormReturn<AddSeasonSchemaType>;
+  form: UseFormReturn<AddSeasonSchemaType | EditSeasonSchemaType>;
 };
 
 /**
