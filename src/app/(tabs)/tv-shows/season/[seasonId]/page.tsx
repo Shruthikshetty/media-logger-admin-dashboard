@@ -16,6 +16,7 @@ import {
 } from '~/components/custom-loaders';
 import TrailerCard from '~/components/trailer-card';
 import AddEpisodeDialog from '~/components/tv-show/add-episode-dialog';
+import EditSeasonDialog from '~/components/tv-show/edit-tv-season-dialog';
 import EpisodeTable from '~/components/tv-show/episode-table';
 import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
@@ -159,16 +160,18 @@ const SeasonDetails = () => {
               </div>
               {/* Buttons */}
               <div className="flex flex-row gap-2 sm:flex-col sm:gap-3">
-                <Button
-                  variant={'blue'}
-                  disabled={isLoading}
-                  className="flex-1 sm:flex-none"
-                  type="button"
-                  aria-label="Edit Tv show"
-                >
-                  <PenSquare />
-                  Edit Season
-                </Button>
+                <EditSeasonDialog existingData={data?.data}>
+                  <Button
+                    variant={'blue'}
+                    disabled={isLoading}
+                    className="flex-1 sm:flex-none"
+                    type="button"
+                    aria-label="Edit Tv show"
+                  >
+                    <PenSquare />
+                    Edit Season
+                  </Button>
+                </EditSeasonDialog>
 
                 <Button
                   variant={'red'}
