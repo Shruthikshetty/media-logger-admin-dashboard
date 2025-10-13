@@ -1,5 +1,5 @@
 'use client';
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { EpisodeBase } from '~/services/tv-episode-service';
 import { ScrollArea, ScrollBar } from '../ui/scroll-area';
 import {
@@ -14,6 +14,8 @@ import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
+  getPaginationRowModel,
+  PaginationState,
   useReactTable,
 } from '@tanstack/react-table';
 import CustomImage from '../custom-image';
@@ -21,6 +23,7 @@ import { Calendar, Star } from 'lucide-react';
 import EpisodeActionsDropdown from './episode-actions-dropdown';
 import moment from 'moment';
 import { useRouter } from 'next/navigation';
+import TablePagination from '../table-pagination';
 
 //create columns for episode table
 const episodeColumns: ColumnDef<EpisodeBase, string | number | undefined>[] = [
@@ -119,67 +122,101 @@ const EpisodeTable = ({ episodes = [] }: { episodes?: EpisodeBase[] }) => {
     () => [...episodes].sort((a, b) => a.episodeNumber - b.episodeNumber),
     [episodes],
   );
+  // pagination for episode table (client side)
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 20,
+  });
+  // calculate total pages
+  const totalPages = Math.max(
+    1,
+    Math.ceil(episodesOrdered.length / pagination.pageSize),
+  );
 
   // create a table to display all episode data of a tv season
   const table = useReactTable({
     data: episodesOrdered,
     columns: episodeColumns,
+    state: { pagination },
+    onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
   });
 
   return (
-    <ScrollArea className="rounded-md pb-3 whitespace-nowrap">
-      <Table className="min-w-full">
-        {/* table header */}
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow className="hover:bg-ui-800" key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <TableHead
-                  style={{
-                    width: header.column.columnDef.size,
-                  }}
-                  key={header.id}
-                  className="text-ui-200 text-base font-bold"
-                >
-                  {flexRender(
-                    header.column.columnDef.header,
-                    header.getContext(),
-                  )}
-                </TableHead>
-              ))}
-            </TableRow>
-          ))}
-        </TableHeader>
-        {/* table body */}
-        <TableBody>
-          {table.getRowModel().rows.map((row) => (
-            <TableRow
-              className="hover:bg-ui-800"
-              key={row.id}
-              onClick={() => {
-                // navigate to episode details
-                router.push(`/tv-shows/episode/${row.original._id}`);
-              }}
-            >
-              {row.getVisibleCells().map((cell) => (
-                <TableCell
-                  className="text-ui-200 text-base font-bold"
-                  key={cell.id}
-                >
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      <ScrollBar
-        orientation="horizontal"
-        className="bg-ui-800 rounded-xl"
-        barClassName="hover:bg-ui-400 bg-ui-600"
+    <>
+      <ScrollArea className="rounded-md pb-3 whitespace-nowrap">
+        <Table className="min-w-full">
+          {/* table header */}
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow className="hover:bg-ui-800" key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <TableHead
+                    style={{
+                      width: header.column.columnDef.size,
+                    }}
+                    key={header.id}
+                    className="text-ui-200 text-base font-bold"
+                  >
+                    {flexRender(
+                      header.column.columnDef.header,
+                      header.getContext(),
+                    )}
+                  </TableHead>
+                ))}
+              </TableRow>
+            ))}
+          </TableHeader>
+          {/* table body */}
+          <TableBody>
+            {table.getRowModel().rows.map((row) => (
+              <TableRow
+                className="hover:bg-ui-800"
+                key={row.id}
+                onClick={() => {
+                  // navigate to episode details
+                  router.push(`/tv-shows/episode/${row.original._id}`);
+                }}
+              >
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell
+                    className="text-ui-200 text-base font-bold"
+                    key={cell.id}
+                  >
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+        <ScrollBar
+          orientation="horizontal"
+          className="bg-ui-800 rounded-xl"
+          barClassName="hover:bg-ui-400 bg-ui-600"
+        />
+      </ScrollArea>
+      <TablePagination
+        page={pagination.pageIndex + 1}
+        setPage={(p) =>
+          table.setPageIndex(
+            (typeof p === 'number' ? p : p(pagination.pageIndex + 1)) - 1,
+          )
+        }
+        pagination={{
+          currentPage: pagination.pageIndex + 1,
+          totalPages,
+          start: pagination.pageIndex * pagination.pageSize + 1,
+          limit: pagination.pageSize,
+          hasMore: pagination.pageIndex + 1 < totalPages,
+          hasPrevious: pagination.pageIndex > 0,
+          nextPage: Math.min(pagination.pageIndex + 2, totalPages),
+          previousPage: Math.max(pagination.pageIndex, 1),
+          total: episodesOrdered.length,
+        }}
       />
-    </ScrollArea>
+    </>
   );
 };
 
