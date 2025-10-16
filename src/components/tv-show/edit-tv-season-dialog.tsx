@@ -21,8 +21,6 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AddEditSeasonCommonFields } from './add-edit-season-fields';
 import { SeasonBase, useUpdateSeason } from '~/services/tv-season-service';
-import { title } from 'process';
-import { set } from 'lodash';
 import { toast } from 'sonner';
 import { useQueryClient } from '@tanstack/react-query';
 import { QueryKeys } from '~/constants/query-key.constants';
