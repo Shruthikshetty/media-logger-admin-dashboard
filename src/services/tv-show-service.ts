@@ -2,8 +2,13 @@
  * @file contains the tv show related services
  */
 
-import { keepPreviousData, useQuery } from '@tanstack/react-query';
-import { SeasonFull } from './tv-season-service';
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
+import { AddSeason, SeasonFull } from './tv-season-service';
 import { AxiosError } from 'axios';
 import { ApiError, FilterLimits, Pagination } from '~/types/global.types';
 import { QueryKeys } from '~/constants/query-key.constants';
@@ -81,6 +86,30 @@ export type TvShowFilterRequest = Partial<{
   limit: number;
   page: number;
 }>;
+
+export type AddTvShow = {
+  title: string;
+  description: string;
+  releaseDate: string;
+  averageRating?: number;
+  genre: string[];
+  cast?: string[];
+  directors?: string[];
+  avgRunTime?: number;
+  languages?: string[];
+  posterUrl?: string;
+  backdropUrl?: string;
+  isActive: boolean;
+  status: string;
+  tags?: string[];
+  ageRating?: number;
+  totalSeasons: number;
+  totalEpisodes: number;
+  youtubeVideoId?: string;
+  tmdbId?: string;
+  imdbId?: string;
+  seasons?: Omit<AddSeason, 'tvShow'>[];
+};
 
 /**
  * Fetches all the tv shows from the api with pagination
@@ -174,5 +203,22 @@ export const useFetchTvShowById = <T extends boolean = false>(
           signal,
         })
         .then((res) => res.data),
+  });
+};
+
+// custom hook to add a tv show
+export const useAddTvShow = () => {
+  // initialize the query client
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: [QueryKeys.addTvShow],
+    mutationFn: (tvShow) =>
+      apiClient.post(Endpoints.baseTvShow, tvShow).then((res) => res.data),
+    onSuccess: () => {
+      // invalidate the query after adding a tv show
+      queryClient.invalidateQueries({
+        queryKey: [QueryKeys.fetchAllTvShows],
+      });
+    },
   });
 };
