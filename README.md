@@ -7,6 +7,7 @@ A comprehensive admin dashboard for managing Movies, TV Shows, Games, and Users 
 ![React](https://img.shields.io/badge/React-19.1.0-61dafb)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)
 ![Build Status](https://img.shields.io/badge/build-passing-green)
+![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/Shruthikshetty/media-logger-admin-dashboard?utm_source=oss&utm_medium=github&utm_campaign=Shruthikshetty%2Fmedia-logger-admin-dashboard&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
 
 ## 🌟 Overview
 

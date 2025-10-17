@@ -54,7 +54,12 @@ function ManageCard({
       >
         <CardHeader>
           <div className="flex flex-row items-center gap-2">
-            {Icon && <Icon className={cn('h-6 w-6', iconClassName)} />}
+            {Icon && (
+              <Icon
+                className={cn('h-6 w-6', iconClassName)}
+                aria-label="media-icon"
+              />
+            )}
             <CardTitle className="text-base-white text-lg">{title}</CardTitle>
           </div>
         </CardHeader>
