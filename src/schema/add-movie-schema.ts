@@ -85,7 +85,7 @@ export const addMovieSchema = z.object({
           ? 'Age rating is required'
           : 'Age rating must be number',
     })
-    .min(1, 'Age rating is required'),
+    .min(0, 'Age rating can not be negative'),
   tags: z
     .array(
       z
