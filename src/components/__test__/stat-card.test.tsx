@@ -1,6 +1,5 @@
-import { expect, it } from 'vitest';
+import { expect, it, describe } from 'vitest';
 import { screen, render } from '@testing-library/react';
-import { describe } from 'node:test';
 import StatCard from '../stat-card';
 import { Tv } from 'lucide-react';
 
@@ -19,8 +18,8 @@ describe('stat card component test cases', () => {
     expect(screen.getByText('1000')).toBeInTheDocument();
     expect(screen.getByText(/90/)).toBeInTheDocument();
   });
-  it('should render trending up/down icon', () => {
-    // up
+  // up
+  it('should render trending up icon', () => {
     render(
       <StatCard
         title={'Movies'}
@@ -31,7 +30,9 @@ describe('stat card component test cases', () => {
       />,
     );
     expect(screen.getByLabelText('trending-up')).toBeInTheDocument();
-    // down
+  });
+  // down
+  it('should render trending down icon', () => {
     render(
       <StatCard
         title={'Movies'}

@@ -1,6 +1,5 @@
-import { expect, it } from 'vitest';
+import { expect, it, describe } from 'vitest';
 import { screen, render } from '@testing-library/react';
-import { describe } from 'node:test';
 import ManageCard from '../manage-card';
 import { Crown } from 'lucide-react';
 
