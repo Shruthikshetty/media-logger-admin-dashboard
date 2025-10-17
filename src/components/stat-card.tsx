@@ -59,7 +59,12 @@ const StatCard = ({
           {/* Title */}
           <CardTitle className="text-base-white text-lg">{title}</CardTitle>
           {/* Icon */}
-          {Icon && <Icon className={cn('h-7 w-7', iconClassName)} />}
+          {Icon && (
+            <Icon
+              className={cn('h-7 w-7', iconClassName)}
+              aria-label="media-icon"
+            />
+          )}
         </div>
       </CardHeader>
       {/* stats */}
@@ -67,9 +72,15 @@ const StatCard = ({
         <p className="text-2xl font-bold">{value}</p>
         <div className="flex flex-row items-center gap-2">
           {changeDirection === 'up' ? (
-            <TrendingUp className="text-feedback-success h-4 w-4" />
+            <TrendingUp
+              className="text-feedback-success h-4 w-4"
+              aria-label="trending-up"
+            />
           ) : (
-            <TrendingDown className="text-feedback-error h-4 w-4" />
+            <TrendingDown
+              className="text-feedback-error h-4 w-4"
+              aria-label="trending-down"
+            />
           )}
           <p className="text-ui-400 text-sm">
             {changeDirection === 'up' ? '+' : '-'}
