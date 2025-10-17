@@ -13,6 +13,7 @@ import MediaFilters, {
   FiltersState,
 } from '~/components/media-filters';
 import TitleSubtitle from '~/components/title-subtitle';
+import AddTvShowDialog from '~/components/tv-show/add-tv-show-dialog';
 import TvShowTable, { tvShowColumns } from '~/components/tv-show/tv-show-table';
 import { Button } from '~/components/ui/button';
 import {
@@ -144,15 +145,17 @@ const TvShowTab = () => {
             <Upload className="mr-1 size-4" />
             Import json
           </Button>
-          <Button
-            type="button"
-            variant={'outline'}
-            aria-label="add TV show"
-            className="to-accent-purple border-0 bg-gradient-to-r from-purple-700 hover:opacity-80"
-          >
-            <Plus className="mr-1 size-4" />
-            Add TV Show
-          </Button>
+          <AddTvShowDialog>
+            <Button
+              type="button"
+              variant={'outline'}
+              aria-label="add TV show"
+              className="to-accent-purple border-0 bg-gradient-to-r from-purple-700 hover:opacity-80"
+            >
+              <Plus className="mr-1 size-4" />
+              Add TV Show
+            </Button>
+          </AddTvShowDialog>
         </div>
       </div>
       {/* Search bar  and filter*/}
