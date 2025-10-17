@@ -19,7 +19,7 @@ describe('stat card component test cases', () => {
     expect(screen.getByText('1000')).toBeInTheDocument();
     expect(screen.getByText(/90/)).toBeInTheDocument();
   });
-  it('should trending up/down icon', () => {
+  it('should render trending up/down icon', () => {
     // up
     render(
       <StatCard

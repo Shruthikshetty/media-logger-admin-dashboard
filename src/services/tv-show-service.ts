@@ -111,6 +111,12 @@ export type AddTvShow = {
   seasons?: Omit<AddSeason, 'tvShow'>[];
 };
 
+type AddTvShowResponse = {
+  success: boolean;
+  data: TvShowBase;
+  message?: string;
+};
+
 /**
  * Fetches all the tv shows from the api with pagination
  * @template T boolean value to determine whether to fetch full details of the tv show or not
@@ -210,9 +216,9 @@ export const useFetchTvShowById = <T extends boolean = false>(
 export const useAddTvShow = () => {
   // initialize the query client
   const queryClient = useQueryClient();
-  return useMutation({
+  return useMutation<AddTvShowResponse, AxiosError<ApiError>, AddTvShow>({
     mutationKey: [QueryKeys.addTvShow],
-    mutationFn: (tvShow) =>
+    mutationFn: (tvShow: AddTvShow) =>
       apiClient.post(Endpoints.baseTvShow, tvShow).then((res) => res.data),
     onSuccess: () => {
       // invalidate the query after adding a tv show

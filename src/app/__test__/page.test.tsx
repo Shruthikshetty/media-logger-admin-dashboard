@@ -1,7 +1,6 @@
-import { expect, it , vi } from 'vitest';
+import { expect, it, vi, describe } from 'vitest';
 import { screen, render } from '@testing-library/react';
 import Home from '../page';
-import { describe } from 'node:test';
 import MockComponent from '~/__mocks__/MockComponent';
 
 //mock analytics data
