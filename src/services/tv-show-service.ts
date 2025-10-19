@@ -223,7 +223,7 @@ export const useAddTvShow = () => {
     onSuccess: () => {
       // invalidate the query after adding a tv show
       queryClient.invalidateQueries({
-        queryKey: [QueryKeys.fetchAllTvShows],
+        queryKey: [QueryKeys.fetchTvShowByFilter],
       });
     },
   });

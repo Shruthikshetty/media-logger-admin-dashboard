@@ -84,7 +84,7 @@ const StatCard = ({
           )}
           <p className="text-ui-400 text-sm">
             {changeDirection === 'up' ? '+' : '-'}
-            {changePercent} from last month
+            {changePercent}% from last month
           </p>
         </div>
       </CardContent>
