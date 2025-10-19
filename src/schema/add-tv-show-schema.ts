@@ -155,3 +155,21 @@ export const addTvShowSchema = z.object({
 
   seasons: addSeasonSchema.array().optional(),
 });
+
+//export type
+export type AddTvShowSchema = z.infer<typeof addTvShowSchema>;
+
+// export default values
+export const addTvShowDefaultValues: Partial<AddTvShowSchema> = {
+  title: '',
+  description: '',
+  totalSeasons: 0,
+  totalEpisodes: 0,
+  isActive: true,
+  cast: [],
+  directors: [],
+  languages: [],
+  genre: [],
+  status: MEDIA_STATUS[0],
+  seasons: [],
+};
