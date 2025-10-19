@@ -1,5 +1,6 @@
-import React from 'react';
-import { useFieldArray, UseFormReturn } from 'react-hook-form';
+'use client';
+import React, { useState } from 'react';
+import { useFieldArray, useFormContext } from 'react-hook-form';
 import { AddTvShowSchema } from '~/schema/add-tv-show-schema';
 import {
   FormControl,
@@ -27,19 +28,20 @@ import { Plus, Trash2 } from 'lucide-react';
 import ListInput from '../list-input';
 import MultiSelect from '../multi-select';
 import { Checkbox } from '../ui/checkbox';
-
-export type AddEditTvShowCommonFieldsProps = {
-  form: UseFormReturn<AddTvShowSchema>;
-};
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '../ui/accordion';
 
 /**
  * this is the common form fields used in add and edit tv show
- * @param param0 form  can take add or edit tv show form
- * @returns
  */
-export const AddEditTvShowCommonFields = ({
-  form,
-}: AddEditTvShowCommonFieldsProps) => {
+export const AddEditTvShowCommonFields = () => {
+  // get the form from the context
+  const form = useFormContext<AddTvShowSchema>();
+
   return (
     <>
       <FormField
@@ -204,6 +206,53 @@ export const AddEditTvShowCommonFields = ({
           )}
         />
       </div>
+      <div className="flex flex-col gap-4 md:flex-row md:items-baseline">
+        <FormField
+          name="totalSeasons"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem className="flex-1">
+              <Label htmlFor="totalSeasons" className="text-base">
+                Total Seasons *
+              </Label>
+              <FormControl>
+                <NumberInput
+                  {...field}
+                  id="totalSeasons"
+                  placeholder="total seasons."
+                />
+              </FormControl>
+              <FormMessage />
+              <FormDescription className="text-ui-400 text-sm">
+                Enter the total number of seasons
+              </FormDescription>
+            </FormItem>
+          )}
+        />
+        <FormField
+          name="totalEpisodes"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem className="flex-1">
+              <Label htmlFor="totalEpisodes" className="text-base">
+                Total Episodes *
+              </Label>
+              <FormControl>
+                <NumberInput
+                  {...field}
+                  id="totalEpisodes"
+                  placeholder="total eps."
+                />
+              </FormControl>
+              <FormMessage />
+              <FormDescription className="text-ui-400 text-sm">
+                Enter the total number of Episodes in all seasons
+              </FormDescription>
+            </FormItem>
+          )}
+        />
+      </div>
+
       <FormField
         name="posterUrl"
         control={form.control}
@@ -296,103 +345,143 @@ export const AddEditTvShowCommonFields = ({
             </FormItem>
           )}
         />
-        <div className="flex flex-col gap-4 md:flex-row md:items-baseline">
-          <FormField
-            name="languages"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem className="flex-1">
-                <Label className="text-base">Languages</Label>
-                <FormControl>
-                  <MultiSelect
-                    {...field}
-                    options={LANGUAGES}
-                    placeHolder="Select required languages"
-                    dropDownLabel="Select languages"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            name="genre"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem className="flex-1">
-                <Label className="text-base">Genres</Label>
-                <FormControl>
-                  <MultiSelect
-                    {...field}
-                    options={GENRE_MOVIE_TV}
-                    placeHolder="Select required genres"
-                    dropDownLabel="Select genres"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            name="tags"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem className="flex-1">
-                <Label className="text-base">Tags</Label>
-                <FormControl>
-                  <MultiSelect
-                    {...field}
-                    options={TAGS}
-                    placeHolder="Select required tags"
-                    dropDownLabel="Select tags"
-                    search
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          {/* Checkbox for is active */}
-          <FormField
-            name="isActive"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem className="flex-1">
-                <Label className="text-base">Is Active</Label>
-                <FormControl>
-                  <p className="text-ui-400 flex flex-row items-center gap-2 text-sm">
-                    <Checkbox
-                      className="data-[state=checked]:bg-brand-500 data-[state=checked]:border-brand-500 data-[state=checked]:text-base-black"
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                    <span>
-                      This Tv show is Active and will be displayed on the
-                      website
-                    </span>
-                  </p>
-                </FormControl>
-              </FormItem>
-            )}
-          />
-        </div>
       </div>
+      <div className="flex flex-col gap-4 md:flex-row md:items-baseline">
+        <FormField
+          name="languages"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem className="flex-1">
+              <Label className="text-base">Languages</Label>
+              <FormControl>
+                <MultiSelect
+                  {...field}
+                  options={LANGUAGES}
+                  placeHolder="Select required languages"
+                  dropDownLabel="Select languages"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          name="genre"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem className="flex-1">
+              <Label className="text-base">Genres</Label>
+              <FormControl>
+                <MultiSelect
+                  {...field}
+                  options={GENRE_MOVIE_TV}
+                  placeHolder="Select required genres"
+                  dropDownLabel="Select genres"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </div>
+      <FormField
+        name="tags"
+        control={form.control}
+        render={({ field }) => (
+          <FormItem className="flex-1">
+            <Label className="text-base">Tags</Label>
+            <FormControl>
+              <MultiSelect
+                {...field}
+                options={TAGS}
+                placeHolder="Select required tags"
+                dropDownLabel="Select tags"
+                search
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <div className="flex flex-col gap-4 md:flex-row md:items-baseline">
+        <FormField
+          name="tmdbId"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <Label htmlFor="tmdbId" className="text-base">
+                TMDB ID
+              </Label>
+              <FormControl>
+                <Input
+                  {...field}
+                  type="text"
+                  id="tmdbId"
+                  placeholder="tmdbId"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          name="imdbId"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <Label htmlFor="imdbId" className="text-base">
+                IMDB ID
+              </Label>
+              <FormControl>
+                <Input
+                  {...field}
+                  type="text"
+                  id="imdbId"
+                  placeholder="imdbId"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </div>
+      {/* Checkbox for is active */}
+      <FormField
+        name="isActive"
+        control={form.control}
+        render={({ field }) => (
+          <FormItem className="flex-1">
+            <Label className="text-base">Is Active</Label>
+            <FormControl>
+              <p className="text-ui-400 flex flex-row items-center gap-2 text-sm">
+                <Checkbox
+                  className="data-[state=checked]:bg-brand-500 data-[state=checked]:border-brand-500 data-[state=checked]:text-base-black"
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+                <span>
+                  This Tv show is Active and will be displayed on the website
+                </span>
+              </p>
+            </FormControl>
+          </FormItem>
+        )}
+      />
     </>
   );
 };
 
-export const AddTvSeasonArrayFields = ({
-  form,
-}: {
-  form: UseFormReturn<AddTvShowSchema>;
-}) => {
+// array of season fields used in add tv show form
+export const AddTvSeasonArrayFields = () => {
+  // get the form from the context
+  const form = useFormContext<AddTvShowSchema>();
+  //State to control which accordion items are open
+  const [openItems, setOpenItems] = useState<string[]>([]);
   // create season array fields
   const { fields, append, remove } = useFieldArray({
     control: form.control,
     name: 'seasons',
   });
-
-  //create an array of episodes
 
   // handle add season
   const handleAddSeason = () => {
@@ -405,228 +494,258 @@ export const AddTvSeasonArrayFields = ({
       status: SEASON_STATUS[2],
       description: '',
     });
+    // set the added season as open
+    setOpenItems([...openItems, `season-${fields.length}`]);
   };
 
   return (
-    <div>
-      {fields.map((field, index) => (
-        <div key={field.id} className="flex flex-col gap-4">
-          <div className="flex flex-row items-center justify-between">
-            <p className="text-xl font-semibold">Season {field.seasonNumber}</p>
-            <Button variant={'red'} onClick={() => remove(index)} type="button">
-              <Trash2 className="h-4 w-4" />
-            </Button>
-          </div>
-          <FormField
-            name={`seasons.${index}.title`}
-            control={form.control}
-            render={({ field }) => (
-              <FormItem>
-                <Label htmlFor={`seasons.${index}.title`} className="text-base">
-                  Title *
-                </Label>
-                <FormControl>
-                  <Input
-                    {...field}
-                    type="text"
-                    id={`seasons.${index}.title`}
-                    placeholder="Enter season title"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            name={`seasons.${index}.description`}
-            control={form.control}
-            render={({ field }) => (
-              <FormItem>
-                <Label
-                  htmlFor={`seasons.${index}.description`}
-                  className="text-base"
+    <div className="flex flex-col gap-4">
+      <Accordion type="multiple" value={openItems} onValueChange={setOpenItems}>
+        {fields.map((field, index) => (
+          <AccordionItem key={field.id} value={`season-${index}`}>
+            <div className="flex flex-row items-center justify-between">
+              <AccordionTrigger className="items-center hover:no-underline">
+                <div
+                  key={field.id}
+                  className="flex grow flex-row justify-between"
                 >
-                  Description
-                </Label>
-                <FormControl>
-                  <Textarea
-                    {...field}
-                    id={`seasons.${index}.description`}
-                    placeholder="Enter season description"
+                  <p className="text-xl font-semibold">
+                    Season {field.seasonNumber}
+                  </p>
+                </div>
+              </AccordionTrigger>
+              <Button
+                variant={'red'}
+                onClick={() => {
+                  remove(index);
+                }}
+                type="button"
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            </div>
+            <AccordionContent>
+              <div className="flex flex-col gap-4">
+                <FormField
+                  name={`seasons.${index}.title`}
+                  control={form.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <Label
+                        htmlFor={`seasons.${index}.title`}
+                        className="text-base"
+                      >
+                        Title *
+                      </Label>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          type="text"
+                          id={`seasons.${index}.title`}
+                          placeholder="Enter season title"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  name={`seasons.${index}.description`}
+                  control={form.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <Label
+                        htmlFor={`seasons.${index}.description`}
+                        className="text-base"
+                      >
+                        Description
+                      </Label>
+                      <FormControl>
+                        <Textarea
+                          {...field}
+                          id={`seasons.${index}.description`}
+                          placeholder="Enter season description"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  name={`seasons.${index}.averageRating`}
+                  control={form.control}
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <Label
+                        htmlFor={`seasons.${index}.averageRating`}
+                        className="text-base"
+                      >
+                        Average Rating
+                      </Label>
+                      <FormControl>
+                        <NumberInput
+                          {...field}
+                          id={`seasons.${index}.averageRating`}
+                          placeholder="Rating (1-10)"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                      <FormDescription className="text-ui-400 text-sm">
+                        Rating must be between 1 and 10 (0 is same as no rating)
+                      </FormDescription>
+                    </FormItem>
+                  )}
+                />
+                <div className="flex flex-col gap-4 md:flex-row md:items-baseline">
+                  <FormField
+                    name={`seasons.${index}.seasonNumber`}
+                    control={form.control}
+                    render={({ field }) => (
+                      <FormItem className="flex-1">
+                        <Label
+                          htmlFor={`seasons.${index}.seasonNumber`}
+                          className="text-base"
+                        >
+                          Season Number *
+                        </Label>
+                        <FormControl>
+                          <NumberInput
+                            {...field}
+                            id={`seasons.${index}.seasonNumber`}
+                            placeholder="season #"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                        <FormDescription className="text-ui-400 text-sm">
+                          enter the season number it should be unique
+                        </FormDescription>
+                      </FormItem>
+                    )}
                   />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            name={`seasons.${index}.averageRating`}
-            control={form.control}
-            render={({ field }) => (
-              <FormItem className="flex-1">
-                <Label
-                  htmlFor={`seasons.${index}.averageRating`}
-                  className="text-base"
-                >
-                  Average Rating
-                </Label>
-                <FormControl>
-                  <NumberInput
-                    {...field}
-                    id={`seasons.${index}.averageRating`}
-                    placeholder="Rating (1-10)"
+                  <FormField
+                    name={`seasons.${index}.noOfEpisodes`}
+                    control={form.control}
+                    render={({ field }) => (
+                      <FormItem className="flex-1">
+                        <Label
+                          htmlFor={`seasons.${index}.noOfEpisodes`}
+                          className="text-base"
+                        >
+                          Number of Episodes *
+                        </Label>
+                        <FormControl>
+                          <NumberInput
+                            {...field}
+                            id={`seasons.${index}.noOfEpisodes`}
+                            placeholder="no of episodes"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
                   />
-                </FormControl>
-                <FormMessage />
-                <FormDescription className="text-ui-400 text-sm">
-                  Rating must be between 1 and 10 (0 is same as no rating)
-                </FormDescription>
-              </FormItem>
-            )}
-          />
-          <div className="flex flex-col gap-4 md:flex-row md:items-baseline">
-            <FormField
-              name={`seasons.${index}.seasonNumber`}
-              control={form.control}
-              render={({ field }) => (
-                <FormItem className="flex-1">
-                  <Label
-                    htmlFor={`seasons.${index}.seasonNumber`}
-                    className="text-base"
-                  >
-                    Season Number *
-                  </Label>
-                  <FormControl>
-                    <NumberInput
-                      {...field}
-                      id={`seasons.${index}.seasonNumber`}
-                      placeholder="season #"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                  <FormDescription className="text-ui-400 text-sm">
-                    enter the season number it should be unique
-                  </FormDescription>
-                </FormItem>
-              )}
-            />
-            <FormField
-              name={`seasons.${index}.noOfEpisodes`}
-              control={form.control}
-              render={({ field }) => (
-                <FormItem className="flex-1">
-                  <Label
-                    htmlFor={`seasons.${index}.noOfEpisodes`}
-                    className="text-base"
-                  >
-                    Number of Episodes *
-                  </Label>
-                  <FormControl>
-                    <NumberInput
-                      {...field}
-                      id={`seasons.${index}.noOfEpisodes`}
-                      placeholder="no of episodes"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="flex flex-col gap-4 md:flex-row md:items-baseline">
-            <FormField
-              name={`seasons.${index}.releaseDate`}
-              control={form.control}
-              render={({ field }) => (
-                <FormItem className="flex-1">
-                  <p className="text-base font-semibold">Release date</p>
-                  <FormControl>
-                    <CalenderInput {...field} />
-                  </FormControl>
-                  <FormMessage />
-                  <FormDescription className="text-ui-400 text-sm">
-                    select the release date of the season
-                  </FormDescription>
-                </FormItem>
-              )}
-            />
-            <FormField
-              name={`seasons.${index}.status`}
-              control={form.control}
-              render={({ field }) => (
-                <FormItem className="flex-1">
-                  <FormControl>
-                    <CustomSelect
-                      {...field}
-                      options={SEASON_STATUS}
-                      dropDownLabel="Status"
-                      label="Season status *"
-                      placeholder="Status"
-                      customOptionLabels={(val) => capitalizeFirstLetter(val)}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <FormField
-            name={`seasons.${index}.youtubeVideoId`}
-            control={form.control}
-            render={({ field }) => (
-              <FormItem>
-                <Label
-                  htmlFor={`seasons.${index}.youtubeVideoId`}
-                  className="text-base"
-                >
-                  Youtube Video trailer
-                </Label>
-                <FormControl>
-                  <Input
-                    {...field}
-                    value={field.value ?? ''}
-                    type="text"
-                    id={`seasons.${index}.youtubeVideoId`}
-                    placeholder="HVWftwd23"
+                </div>
+                <div className="flex flex-col gap-4 md:flex-row md:items-baseline">
+                  <FormField
+                    name={`seasons.${index}.releaseDate`}
+                    control={form.control}
+                    render={({ field }) => (
+                      <FormItem className="flex-1">
+                        <p className="text-base font-semibold">Release date</p>
+                        <FormControl>
+                          <CalenderInput {...field} />
+                        </FormControl>
+                        <FormMessage />
+                        <FormDescription className="text-ui-400 text-sm">
+                          select the release date of the season
+                        </FormDescription>
+                      </FormItem>
+                    )}
                   />
-                </FormControl>
-                <FormMessage />
-                <FormDescription className="text-ui-400 text-sm">
-                  Enter the Youtube embed code only{' '}
-                  <b>(Do not provide full url)</b>
-                </FormDescription>
-              </FormItem>
-            )}
-          />
-          <FormField
-            name={`seasons.${index}.posterUrl`}
-            control={form.control}
-            render={({ field }) => (
-              <FormItem>
-                <Label
-                  htmlFor={`seasons.${index}.posterUrl`}
-                  className="text-base"
-                >
-                  Poster Image
-                </Label>
-                <FormControl>
-                  <Input
-                    {...field}
-                    value={field.value ?? ''}
-                    type="text"
-                    id={`seasons.${index}.posterUrl`}
-                    placeholder="https://..."
+                  <FormField
+                    name={`seasons.${index}.status`}
+                    control={form.control}
+                    render={({ field }) => (
+                      <FormItem className="flex-1">
+                        <FormControl>
+                          <CustomSelect
+                            {...field}
+                            options={SEASON_STATUS}
+                            dropDownLabel="Status"
+                            label="Season status *"
+                            placeholder="Status"
+                            customOptionLabels={(val) =>
+                              capitalizeFirstLetter(val)
+                            }
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
                   />
-                </FormControl>
-                <FormMessage />
-                <FormDescription className="text-ui-400 text-sm">
-                  Enter the complete URL of the Season poster
-                </FormDescription>
-              </FormItem>
-            )}
-          />
-        </div>
-      ))}
+                </div>
+                <FormField
+                  name={`seasons.${index}.youtubeVideoId`}
+                  control={form.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <Label
+                        htmlFor={`seasons.${index}.youtubeVideoId`}
+                        className="text-base"
+                      >
+                        Youtube Video trailer
+                      </Label>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          value={field.value ?? ''}
+                          type="text"
+                          id={`seasons.${index}.youtubeVideoId`}
+                          placeholder="HVWftwd23"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                      <FormDescription className="text-ui-400 text-sm">
+                        Enter the Youtube embed code only{' '}
+                        <b>(Do not provide full url)</b>
+                      </FormDescription>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  name={`seasons.${index}.posterUrl`}
+                  control={form.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <Label
+                        htmlFor={`seasons.${index}.posterUrl`}
+                        className="text-base"
+                      >
+                        Poster Image
+                      </Label>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          value={field.value ?? ''}
+                          type="text"
+                          id={`seasons.${index}.posterUrl`}
+                          placeholder="https://..."
+                        />
+                      </FormControl>
+                      <FormMessage />
+                      <FormDescription className="text-ui-400 text-sm">
+                        Enter the complete URL of the Season poster
+                      </FormDescription>
+                    </FormItem>
+                  )}
+                />
+                {/* season episodes */}
+                <AddTvEpisodeArrayFields seasonIndex={index} />
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        ))}
+      </Accordion>
       <Button
         variant={'blue'}
         type="button"
@@ -637,5 +756,237 @@ export const AddTvSeasonArrayFields = ({
         Add Season
       </Button>
     </div>
+  );
+};
+
+// array of episodes fields used in add tv show form
+const AddTvEpisodeArrayFields = ({ seasonIndex }: { seasonIndex: number }) => {
+  // get the form from the context
+  const form = useFormContext<AddTvShowSchema>();
+
+  // create array fields for episodes
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: `seasons.${seasonIndex}.episodes`,
+  });
+
+  // function to add a new episode
+  const handleAddEpisode = () => {
+    append({
+      title: '',
+      description: '',
+      episodeNumber: fields.length
+        ? fields[fields.length - 1].episodeNumber + 1
+        : 1,
+    });
+  };
+
+  // handle remove episode
+  const handleRemoveEpisode = (episodeIndex: number) => {
+    remove(episodeIndex);
+  };
+
+  return (
+    <>
+      <div>
+        <p className="text-base-white text-base font-semibold">Episodes :</p>
+      </div>
+
+      {fields?.map((field, episodeIndex) => (
+        <div
+          key={field.id}
+          className="border-accent-purple flex flex-col gap-4 rounded-md border-1 border-l-3 p-2"
+        >
+          <div className="flex flex-row items-center justify-between gap-2">
+            <p className="text-base-white text-xl font-semibold">
+              Episode #{episodeIndex + 1}
+            </p>
+            <Button
+              variant={'red'}
+              onClick={handleRemoveEpisode.bind(null, episodeIndex)}
+              type="button"
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
+          </div>
+          <FormField
+            name={`seasons.${seasonIndex}.episodes.${episodeIndex}.title`}
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <Label
+                  htmlFor={`seasons.${seasonIndex}.episodes.${episodeIndex}.title`}
+                  className="text-base"
+                >
+                  Title *
+                </Label>
+                <FormControl>
+                  <Input
+                    {...field}
+                    type="text"
+                    id={`seasons.${seasonIndex}.episodes.${episodeIndex}.title`}
+                    placeholder="Enter Episode title"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            name={`seasons.${seasonIndex}.episodes.${episodeIndex}.description`}
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <Label
+                  htmlFor={`seasons.${seasonIndex}.episodes.${episodeIndex}.description`}
+                  className="text-base"
+                >
+                  Description
+                </Label>
+                <FormControl>
+                  <Textarea
+                    {...field}
+                    id={`seasons.${seasonIndex}.episodes.${episodeIndex}.description`}
+                    placeholder="Enter Episode description"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            name={`seasons.${seasonIndex}.episodes.${episodeIndex}.releaseDate`}
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <p className="text-base font-semibold">Release date</p>
+                <FormControl>
+                  <CalenderInput {...field} />
+                </FormControl>
+                <FormMessage />
+                <FormDescription className="text-ui-400 text-sm">
+                  select the release date of the episode
+                </FormDescription>
+              </FormItem>
+            )}
+          />
+          <div className="flex flex-col gap-4 md:flex-row md:items-baseline">
+            <FormField
+              name={`seasons.${seasonIndex}.episodes.${episodeIndex}.episodeNumber`}
+              control={form.control}
+              render={({ field }) => (
+                <FormItem className="flex-1">
+                  <Label
+                    htmlFor={`seasons.${seasonIndex}.episodes.${episodeIndex}.episodeNumber`}
+                    className="text-base"
+                  >
+                    Episode Number *
+                  </Label>
+                  <FormControl>
+                    <NumberInput
+                      {...field}
+                      id={`seasons.${seasonIndex}.episodes.${episodeIndex}.episodeNumber`}
+                      placeholder="Ep #"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                  <FormDescription className="text-ui-400 text-sm">
+                    enter the episode number it should be unique
+                  </FormDescription>
+                </FormItem>
+              )}
+            />
+            <FormField
+              name={`seasons.${seasonIndex}.episodes.${episodeIndex}.runTime`}
+              control={form.control}
+              render={({ field }) => (
+                <FormItem className="flex-1">
+                  <Label
+                    htmlFor={`seasons.${seasonIndex}.episodes.${episodeIndex}.runTime`}
+                    className="text-base"
+                  >
+                    Runtime
+                  </Label>
+                  <FormControl>
+                    <NumberInput
+                      {...field}
+                      id={`seasons.${seasonIndex}.episodes.${episodeIndex}.runTime`}
+                      placeholder="min"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                  <FormDescription className="text-ui-400 text-sm">
+                    enter the episode runtime in minutes
+                  </FormDescription>
+                </FormItem>
+              )}
+            />
+          </div>
+          <FormField
+            name={`seasons.${seasonIndex}.episodes.${episodeIndex}.averageRating`}
+            control={form.control}
+            render={({ field }) => (
+              <FormItem className="flex-1">
+                <Label
+                  htmlFor={`episodes.${episodeIndex}.averageRating`}
+                  className="text-base"
+                >
+                  Average Rating
+                </Label>
+                <FormControl>
+                  <NumberInput
+                    {...field}
+                    id={`seasons.${seasonIndex}.episodes.${episodeIndex}.averageRating`}
+                    placeholder="Rating (1-10)"
+                  />
+                </FormControl>
+                <FormMessage />
+                <FormDescription className="text-ui-400 text-sm">
+                  Rating must be between 1 and 10 (0 is same as no rating)
+                </FormDescription>
+              </FormItem>
+            )}
+          />
+          <FormField
+            name={`seasons.${seasonIndex}.episodes.${episodeIndex}.stillUrl`}
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <Label
+                  htmlFor={`seasons.${seasonIndex}.episodes.${episodeIndex}.stillUrl`}
+                  className="text-base"
+                >
+                  Episode Image
+                </Label>
+                <FormControl>
+                  <Input
+                    {...field}
+                    value={field.value ?? ''}
+                    type="text"
+                    id={`seasons.${seasonIndex}.episodes.${episodeIndex}.stillUrl`}
+                    placeholder="https://..."
+                  />
+                </FormControl>
+                <FormMessage />
+                <FormDescription className="text-ui-400 text-sm">
+                  Enter the complete URL of the Episode image
+                </FormDescription>
+              </FormItem>
+            )}
+          />
+        </div>
+      ))}
+      <div>
+        <Button
+          variant={'blue'}
+          type="button"
+          className="w-full"
+          onClick={handleAddEpisode}
+        >
+          <Plus className="mr-2 h-4 w-4" />
+          Add Episode
+        </Button>
+      </div>
+    </>
   );
 };
