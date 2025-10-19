@@ -60,8 +60,8 @@ const AddTvShowDialog = ({ children }: { children: React.ReactNode }) => {
         seasons:
           data?.seasons?.map((season) => ({
             ...season,
-            releaseDate: data?.releaseDate
-              ? data.releaseDate.toISOString()
+            releaseDate: season?.releaseDate
+              ? season?.releaseDate.toISOString()
               : undefined,
             episodes:
               season?.episodes?.map((episode) => ({
@@ -74,7 +74,7 @@ const AddTvShowDialog = ({ children }: { children: React.ReactNode }) => {
       },
       {
         onSuccess: (data) => {
-          toast.success(data?.message ?? 'Season added successfully', {
+          toast.success(data?.message ?? 'Tv Show added successfully', {
             className: '!bg-feedback-success',
           });
           //clear form
@@ -108,69 +108,67 @@ const AddTvShowDialog = ({ children }: { children: React.ReactNode }) => {
             </DialogDescription>
           </DialogHeader>
           <Form {...addTvShowForm}>
-            <FormProvider {...addTvShowForm}>
-              <form
-                onSubmit={addTvShowForm.handleSubmit(onSubmit)}
-                className="m-1 flex flex-col gap-4"
-              >
-                <div className="mt-3 flex flex-col gap-3">
-                  {/* form tabs  */}
-                  <Tabs defaultValue="account" className="flex w-full">
-                    <TabsList
-                      className="bg-ui-600 flex w-full justify-center"
-                      defaultChecked
-                    >
-                      <TabsTrigger
-                        value="basic"
-                        className="data-[state=active]:bg-ui-900 text-base-white font-semibold"
-                      >
-                        Show Info
-                      </TabsTrigger>
-                      <TabsTrigger
-                        value="season"
-                        className="data-[state=active]:bg-ui-900 text-base-white font-semibold"
-                      >
-                        Seasons
-                      </TabsTrigger>
-                    </TabsList>
-                    <TabsContent
+            <form
+              onSubmit={addTvShowForm.handleSubmit(onSubmit)}
+              className="m-1 flex flex-col gap-4"
+            >
+              <div className="mt-3 flex flex-col gap-3">
+                {/* form tabs  */}
+                <Tabs defaultValue="basic" className="flex w-full">
+                  <TabsList
+                    className="bg-ui-600 flex w-full justify-center"
+                    defaultChecked
+                  >
+                    <TabsTrigger
                       value="basic"
-                      className="mt-1 flex flex-col gap-4"
+                      className="data-[state=active]:bg-ui-900 text-base-white font-semibold"
                     >
-                      <AddEditTvShowCommonFields />
-                    </TabsContent>
-                    <TabsContent value="season">
-                      <AddTvSeasonArrayFields />
-                    </TabsContent>
-                  </Tabs>
-                  {/* Buttons */}
-                  <div className="flex flex-row justify-end gap-2 md:items-center md:justify-center">
-                    <CustomAlert
-                      onConfirm={() => {
-                        addTvShowForm.reset();
-                      }}
-                      title={'Are you sure?'}
-                      description="This will reset the form. All entered data will be lost."
+                      Show Info
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="season"
+                      className="data-[state=active]:bg-ui-900 text-base-white font-semibold"
                     >
-                      <Button
-                        variant={'red'}
-                        type="button"
-                        className="md:min-w-50"
-                      >
-                        Reset
-                      </Button>
-                    </CustomAlert>
+                      Seasons
+                    </TabsTrigger>
+                  </TabsList>
+                  <TabsContent
+                    value="basic"
+                    className="mt-1 flex flex-col gap-4"
+                  >
+                    <AddEditTvShowCommonFields />
+                  </TabsContent>
+                  <TabsContent value="season">
+                    <AddTvSeasonArrayFields />
+                  </TabsContent>
+                </Tabs>
+                {/* Buttons */}
+                <div className="flex flex-row justify-end gap-2 md:items-center md:justify-center">
+                  <CustomAlert
+                    onConfirm={() => {
+                      addTvShowForm.reset();
+                    }}
+                    title={'Are you sure?'}
+                    description="This will reset the form. All entered data will be lost."
+                  >
                     <Button
-                      type="submit"
-                      variant={'blue'}
+                      variant={'red'}
+                      type="button"
                       className="md:min-w-50"
                     >
-                      Add Tv show <Plus strokeWidth={3} />
+                      Reset
                     </Button>
-                  </div>
+                  </CustomAlert>
+                  <Button
+                    type="submit"
+                    variant={'blue'}
+                    className="md:min-w-50"
+                  >
+                    Add Tv show <Plus strokeWidth={3} />
+                  </Button>
                 </div>
-              </form>
-            </FormProvider>
+              </div>
+            </form>
           </Form>
         </ScrollArea>
       </DialogContent>

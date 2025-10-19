@@ -928,7 +928,7 @@ const AddTvEpisodeArrayFields = ({ seasonIndex }: { seasonIndex: number }) => {
             render={({ field }) => (
               <FormItem className="flex-1">
                 <Label
-                  htmlFor={`episodes.${episodeIndex}.averageRating`}
+                  htmlFor={`seasons.${seasonIndex}.episodes.${episodeIndex}.averageRating`}
                   className="text-base"
                 >
                   Average Rating
