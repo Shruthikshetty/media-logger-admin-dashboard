@@ -25,6 +25,9 @@ import {
   AddEditTvShowCommonFields,
   AddTvSeasonArrayFields,
 } from './add-edit-tv-show-fields';
+import { useAddTvShow } from '~/services/tv-show-service';
+import { useSpinnerStore } from '~/state-management/spinner-store';
+import { toast } from 'sonner';
 
 /**
  * This return a dialog to add tv show
@@ -34,6 +37,10 @@ import {
 const AddTvShowDialog = ({ children }: { children: React.ReactNode }) => {
   //open and close state for dialog
   const [open, setOpen] = useState(false);
+  //initialize custom hook to add a tv show
+  const { mutate } = useAddTvShow();
+  // import spinner state from the store
+  const setSpinner = useSpinnerStore((state) => state.setShowSpinner);
   // create add tv show form
   const addTvShowForm = useForm<AddTvShowSchema>({
     mode: 'onChange',
@@ -43,7 +50,50 @@ const AddTvShowDialog = ({ children }: { children: React.ReactNode }) => {
 
   // handle submit form
   const onSubmit = (data: AddTvShowSchema) => {
-    console.log(data);
+    // set loading true
+    setSpinner(true);
+    mutate(
+      {
+        ...data,
+        releaseDate: data.releaseDate.toISOString(),
+        isActive: !!data.isActive,
+        seasons:
+          data?.seasons?.map((season) => ({
+            ...season,
+            releaseDate: data?.releaseDate
+              ? data.releaseDate.toISOString()
+              : undefined,
+            episodes:
+              season?.episodes?.map((episode) => ({
+                ...episode,
+                releaseDate: episode?.releaseDate
+                  ? episode.releaseDate.toISOString()
+                  : undefined,
+              })) ?? [],
+          })) ?? [],
+      },
+      {
+        onSuccess: (data) => {
+          toast.success(data?.message ?? 'Season added successfully', {
+            className: '!bg-feedback-success',
+          });
+          //clear form
+          addTvShowForm.reset(addTvShowDefaultValues);
+          setOpen(false);
+        },
+        onError: (data) => {
+          toast.error(data?.response?.data.message ?? 'Something went wrong', {
+            classNames: {
+              toast: '!bg-feedback-error',
+            },
+          });
+        },
+        onSettled: () => {
+          // set loading false
+          setSpinner(false);
+        },
+      },
+    );
   };
 
   return (

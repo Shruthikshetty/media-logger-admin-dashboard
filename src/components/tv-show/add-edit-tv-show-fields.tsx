@@ -408,7 +408,7 @@ export const AddEditTvShowCommonFields = () => {
           name="tmdbId"
           control={form.control}
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="flex-1">
               <Label htmlFor="tmdbId" className="text-base">
                 TMDB ID
               </Label>
@@ -428,7 +428,7 @@ export const AddEditTvShowCommonFields = () => {
           name="imdbId"
           control={form.control}
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="flex-1">
               <Label htmlFor="imdbId" className="text-base">
                 IMDB ID
               </Label>
