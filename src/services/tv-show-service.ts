@@ -111,6 +111,20 @@ export type AddTvShow = {
   seasons?: Omit<AddSeason, 'tvShow'>[];
 };
 
+type TvShowDeleteCount = {
+  tvShow: number;
+  seasons: number;
+  episodes: number;
+};
+
+export type DeleteTvShowResponse = {
+  success: boolean;
+  data: {
+    deletedCount: TvShowDeleteCount;
+  };
+  message?: string;
+};
+
 type AddTvShowResponse = {
   success: boolean;
   data: TvShowBase;
@@ -222,6 +236,25 @@ export const useAddTvShow = () => {
       apiClient.post(Endpoints.baseTvShow, tvShow).then((res) => res.data),
     onSuccess: () => {
       // invalidate the query after adding a tv show
+      queryClient.invalidateQueries({
+        queryKey: [QueryKeys.fetchTvShowByFilter],
+      });
+    },
+  });
+};
+
+//custom hook to delete a tv show by id
+export const useDeleteTvShowById = () => {
+  // initialize the query client
+  const queryClient = useQueryClient();
+  return useMutation<DeleteTvShowResponse, AxiosError<ApiError>, string>({
+    mutationKey: [QueryKeys.deleteTvShow],
+    mutationFn: (tvShowId: string) =>
+      apiClient
+        .delete(Endpoints.baseTvShow + `/${tvShowId}`)
+        .then((res) => res.data),
+    onSuccess: () => {
+      // invalidate the query after deleting a tv show
       queryClient.invalidateQueries({
         queryKey: [QueryKeys.fetchTvShowByFilter],
       });

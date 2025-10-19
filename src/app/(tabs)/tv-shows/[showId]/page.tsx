@@ -11,8 +11,9 @@ import {
   Users,
 } from 'lucide-react';
 import moment from 'moment';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import React, { useCallback } from 'react';
+import { toast } from 'sonner';
 import BackButton from '~/components/back-button';
 
 import BackdropCard, { InfoItem } from '~/components/backdrop-card';
@@ -33,7 +34,11 @@ import { Skeleton } from '~/components/ui/skeleton';
 import { AppColors } from '~/constants/colors.constants';
 import { capitalizeFirstLetter } from '~/lib/formatting';
 import { cn } from '~/lib/utils';
-import { useFetchTvShowById } from '~/services/tv-show-service';
+import {
+  useDeleteTvShowById,
+  useFetchTvShowById,
+} from '~/services/tv-show-service';
+import { useSpinnerStore } from '~/state-management/spinner-store';
 
 /**
  * This screen displays the details of a TV show.
@@ -43,7 +48,14 @@ import { useFetchTvShowById } from '~/services/tv-show-service';
 const TvShowDetails = () => {
   // get the tv show id from route params
   const showId = useParams().showId as string;
+  // initialize router
+  const router = useRouter();
+  // fetch the tv show data
   const { data, isLoading, refetch } = useFetchTvShowById<true>(showId, true);
+  //initialize the custom hook to delete a tv show by id
+  const { mutateAsync: deleteTvShowMutation } = useDeleteTvShowById();
+  //get the spinner state from the store
+  const setSpinner = useSpinnerStore((state) => state.setShowSpinner);
   // returns the styled title with icon
   const renderTvShowInfoTitle = useCallback(
     (title: string, Icon?: LucideIcon) => (
@@ -54,6 +66,33 @@ const TvShowDetails = () => {
     ),
     [],
   );
+
+  // handle delete tv show
+  const deleteTvShow = () => {
+    //set loading
+    setSpinner(true);
+    // make api call
+    deleteTvShowMutation(showId, {
+      onSuccess: (data) => {
+        //send toast
+        toast.success(data?.message ?? 'Tv Show deleted successfully', {
+          className: '!bg-feedback-success',
+        });
+        // navigate back
+        router.back();
+      },
+      onError: (error) => {
+        toast.error(error?.response?.data.message ?? 'Something went wrong', {
+          className: '!bg-feedback-error',
+        });
+      },
+      onSettled: () => {
+        // stop loading
+        setSpinner(false);
+      },
+    });
+  };
+
   return (
     <div className="flex h-full w-full flex-col gap-5 p-5">
       <BackButton className="min-w-40" />
@@ -144,6 +183,7 @@ const TvShowDetails = () => {
                       type="button"
                       aria-label="Delete Tv show"
                       disabled={isLoading}
+                      onClick={deleteTvShow}
                     >
                       <Trash2 />
                       Delete Tv Show
