@@ -117,7 +117,6 @@ const AddTvShowDialog = ({ children }: { children: React.ReactNode }) => {
                 <Tabs defaultValue="basic" className="flex w-full">
                   <TabsList
                     className="bg-ui-600 flex w-full justify-center"
-                    defaultChecked
                   >
                     <TabsTrigger
                       value="basic"
