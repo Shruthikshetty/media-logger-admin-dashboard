@@ -13,7 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import CustomAlert from '../custom-alert';
 import { Button } from '../ui/button';
 import { Plus } from 'lucide-react';
-import { FormProvider, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   addTvShowDefaultValues,
@@ -115,9 +115,7 @@ const AddTvShowDialog = ({ children }: { children: React.ReactNode }) => {
               <div className="mt-3 flex flex-col gap-3">
                 {/* form tabs  */}
                 <Tabs defaultValue="basic" className="flex w-full">
-                  <TabsList
-                    className="bg-ui-600 flex w-full justify-center"
-                  >
+                  <TabsList className="bg-ui-600 flex w-full justify-center">
                     <TabsTrigger
                       value="basic"
                       className="data-[state=active]:bg-ui-900 text-base-white font-semibold"
