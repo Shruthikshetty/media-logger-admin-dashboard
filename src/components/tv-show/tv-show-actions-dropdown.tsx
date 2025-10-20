@@ -1,5 +1,5 @@
 'use client';
-import { TvShowBase } from '~/services/tv-show-service';
+import { TvShowBase, useDeleteTvShowById } from '~/services/tv-show-service';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,6 +11,8 @@ import {
 import { Ellipsis, Eye, SquarePen, Trash2 } from 'lucide-react';
 import { cn } from '~/lib/utils';
 import { useRouter } from 'next/navigation';
+import { useSpinnerStore } from '~/state-management/spinner-store';
+import { toast } from 'sonner';
 
 /**
  * This component is used to display the actions for a Tv show
@@ -20,6 +22,10 @@ import { useRouter } from 'next/navigation';
 const TvShowActionDropdown = ({ data }: { data: TvShowBase }) => {
   // initialize router
   const router = useRouter();
+  //initialize the custom hook to delete a tv show by id
+  const { mutateAsync: deleteTvShowMutation } = useDeleteTvShowById();
+  //get the spinner state from the store
+  const setSpinner = useSpinnerStore((state) => state.setShowSpinner);
   // tv show dropdown action items
   const tvShowActionItems = [
     {
@@ -44,10 +50,33 @@ const TvShowActionDropdown = ({ data }: { data: TvShowBase }) => {
       icon: Trash2,
       color: 'text-feedback-error',
       onClick: () => {
-        // @TODO
+        //set loading
+        setSpinner(true);
+        // make api call
+        deleteTvShowMutation(data._id, {
+          onSuccess: (data) => {
+            //send toast
+            toast.success(data?.message ?? 'Tv Show deleted successfully', {
+              className: '!bg-feedback-success',
+            });
+          },
+          onError: (error) => {
+            toast.error(
+              error?.response?.data.message ?? 'Something went wrong',
+              {
+                className: '!bg-feedback-error',
+              },
+            );
+          },
+          onSettled: () => {
+            // stop loading
+            setSpinner(false);
+          },
+        });
       },
     },
   ];
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
