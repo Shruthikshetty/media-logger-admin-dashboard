@@ -62,6 +62,8 @@ const EditTvShowDialog = ({
             posterUrl: existingData?.posterUrl,
             backdropUrl: existingData?.backdropUrl,
             isActive: existingData.isActive,
+            ageRating: existingData?.ageRating,
+            youtubeVideoId: existingData?.youtubeVideoId,
             status: existingData.status,
             tags: existingData?.tags ?? [],
             totalSeasons: existingData.totalSeasons,
@@ -105,8 +107,6 @@ const EditTvShowDialog = ({
           toast.success(data?.message ?? 'Tv Show updated successfully', {
             className: '!bg-feedback-success',
           });
-          //reset form
-          editTvShowForm.reset(updateTvShowDefaultValues);
           // run onSuccess callback
           onSuccess?.();
           // close the dialog
