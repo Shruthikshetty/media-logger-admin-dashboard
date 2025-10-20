@@ -42,4 +42,6 @@ export const QueryKeys = {
   deleteSeason: 'delete-season',
   updateSeason: 'update-season',
   addTvShow: 'add-tv-show',
+  deleteTvShow: 'delete-tv-show',
+  editTvShow: 'edit-tv-show',
 };

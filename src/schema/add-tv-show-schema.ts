@@ -133,7 +133,8 @@ export const addTvShowSchema = z.object({
     .number({
       error: 'Age rating must be number',
     })
-    .min(0, 'Age can not be negative'),
+    .min(0, 'Age can not be negative')
+    .optional(),
 
   youtubeVideoId: z
     .string({

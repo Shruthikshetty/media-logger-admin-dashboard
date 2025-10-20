@@ -111,9 +111,38 @@ export type AddTvShow = {
   seasons?: Omit<AddSeason, 'tvShow'>[];
 };
 
+type TvShowDeleteCount = {
+  tvShow: number;
+  seasons: number;
+  episodes: number;
+};
+
+export type DeleteTvShowResponse = {
+  success: boolean;
+  data: {
+    deletedCount: TvShowDeleteCount;
+  };
+  message?: string;
+};
+
 type AddTvShowResponse = {
   success: boolean;
   data: TvShowBase;
+  message?: string;
+};
+
+export type UpdateTvShow = Partial<Omit<AddTvShow, 'seasons'>>;
+
+type UpdateTvShowRequest = {
+  tvShowId: string;
+  newTvShow: UpdateTvShow;
+};
+
+type UpdateTvShowResponse = {
+  success: boolean;
+  data: {
+    tvShow: TvShowBase;
+  };
   message?: string;
 };
 
@@ -222,6 +251,48 @@ export const useAddTvShow = () => {
       apiClient.post(Endpoints.baseTvShow, tvShow).then((res) => res.data),
     onSuccess: () => {
       // invalidate the query after adding a tv show
+      queryClient.invalidateQueries({
+        queryKey: [QueryKeys.fetchTvShowByFilter],
+      });
+    },
+  });
+};
+
+//custom hook to delete a tv show by id
+export const useDeleteTvShowById = () => {
+  // initialize the query client
+  const queryClient = useQueryClient();
+  return useMutation<DeleteTvShowResponse, AxiosError<ApiError>, string>({
+    mutationKey: [QueryKeys.deleteTvShow],
+    mutationFn: (tvShowId: string) =>
+      apiClient
+        .delete(Endpoints.baseTvShow + `/${tvShowId}`)
+        .then((res) => res.data),
+    onSuccess: () => {
+      // invalidate the query after deleting a tv show
+      queryClient.invalidateQueries({
+        queryKey: [QueryKeys.fetchTvShowByFilter],
+      });
+    },
+  });
+};
+
+//custom hook to edit a tv show
+export const useUpdateTvShow = () => {
+  // initialize the query client
+  const queryClient = useQueryClient();
+  return useMutation<
+    UpdateTvShowResponse,
+    AxiosError<ApiError>,
+    UpdateTvShowRequest
+  >({
+    mutationKey: [QueryKeys.editTvShow],
+    mutationFn: ({ newTvShow, tvShowId }: UpdateTvShowRequest) =>
+      apiClient
+        .patch(Endpoints.baseTvShow + `/${tvShowId}`, newTvShow)
+        .then((res) => res.data),
+    onSuccess: () => {
+      // invalidate the query after deleting a tv show
       queryClient.invalidateQueries({
         queryKey: [QueryKeys.fetchTvShowByFilter],
       });

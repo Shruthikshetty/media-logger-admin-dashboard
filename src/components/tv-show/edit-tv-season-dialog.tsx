@@ -54,9 +54,9 @@ const EditSeasonDialog = ({
               : undefined,
             status: existingData.status,
             noOfEpisodes: existingData.noOfEpisodes,
-            posterUrl: existingData.posterUrl,
-            youtubeVideoId: existingData.youtubeVideoId,
-            averageRating: existingData.averageRating,
+            posterUrl: existingData?.posterUrl,
+            youtubeVideoId: existingData?.youtubeVideoId,
+            averageRating: existingData?.averageRating,
           }
         : undefined,
     [existingData],
