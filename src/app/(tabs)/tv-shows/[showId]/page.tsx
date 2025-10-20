@@ -167,7 +167,10 @@ const TvShowDetails = () => {
                   </LoadingWrapper>
                   {/* Edit  and Delete button */}
                   <div className="flex flex-row gap-2 sm:flex-col sm:gap-3">
-                    <EditTvShowDialog existingData={data?.data}>
+                    <EditTvShowDialog
+                      existingData={data?.data}
+                      onSuccess={refetch}
+                    >
                       <Button
                         variant={'blue'}
                         disabled={isLoading}

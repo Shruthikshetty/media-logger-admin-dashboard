@@ -7,7 +7,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '../ui/dialog';
-import { TvShowBase } from '~/services/tv-show-service';
+import { TvShowBase, useUpdateTvShow } from '~/services/tv-show-service';
 import { ScrollArea } from '../ui/scroll-area';
 import { useForm } from 'react-hook-form';
 import {
@@ -21,6 +21,8 @@ import { AddEditTvShowCommonFields } from './add-edit-tv-show-fields';
 import CustomAlert from '../custom-alert';
 import { Button } from '../ui/button';
 import { Plus } from 'lucide-react';
+import { useSpinnerStore } from '~/state-management/spinner-store';
+import { toast } from 'sonner';
 
 /**
  * This contains the edit tv show details dialog
@@ -31,12 +33,18 @@ import { Plus } from 'lucide-react';
 const EditTvShowDialog = ({
   children,
   existingData,
+  onSuccess,
 }: {
   children: React.ReactNode;
   existingData?: TvShowBase;
+  onSuccess?: () => void;
 }) => {
   //open and close state for dialog
   const [open, setOpen] = useState(false);
+  // initialize custom hook to update a tv show
+  const { mutate } = useUpdateTvShow();
+  //get spinner state from the store
+  const setSpinner = useSpinnerStore((state) => state.setShowSpinner);
   // modify the existing data to required format
   const modifiedExistingData = useMemo(
     () =>
@@ -79,7 +87,44 @@ const EditTvShowDialog = ({
 
   // handle form submit
   const onSubmit = (data: UpdateTvShowSchemaType) => {
-    console.log(data);
+    if (!existingData) return;
+    //show spinner
+    setSpinner(true);
+    //call custom hook to update a tv show
+    mutate(
+      {
+        newTvShow: {
+          ...data,
+          releaseDate: data.releaseDate.toISOString(),
+        },
+        tvShowId: existingData?._id,
+      },
+      {
+        onSuccess: (data) => {
+          // send a toast message
+          toast.success(data?.message ?? 'Tv Show updated successfully', {
+            className: '!bg-feedback-success',
+          });
+          //reset form
+          editTvShowForm.reset(updateTvShowDefaultValues);
+          // run onSuccess callback
+          onSuccess?.();
+          // close the dialog
+          setOpen(false);
+        },
+        onError: (data) => {
+          toast.error(data?.response?.data.message ?? 'Something went wrong', {
+            classNames: {
+              toast: '!bg-feedback-error',
+            },
+          });
+        },
+        onSettled: () => {
+          // stop loading
+          setSpinner(false);
+        },
+      },
+    );
   };
 
   return (

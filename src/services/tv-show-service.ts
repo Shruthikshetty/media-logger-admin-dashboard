@@ -131,6 +131,21 @@ type AddTvShowResponse = {
   message?: string;
 };
 
+export type UpdateTvShow = Partial<Omit<AddTvShow, 'seasons'>>;
+
+type UpdateTvShowRequest = {
+  tvShowId: string;
+  newTvShow: UpdateTvShow;
+};
+
+type UpdateTvShowResponse = {
+  success: boolean;
+  data: {
+    tvShow: TvShowBase;
+  };
+  message?: string;
+};
+
 /**
  * Fetches all the tv shows from the api with pagination
  * @template T boolean value to determine whether to fetch full details of the tv show or not
@@ -252,6 +267,29 @@ export const useDeleteTvShowById = () => {
     mutationFn: (tvShowId: string) =>
       apiClient
         .delete(Endpoints.baseTvShow + `/${tvShowId}`)
+        .then((res) => res.data),
+    onSuccess: () => {
+      // invalidate the query after deleting a tv show
+      queryClient.invalidateQueries({
+        queryKey: [QueryKeys.fetchTvShowByFilter],
+      });
+    },
+  });
+};
+
+//custom hook to edit a tv show
+export const useUpdateTvShow = () => {
+  // initialize the query client
+  const queryClient = useQueryClient();
+  return useMutation<
+    UpdateTvShowResponse,
+    AxiosError<ApiError>,
+    UpdateTvShowRequest
+  >({
+    mutationKey: [QueryKeys.editTvShow],
+    mutationFn: ({ newTvShow, tvShowId }: UpdateTvShowRequest) =>
+      apiClient
+        .patch(Endpoints.baseTvShow + `/${tvShowId}`, newTvShow)
         .then((res) => res.data),
     onSuccess: () => {
       // invalidate the query after deleting a tv show
