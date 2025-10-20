@@ -26,6 +26,7 @@ import {
 import TitleSubtitle from '~/components/title-subtitle';
 import TrailerCard from '~/components/trailer-card';
 import AddSeasonDialog from '~/components/tv-show/add-tv-season-dialog';
+import EditTvShowDialog from '~/components/tv-show/edit-tv-show-dialog';
 import SeasonAccordion from '~/components/tv-show/season-accordion';
 import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
@@ -166,16 +167,18 @@ const TvShowDetails = () => {
                   </LoadingWrapper>
                   {/* Edit  and Delete button */}
                   <div className="flex flex-row gap-2 sm:flex-col sm:gap-3">
-                    <Button
-                      variant={'blue'}
-                      disabled={isLoading}
-                      className="flex-1 sm:flex-none"
-                      type="button"
-                      aria-label="Edit Tv show"
-                    >
-                      <PenSquare />
-                      Edit Tv Show
-                    </Button>
+                    <EditTvShowDialog existingData={data?.data}>
+                      <Button
+                        variant={'blue'}
+                        disabled={isLoading}
+                        className="flex-1 sm:flex-none"
+                        type="button"
+                        aria-label="Edit Tv show"
+                      >
+                        <PenSquare />
+                        Edit Tv Show
+                      </Button>
+                    </EditTvShowDialog>
 
                     <Button
                       variant={'red'}
