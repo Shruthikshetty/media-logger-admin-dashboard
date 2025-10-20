@@ -13,6 +13,8 @@ import { cn } from '~/lib/utils';
 import { useRouter } from 'next/navigation';
 import { useSpinnerStore } from '~/state-management/spinner-store';
 import { toast } from 'sonner';
+import EditTvShowDialog from '~/components/tv-show/edit-tv-show-dialog';
+import { useRef } from 'react';
 
 /**
  * This component is used to display the actions for a Tv show
@@ -26,6 +28,8 @@ const TvShowActionDropdown = ({ data }: { data: TvShowBase }) => {
   const { mutateAsync: deleteTvShowMutation } = useDeleteTvShowById();
   //get the spinner state from the store
   const setSpinner = useSpinnerStore((state) => state.setShowSpinner);
+  // edit tv show button ref
+  const editButtonRef = useRef<HTMLButtonElement>(null!);
   // tv show dropdown action items
   const tvShowActionItems = [
     {
@@ -42,7 +46,8 @@ const TvShowActionDropdown = ({ data }: { data: TvShowBase }) => {
       icon: SquarePen,
       color: 'text-base-white',
       onClick: () => {
-        // @TODO
+        //open edit dialog
+        editButtonRef.current?.click();
       },
     },
     {
@@ -78,39 +83,44 @@ const TvShowActionDropdown = ({ data }: { data: TvShowBase }) => {
   ];
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger
-        aria-label="Open TV show actions"
-        type="button"
-        className="hover:bg-ui-600 rounded-md p-1"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <Ellipsis />
-      </DropdownMenuTrigger>
-      <DropdownMenuPortal>
-        <DropdownMenuContent
-          className="bg-base-black border-ui-600 shadow-ui-600 text-base-white z-60 mx-5 my-2 rounded-lg border p-1 pb-1 shadow-[0px_0px_15px]"
-          align="center"
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger
+          aria-label="Open TV show actions"
+          type="button"
+          className="hover:bg-ui-600 rounded-md p-1"
+          onClick={(e) => e.stopPropagation()}
         >
-          <DropdownMenuGroup>
-            {tvShowActionItems.map((item) => (
-              <DropdownMenuItem
-                disabled={!data._id}
-                key={item.title}
-                className={cn(
-                  `hover:bg-ui-800 focus:bg-ui-800 focus:${item.color} text-md flex flex-row gap-2 rounded-md p-2`,
-                  item.color,
-                )}
-                onClick={item.onClick}
-              >
-                <item.icon className={cn('h-5 w-5', item.color)} />
-                {item.title}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuGroup>
-        </DropdownMenuContent>
-      </DropdownMenuPortal>
-    </DropdownMenu>
+          <Ellipsis />
+        </DropdownMenuTrigger>
+        <DropdownMenuPortal>
+          <DropdownMenuContent
+            className="bg-base-black border-ui-600 shadow-ui-600 text-base-white z-60 mx-5 my-2 rounded-lg border p-1 pb-1 shadow-[0px_0px_15px]"
+            align="center"
+          >
+            <DropdownMenuGroup>
+              {tvShowActionItems.map((item) => (
+                <DropdownMenuItem
+                  disabled={!data._id}
+                  key={item.title}
+                  className={cn(
+                    `hover:bg-ui-800 focus:bg-ui-800 focus:${item.color} text-md flex flex-row gap-2 rounded-md p-2`,
+                    item.color,
+                  )}
+                  onClick={item.onClick}
+                >
+                  <item.icon className={cn('h-5 w-5', item.color)} />
+                  {item.title}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuGroup>
+          </DropdownMenuContent>
+        </DropdownMenuPortal>
+      </DropdownMenu>
+      <EditTvShowDialog existingData={data}>
+        <button type="button" hidden ref={editButtonRef} />
+      </EditTvShowDialog>
+    </>
   );
 };
 
