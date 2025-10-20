@@ -25,5 +25,5 @@ export const updateTvShowDefaultValues: Partial<UpdateTvShowSchemaType> = {
   directors: [],
   languages: [],
   genre: [],
-  status: MEDIA_STATUS[0]
+  status: MEDIA_STATUS[0],
 };
