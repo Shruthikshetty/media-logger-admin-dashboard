@@ -14,6 +14,7 @@ import MediaFilters, {
 } from '~/components/media-filters';
 import TitleSubtitle from '~/components/title-subtitle';
 import AddTvShowDialog from '~/components/tv-show/add-tv-show-dialog';
+import ImportTvShowJsonDialog from '~/components/tv-show/import-tv-show-json-dialog';
 import TvShowTable, { tvShowColumns } from '~/components/tv-show/tv-show-table';
 import { Button } from '~/components/ui/button';
 import {
@@ -137,14 +138,16 @@ const TvShowTab = () => {
           subtitle="Manage your TV shows directory"
         />
         <div className="flex flex-col gap-3 md:flex-row">
-          <Button
-            variant={'outline'}
-            type="button"
-            aria-label="import TV shows JSON"
-          >
-            <Upload className="mr-1 size-4" />
-            Import json
-          </Button>
+          <ImportTvShowJsonDialog>
+            <Button
+              variant={'outline'}
+              type="button"
+              aria-label="import TV shows JSON"
+            >
+              <Upload className="mr-1 size-4" />
+              Import json
+            </Button>
+          </ImportTvShowJsonDialog>
           <AddTvShowDialog>
             <Button
               type="button"
