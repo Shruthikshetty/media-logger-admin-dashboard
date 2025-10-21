@@ -44,4 +44,6 @@ export const QueryKeys = {
   addTvShow: 'add-tv-show',
   deleteTvShow: 'delete-tv-show',
   editTvShow: 'edit-tv-show',
+  bulkAddTvShow: 'bulk-add-tv-show',
+  bulkDeleteTvShow: 'bulk-delete-tv-show'
 };

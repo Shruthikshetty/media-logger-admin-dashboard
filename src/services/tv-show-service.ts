@@ -146,6 +146,12 @@ type UpdateTvShowResponse = {
   message?: string;
 };
 
+type BulkAddTvShowResponse = {
+  success: boolean;
+  message?: string;
+  data: TvShowFull[];
+};
+
 /**
  * Fetches all the tv shows from the api with pagination
  * @template T boolean value to determine whether to fetch full details of the tv show or not
@@ -290,6 +296,56 @@ export const useUpdateTvShow = () => {
     mutationFn: ({ newTvShow, tvShowId }: UpdateTvShowRequest) =>
       apiClient
         .patch(Endpoints.baseTvShow + `/${tvShowId}`, newTvShow)
+        .then((res) => res.data),
+    onSuccess: () => {
+      // invalidate the query after deleting a tv show
+      queryClient.invalidateQueries({
+        queryKey: [QueryKeys.fetchTvShowByFilter],
+      });
+    },
+  });
+};
+
+//custom hook to bulk add tv shows
+export const useBulkAddTvShowJson = () => {
+  // initialize the query client
+  const queryClient = useQueryClient();
+  return useMutation<BulkAddTvShowResponse, AxiosError<ApiError>, File>({
+    mutationKey: [QueryKeys],
+    mutationFn: (file: File) => {
+      // create form data
+      const formData = new FormData();
+      formData.append('tvShowDataFile', file);
+      return apiClient
+        .post<BulkAddTvShowResponse>(Endpoints.bulkTvShow, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then((res) => res.data);
+    },
+    onSuccess: () => {
+      // invalidate the query after deleting a tv show
+      queryClient.invalidateQueries({
+        queryKey: [QueryKeys.fetchTvShowByFilter],
+      });
+    },
+  });
+};
+
+// custom hook to bulk delete tv show
+export const useBulkDeleteTvShow = () => {
+  // initialize the query client
+  const queryClient = useQueryClient();
+  return useMutation<DeleteTvShowResponse, AxiosError<ApiError>, string[]>({
+    mutationKey: [QueryKeys.bulkDeleteTvShow],
+    mutationFn: (tvShowIds: string[]) =>
+      apiClient
+        .delete<DeleteTvShowResponse>(Endpoints.bulkTvShow, {
+          data: {
+            tvShowIds,
+          },
+        })
         .then((res) => res.data),
     onSuccess: () => {
       // invalidate the query after deleting a tv show
