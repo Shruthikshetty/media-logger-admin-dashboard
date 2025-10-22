@@ -311,7 +311,7 @@ export const useBulkAddTvShowJson = () => {
   // initialize the query client
   const queryClient = useQueryClient();
   return useMutation<BulkAddTvShowResponse, AxiosError<ApiError>, File>({
-    mutationKey: [QueryKeys],
+    mutationKey: [QueryKeys.bulkAddTvShow],
     mutationFn: (file: File) => {
       // create form data
       const formData = new FormData();
