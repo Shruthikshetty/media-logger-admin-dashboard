@@ -6,10 +6,14 @@ import { z } from 'zod';
 
 //define schema
 export const addTvEpisodeSchema = z.object({
-  title: z.string({
-    error: (issue) =>
-      issue.input === undefined ? 'Title is required' : 'Title must be string',
-  }),
+  title: z
+    .string({
+      error: (issue) =>
+        issue.input === undefined
+          ? 'Title is required'
+          : 'Episode Title is required',
+    })
+    .min(1, 'Episode Title is required'),
   description: z
     .string({
       error: 'Description must be string',

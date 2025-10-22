@@ -16,10 +16,14 @@ export const addSeasonSchema = z.object({
     })
     .min(1, 'Season number must be at least 1'),
 
-  title: z.string({
-    error: (issue) =>
-      issue.input === undefined ? 'Title is required' : 'Title must be string',
-  }),
+  title: z
+    .string({
+      error: (issue) =>
+        issue.input === undefined
+          ? 'Season Title is required'
+          : 'Title must be string',
+    })
+    .min(1, 'Season Title is required'),
 
   description: z
     .string({
