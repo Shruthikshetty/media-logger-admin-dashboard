@@ -9,17 +9,23 @@ import { addSeasonSchema } from './add-season-schema';
 
 //define schema
 export const addTvShowSchema = z.object({
-  title: z.string({
-    error: (issue) =>
-      issue.input === undefined ? 'Title is required' : 'Title must be string',
-  }),
+  title: z
+    .string({
+      error: (issue) =>
+        issue.input === undefined
+          ? 'Title is required'
+          : 'Title must be string',
+    })
+    .min(1, 'Title is required'),
 
-  description: z.string({
-    error: (issue) =>
-      issue.input === undefined
-        ? 'Description is required'
-        : 'Description must be string',
-  }),
+  description: z
+    .string({
+      error: (issue) =>
+        issue.input === undefined
+          ? 'Description is required'
+          : 'Description must be string',
+    })
+    .min(1, 'Description is required'),
 
   averageRating: z
     .number({
