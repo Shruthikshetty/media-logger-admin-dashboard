@@ -7,6 +7,7 @@ import {
 import { Plus, Search, Trash2, Upload } from 'lucide-react';
 import moment from 'moment';
 import React, { useDeferredValue, useEffect, useMemo, useState } from 'react';
+import { toast } from 'sonner';
 import { LoadingWrapper } from '~/components/custom-loaders';
 import MediaFilters, {
   DateState,
@@ -14,6 +15,7 @@ import MediaFilters, {
 } from '~/components/media-filters';
 import TitleSubtitle from '~/components/title-subtitle';
 import AddTvShowDialog from '~/components/tv-show/add-tv-show-dialog';
+import ImportTvShowJsonDialog from '~/components/tv-show/import-tv-show-json-dialog';
 import TvShowTable, { tvShowColumns } from '~/components/tv-show/tv-show-table';
 import { Button } from '~/components/ui/button';
 import {
@@ -27,7 +29,11 @@ import { Input } from '~/components/ui/input';
 import { Skeleton } from '~/components/ui/skeleton';
 import { TvShowsFilterConfig } from '~/constants/config.constants';
 import useDelayedLoading from '~/hooks/use-delayed-loading';
-import { useFetchTvShowByFilter } from '~/services/tv-show-service';
+import {
+  useBulkDeleteTvShow,
+  useFetchTvShowByFilter,
+} from '~/services/tv-show-service';
+import { useSpinnerStore } from '~/state-management/spinner-store';
 import { FilterLimits } from '~/types/global.types';
 
 //filter data type
@@ -58,6 +64,11 @@ const TvShowTab = () => {
   const [searchText, setSearchText] = useState<string>('');
   // derive a differed value
   const deferredSearchText = useDeferredValue(searchText);
+  //initialize hook for bulk deleting of tv shows
+  const { mutate: bulkDeleteMutation, isPending: isBulkDeleting } =
+    useBulkDeleteTvShow();
+  //get spinner state
+  const setShowSpinner = useSpinnerStore((s) => s.setShowSpinner);
   // stores row selection state
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   // memorize the games filter query
@@ -128,6 +139,39 @@ const TvShowTab = () => {
     }
   }, [rows.length, page, isLoading, setPage]);
 
+  // handle deletion of selected tv shows
+  const handleBulkDelete = () => {
+    //in case no row is selected
+    if (selectedRowLength === 0) return;
+    // get all the selected tv show ids
+    const getSelectedTvShowIds = tvShowTable
+      .getSelectedRowModel()
+      .rows.map((row) => row.original._id);
+    //start loading
+    setShowSpinner(true);
+    // make api call to delete the tv shows
+    bulkDeleteMutation(getSelectedTvShowIds, {
+      onSuccess: (data) => {
+        toast.success(data?.message ?? 'Tv shows deleted successfully', {
+          classNames: {
+            toast: '!bg-feedback-success',
+          },
+        });
+      },
+      onError: (error) => {
+        toast.error(error.response?.data?.message ?? 'Something went wrong', {
+          classNames: {
+            toast: '!bg-feedback-error',
+          },
+        });
+      },
+      onSettled: () => {
+        // stop loading
+        setShowSpinner(false);
+      },
+    });
+  };
+
   return (
     <div className="flex flex-col gap-5 p-5">
       {/* Header */}
@@ -137,14 +181,16 @@ const TvShowTab = () => {
           subtitle="Manage your TV shows directory"
         />
         <div className="flex flex-col gap-3 md:flex-row">
-          <Button
-            variant={'outline'}
-            type="button"
-            aria-label="import TV shows JSON"
-          >
-            <Upload className="mr-1 size-4" />
-            Import json
-          </Button>
+          <ImportTvShowJsonDialog>
+            <Button
+              variant={'outline'}
+              type="button"
+              aria-label="import TV shows JSON"
+            >
+              <Upload className="mr-1 size-4" />
+              Import json
+            </Button>
+          </ImportTvShowJsonDialog>
           <AddTvShowDialog>
             <Button
               type="button"
@@ -189,6 +235,8 @@ const TvShowTab = () => {
                   variant={'red'}
                   aria-label={`delete selected tv shows (${selectedRowLength})`}
                   className="ml-auto"
+                  onClick={handleBulkDelete}
+                  disabled={isBulkDeleting}
                 >
                   <Trash2 className="size-4" />
                   selected ({selectedRowLength})

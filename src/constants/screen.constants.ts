@@ -107,3 +107,57 @@ export const BULK_ADD_GAMES_PLACEHOLDER_EXAMPLE = `[
     "youtubeVideoId": "dIQGI36HxZE"
   }
 ]`;
+
+// bulk add TV shows placeholder
+export const BULK_ADD_TV_SHOWS_PLACEHOLDER_EXAMPLE = `[
+  {
+    "title": "Example TV Show",
+    "description": "A gripping series following a small team as they uncover a conspiracy that spans continents.",
+    "averageRating": 8.2,
+    "genre": ["Action", "Drama", "Mystery"],
+    "releaseDate": "2024-01-01T00:00:00.000Z",
+    "cast": ["Alex Carter", "Jamie Lin"],
+    "directors": ["Taylor Morgan"],
+    "avgRunTime": 45,
+    "languages": ["English"],
+    "posterUrl": "https://example.com/tvshow/poster.jpg",
+    "backdropUrl": "https://example.com/tvshow/backdrop.jpg",
+    "isActive": true,
+    "status": "released",
+    "tags": ["Attack", "Sequel"],
+    "totalSeasons": 1,
+    "totalEpisodes": 1,
+    "ageRating": 16,
+    "youtubeVideoId": "a1b2c3d4e5",
+    "tmdbId": "123456",
+    "imdbId": "tt1234567",
+    "seasons": [
+      {
+        "seasonNumber": 1,
+        "title": "Season 1",
+        "description": "The investigation begins, revealing the first clues.",
+        "releaseDate": "2024-01-01T00:00:00.000Z",
+        "noOfEpisodes": 1,
+        "posterUrl": "https://example.com/tvshow/season1.jpg",
+        "seasonRating": 8.2,
+        "status": "ended",
+        "youtubeVideoId": "f6g7h8i9j0",
+        "averageRating": 8.2,
+        "episodes": [
+          {
+            "_id": "1000001",
+            "title": "Pilot",
+            "description": "A mysterious incident draws the team together as they chase their first lead.",
+            "episodeNumber": 1,
+            "releaseDate": "2024-01-01T00:00:00.000Z",
+            "runTime": 45,
+            "stillUrl": "https://example.com/tvshow/season1/episode1_still.jpg",
+            "averageRating": 8.0,
+            "createdAt": "2025-10-21T14:39:00.000Z",
+            "updatedAt": "2025-10-21T14:39:00.000Z"
+          }
+        ]
+      }
+    ]
+  }
+]`;
