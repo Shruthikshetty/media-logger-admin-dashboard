@@ -35,7 +35,7 @@ const Attributions = () => {
           href="https://www.igdb.com/"
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="IGDB"
+          aria-label="IGDB Logo"
         >
           <Image
             src="/igdb-attribution.svg"
@@ -49,7 +49,7 @@ const Attributions = () => {
           href="https://rawg.io/"
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="IGDB"
+          aria-label="RAWG Logo"
         >
           <Image
             src="/rawg-attribution.svg"
