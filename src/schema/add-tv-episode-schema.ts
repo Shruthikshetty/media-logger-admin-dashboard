@@ -10,8 +10,8 @@ export const addTvEpisodeSchema = z.object({
     .string({
       error: (issue) =>
         issue.input === undefined
-          ? 'Title is required'
-          : 'Episode Title is required',
+          ? 'Episode Title is required'
+          : 'Episode Title must be a string',
     })
     .min(1, 'Episode Title is required'),
   description: z
