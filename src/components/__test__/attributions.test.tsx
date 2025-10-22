@@ -1,4 +1,4 @@
-import { expect, it, describe, vi } from 'vitest';
+import { expect, it, describe } from 'vitest';
 import { screen, render } from '@testing-library/react';
 import Attributions from '../attributions';
 
