@@ -24,7 +24,7 @@ const TitleSubtitle = ({
 }: TitleSubtitleProps) => {
   // custom styles
   const styles = {
-    root: cn('gap flex w-full flex-col justify-center', customStyles?.root),
+    root: cn('flex w-full flex-col justify-center', customStyles?.root),
     title: cn('text-base-white text-3xl font-bold', customStyles?.title),
     subtitle: cn('text-ui-400 text-lg', customStyles?.subtitle),
   };

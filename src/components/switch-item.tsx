@@ -33,7 +33,7 @@ const SwitchItem = ({
         className,
       )}
     >
-      <div className="gap flex w-full flex-col justify-center">
+      <div className="flex w-full flex-col justify-center">
         <p className="text-base-white text-base font-semibold">{title}</p>
         <Label htmlFor={switchId} className="text-ui-400 text-base font-normal">
           {subtitle}
