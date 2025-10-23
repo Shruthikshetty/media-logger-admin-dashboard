@@ -1,8 +1,8 @@
 'use client';
-import React from 'react';
-import TitleSubtitle from './title-subtitle';
+import React, { useId } from 'react';
 import { Switch } from './ui/switch';
 import { cn } from '~/lib/utils';
+import { Label } from './ui/label';
 
 type SwitchItemProps = {
   title?: string;
@@ -23,6 +23,9 @@ const SwitchItem = ({
   className,
   ...restProps
 }: SwitchItemProps) => {
+  // generate unique switch id
+  const switchId = useId();
+
   return (
     <div
       className={cn(
@@ -30,16 +33,15 @@ const SwitchItem = ({
         className,
       )}
     >
-      <TitleSubtitle
-        title={title}
-        subtitle={subtitle}
-        customStyles={{
-          title: 'text-base font-semibold',
-          subtitle: 'text-base',
-        }}
-      />
+      <div className="gap flex w-full flex-col justify-center">
+        <p className="text-base-white text-base font-semibold">{title}</p>
+        <Label htmlFor={switchId} className="text-ui-400 text-base font-normal">
+          {subtitle}
+        </Label>
+      </div>
       <Switch
         className="data-[state=checked]:bg-brand-600 data-[state=unchecked]:bg-ui-600"
+        id={switchId}
         {...restProps}
       />
     </div>
