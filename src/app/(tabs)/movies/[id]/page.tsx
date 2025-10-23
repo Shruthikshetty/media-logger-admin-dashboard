@@ -19,7 +19,7 @@ import { Badge } from '~/components/ui/badge';
 import { cn } from '~/lib/utils';
 import { capitalizeFirstLetter } from '~/lib/formatting';
 import { useDeleteMovie, useGetMovieDetails } from '~/services/movies-service';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { Skeleton } from '~/components/ui/skeleton';
 import {
   LoadingWrapper,
@@ -35,6 +35,7 @@ import { QueryKeys } from '~/constants/query-key.constants';
 import { useSpinnerStore } from '~/state-management/spinner-store';
 import EditMovieDialog from '~/components/movies/edit-movie-dialog';
 import TrailerCard from '~/components/trailer-card';
+import { useRouter } from '@bprogress/next/app';
 const MovieDetails = () => {
   //get the movie id from params
   const movieId = (useParams()?.id as string) ?? '';

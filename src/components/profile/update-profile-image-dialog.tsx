@@ -13,7 +13,10 @@ import { ImageIcon, UploadIcon } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Progress } from '../ui/progress';
 import { dataURLToFile, resizeImageKeepAspect } from '~/lib/image-resize';
-import { MaxImageSize } from '~/constants/config.constants';
+import {
+  ALLOWED_IMAGE_TYPES_PROFILE,
+  MaxImageSize,
+} from '~/constants/config.constants';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { useUploadImage } from '~/services/uploads-service';
 import {
@@ -77,7 +80,7 @@ const UpdateProfileImage = ({ children }: { children: React.ReactNode }) => {
       const file = files[0];
 
       // check required file type in case of drag and drop
-      if (!file.type?.startsWith('image/')) {
+      if (!ALLOWED_IMAGE_TYPES_PROFILE.includes(file.type)) {
         toast.error(
           'Unsupported file type. Please upload a PNG, JPG, or WEBP.',
           {

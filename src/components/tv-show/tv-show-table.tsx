@@ -28,7 +28,7 @@ import { cn } from '~/lib/utils';
 import { Badge } from '../ui/badge';
 import TvShowActionDropdown from './tv-show-actions-dropdown';
 import { Checkbox } from '../ui/checkbox';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@bprogress/next/app';
 
 //define a type for the tv shows table
 type TvShowTableProps = {

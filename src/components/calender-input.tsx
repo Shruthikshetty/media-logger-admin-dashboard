@@ -5,11 +5,13 @@ import { PopoverContent, PopoverTrigger, Popover } from './ui/popover';
 import { Button } from './ui/button';
 import moment from 'moment';
 import { ChevronDown } from 'lucide-react';
+import { cn } from '~/lib/utils';
 
 type CalenderInputProps = {
   value: Date | undefined;
   onChange: (value: Date | undefined) => void;
   showChevron?: boolean;
+  isError?: boolean;
 };
 
 /**
@@ -23,6 +25,7 @@ const CalenderInput = ({
   value,
   onChange,
   showChevron = true,
+  isError = false,
 }: CalenderInputProps) => {
   // handle pop up open state
   const [open, setOpen] = useState(false);
@@ -32,7 +35,10 @@ const CalenderInput = ({
         <Button
           type="button"
           variant={'outline'}
-          className="text-ui-400 h-11 justify-between text-base font-normal"
+          className={cn(
+            'text-ui-400 h-11 justify-between text-base font-normal',
+            isError && 'border-feedback-error',
+          )}
         >
           {value ? moment(value).format('DD MMM YYYY') : 'dd-mm-yyyy'}
           {showChevron && <ChevronDown className="size-5" />}

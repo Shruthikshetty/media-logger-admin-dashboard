@@ -1,4 +1,5 @@
 'use client';
+import { useRouter } from '@bprogress/next/app';
 import {
   Calendar,
   Clock,
@@ -9,7 +10,7 @@ import {
   Users,
 } from 'lucide-react';
 import moment from 'moment';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import React, { useCallback } from 'react';
 import { toast } from 'sonner';
 import BackButton from '~/components/back-button';

@@ -10,7 +10,7 @@ import {
 } from '../ui/dropdown-menu';
 import { Ellipsis, Eye, SquarePen, Trash2 } from 'lucide-react';
 import { cn } from '~/lib/utils';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@bprogress/next/app';
 import { useSpinnerStore } from '~/state-management/spinner-store';
 import { toast } from 'sonner';
 import EditTvShowDialog from '~/components/tv-show/edit-tv-show-dialog';

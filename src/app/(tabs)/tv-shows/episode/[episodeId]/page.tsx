@@ -2,7 +2,8 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { PenSquare, Star, Trash2 } from 'lucide-react';
 import moment from 'moment';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
+import { useRouter } from '@bprogress/next/app';
 import React from 'react';
 import { toast } from 'sonner';
 import BackButton from '~/components/back-button';

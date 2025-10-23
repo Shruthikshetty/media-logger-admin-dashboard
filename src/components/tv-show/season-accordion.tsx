@@ -59,7 +59,7 @@ const SeasonAccordion = ({ seasons }: { seasons?: SeasonFull[] }) => {
                   <div>
                     <p className="text-normal text-ui-400 flex flex-row items-center gap-1 text-lg">
                       <Star className="text-feedback-warning h-5 w-5" />
-                      {season.averageRating}
+                      {season?.averageRating ?? '???'}
                     </p>
 
                     <p className="text-ui-400 flex flex-row items-center gap-2 text-base">

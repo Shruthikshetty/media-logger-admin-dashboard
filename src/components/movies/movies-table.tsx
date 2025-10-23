@@ -25,9 +25,9 @@ import { capitalizeFirstLetter } from '~/lib/formatting';
 import type { Pagination as PaginationType } from '~/types/global.types';
 import MovieActionDropdown from './movie-actions-dropdown';
 import { Checkbox } from '../ui/checkbox';
-import { useRouter } from 'next/navigation';
 import TablePagination from '../table-pagination';
 import { TableSkeleton } from '../custom-loaders';
+import { useRouter } from '@bprogress/next/app';
 
 type MoviesTableType = {
   loading: boolean;

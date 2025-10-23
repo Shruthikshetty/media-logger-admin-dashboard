@@ -26,4 +26,7 @@ export default defineConfig({
       exclude: ['node_modules/', 'vitest.setup.ts'],
     },
   },
+  build: {
+    sourcemap: false, // Disable source maps for the build process
+  },
 });

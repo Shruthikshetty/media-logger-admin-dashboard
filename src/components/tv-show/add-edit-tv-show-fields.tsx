@@ -167,11 +167,11 @@ export const AddEditTvShowCommonFields = () => {
         <FormField
           name="releaseDate"
           control={form.control}
-          render={({ field }) => (
+          render={({ field, fieldState: { error } }) => (
             <FormItem className="flex-1">
               <Label className="text-base">Release Date *</Label>
               <FormControl>
-                <CalenderInput {...field} />
+                <CalenderInput {...field} isError={!!error} />
               </FormControl>
               <FormMessage />
               <FormDescription className="text-ui-400 text-sm">
