@@ -1,7 +1,7 @@
 import { expect, it, vi, describe } from 'vitest';
 import { screen, render } from '@testing-library/react';
 import Home from '../page';
-import MockComponent from '~/__mocks__/MockComponent';
+import MockComponent from '~/__mocks__/component.mock';
 
 //mock analytics data
 vi.mock('~/services/analytics-service', () => ({

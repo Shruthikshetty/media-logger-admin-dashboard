@@ -12,7 +12,10 @@ import ClientOnly from './client-only-provider';
  */
 export const Spinner = () => {
   return (
-    <div className="h-15 w-15 animate-spin rounded-full border-6 border-white/30 border-t-white md:h-18 md:w-18" />
+    <div
+      className="h-15 w-15 animate-spin rounded-full border-6 border-white/30 border-t-white md:h-18 md:w-18"
+      aria-label="spinner-loader"
+    />
   );
 };
 
