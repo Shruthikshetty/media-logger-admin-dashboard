@@ -16,6 +16,8 @@ import { useRouter } from '@bprogress/next/app';
 import { useAuthStore } from '~/state-management/auth-store';
 import { CookieNames } from '~/constants/config.constants';
 import Cookies from 'js-cookie';
+import { useQueryClient } from '@tanstack/react-query';
+import { QueryKeys } from '~/constants/query-key.constants';
 
 type ProfilePressDropdownProps = {
   children: React.ReactNode;
@@ -27,6 +29,8 @@ type ProfilePressDropdownProps = {
  */
 const ProfilePressDropdown = ({ children }: ProfilePressDropdownProps) => {
   const router = useRouter();
+  //initialize query client
+  const queryClient = useQueryClient();
   //get the user details from the store
   const userDetails = useAuthStore((s) => s.user);
   //get reset auth details
@@ -38,6 +42,9 @@ const ProfilePressDropdown = ({ children }: ProfilePressDropdownProps) => {
     resetAuth();
     //remove cookies
     Cookies.remove(CookieNames.token);
+    queryClient.invalidateQueries({
+      queryKey: [QueryKeys.userDetails],
+    });
     router.push('/login');
   };
 
