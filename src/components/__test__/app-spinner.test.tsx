@@ -1,4 +1,4 @@
-import { expect, it, describe, vi } from 'vitest';
+import { expect, it, describe, vi, afterEach } from 'vitest';
 import { screen, render } from '@testing-library/react';
 import { SpinnerOverlay } from '../app-spinner';
 
@@ -17,6 +17,13 @@ vi.mock('~/state-management/spinner-store', () => ({
 }));
 
 describe('app spinner component test cases', () => {
+  // Reset to default state after each test
+  afterEach(() => {
+    spinnerState.showSpinner = true;
+    spinnerState.spinnerOptions.type = 'normal';
+    spinnerState.spinnerOptions.opacity = 60;
+  });
+
   it('should render the app spinner overlay component', () => {
     render(<SpinnerOverlay />);
     expect(screen.getByLabelText('spinner-loader')).toBeInTheDocument();
@@ -30,6 +37,7 @@ describe('app spinner component test cases', () => {
   });
 
   it('should not render any overlay if the showSpinner state is false', () => {
+    spinnerState.spinnerOptions.type = 'dot';
     spinnerState.showSpinner = false;
     render(<SpinnerOverlay />);
     expect(screen.queryByLabelText('spinner-loader')).not.toBeInTheDocument();
