@@ -318,4 +318,8 @@ export const TvShowsFilterConfig: FilterConfig[] = [
 export { GENRE_MOVIE_TV, LANGUAGES, TAGS, GAME_GENRES, GAME_PLATFORMS };
 
 // Define an allowlist of supported MIME types for profile image
-export const ALLOWED_IMAGE_TYPES_PROFILE = ['image/png', 'image/jpeg', 'image/webp'];
+export const ALLOWED_IMAGE_TYPES_PROFILE = [
+  'image/png',
+  'image/jpeg',
+  'image/webp',
+];

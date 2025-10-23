@@ -13,7 +13,10 @@ import { ImageIcon, UploadIcon } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Progress } from '../ui/progress';
 import { dataURLToFile, resizeImageKeepAspect } from '~/lib/image-resize';
-import { ALLOWED_IMAGE_TYPES_PROFILE, MaxImageSize } from '~/constants/config.constants';
+import {
+  ALLOWED_IMAGE_TYPES_PROFILE,
+  MaxImageSize,
+} from '~/constants/config.constants';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { useUploadImage } from '~/services/uploads-service';
 import {
