@@ -22,7 +22,7 @@ import { MapPin, Trophy, User as UserIcon } from 'lucide-react';
 import RoleBadge from '../role-badge';
 import UserActionsDropdown from './user-action-dropdown';
 import { formatToIndianNumber } from '~/lib/formatting';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@bprogress/next/app';
 
 /**
  * This is the columns of the users table

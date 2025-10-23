@@ -1,6 +1,6 @@
 'use client';
 
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import React, { useEffect } from 'react';
 import Cookies from 'js-cookie';
 import AppSideBar from '~/components/app-sidebar';
@@ -9,6 +9,7 @@ import { SidebarProvider } from '~/components/ui/sidebar';
 import { CookieNames } from '~/constants/config.constants';
 import { useAuthStore } from '~/state-management/auth-store';
 import { useSpinnerStore } from '~/state-management/spinner-store';
+import { useRouter } from '@bprogress/next/app';
 
 // This component is used to protect routes that require authentication
 // in case the user is not logged in all navigation will be redirected to the login page

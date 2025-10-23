@@ -27,7 +27,7 @@ import { capitalizeFirstLetter } from '~/lib/formatting';
 import { cn } from '~/lib/utils';
 import { Checkbox } from '../ui/checkbox';
 import GamesActionsDropdown from './games-actions-dropdown';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@bprogress/next/app';
 
 type GamesTableProps = {
   table: ReactTable<Game>;

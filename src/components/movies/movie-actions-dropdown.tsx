@@ -16,7 +16,7 @@ import { useSpinnerStore } from '~/state-management/spinner-store';
 import { useQueryClient } from '@tanstack/react-query';
 import { QueryKeys } from '~/constants/query-key.constants';
 import EditMovieDialog from './edit-movie-dialog';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@bprogress/next/app';
 /**
  * This component is used to display the actions for a movie
  * Mainly used in movie table performs actions like view details , edit , delete

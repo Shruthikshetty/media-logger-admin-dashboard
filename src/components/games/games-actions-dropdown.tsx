@@ -11,7 +11,7 @@ import {
 import { Ellipsis, Eye, SquarePen, Trash2 } from 'lucide-react';
 import { cn } from '~/lib/utils';
 import { Game, useDeleteGameById } from '~/services/game-service';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@bprogress/next/app';
 import { toast } from 'sonner';
 import { useSpinnerStore } from '~/state-management/spinner-store';
 import EditGameDialog from './edit-game-dialog';

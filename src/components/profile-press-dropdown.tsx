@@ -12,7 +12,7 @@ import {
 } from './ui/dropdown-menu';
 import { LogOut } from 'lucide-react';
 import { ProfileMenuItems } from '~/constants/screen.constants';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@bprogress/next/app';
 import { useAuthStore } from '~/state-management/auth-store';
 import { CookieNames } from '~/constants/config.constants';
 import Cookies from 'js-cookie';

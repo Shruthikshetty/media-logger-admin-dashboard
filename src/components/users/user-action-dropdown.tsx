@@ -8,7 +8,7 @@ import {
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
 import { cn } from '~/lib/utils';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@bprogress/next/app';
 import { useDeleteUserById } from '~/services/user-service';
 import { toast } from 'sonner';
 import { useSpinnerStore } from '~/state-management/spinner-store';

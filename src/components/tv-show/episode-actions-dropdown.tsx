@@ -1,6 +1,6 @@
 'use client';
 import { Ellipsis, Eye, SquarePen, Trash2 } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@bprogress/next/app';
 import React from 'react';
 import {
   EpisodeBase,

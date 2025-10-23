@@ -22,7 +22,7 @@ import CustomImage from '../custom-image';
 import { Calendar, Star } from 'lucide-react';
 import EpisodeActionsDropdown from './episode-actions-dropdown';
 import moment from 'moment';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@bprogress/next/app';
 import TablePagination from '../table-pagination';
 
 //create columns for episode table
