@@ -1,5 +1,5 @@
 'use client';
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { EpisodeBase } from '~/services/tv-episode-service';
 import { ScrollArea, ScrollBar } from '../ui/scroll-area';
 import {
@@ -117,6 +117,7 @@ const episodeColumns: ColumnDef<EpisodeBase, string | number | undefined>[] = [
 const EpisodeTable = ({ episodes = [] }: { episodes?: EpisodeBase[] }) => {
   //initialize router
   const router = useRouter();
+  const scrollRef = useRef<HTMLTableElement>(null!);
   //order the episodes by episode number
   const episodesOrdered = useMemo(
     () => [...episodes].sort((a, b) => a.episodeNumber - b.episodeNumber),
@@ -143,10 +144,25 @@ const EpisodeTable = ({ episodes = [] }: { episodes?: EpisodeBase[] }) => {
     getPaginationRowModel: getPaginationRowModel(),
   });
 
+  // handle page change
+  const handlePageChange = (p: React.SetStateAction<number>) => {
+    table.setPageIndex(
+      (typeof p === 'number' ? p : p(pagination.pageIndex + 1)) - 1,
+    );
+    const headerOffset = 100; // extra top space
+    const elementPosition = scrollRef?.current.getBoundingClientRect().top;
+    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+    // scroll to top
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: 'smooth',
+    });
+  };
+
   return (
     <>
       <ScrollArea className="rounded-md pb-3 whitespace-nowrap">
-        <Table className="min-w-full">
+        <Table className="min-w-full" ref={scrollRef}>
           {/* table header */}
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -199,11 +215,7 @@ const EpisodeTable = ({ episodes = [] }: { episodes?: EpisodeBase[] }) => {
       </ScrollArea>
       <TablePagination
         page={pagination.pageIndex + 1}
-        setPage={(p) =>
-          table.setPageIndex(
-            (typeof p === 'number' ? p : p(pagination.pageIndex + 1)) - 1,
-          )
-        }
+        setPage={handlePageChange}
         pagination={{
           currentPage: pagination.pageIndex + 1,
           totalPages,
