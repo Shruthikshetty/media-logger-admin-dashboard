@@ -12,7 +12,7 @@ The test suite requires a user account with specific permissions to log in to th
 
 2.  **Add Credentials**: Open the newly created `secrets.ts` file and add the following code structure. You will need to replace the placeholder values with the actual credentials for the test account.
 
-    ```
+    ```typescript
     export const SECRETS = {
       adminUser: {
         email: "example@gmail.com",
@@ -29,8 +29,8 @@ The test suite requires a user account with specific permissions to log in to th
 
 3.  **Verify `.gitignore`**: Ensure that the `secrets.ts` file path is included in your root `.gitignore` file to prevent it from ever being pushed to the repository. The entry should look like this:
 
-    ```
-    # e2e/test-data/secrets.ts
+    ```gitignore
+    /e2e/test-data/secrets.ts
     ```
 
 ## Important Notes

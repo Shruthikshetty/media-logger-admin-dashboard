@@ -1,5 +1,5 @@
 /**
- * this @file contains related to login page
++ * This @file contains tests related to the login page
  *  user authentication to access the app
  */
 import { test, expect } from '@playwright/test';
