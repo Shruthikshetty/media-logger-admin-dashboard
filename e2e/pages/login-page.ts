@@ -1,3 +1,8 @@
+/**
+ * This @file contains the login page object
+ * with utility methods
+ */
+
 import type { Page, Locator } from '@playwright/test';
 import { Secrets } from '../test-data/secrets';
 
