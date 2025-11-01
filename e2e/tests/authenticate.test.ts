@@ -14,6 +14,6 @@ test('should login successfully', async ({ page }) => {
   await expect(page).toHaveTitle('Media Logger Admin Dashboard');
   // login as admin user
   await loginPage.loginAsAdminUser();
-  //expect login success message toast 
+  //expect login success message toast
   await expect(page.getByText('Login successful')).toBeVisible();
 });
