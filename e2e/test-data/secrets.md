@@ -15,9 +15,9 @@ The test suite requires a user account with specific permissions to log in to th
     ```typescript
     export const SECRETS = {
       adminUser: {
-        email: "example@gmail.com",
-        password: "examplePass"
-      }
+        email: 'example@gmail.com',
+        password: 'examplePass',
+      },
       // You can add other user roles here as needed
       //
       // memberUser: {
@@ -37,4 +37,3 @@ The test suite requires a user account with specific permissions to log in to th
 
 - **Security**: This file contains sensitive credentials. **Do not** commit it to GitHub or share it publicly.
 - **Purpose**: The `adminUser` object contains the required credentials for logging into the application as an administrator, which is necessary for the majority of the E2E tests.
-
